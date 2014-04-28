@@ -2,6 +2,6 @@ var reader = require("transit/reader"),
     writer = require("transit/writer");
 
 exports = {
-  reader: reader,
-  writer: writer
+  read: reader.read,
+  write: writer.write
 };
