@@ -1,13 +1,8 @@
+var d = require("./delimiters");
+
 var MIN_SIZE_CACHEABLE = 3;
 var MAX_CACHE_ENTRIES  = 94;
 var BASE_CHAR_IDX      = 33;
-
-var ESC      = "~";
-var TAG      = "#";
-var CACHE    = "^";
-var RESERVED = "`";
-var ESC_TAG  = "~#";
-
 
 function isCacheable(string, asMapKey) {
   if(string.length > MIN_SIZE_CACHEABLE) {
@@ -16,7 +11,7 @@ function isCacheable(string, asMapKey) {
     } else {
       var c0 = string[0],
           c1 = string[1];
-      if(c0 === ESC) {
+      if(c0 === d.ESC) {
         return c1 === ":" || c1 === "$" || c1 === "#";
       } else {
         return false;
@@ -29,7 +24,6 @@ function isCacheable(string, asMapKey) {
 
 
 function isCacheKey() {
-  
 }
 
 var WriteCache = function() {
@@ -38,7 +32,7 @@ var WriteCache = function() {
 }
 
 WriteCache.prototype = {
-  cacheWrite: function(string, asMapKey) {
+  write: function(string, asMapKey) {
     if(string && isCacheable(string, asMapKey)) {
       var val = cache[string];
       if(val) {
@@ -60,9 +54,12 @@ WriteCache.prototype = {
   escape: function(string) {
     if(string.length > 0) {
       var c = string[0];
-      if(c === RESERVED && string[1] === ESC) {
+      if(c === d.RESERVED && string[1] === ESC) {
         return string.substring(1);
-      } else if() {
+      } else if(c === d.ESC || c === d.SUB || c === d.RESERVED) {
+        
+      } else {
+        return string;
       }
     }
     return null;
@@ -71,7 +68,7 @@ WriteCache.prototype = {
 
 
 function idxToCode(idx) {
-  return CACHE + (i + BASE_CHAR_IDX);
+  return d.SUB + (i + BASE_CHAR_IDX);
 }
 
 exports = {

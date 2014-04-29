@@ -4,8 +4,6 @@ var cache = require("cache"),
 var TransitDecoder = function() {};
 
 TransitDecoder.prototype = {
-  
-
   defaults: {
     decoders: {
       "_": function(v) { return nil; },
