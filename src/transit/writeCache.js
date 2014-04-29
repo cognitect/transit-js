@@ -23,7 +23,7 @@ function isCacheable(string, asMapKey) {
 }
 
 function idxToCode(idx) {
-  return d.SUB + (i + BASE_CHAR_IDX);
+  return d.SUB + (idx + BASE_CHAR_IDX);
 }
 
 var WriteCache = function() {
@@ -34,7 +34,7 @@ var WriteCache = function() {
 WriteCache.prototype = {
   write: function(string, asMapKey) {
     if(string && isCacheable(string, asMapKey)) {
-      var val = cache[string];
+      var val = this.cache[string];
       if(val) {
         return val;
       } else {
@@ -42,27 +42,13 @@ WriteCache.prototype = {
           this.idx = 0;
           this.cache = {};
         }
-        this.cache[str] = idxToCode(idx);
+        this.cache[string] = idxToCode(this.idx);
         this.idx++;
         return string;
       }
     } else {
       return str;
     }
-  },
-
-  escape: function(string) {
-    if(string.length > 0) {
-      var c = string[0];
-      if(c === d.RESERVED && string[1] === ESC) {
-        return string.substring(1);
-      } else if(c === d.ESC || c === d.SUB || c === d.RESERVED) {
-        
-      } else {
-        return string;
-      }
-    }
-    return null;
   }
 };
 
