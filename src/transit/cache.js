@@ -22,6 +22,9 @@ function isCacheable(string, asMapKey) {
   }
 }
 
+// =============================================================================
+// WriteCache
+
 function idxToCode(idx) {
   return d.SUB + String.fromCharCode(idx + BASE_CHAR_IDX);
 }
@@ -47,7 +50,7 @@ WriteCache.prototype = {
         return string;
       }
     } else {
-      return str;
+      return string;
     }
   }
 };
@@ -56,7 +59,53 @@ function writeCache() {
   return new WriteCache();
 }
 
+// =============================================================================
+// ReadCache
+
+function isCacheCode(string) {
+  return string[0] == d.SUB;
+}
+
+function codeToIdx(code) {
+  return code.charCodeAt(1) - BASE_CHAR_IDX;
+}
+
+var ReadCache = function() {
+  var cache = [];
+  this.idx = 0;
+  for(var i = 0; i < MAX_CACHE_ENTRIES; i++) {
+    cache.push(null);
+  }
+  this.cache = cache;
+};
+
+ReadCache.prototype = {
+  read: function(string, asMapKey) {
+    if(string && (string.length > 1)) {
+      if(isCacheable(string, asMapKey)) {
+        if(this.idx == MAX_CACHE_ENTRIES) {
+          this.idx = 0;
+        }
+        var obj = parseString(string);
+        this.cache[this.idx] = obj;
+        return obj;
+      } else if(isCacheCode(string)) {
+        return this.cache[codeToIdx(string)];
+      } else {
+        return string;
+      }
+    } else {
+      return string;
+    }
+  }
+};
+
+function readCache() {
+  return new ReadCache();
+}
+
 module.exports = {
   isCacheable: isCacheable,
-  writeCache: writeCache
+  writeCache: writeCache,
+  readCache: readCache
 };

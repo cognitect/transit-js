@@ -1,4 +1,4 @@
-var wc = require("../src/transit/writeCache.js"),
+var wc = require("../src/transit/cache.js"),
     w  = require("../src/transit/writer.js");
 
 exports.testIsCacheable = function(test) {
