@@ -195,6 +195,7 @@ function write(writer, obj) {
   marshalTop(m, writer, obj, writeCache());
 }
 
-exports = {
-  write: write
+module.exports = {
+  write: write,
+  JSONMarshaller: JSONMarshaller
 };

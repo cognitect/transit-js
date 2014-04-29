@@ -15,5 +15,20 @@
     "grunt-contrib-nodeunit": "~0.2.2",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-uglify": "~0.2.7"
-  }
+  },
+  "description": "## Usage",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cognitect/transit-js.git"
+  },
+  "author": "Cognitect",
+  "license": "EPL",
+  "bugs": {
+    "url": "https://github.com/cognitect/transit-js/issues"
+  },
+  "homepage": "https://github.com/cognitect/transit-js"
 }

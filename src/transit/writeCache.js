@@ -22,8 +22,8 @@ function isCacheable(string, asMapKey) {
   }
 }
 
-
-function isCacheKey() {
+function idxToCode(idx) {
+  return d.SUB + (i + BASE_CHAR_IDX);
 }
 
 var WriteCache = function() {
@@ -66,12 +66,11 @@ WriteCache.prototype = {
   }
 };
 
-
-function idxToCode(idx) {
-  return d.SUB + (i + BASE_CHAR_IDX);
+function writeCache() {
+  return new WriteCache();
 }
 
-exports = {
+module.exports = {
   isCacheable: isCacheable,
-  isCacheKey: isCacheKey
+  writeCache: writeCache
 };

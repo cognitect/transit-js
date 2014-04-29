@@ -53,7 +53,7 @@ module.exports = function(grunt) {
       }
     },
     nodeunit: {
-      files: ['test/**/*_test.js']
+      files: ['test/**/*.js']
     },
     watch: {
       gruntfile: {

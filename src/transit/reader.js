@@ -14,6 +14,6 @@ function read(stream, opts) {
 }
 
 
-exports = {
+module.exports = {
   decoder: decoder
 };

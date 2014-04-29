@@ -4,7 +4,7 @@ var SUB      = "^";
 var RESERVED = "`";
 var ESC_TAG  = "~#";
 
-exports = {
+module.exports = {
   ESC:      ESC,
   TAG:      TAG,
   SUB:      SUB,

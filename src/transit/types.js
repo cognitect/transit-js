@@ -45,7 +45,7 @@ function uri(s) {
   return new URI(s);
 }
 
-exports = {
+module.exports = {
   symbol: symbol
   uuid: uuid,
   set: set,
