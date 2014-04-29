@@ -1,5 +1,5 @@
-var writeCache = require("./writeCache"),
-    d          = require("./delimiters");
+var cache = require("./cache"),
+    d     = require("./delimiters");
 
 var JSON_INT_MAX = Math.pow(2, 53);
 var JSON_INT_MIN = -JSON_INT_MAX;

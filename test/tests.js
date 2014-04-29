@@ -17,3 +17,13 @@ exports.testWriteCacheWrite = function(test) {
   test.deepEqual(cache.cache, {"~:foobar":"^!"}, "First cache write should map to \"^!\"");
   test.done();
 };
+
+exports.testIsCacheCode = function(test) {
+  test.ok(wc.isCacheCode("^!"), "\"^!\" is a cache code");
+  test.done();
+};
+
+exports.testReadCacheRead = function(test) {
+  
+  test.done();
+};

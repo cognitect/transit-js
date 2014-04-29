@@ -70,6 +70,30 @@ function codeToIdx(code) {
   return code.charCodeAt(1) - BASE_CHAR_IDX;
 }
 
+function parseString(string, decoder) {
+  if(typeof string == "string" &&
+     (string.length > 1) &&
+     (d.ESC == string[0])) {
+    var res = null;
+    switch(string[1]) {
+      case "~": // ESC
+      case "^": // SUB
+      case "`": // RESERVED
+        res = string.substring(1);
+        break;
+      case "#": // TAG
+        res = string;
+        break;
+      default:
+        res = decoder(string[1], string.substring(2));
+        break;
+    }
+    return res;
+  } else {
+    return string;
+  }
+}
+
 var ReadCache = function() {
   var cache = [];
   this.idx = 0;
@@ -80,7 +104,7 @@ var ReadCache = function() {
 };
 
 ReadCache.prototype = {
-  read: function(string, asMapKey) {
+  read: function(string, decoder, asMapKey) {
     if(string && (string.length > 1)) {
       if(isCacheable(string, asMapKey)) {
         if(this.idx == MAX_CACHE_ENTRIES) {
@@ -106,6 +130,7 @@ function readCache() {
 
 module.exports = {
   isCacheable: isCacheable,
+  isCacheCode: isCacheCode,
   writeCache: writeCache,
-  readCache: readCache
+  readCache: readCache,
 };
