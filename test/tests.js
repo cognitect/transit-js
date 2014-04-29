@@ -1,4 +1,5 @@
-var wc = require("../src/transit/writeCache.js");
+var wc = require("../src/transit/writeCache.js"),
+    w  = require("../src/transit/writer.js");
 
 exports.testIsCacheable = function(test) {
   test.ok(wc.isCacheable("~:f", false) == false, "\"~:f\" should not be cached");
@@ -13,6 +14,6 @@ exports.testIsCacheable = function(test) {
 exports.testWriteCacheWrite = function(test) {
   var cache = wc.writeCache();
   cache.write("~:foobar", false);
-  test.deepEqual(cache.cache, {"~:foobar":"^33"}, "First cache write should map to \"^33\"");
+  test.deepEqual(cache.cache, {"~:foobar":"^!"}, "First cache write should map to \"^!\"");
   test.done();
 };

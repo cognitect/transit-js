@@ -23,7 +23,7 @@ function isCacheable(string, asMapKey) {
 }
 
 function idxToCode(idx) {
-  return d.SUB + (idx + BASE_CHAR_IDX);
+  return d.SUB + String.fromCharCode(idx + BASE_CHAR_IDX);
 }
 
 var WriteCache = function() {
