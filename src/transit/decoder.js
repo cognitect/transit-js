@@ -48,17 +48,15 @@ Decoder.prototype = {
   },
 
   decodeString: function(string, cache, asMapKey) {
-    return cache.read(string, this, asMapKey);
-    /*
     if(cache.isCacheable(string, asMapKey)) {
-      cache.write(string, asMapKey);
-      this.parseString(string, cache, asMapKey);
+      var val = this.parseString(string, cache, asMapKey);
+      cache.write(string, val);
+      return val;
     } else if(cache.isCacheCode(string)) {
-      this.parseString(cache.read(
+      return this.cache.read(string);
     } else {
-      this.parseString(string, cache, asMapKey);
+      return this.parseString(string, cache, asMapKey);
     }
-    */
   },
 
   decodeHash: function() {

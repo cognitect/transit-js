@@ -104,23 +104,17 @@ var ReadCache = function() {
 };
 
 ReadCache.prototype = {
-  read: function(string, decoder, asMapKey) {
-    if(string && (string.length > 1)) {
-      if(isCacheable(string, asMapKey)) {
-        if(this.idx == MAX_CACHE_ENTRIES) {
-          this.idx = 0;
-        }
-        var obj = parseString(string);
-        this.cache[this.idx] = obj;
-        return obj;
-      } else if(isCacheCode(string)) {
-        return this.cache[codeToIdx(string)];
-      } else {
-        return string;
-      }
-    } else {
-      return string;
+  write: function(string, obj) {
+    if(this.idx == MAX_CACHE_ENTRIES) {
+      this.idx = 0;
     }
+    this.cache[this.idx] = obj;
+    this.idx++;
+    return obj;
+  },
+
+  read: function(string, asMapKey) {
+    return this.cache[codeToIdx(string)];
   }
 };
 
@@ -133,4 +127,5 @@ module.exports = {
   isCacheCode: isCacheCode,
   writeCache: writeCache,
   readCache: readCache,
+  MAX_CACHE_ENTRIES: MAX_CACHE_ENTRIES
 };

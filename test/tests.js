@@ -23,7 +23,17 @@ exports.testIsCacheCode = function(test) {
   test.done();
 };
 
+exports.testReadCacheWrite = function(test) {
+  var cache = wc.readCache();
+  cache.write("~:foo", "foo");
+  test.ok(cache.cache.length == wc.MAX_CACHE_ENTRIES, "Read cache size does not exceed maximum");
+  test.ok(cache.idx == 1, "Single read cache write bumps cache index");
+  test.done();
+};
+
 exports.testReadCacheRead = function(test) {
-  
+  var cache = wc.readCache();
+  cache.write("~:foo", "foo");
+  test.ok(cache.read("^!") == "foo", "Single read cache read after cache write returns expected value");
   test.done();
 };
