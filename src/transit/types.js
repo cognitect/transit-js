@@ -30,6 +30,10 @@ function map(arr) {
   return new Map(arr);
 }
 
+function list(xs) {
+  return xs;
+}
+
 function date(s) {
   return new Date(s);
 }
@@ -38,11 +42,31 @@ function byteBuffer(data) {
   return new ByteBuffer(data);
 }
 
-function URI() {
+function URI(s) {
 }
 
 function uri(s) {
   return new URI(s);
+}
+
+function ints(xs) {
+  return xs;
+}
+
+function longs(xs) {
+  return xs;
+}
+
+function floats(xs) {
+  return xs;
+}
+
+function doubles(xs) {
+  return xs;
+}
+
+function bools(xs) {
+  return xs;
 }
 
 module.exports = {
@@ -52,5 +76,12 @@ module.exports = {
   map: map,
   date: date,
   byteBuffer: byteBuffer,
-  uri: uri
+  uri: uri,
+  list: list,
+  ints: ints,
+  longs: longs,
+  floats: floats,
+  doubles: doubles,
+  bools: bools,
+  cmap: cmap
 };

@@ -85,7 +85,7 @@ function parseString(string, decoder) {
         res = string;
         break;
       default:
-        res = decoder(string[1], string.substring(2));
+        res = decoder.decode(string[1], string.substring(2));
         break;
     }
     return res;
