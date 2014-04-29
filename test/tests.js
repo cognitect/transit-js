@@ -1,5 +1,6 @@
 var wc = require("../src/transit/cache.js"),
-    w  = require("../src/transit/writer.js");
+    w  = require("../src/transit/writer.js"),
+    d  = require("../src/transit/decoder.js");
 
 exports.testIsCacheable = function(test) {
   test.ok(wc.isCacheable("~:f", false) == false, "\"~:f\" should not be cached");

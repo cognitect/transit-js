@@ -1,5 +1,5 @@
-var cache = require("cache"),
-    types = require("types");
+var cache = require("./cache"),
+    types = require("./types");
 
 var Decoder = function(options) {
   this.options = options;
@@ -71,7 +71,7 @@ Decoder.prototype = {
       var key     = decode(ks[0], cache, true),
           decoder = this.getDecoder(key);
       if(decoder) {
-        return decoder(decode(hash[ks[0]], cache, false);
+        return decoder(decode(hash[ks[0]], cache, false));
       } else if(typeof key == "string" && key.match(/^~#/)) {
         return this.getDecoder("default_hash_decoder")(hash[ks[0]], cache, false);
       } else {
@@ -83,6 +83,7 @@ Decoder.prototype = {
       var res = {};
       for(var i = 0; i < ks.length; i++) {
       }
+      return res;
     }
   },
 
@@ -96,11 +97,15 @@ Decoder.prototype = {
   },
 
   parseString: function(string, cache, asMapKey) {
-  }
+  },
 
   register: function(tagOrKey, type, rest) {
   }
 };
+
+function decoder(options) {
+  return new Decoder(options);
+}
 
 module.exports = {
   decoder: decoder

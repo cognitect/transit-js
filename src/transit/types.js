@@ -69,8 +69,12 @@ function bools(xs) {
   return xs;
 }
 
+function cmap(xs) {
+  return xs;
+}
+
 module.exports = {
-  symbol: symbol
+  symbol: symbol,
   uuid: uuid,
   set: set,
   map: map,
