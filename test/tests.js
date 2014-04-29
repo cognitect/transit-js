@@ -39,3 +39,8 @@ exports.testReadCacheRead = function(test) {
   test.done();
 };
 
+exports.testDecoderDecode = function(test) {
+  
+  test.done();
+};
+

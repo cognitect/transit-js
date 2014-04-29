@@ -1,9 +1,20 @@
 var cache = require("./cache"),
-    types = require("./types");
+    types = require("./types"),
+    d     = require("./delimiters");
+
+var ESCAPED_ESC = new RegExp(d.ESC),
+    ESCAPED_SUB = new RegExp(d.SUB),
+    ESCAPED_RES = new RegExp(d.RES),
+    IS_ESCAPED  = new RegExp("^"+ESCAPED_SUB+"("+ESCAPED_SUB+"|"+ESCAPED_ESC+"|"+ESCAPED_RES+")"),
+    IS_UNRECOGNIZED = new RegExp(d.ESC+"\w");
+
+// =============================================================================
+// Decoder
 
 var Decoder = function(options) {
   this.options = options;
 };
+
 
 Decoder.prototype = {
   defaults: {
@@ -38,6 +49,10 @@ Decoder.prototype = {
   
   getDecoder: function(key) {
     return this.options.decoders[key] || this.defaults.decoders[key];
+  },
+
+  setDecoder: function(key, b) {
+    this.options.decoders[key] = b;
   },
 
   decode: function(node, cache, asMapKey) {
@@ -97,9 +112,7 @@ Decoder.prototype = {
   },
 
   parseString: function(string, cache, asMapKey) {
-  },
-
-  register: function(tagOrKey, type, rest) {
+    
   }
 };
 
