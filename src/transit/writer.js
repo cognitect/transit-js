@@ -24,10 +24,16 @@ function JSONMarshaller() {
 
 JSONMarshaller.prototype = {
   write: function(c) {
+    this.state = null;
     this.buffer.push(c);
   },
 
   emitNil: function(asMapKey, cache) {
+    if(asMapKey) {
+      this.emitString(d.ESC, "_", null, asMapKey, cache);
+    } else {
+      this.write("null");
+    }
   },
 
   emitString: function(asMapKey, prefix, tag, s, asMapKey, cache) {
@@ -56,10 +62,16 @@ JSONMarshaller.prototype = {
     }
   },
 
-  emitDouble: function(asMapKey, cache) {
+  emitDouble: function(d, asMapKey, cache) {
+    if(asMapKey) {
+      this.emitString(d.ESC, "d", d, asMapKey, cache);
+    } else {
+      this.write(s);
+    }
   },
 
-  emitBinary: function(asMapKey, cache) {
+  emitBinary: function(b, asMapKey, cache) {
+    this.emitBinary(d.ESC, "b", new Buffer(b).toString("base64"), asMapKey, cache);
   },
 
   arraySize: function(arr) {
@@ -73,7 +85,7 @@ JSONMarshaller.prototype = {
     this.write("]");
   },
 
-  mapSize: function(m) {
+  mapSize: function(ignore) {
   },
 
   emitMapStart: function(size) {
@@ -85,60 +97,66 @@ JSONMarshaller.prototype = {
   },
 
   emitQuoted: function(obj, cache) {
+    this.emitMapStart(1);
+    this.emitString(d.ESC, "'", null, true, cache);
+    marshal(this, obj, false, cache);
+    this.emitMapEnd();
   },
 
-  flushWriter: function(stm) {
+  flushWriter: function(ignore) {
+    return this.buffer.join("");
   },
 
   prefersString: function() {
+    return true;
   }
 };
 
 function emitInts(em, src, cache) {
   for(var i = 0; i < src.length; i++) {
-    em.emitInt(em, src[0], false, cache);
+    em.emitInt(em, src[i], false, cache);
   }
 }
 
 function emitShorts(em, src, cache) {
   for(var i = 0; i < src.length; i++) {
-    em.emitShort(em, src[0], false, cache);
+    em.emitShort(em, src[i], false, cache);
   }
 }
 
 function emitLongs(em, src, cache) {
   for(var i = 0; i < src.length; i++) {
-    em.emitLong(em, src[0], false, cache);
+    em.emitLong(em, src[i], false, cache);
   }
 }
 
 function emitFloats(em, src, cache) {
   for(var i = 0; i < src.length; i++) {
-    em.emitFloat(em, src[0], false, cache);
+    em.emitFloat(em, src[i], false, cache);
   }
 }
 
 function emitDouble(em, src, cache) {
   for(var i = 0; i < src.length; i++) {
-    em.emitDouble(em, src[0], false, cache);
+    em.emitDouble(em, src[i], false, cache);
   }
 }
 
 function emitChars(em, src, cache) {
   for(var i = 0; i < src.length; i++) {
-    marshal(em, src[0], false, cache);
+    marshal(em, src[i], false, cache);
   }
 }
 
 function emitBooleans(em, src, cache) {
   for(var i = 0; i < src.length; i++) {
-    em.emitBoolean(em, src[0], false, cache);
+    em.emitBoolean(em, src[i], false, cache);
   }
 }
 
 function emitObjects(em, src, cache) {
   for(var i = 0; i < src.length; i++) {
-    marshal(em, src[0], false, cache);
+    marshal(em, src[i], false, cache);
   }
 }
 
