@@ -1,7 +1,9 @@
 var cache = require("cache"),
     types = require("types");
 
-var Decoder = function() {};
+var Decoder = function(options) {
+  this.options = options;
+};
 
 Decoder.prototype = {
   defaults: {
@@ -34,8 +36,12 @@ Decoder.prototype = {
     defaultHashDecoder: function(h) { return types.taggedValue(h[0], h[1]) }
   },
   
+  getDecoder: function(key) {
+    return this.options.decoders[key] || this.defaults.decoders[key];
+  },
+
   decode: function(node, cache, asMapKey) {
-    cache = cache || new cache.writeCache();
+    cache = cache || new cache.readCache();
     asMapKey = asMapKey || false;
 
     if(typeof node == "string") {
@@ -59,12 +65,34 @@ Decoder.prototype = {
     }
   },
 
-  decodeHash: function() {
+  decodeHash: function(hash, cache, asMapKey) {
+    var ks = Object.keys(hash);
+    if(ks.length == 1) {
+      var key     = decode(ks[0], cache, true),
+          decoder = this.getDecoder(key);
+      if(decoder) {
+        return decoder(decode(hash[ks[0]], cache, false);
+      } else if(typeof key == "string" && key.match(/^~#/)) {
+        return this.getDecoder("default_hash_decoder")(hash[ks[0]], cache, false);
+      } else {
+        var res = {};
+        res[key] = decode(hash[ks[0]], cache, false)
+        return res;
+      }
+    } else {
+      var res = {};
+      for(var i = 0; i < ks.length; i++) {
+      }
+    }
   },
 
-  decodeArray: function() {
-    var self = this;
-    return node.map(function(x) { return self.decode(x, cache, false); });
+  decodeArray: function(node, cache, asMapKey) {
+    var self = this,
+        res  = [];
+    for(var i = 0; i < node.length; i++) {
+      res.push(this.decode(node[i], cache, asMapKey));
+    }
+    return res;
   },
 
   parseString: function(string, cache, asMapKey) {

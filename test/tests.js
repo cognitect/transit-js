@@ -37,3 +37,4 @@ exports.testReadCacheRead = function(test) {
   test.ok(cache.read("^!") == "foo", "Single read cache read after cache write returns expected value");
   test.done();
 };
+
