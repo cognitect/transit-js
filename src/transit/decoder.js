@@ -4,10 +4,17 @@ var cache = require("./cache"),
     types = require("./types"),
     d     = require("./delimiters");
 
-var ESCAPED_ESC = new RegExp(d.ESC),
-    ESCAPED_SUB = new RegExp(d.SUB),
-    ESCAPED_RES = new RegExp(d.RES),
-    IS_ESCAPED  = new RegExp("^"+ESCAPED_SUB+"("+ESCAPED_SUB+"|"+ESCAPED_ESC+"|"+ESCAPED_RES+")"),
+// =============================================================================
+// Utilities
+
+function regexpEscape(s) {
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+};
+
+var ESC_ESC = regexpEscape(d.ESC),
+    ESC_SUB = regexpEscape(d.SUB),
+    ESC_RES = regexpEscape(d.RES),
+    IS_ESCAPED  = new RegExp("^"+ESC_ESC+"("+ESC_SUB+"|"+ESC_ESC+"|"+ESC_RES+")"),
     IS_UNRECOGNIZED = new RegExp(d.ESC+"\w");
 
 // =============================================================================
@@ -48,6 +55,10 @@ Decoder.prototype = {
     defaultHashDecoder: function(h) { return types.taggedValue(h[0], h[1]) }
   },
   
+  getOption: function(key) {
+    return this.options[key] || this.defaults[key];
+  },
+
   getDecoder: function(key) {
     return this.options.decoders[key] || this.defaults.decoders[key];
   },
@@ -89,7 +100,7 @@ Decoder.prototype = {
       if(decoder) {
         return decoder(decode(hash[ks[0]], cache, false));
       } else if(typeof key == "string" && key.match(/^~#/)) {
-        return this.getDecoder("default_hash_decoder")(hash[ks[0]], cache, false);
+        return this.getOption("defaultHashDecoder")(hash[ks[0]], cache, false);
       } else {
         var res = {};
         res[key] = decode(hash[ks[0]], cache, false)
@@ -113,7 +124,18 @@ Decoder.prototype = {
   },
 
   parseString: function(string, cache, asMapKey) {
-    
+    if(IS_ESCAPED.test(string)) {
+      return string.substring(1);
+    } else {
+      var decoder = getDecoder(string[0]);
+      if(decoder) {
+        return decoder(string.substring(2));
+      } else if(IS_UNRECOGNIZED.test(string.substring(2))) {
+        return this.getOption("defaultStringDecoder")(string);
+      } else {
+        return string;
+      }
+    }
   }
 };
 
@@ -124,3 +146,4 @@ function decoder(options) {
 module.exports = {
   decoder: decoder
 };
+
