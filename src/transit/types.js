@@ -1,5 +1,7 @@
 "use strict";
 
+var url = require("url");
+
 if(typeof Set == "undefined") {
   var Set = require("es6-set");
 }
@@ -22,6 +24,11 @@ function intValue(s) {
 
 function floatValue(s) {
   return parseFloat(s);
+}
+
+function charValue(s) {
+  console.log(s);
+  return s;
 }
 
 function Keyword(s) {
@@ -68,11 +75,8 @@ function byteBuffer(data) {
   return new ByteBuffer(data);
 }
 
-function URI(s) {
-}
-
 function uri(s) {
-  return new URI(s);
+  return url.parse(s);
 }
 
 function ints(xs) {
@@ -113,6 +117,7 @@ module.exports = {
   boolValue: boolValue,
   intValue: intValue,
   floatValue: floatValue,
+  charValue: charValue,
   keyword: keyword,
   Keyword: Keyword,
   symbol: symbol,
@@ -126,7 +131,6 @@ module.exports = {
   date: date,
   byteBuffer: byteBuffer,
   uri: uri,
-  URI: URI,
   list: list,
   ints: ints,
   longs: longs,

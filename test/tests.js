@@ -56,28 +56,47 @@ exports.testDecoderGetDecoder = function(test) {
 // =============================================================================
 // Decoding
 
+exports.testDecodeBasic = function(test) {
+  var dc = d.decoder();
+
+  test.ok(dc.decode("~i10") === 10, "decoding \"~i10\" returns 10");
+  test.ok(dc.decode("~f1.5") === 1.5, "decoding \"~i1.5\" returns 1.5");
+  test.ok(dc.decode("~d1.5") === 1.5, "decoding \"~d1.5\" returns 1.5");
+  test.ok(dc.decode("~ca") === "a", "decoding \"~ca\" returns \"a\"");
+
+  test.done();
+}
+
+exports.testDecodeSymbol = function(test) {
+  var dc = d.decoder(),
+      v  = dc.decode("~$foo");
+  test.ok(v.constructor === t.Symbol, "~$foo is decoded into an instance of Symbol");
+  test.ok(v.s === "foo", "~$foo is decoded into a Symbol with the right properties");
+  test.done();
+}
+
 exports.testDecodeKeyword = function(test) {
   var dc = d.decoder(),
       v  = dc.decode("~:foo");
-  test.ok(v.constructor === t.Keyword, "~:foo is decoded into an instance of Symbol");
-  test.ok(v.s === "foo", "~:foo is decoded into a Symbol with the right properties");
+  test.ok(v.constructor === t.Keyword, "~:foo is decoded into an instance of Keyword");
+  test.ok(v.s === "foo", "~:foo is decoded into a Keyword with the right properties");
   test.done();
 }
 
-exports.testDecodeArrayOfSymbols = function(test) {
+exports.testDecodeArrayOfKeywords = function(test) {
   var dc = d.decoder(),
       v  = dc.decode(["~:foo", "~:bar", "~:baz"]);
-  test.ok(v.length === 3, "Decoding array of symbols returns array of same length");
-  test.ok(v[0].constructor === t.Keyword, "Decoding array of symbols returns an array of Symbol elements");
-  test.ok(v[2].s === "baz", "Decoding array of symbols returns elements of Symbol with expected properties");
+  test.ok(v.length === 3, "Decoding array of keywords returns array of same length");
+  test.ok(v[0].constructor === t.Keyword, "Decoding array of keywords returns an array of Keyword elements");
+  test.ok(v[2].s === "baz", "Decoding array of keywords returns elements of Keyword with expected properties");
   test.done();
 }
 
-exports.testDecodeSetOfSymbols = function(test) {
+exports.testDecodeSetOfKeywords = function(test) {
   var dc = d.decoder(),
       v  = dc.decode({"~#set": ["~:foo", "~:bar", "~:baz"]});
-  test.ok(v.constructor === t.Set, "Decoding a set of symbols produces a Set");
-  test.ok(v.size === 3, "Decoding a set of symbols returns a Set of the same size");
+  test.ok(v.constructor === t.Set, "Decoding a set of keywords produces a Set");
+  test.ok(v.size === 3, "Decoding a set of keywords returns a Set of the same size");
   test.done();
 }
 
