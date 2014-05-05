@@ -54,10 +54,19 @@ exports.testDecoderGetDecoder = function(test) {
 // =============================================================================
 // Decoding
 
-exports.testDecodeString = function(test) {
+exports.testDecodeKeyword = function(test) {
   var dc = d.decoder(),
       v  = dc.decode("~:foo");
-  test.ok(v.constructor = t.Symbol, "~:foo is decoded into an instance of Symbol");
+  test.ok(v.constructor === t.Keyword, "~:foo is decoded into an instance of Symbol");
   test.ok(v.s === "foo", "~:foo is decoded into a Symbol with the right properties");
+  test.done();
+}
+
+exports.testDecodeArrayOfSymbols = function(test) {
+  var dc = d.decoder(),
+      v  = dc.decode(["~:foo", "~:bar", "~:baz"]);
+  test.ok(v.length === 3, "Decoding array of symbols returns array of same length");
+  test.ok(v[0].constructor === t.Keyword, "Decoding array of symbols returns an array of Symbol elements");
+  test.ok(v[2].s === "baz", "Decoding array of symbols returns elements of Symbol with expected properties");
   test.done();
 }

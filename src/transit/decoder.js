@@ -76,10 +76,10 @@ Decoder.prototype = {
 
     if(typeof node == "string") {
       return this.decodeString(node, cache, asMapKey);
-    } else if(typeof node == "object") {
-      return this.decodeHash(node, cache, asMapKey);
     } else if(Array.isArray(node)) {
       return this.decodeArray(node, cache);
+    } else if(typeof node == "object") {
+      return this.decodeHash(node, cache, asMapKey);
     }
   },
 
