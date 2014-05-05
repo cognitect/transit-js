@@ -54,10 +54,10 @@ exports.testDecoderGetDecoder = function(test) {
 // =============================================================================
 // Decoding
 
-exports.testDecodeKeyword = function(test) {
+exports.testDecodeString = function(test) {
   var dc = d.decoder(),
-      v  = dc.decode("~:foo")
-  test.ok(v instanceof t.Symbol, "~:foo is decoded into an instance of Symbol");
-  //test.ok(v.s == "foo", "~:foo is decoded into a Symbol with the right property");
+      v  = dc.decode("~:foo");
+  test.ok(v.constructor = t.Symbol, "~:foo is decoded into an instance of Symbol");
+  test.ok(v.s === "foo", "~:foo is decoded into a Symbol with the right properties");
   test.done();
 }

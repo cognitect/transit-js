@@ -75,11 +75,11 @@ Decoder.prototype = {
     asMapKey = asMapKey || false;
 
     if(typeof node == "string") {
-      this.decodeString(node, cache, asMapKey);
+      return this.decodeString(node, cache, asMapKey);
     } else if(typeof node == "object") {
-      this.decodeHash(node, cache, asMapKey);
+      return this.decodeHash(node, cache, asMapKey);
     } else if(Array.isArray(node)) {
-      this.decodeArray(node, cache);
+      return this.decodeArray(node, cache);
     }
   },
 
@@ -130,10 +130,10 @@ Decoder.prototype = {
     if(IS_ESCAPED.test(string)) {
       return string.substring(1);
     } else {
-      var decoder = this.getDecoder(string[0]);
+      var decoder = this.getDecoder(string[1]);
       if(decoder) {
         return decoder(string.substring(2));
-      } else if(IS_UNRECOGNIZED.test(string.substring(2))) {
+      } else if(IS_UNRECOGNIZED.test(string)) {
         return this.getOption("defaultStringDecoder")(string);
       } else {
         return string;
