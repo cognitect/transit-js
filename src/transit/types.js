@@ -27,7 +27,6 @@ function floatValue(s) {
 }
 
 function charValue(s) {
-  console.log(s);
   return s;
 }
 
