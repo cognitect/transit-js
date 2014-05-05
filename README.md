@@ -7,7 +7,7 @@ Use grunt to test.
 Test
 
 ```
-grunt test
+grunt nodeunit
 ```
 
 ## Build
