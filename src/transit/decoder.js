@@ -42,6 +42,7 @@ Decoder.prototype = {
       "$": function(v) { return types.symbol(v); },
       "r": function(v) { return types.uri(v); },
 
+      // tagged
       "'": function(v) { return v; },
       "t": function(v) { return types.date(v); },
       "u": function(v) { return types.uuid(v); },

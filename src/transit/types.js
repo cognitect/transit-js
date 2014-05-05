@@ -99,6 +99,15 @@ function cmap(xs) {
   return xs;
 }
 
+function TaggedValue(tag, value) {
+  this.tag = tag;
+  this.value = value;
+}
+
+function taggedValue(tag, value) {
+  return new TaggedValue(tag, value);
+}
+
 module.exports = {
   nullValue: nullValue,
   boolValue: boolValue,
@@ -124,5 +133,7 @@ module.exports = {
   floats: floats,
   doubles: doubles,
   bools: bools,
-  cmap: cmap
+  cmap: cmap,
+  taggedValue: taggedValue,
+  TaggedValue: TaggedValue
 };

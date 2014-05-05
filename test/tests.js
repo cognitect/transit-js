@@ -78,3 +78,10 @@ exports.testDecodeSetOfSymbols = function(test) {
   test.ok(v.size === 3, "Decoding a set of symbols returns a Set of the same size");
   test.done();
 }
+
+exports.testDecodeTaggedValue = function(test) {
+  var dc = d.decoder(),
+      v  = dc.decode({"~#widget": ["~:foo", "~:bar", "~:baz"]});
+  test.ok(v.constructor === t.TaggedValue, "Decoding a tagged value of symbols produces a TaggedValue");
+  test.done();
+}
