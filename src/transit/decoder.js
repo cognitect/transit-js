@@ -56,7 +56,10 @@ Decoder.prototype = {
       "cmap": function(v) { return types.map(v); },
     },
     defaultStringDecoder: function(v) { return "" },
-    defaultHashDecoder: function(h) { return types.taggedValue(h[0], h[1]) }
+    defaultHashDecoder: function(h) {
+      var ks = Object.keys(h), key = ks[0];
+      return types.taggedValue(key, h[key]);
+    }
   },
   
   getOption: function(key) {
@@ -106,7 +109,8 @@ Decoder.prototype = {
         if(decoder) {
           return decoder(this.decode(val, cache, false));
         } else {
-          return this.getOption("defaultHashDecoder")(val, cache, false); 
+          var h = {}; h[key.substring(2)] = this.decode(val,cache);
+          return this.getOption("defaultHashDecoder")(h, cache, false); 
         }
       } else {
         var ret = {};

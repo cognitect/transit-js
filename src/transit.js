@@ -1,5 +1,5 @@
-var reader = require("transit/reader"),
-    writer = require("transit/writer");
+var reader = require("./transit/reader.js"),
+    writer = require("./transit/writer.js");
 
 exports = {
   read: reader.read,

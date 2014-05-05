@@ -104,6 +104,9 @@ exports.testDecodeTaggedValue = function(test) {
   var dc = d.decoder(),
       v  = dc.decode({"~#widget": ["~:foo", "~:bar", "~:baz"]});
   test.ok(v.constructor === t.TaggedValue, "Decoding a tagged value of symbols produces a TaggedValue");
+  test.ok(v.tag === "widget", "Decoding a TaggedValue has the correct tag");
+  test.ok(v.value.length === 3, "Decoding a TaggedValue preserves properties of value");
+  test.ok(v.value[0].constructor === t.Keyword, "Decoding a TaggedValue has the correct decoded values");
   test.done();
 }
 
