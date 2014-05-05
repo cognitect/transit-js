@@ -1,8 +1,8 @@
 "use strict";
 
-var cache = require("./cache"),
-    types = require("./types"),
-    d     = require("./delimiters");
+var caching = require("./caching"),
+    types   = require("./types"),
+    d       = require("./delimiters");
 
 // =============================================================================
 // Utilities
@@ -21,7 +21,10 @@ var ESC_ESC = regexpEscape(d.ESC),
 // Decoder
 
 var Decoder = function(options) {
-  this.options = options;
+  this.options = options || {};
+  if(!this.options.decoders) {
+    this.options.decoders = {};
+  }
 };
 
 
@@ -29,12 +32,12 @@ Decoder.prototype = {
   defaults: {
     decoders: {
       "_": function(v) { return types.nullValue(); },
-      ":": function(v) { return v; },
+      ":": function(v) { return types.keyword(v); },
       "?": function(v) { return types.boolValue(v); },
       "b": function(v) { return types.byteBuffer(v); },
       "i": function(v) { return types.intValue(v); },
       "d": function(v) { return types.floatValue(v); },
-      "f": function(v) { return types.floatVAlue(v); },
+      "f": function(v) { return types.floatValue(v); },
       "c": function(v) { return types.charValue(v); },
       "$": function(v) { return types.symbol(v); },
       "r": function(v) { return types.uri(v); },
@@ -68,7 +71,7 @@ Decoder.prototype = {
   },
 
   decode: function(node, cache, asMapKey) {
-    cache = cache || new cache.readCache();
+    cache = cache || new caching.readCache();
     asMapKey = asMapKey || false;
 
     if(typeof node == "string") {
@@ -81,12 +84,12 @@ Decoder.prototype = {
   },
 
   decodeString: function(string, cache, asMapKey) {
-    if(cache.isCacheable(string, asMapKey)) {
+    if(caching.isCacheable(string, asMapKey)) {
       var val = this.parseString(string, cache, asMapKey);
       cache.write(string, val);
       return val;
-    } else if(cache.isCacheCode(string)) {
-      return this.cache.read(string);
+    } else if(caching.isCacheCode(string)) {
+      return cache.read(string);
     } else {
       return this.parseString(string, cache, asMapKey);
     }
@@ -127,7 +130,7 @@ Decoder.prototype = {
     if(IS_ESCAPED.test(string)) {
       return string.substring(1);
     } else {
-      var decoder = getDecoder(string[0]);
+      var decoder = this.getDecoder(string[0]);
       if(decoder) {
         return decoder(string.substring(2));
       } else if(IS_UNRECOGNIZED.test(string.substring(2))) {
@@ -144,6 +147,7 @@ function decoder(options) {
 }
 
 module.exports = {
-  decoder: decoder
+  decoder: decoder,
+  Decoder: Decoder
 };
 

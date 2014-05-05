@@ -24,6 +24,14 @@ function floatValue(s) {
   return parseFloat(s);
 }
 
+function Keyword(s) {
+  this.s = s;
+}
+
+function keyword(s) {
+  return new Keyword(s);
+}
+
 function Symbol(s) {
   this.s = s;
 }
@@ -96,13 +104,20 @@ module.exports = {
   boolValue: boolValue,
   intValue: intValue,
   floatValue: floatValue,
+  keyword: keyword,
+  Keyword: Keyword,
   symbol: symbol,
+  Symbol: Symbol,
   uuid: uuid,
+  UUID: UUID,
   set: set,
+  Set: Set,
   map: map,
+  Map: Map,
   date: date,
   byteBuffer: byteBuffer,
   uri: uri,
+  URI: URI,
   list: list,
   ints: ints,
   longs: longs,

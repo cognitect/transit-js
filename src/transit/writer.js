@@ -1,7 +1,7 @@
 "use strict";
 
-var cache = require("./cache"),
-    d     = require("./delimiters");
+var caching = require("./caching"),
+    d       = require("./delimiters");
 
 var JSON_INT_MAX = Math.pow(2, 53);
 var JSON_INT_MIN = -JSON_INT_MAX;
