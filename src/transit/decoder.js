@@ -84,6 +84,8 @@ Decoder.prototype = {
       return this.decodeArray(node, cache);
     } else if(typeof node == "object") {
       return this.decodeHash(node, cache, asMapKey);
+    } else {
+      return node;
     }
   },
 
