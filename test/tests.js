@@ -70,3 +70,11 @@ exports.testDecodeArrayOfSymbols = function(test) {
   test.ok(v[2].s === "baz", "Decoding array of symbols returns elements of Symbol with expected properties");
   test.done();
 }
+
+exports.testDecodeSetOfSymbols = function(test) {
+  var dc = d.decoder(),
+      v  = dc.decode({"~#set": ["~:foo", "~:bar", "~:baz"]});
+  test.ok(v.constructor === t.Set, "Decoding a set of symbols produces a Set");
+  test.ok(v.size === 3, "Decoding a set of symbols returns a Set of the same size");
+  test.done();
+}
