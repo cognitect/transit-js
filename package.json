@@ -5,8 +5,8 @@
     "node": ">= 0.10.0"
   },
   "dependencies": {
-    "es6-map": ">= 0.0.0",
-    "es6-set": ">= 0.0.0"
+    "es6-map": "0.1.0",
+    "es6-set": "0.1.0"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
