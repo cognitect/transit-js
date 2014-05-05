@@ -98,15 +98,15 @@ Decoder.prototype = {
   decodeHash: function(hash, cache, asMapKey) {
     var ks = Object.keys(hash);
     if(ks.length == 1) {
-      var key     = decode(ks[0], cache, true),
+      var key     = this.decode(ks[0], cache, true),
           decoder = this.getDecoder(key);
       if(decoder) {
-        return decoder(decode(hash[ks[0]], cache, false));
+        return decoder(this.decode(hash[ks[0]], cache, false));
       } else if(typeof key == "string" && key.match(/^~#/)) {
         return this.getOption("defaultHashDecoder")(hash[ks[0]], cache, false);
       } else {
         var res = {};
-        res[key] = decode(hash[ks[0]], cache, false)
+        res[key] = this.decode(hash[ks[0]], cache, false)
         return res;
       }
     } else {
