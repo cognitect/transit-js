@@ -60,9 +60,15 @@ exports.testDecoderGetDecoder = function(test) {
 exports.testDecodeBasic = function(test) {
   var dc = d.decoder();
 
+  test.ok(dc.decode(null) === null, "decoding null returns null");
+  test.ok(dc.decode(true) === true, "decoding true returns true");
+  test.ok(dc.decode(false) === false, "decoding false returns false");
   test.ok(dc.decode(10) === 10, "decoding 10 returns 10");
   test.ok(dc.decode(1.5) === 1.5, "decoding 1.5 returns 1.5");
   test.ok(dc.decode("foo") === "foo", "decoding \"foo\" returns \"foo\"");
+  test.ok(dc.decode("~_") === null, "decoding \"~_\" returns null");
+  test.ok(dc.decode("~?t") === true, "decoding \"~?t\" returns true");
+  test.ok(dc.decode("~?f") === false, "decoding \"~?f\" returns false");
   test.ok(dc.decode("~i10") === 10, "decoding \"~i10\" returns 10");
   test.ok(dc.decode("~f1.5") === 1.5, "decoding \"~i1.5\" returns 1.5");
   test.ok(dc.decode("~d1.5") === 1.5, "decoding \"~d1.5\" returns 1.5");

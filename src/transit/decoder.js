@@ -55,7 +55,7 @@ Decoder.prototype = {
       "bools": function(v) { return types.bools(v); },
       "cmap": function(v) { return types.map(v); },
     },
-    defaultStringDecoder: function(v) { return "" },
+    defaultStringDecoder: function(v) { return "`"+s },
     defaultHashDecoder: function(h) {
       var ks = Object.keys(h), key = ks[0];
       return types.taggedValue(key, h[key]);
@@ -78,11 +78,13 @@ Decoder.prototype = {
     cache = cache || new caching.readCache();
     asMapKey = asMapKey || false;
 
-    if(typeof node == "string") {
+    if(typeof node === "string") {
       return this.decodeString(node, cache, asMapKey);
     } else if(Array.isArray(node)) {
       return this.decodeArray(node, cache);
-    } else if(typeof node == "object") {
+    } else if(node === null) {
+      return node;
+    } else if(typeof node === "object") {
       return this.decodeHash(node, cache, asMapKey);
     } else {
       return node;
@@ -103,7 +105,7 @@ Decoder.prototype = {
 
   decodeHash: function(hash, cache, asMapKey) {
     var ks = Object.keys(hash);
-    if(ks.length == 1 && (typeof ks[0] === "string")) {
+    if(ks.length === 1 && (typeof ks[0] === "string")) {
       var key = ks[0],
           val = hash[ks[0]]
       if(key[1] === d.TAG) {
