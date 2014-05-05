@@ -1,3 +1,5 @@
+"use strict";
+
 var caching = require("../src/transit/caching.js"),
     w       = require("../src/transit/writer.js"),
     d       = require("../src/transit/decoder.js"),
@@ -83,5 +85,12 @@ exports.testDecodeTaggedValue = function(test) {
   var dc = d.decoder(),
       v  = dc.decode({"~#widget": ["~:foo", "~:bar", "~:baz"]});
   test.ok(v.constructor === t.TaggedValue, "Decoding a tagged value of symbols produces a TaggedValue");
+  test.done();
+}
+
+exports.testDecodeReadCache = function(test) {
+  var dc = d.decoder(),
+      v  = dc.decode(["~:foo", "^!", "~:bar", "^\""]);
+  test.ok(v[0] === v[1] && v[2] == v[3], "Decoding from read cache works.");
   test.done();
 }
