@@ -127,8 +127,7 @@ Decoder.prototype = {
   },
 
   decodeArray: function(node, cache, asMapKey) {
-    var self = this,
-        res  = [];
+    var res = [];
     for(var i = 0; i < node.length; i++) {
       res.push(this.decode(node[i], cache, asMapKey));
     }
