@@ -3,7 +3,8 @@
 var caching = require("../src/transit/caching.js"),
     w       = require("../src/transit/writer.js"),
     d       = require("../src/transit/decoder.js"),
-    t       = require("../src/transit/types.js");
+    t       = require("../src/transit/types.js"),
+    url     = require("url");
 
 // =============================================================================
 // Implementation Tests
@@ -63,6 +64,16 @@ exports.testDecodeBasic = function(test) {
   test.ok(dc.decode("~f1.5") === 1.5, "decoding \"~i1.5\" returns 1.5");
   test.ok(dc.decode("~d1.5") === 1.5, "decoding \"~d1.5\" returns 1.5");
   test.ok(dc.decode("~ca") === "a", "decoding \"~ca\" returns \"a\"");
+  
+  var uuid = dc.decode("~u531a379e-31bb-4ce1-8690-158dceb64be6");
+
+  test.ok(uuid.constructor === t.UUID, "decoding \"~uXXX\" returns a UUID");
+  test.ok(uuid.s === "531a379e-31bb-4ce1-8690-158dceb64be6", "decoding \"~uXXX\" returns UUID with expected property");
+
+  var uri = dc.decode("~rhttp://foo.com");
+
+  test.ok(uri.constructor === url.Url, "decoding \"~rhttp://foo.com\" returns Url instance");
+  test.ok(uri.href === "http://foo.com/", "decoding \"~rhttp://foo.com\" returns expected Url instance");
 
   test.done();
 }
