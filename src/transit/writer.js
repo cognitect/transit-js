@@ -1,3 +1,5 @@
+"use strict";
+
 var cache = require("./cache"),
     d     = require("./delimiters");
 
@@ -36,7 +38,7 @@ JSONMarshaller.prototype = {
     }
   },
 
-  emitString: function(asMapKey, prefix, tag, s, asMapKey, cache) {
+  emitString: function(prefix, tag, s, asMapKey, cache) {
     var s = cache.write(prefix+tag+s, asMapKey);
     if(asMapKey) {
       this.write("\""+s+"\":");

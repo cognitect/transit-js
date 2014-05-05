@@ -1,3 +1,5 @@
+"use strict";
+
 var ESC      = "~";
 var TAG      = "#";
 var SUB      = "^";

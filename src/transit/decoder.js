@@ -1,3 +1,5 @@
+"use strict";
+
 var cache = require("./cache"),
     types = require("./types"),
     d     = require("./delimiters");
@@ -19,16 +21,15 @@ var Decoder = function(options) {
 Decoder.prototype = {
   defaults: {
     decoders: {
-      "_": function(v) { return nil; },
+      "_": function(v) { return types.nullValue(); },
       ":": function(v) { return v; },
-      "?": function(v) { return v === "t"; },
+      "?": function(v) { return types.boolValue(v); },
       "b": function(v) { return types.byteBuffer(v); },
-      "i": function(v) { return parseInt(v); },
-      "d": function(v) { return parseFloat(v); },
-      "f": function(v) { return parseFloat(v); },
-      "c": function(v) { return c; },
+      "i": function(v) { return types.intValue(v); },
+      "d": function(v) { return types.floatValue(v); },
+      "f": function(v) { return types.floatVAlue(v); },
+      "c": function(v) { return types.charValue(v); },
       "$": function(v) { return types.symbol(v); },
-      "u": function(v) { return types.uuid(v); },
       "r": function(v) { return types.uri(v); },
 
       "'": function(v) { return v; },

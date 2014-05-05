@@ -1,3 +1,5 @@
+"use strict";
+
 var d = require("./delimiters");
 
 var MIN_SIZE_CACHEABLE = 3;

@@ -1,9 +1,27 @@
+"use strict";
+
 if(typeof Set == "undefined") {
   var Set = require("es6-set");
 }
 
 if(typeof Map == "undefined") {
   var Map = require("es6-map");
+}
+
+function nullValue() {
+  return null;
+}
+
+function boolValue(s) {
+  return s === "t";
+}
+
+function intValue(s) {
+  return parseInt(s, 10);
+}
+
+function floatValue(s) {
+  return parseFloat(s);
 }
 
 function Symbol(s) {
@@ -74,6 +92,10 @@ function cmap(xs) {
 }
 
 module.exports = {
+  nullValue: nullValue,
+  boolValue: boolValue,
+  intValue: intValue,
+  floatValue: floatValue,
   symbol: symbol,
   uuid: uuid,
   set: set,

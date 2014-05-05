@@ -1,3 +1,5 @@
+"use strict";
+
 var decoder = require("decoder");
 
 function JSONUnmarshaller() {}
