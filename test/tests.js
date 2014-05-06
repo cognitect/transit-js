@@ -4,7 +4,32 @@ var caching = require("../src/transit/caching.js"),
     w       = require("../src/transit/writer.js"),
     d       = require("../src/transit/decoder.js"),
     t       = require("../src/transit/types.js"),
-    url     = require("url");
+    url     = require("url"),
+    eq      = require("../src/transit/eq.js");
+
+// =============================================================================
+// Equality & Hashing
+// =============================================================================
+
+exports.testEquality = function(test) {
+
+  test.ok(eq.equals(1, 1), "1 equals 1");
+  test.ok(!eq.equals(1, 2), "1 does not equal 2");
+  test.ok(eq.equals("foo", "foo"), "\"foo\" equals \"foo\"");
+  test.ok(!eq.equals("foo", "bar"), "\"foo\" does not equal \"bar\"");
+  test.ok(eq.equals([], []), "[]  equals []");
+  test.ok(eq.equals([1,2,3], [1,2,3]), "[1,2,3] equals [1,2,3]");
+  test.ok(!eq.equals([2,2,3], [1,2,3]), "[2,2,3] does not equal [1,2,3]");
+  test.ok(eq.equals([1,[2,3],4], [1,[2,3],4]), "[1,[2,3],4] equals [1,[2,3],4]");
+  test.ok(!eq.equals([1,[3,3],4], [1,[2,3],4]), "[1,[3,3],4] does not equal [1,[2,3],4]");
+  test.ok(!eq.equals([1,2,3], {}), "[1,2,3] does not equal {}");
+  test.ok(eq.equals({}, {}), "{} equals {}");
+  test.ok(eq.equals({foo: "bar"}, {foo: "bar"}), "{foo: \"bar\"} equals {foo: \"bar\"}");
+  test.ok(!eq.equals({foo: "bar", baz: "woz"}, {foo: "bar"}), "{foo: \"bar\", baz: \"woz\"} equals {foo: \"bar\"}");
+  test.ok(!eq.equals({foo: "bar"}, {foo: "baz"}), "{foo: \"bar\"} does not equal {foo: \"baz\"}");
+
+  test.done();
+}
 
 // =============================================================================
 // Decoding

@@ -1,6 +1,7 @@
 "use strict";
 
-var transit$guid = 0;
+var transit$uid$property = "transit_uid_" + Math.floor(Math.random() * 2147483648).toString(36);
+var transit$uid = 0;
 
 function equals(x, y) {
   if(x.com$cognitect$transit$equals) {
@@ -22,8 +23,17 @@ function equals(x, y) {
     }
   } else if(typeof x === "object") {
     if(typeof y === "object") {
+      var sub   = 0,
+          xklen = 0,
+          yklen = Object.keys(y).length;
       for(var p in x) {
-        if(y[p] === undefined) {
+        if(!x.hasOwnProperty(p)) continue;
+        xklen++;
+        if(p == transit$uid$property) {
+          if(!y[p]) sub = -1;
+          continue;
+        }
+        if(!y.hasOwnProperty(p)) {
           return false;
         } else {
           if(!equals(x[p], y[p])) {
@@ -31,7 +41,7 @@ function equals(x, y) {
           }
         }
       }
-      return true;
+      return (xklen + sub) === yklen;
     } else {
       return false;
     }
@@ -41,7 +51,7 @@ function equals(x, y) {
 }
 
 function addHashCode(x) {
-  x.com$cognitect$transit$_hashCode = transit$guid++;
+  x[transit$uid$property] = transit$uid++;
   return x;
 }
 
