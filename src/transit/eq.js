@@ -8,7 +8,7 @@ function equals(x, y) {
   } else if(Array.isArray(x)) {
     if(Array.isArray(y)) {
       if(x.length === y.length) {
-        for(var i = 0; i < x.length; x++) {
+        for(var i = 0; i < x.length; i++) {
           if(!equals(x[i], y[i])) {
             return false;
           }
