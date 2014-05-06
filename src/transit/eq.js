@@ -1,7 +1,7 @@
 "use strict";
 
-var transit$uid$property = "transit_uid_" + Math.floor(Math.random() * 2147483648).toString(36);
-var transit$uid = 0;
+var transit$uid$property = "transit_uid_" + Math.floor(Math.random() * 2147483648).toString(36),
+    transit$uid = 0;
 
 function equals(x, y) {
   if(x.com$cognitect$transit$equals) {
@@ -51,15 +51,18 @@ function equals(x, y) {
 }
 
 function addHashCode(x) {
-  x[transit$uid$property] = transit$uid++;
   return x;
 }
 
+function hashCombine(seed, hash) {
+  return seed ^ (hash + 0x9e3779b9 + (seed << 6) + (seed >> 2));
+}
+
 function hashCode(x) {
-  if(x.com$cognitect$transit$_hashCode) {
-    return x.com$cognitect$transit$_hashCode;
-  } else if(x.com$cognitect$transit$hashCode) {
+  if(x.com$cognitect$transit$hashCode) {
     return x.com$cognitect$transit$hashCode();
+  } else if(x[transit$uid$property]) {
+    return x[transit$uid$property];
   } else {
     if(x === null) return 0;
     var t = typeof x;
@@ -81,8 +84,24 @@ function hashCode(x) {
         return result;
         break;
       default:
-        addHashCode(x);
-        return x.com$cognitect$transit$_hashCode;
+        var code = 0;
+        if(Array.isArray(x)) {
+          for(var i = 0; i < x.length; i++) {
+            code = hashCombine(code, hashCode(x[i]));
+          }
+          return code;
+        } else {
+          var keys = Object.keys(x);
+          if(keys.length == 0) {
+            code = transit$uid++;
+          } else {
+            for(var i = 0; i < keys.length; i++) {
+              code = hashCombine(code, hashCode(x[keys[i]]));
+            }
+          }
+          x[transit$uid$property]
+          return code;
+        }
         break;
     }
   }
@@ -91,5 +110,6 @@ function hashCode(x) {
 module.exports = {
   equals: equals,
   hashCode: hashCode,
+  hashCombine: hashCombine,
   addHashCode: addHashCode
 };

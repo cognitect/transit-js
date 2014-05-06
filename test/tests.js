@@ -34,7 +34,7 @@ exports.testEquality = function(test) {
   test.ok(eq.equals(o, {foo: "bar", baz: "woz"}), "{foo: \"bar\", baz: \"woz\"} instances equal even if hashCode added to one instance");
 
   var o1  = {foo: "bar", baz: "woz"},
-      hc1 = eq.hashCode(o1), 
+      hc1 = eq.hashCode(o1),
       o2  = {foo: "bar", baz: "woz"},
       hc2 = eq.hashCode(o2);
 
