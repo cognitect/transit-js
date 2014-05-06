@@ -69,7 +69,7 @@ exports.testDecodeBasic = function(test) {
   test.ok(dc.decode("~_") === null, "decoding \"~_\" returns null");
   test.ok(dc.decode("~?t") === true, "decoding \"~?t\" returns true");
   test.ok(dc.decode("~?f") === false, "decoding \"~?f\" returns false");
-  test.ok(dc.decode("~i10") === 10, "decoding \"~i10\" returns 10");
+  test.ok(dc.decode("~i10") == 10, "decoding \"~i10\" returns value equal to 10");
   test.ok(dc.decode("~f1.5") === 1.5, "decoding \"~i1.5\" returns 1.5");
   test.ok(dc.decode("~d1.5") === 1.5, "decoding \"~d1.5\" returns 1.5");
   test.ok(dc.decode("~ca") === "a", "decoding \"~ca\" returns \"a\"");

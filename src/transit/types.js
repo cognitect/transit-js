@@ -1,6 +1,7 @@
 "use strict";
 
-var url = require("url");
+var url    = require("url"),
+    longjs = require("long");
 
 if(typeof Set == "undefined") {
   var Set = require("es6-set");
@@ -19,7 +20,7 @@ function boolValue(s) {
 }
 
 function intValue(s) {
-  return parseInt(s, 10);
+  return longjs.fromString(s, false, 10);
 }
 
 function floatValue(s) {
