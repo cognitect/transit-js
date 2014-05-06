@@ -52,7 +52,7 @@ exports.testReadCacheRead = function(test) {
 
 exports.testDecoderGetDecoder = function(test) {
   var dc = d.decoder();
-  test.ok(dc.getDecoder(":")("foo").s == "foo", "Can access symbol decoder and invoke");
+  test.ok(dc.getDecoder(":")("foo").name == "foo", "Can access symbol decoder and invoke");
   test.ok(dc.getDecoder("i")("1") == 1, "Can access integer decoder and invoke");
   test.ok(dc.getDecoder("f")("1.5") == 1.5, "Can access float decoder and invoke");
   test.done();
@@ -84,7 +84,7 @@ exports.testDecodeBasic = function(test) {
   var uuid = dc.decode("~u531a379e-31bb-4ce1-8690-158dceb64be6");
 
   test.ok(uuid.constructor === t.UUID, "decoding \"~uXXX\" returns a UUID");
-  test.ok(uuid.s === "531a379e-31bb-4ce1-8690-158dceb64be6", "decoding \"~uXXX\" returns UUID with expected property");
+  test.ok(uuid.str === "531a379e-31bb-4ce1-8690-158dceb64be6", "decoding \"~uXXX\" returns UUID with expected property");
 
   var uri = dc.decode("~rhttp://foo.com");
 
@@ -123,7 +123,7 @@ exports.testDecodeSymbol = function(test) {
   var dc = d.decoder(),
       v  = dc.decode("~$foo");
   test.ok(v.constructor === t.Symbol, "~$foo is decoded into an instance of Symbol");
-  test.ok(v.s === "foo", "~$foo is decoded into a Symbol with the right properties");
+  test.ok(v.name === "foo", "~$foo is decoded into a Symbol with the right properties");
   test.done();
 }
 
@@ -131,7 +131,7 @@ exports.testDecodeKeyword = function(test) {
   var dc = d.decoder(),
       v  = dc.decode("~:foo");
   test.ok(v.constructor === t.Keyword, "~:foo is decoded into an instance of Keyword");
-  test.ok(v.s === "foo", "~:foo is decoded into a Keyword with the right properties");
+  test.ok(v.name === "foo", "~:foo is decoded into a Keyword with the right properties");
   test.done();
 }
 
@@ -140,7 +140,7 @@ exports.testDecodeArrayOfKeywords = function(test) {
       v  = dc.decode(["~:foo", "~:bar", "~:baz"]);
   test.ok(v.length === 3, "Decoding array of keywords returns array of same length");
   test.ok(v[0].constructor === t.Keyword, "Decoding array of keywords returns an array of Keyword elements");
-  test.ok(v[2].s === "baz", "Decoding array of keywords returns elements of Keyword with expected properties");
+  test.ok(v[2].name === "baz", "Decoding array of keywords returns elements of Keyword with expected properties");
   test.done();
 }
 
