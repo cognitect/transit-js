@@ -172,45 +172,49 @@ TransitMap.prototype = {
   },
   
   get: function(k) {
-    var code = hashCode(k);
-    if(!this.map.has(code)) return null;
-    var vals = this.get(code);
-    for(var i = 0; i < vals.length; i+=2) {
-      if(equal(k,vals.arr[i])) {
-        return vals.arr[i+1];
+    var code = eq.hashCode(k),
+        vals = this.map.get(code);
+    if(vals !== null) {
+      for(var i = 0; i < vals.length; i+=2) {
+        if(eq.equals(k,vals[i])) {
+          return vals[i+1];
+        }
       }
-    }
+    } else {
+      return null;
+    } 
   },
 
   has: function(k) {
-    var code = hashCode(k);
-    if(!this.map.has(code)) return false;
-    var vals = this.get(code);
-    for(var i = 0; i < vals.length; i+=2) {
-      if(equal(k,vals[i])) {
-        return true;
+    var code = eq.hashCode(k),
+        vals = this.map.get(code);
+    if(vals !== null) {
+      for(var i = 0; i < vals.length; i+=2) {
+        if(eq.equal(k,vals[i])) {
+          return true;
+        }
       }
+    } else {
+      return false;
     }
-    return false;
   },
 
   keys: function() {
-    throw new Error("Unsupported operation: entries");
+    throw new Error("Unsupported operation: keys");
   },
   
   set: function(k, v) {
-    throw new Error("Unsupported operation: entries");
+    throw new Error("Unsupported operation: set");
   },
 
   values: function() {
-    throw new Error("Unsupported operation: entries");
+    throw new Error("Unsupported operation: value");
   },
   
   com$cognitect$transit$hashCode: function() {
     var code = 0,
         ks   = this.map.keys();
     for(var i = 0; i < ks.length; i++) {
-      
     }
     return code;
   },
@@ -222,7 +226,7 @@ TransitMap.prototype = {
       for(var i = 0; i < ks.length; i++) {
         var vals = this.map(get(ks[i]));
         for(var j = 0; j < vals.length; j++) {
-          if(!equals(vals[i+1], other.get(vals[i]))) {
+          if(!eq.equals(vals[j+1], other.get(vals[j]))) {
             return false;
           }
         }
@@ -234,6 +238,28 @@ TransitMap.prototype = {
 };
 
 function transitMap(arr) {
+  var m = new Map();
+  for(var i = 0; i < arr.length; i+=2) {
+    var code = eq.hashCode(arr[i]),
+        vals = m.get(code);
+    if(vals == null) {
+      m.set(code, [arr[i], arr[i+1]]);
+    } else {
+      var newEntry = true;
+      for(var j = 0; j < vals.length; j+= 2) {
+        if(eq.equals(vals[j], arr[i])) {
+          vals[j] = arr[i+1];
+          newEntry = false;
+          break;
+        }
+      }
+      if(newEntry) {
+        vals.push(arr[i]);
+        vals.push(arr[i+1]);
+      }
+    }
+  }
+  return new TransitMap(m);
 }
 
 function cmap(xs) {
@@ -269,6 +295,8 @@ module.exports = {
   Set: Set,
   cmap: cmap,
   Map: Map,
+  TransitMap: TransitMap,
+  transitMap: transitMap,
   date: date,
   byteBuffer: byteBuffer,
   uri: uri,

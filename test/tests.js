@@ -60,6 +60,24 @@ exports.testHashCode = function(test) {
 }
 
 // =============================================================================
+// TransitMap
+// =============================================================================
+
+exports.testTransitMapBasic = function(test) {
+
+  var m0 = t.transitMap([]);
+
+  test.ok(m0.size == 0, "Size of empty TransitMap is 0");
+
+  var m1 = t.transitMap(["foo", "bar"]);
+
+  test.ok(m1.size == 1, "Size of TransitMap from array of two elements is 1");
+  test.equal(m1.get("foo"), "bar", "Accessing key of TransitMap returns expected result");
+
+  return test.done();
+};
+
+// =============================================================================
 // Decoding
 // =============================================================================
 
