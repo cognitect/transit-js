@@ -59,10 +59,6 @@ function set(arr) {
   return new Set(arr);
 }
 
-function map(arr) {
-  return new Map(arr);
-}
-
 function list(xs) {
   return xs;
 }
@@ -100,7 +96,11 @@ function bools(xs) {
 }
 
 function cmap(xs) {
-  return xs;
+  var m = new Map();
+  for(var i = 0; i < xs.length; i += 2) {
+    m.set(xs[i], xs[i+1]);
+  }
+  return m;
 }
 
 function TaggedValue(tag, value) {
@@ -126,7 +126,7 @@ module.exports = {
   UUID: UUID,
   set: set,
   Set: Set,
-  map: map,
+  cmap: cmap,
   Map: Map,
   date: date,
   byteBuffer: byteBuffer,
@@ -137,7 +137,6 @@ module.exports = {
   floats: floats,
   doubles: doubles,
   bools: bools,
-  cmap: cmap,
   taggedValue: taggedValue,
   TaggedValue: TaggedValue
 };

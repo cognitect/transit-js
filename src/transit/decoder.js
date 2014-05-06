@@ -53,7 +53,7 @@ Decoder.prototype = {
       "floats": function(v) { return types.floats(v); },
       "doubles": function(v) { return types.doubles(v); },
       "bools": function(v) { return types.bools(v); },
-      "cmap": function(v) { return types.map(v); },
+      "cmap": function(v) { return types.cmap(v); },
     },
     defaultStringDecoder: function(v) { return "`"+v },
     defaultHashDecoder: function(h) {

@@ -163,7 +163,23 @@ exports.testDecodeDates = function(test) {
 
 // typed arrays
 // lists
-// cmaps
+
+exports.testDecodeCMaps = function(test) {
+  var dc = d.decoder(),
+      v  = dc.decode({"~#cmap": ["foo", "a", "bar", "b"]});
+
+  test.ok(v.constructor === t.Map, "decoding a cmap returns a Map instance");
+  test.ok(v.size === 2, "decoding a cmap returns a Map instance of expected size");
+  test.ok(v.get("foo") === "a" && v.get("bar") === "b", "decoding a cmap returns expected Map instace");
+
+  var c  = caching.readCache(),
+      v1 = dc.decode({"~#cmap": ["~:foo", "a", "~:bar", "b"]}, c),
+      k1 = dc.decode("^!", c);
+
+  test.ok(v1.get(k1) === "a", "cmap supports keyword keys");
+
+  test.done();
+}
 
 exports.testDecodeTaggedValue = function(test) {
   var dc = d.decoder(),
