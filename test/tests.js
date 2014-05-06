@@ -43,6 +43,22 @@ exports.testEquality = function(test) {
   test.done();
 }
 
+exports.testHashCode = function(test) {
+
+  test.equal(eq.hashCode("foo"), eq.hashCode("foo"), "hash code for \"foo\" is always the same");
+  test.notEqual(eq.hashCode("foo"), eq.hashCode("fop"), "hash code for \"foo\" is not same as \"fop\"");
+  test.equal(eq.hashCode([]), 0, "hash code for [] is 0");
+  test.equal(eq.hashCode([1,2,3]), eq.hashCode([1,2,3]), "hash code for [1,2,3] is always the same");
+  test.notEqual(eq.hashCode([1,2,3]), eq.hashCode([1,2,4]), "hash code for [1,2,3] and [1,2,4] is differed");
+  test.equal(eq.hashCode({foo: "bar"}), eq.hashCode({foo: "bar"}), "hash code for {foo: \"bar\"} is always the same");
+  test.notEqual(eq.hashCode({foo: "bar"}), eq.hashCode({foo: "baz"}), "hash code for {foo: \"bar\"} and {foo: \"baz\" is not the same");
+  test.notEqual({}, {}, "hash code for {} is never the same");
+  test.notEqual(function() {}, function() {}, "hash code for function(){} is never the same");
+  test.equal(eq.hashCode(new Date(2014,4,6)), eq.hashCode(new Date(2014,4,6)), "hash code for dates are always the same");
+
+  test.done();
+}
+
 // =============================================================================
 // Decoding
 // =============================================================================

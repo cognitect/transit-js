@@ -96,6 +96,12 @@ function uuid(s) {
   return new UUID(s);
 }
 
+Set.prototype.com$cognitect$transit$equals = function(other) {
+}
+
+Set.prototype.com$cognitect$transit$hashCode = function(other) {
+}
+
 function set(arr) {
   return new Set(arr);
 }
@@ -135,6 +141,100 @@ function doubles(xs) {
 function bools(xs) {
   return xs;
 }  
+
+function TransitMap(map) {
+  this.map = map;
+  this.size = map.size;
+  this.hashCode = -1;
+}
+
+TransitMap.prototype = {
+  clear: function() {
+    throw new Error("Unsupported operation: clear");
+  },
+
+  delete: function() {
+    throw new Error("Unsupported operation: delete");
+  },
+
+  entries: function() {
+    throw new Error("Unsupported operation: entries");
+  },
+
+  forEach: function(callback) {
+    var ks = this.map.keys();
+    for(var i = 0; i < ks.length; i++) {
+      var vals = this.map.get(ks[i]);
+      for(var j = 0; j < vals.length; j+=2) {
+        callback(vals[i], vals[i+1], this);
+      }
+    }
+  },
+  
+  get: function(k) {
+    var code = hashCode(k);
+    if(!this.map.has(code)) return null;
+    var vals = this.get(code);
+    for(var i = 0; i < vals.length; i+=2) {
+      if(equal(k,vals.arr[i])) {
+        return vals.arr[i+1];
+      }
+    }
+  },
+
+  has: function(k) {
+    var code = hashCode(k);
+    if(!this.map.has(code)) return false;
+    var vals = this.get(code);
+    for(var i = 0; i < vals.length; i+=2) {
+      if(equal(k,vals[i])) {
+        return true;
+      }
+    }
+    return false;
+  },
+
+  keys: function() {
+    throw new Error("Unsupported operation: entries");
+  },
+  
+  set: function(k, v) {
+    throw new Error("Unsupported operation: entries");
+  },
+
+  values: function() {
+    throw new Error("Unsupported operation: entries");
+  },
+  
+  com$cognitect$transit$hashCode: function() {
+    var code = 0,
+        ks   = this.map.keys();
+    for(var i = 0; i < ks.length; i++) {
+      
+    }
+    return code;
+  },
+  
+  com$cognitect$transit$equals: function(other) {
+    if((other instanceof TransitMap) &&
+       (this.size === other.size)) {
+      var ks = this.map.keys();
+      for(var i = 0; i < ks.length; i++) {
+        var vals = this.map(get(ks[i]));
+        for(var j = 0; j < vals.length; j++) {
+          if(!equals(vals[i+1], other.get(vals[i]))) {
+            return false;
+          }
+        }
+      }
+    } else {
+      return false;
+    }
+  }
+};
+
+function transitMap(arr) {
+}
 
 function cmap(xs) {
   var m = new Map();

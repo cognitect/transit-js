@@ -1,7 +1,7 @@
 "use strict";
 
-var transit$uid$property = "transit_uid_" + Math.floor(Math.random() * 2147483648).toString(36),
-    transit$uid = 0;
+var transitUIDProperty = "com$cognitect$transit$uid$" + Math.floor(Math.random() * 2147483648).toString(36),
+    transitUID = 0;
 
 function equals(x, y) {
   if(x.com$cognitect$transit$equals) {
@@ -29,7 +29,7 @@ function equals(x, y) {
       for(var p in x) {
         if(!x.hasOwnProperty(p)) continue;
         xklen++;
-        if(p == transit$uid$property) {
+        if(p == transitUIDProperty) {
           if(!y[p]) sub = -1;
           continue;
         }
@@ -54,11 +54,21 @@ function hashCombine(seed, hash) {
   return seed ^ (hash + 0x9e3779b9 + (seed << 6) + (seed >> 2));
 }
 
+function hashMap(m) {
+  var code = 0;
+  m.forEach(function(val, key, m) {
+    code = (code + (hashCode(key) ^ hashCode(val))) % 4503599627370496;
+  });
+  return code;
+}
+
 function hashCode(x) {
   if(x.com$cognitect$transit$hashCode) {
     return x.com$cognitect$transit$hashCode();
-  } else if(x[transit$uid$property]) {
-    return x[transit$uid$property];
+  } else if(x[transitUIDProperty]) {
+    return x[transitUIDProperty];
+  } if(x instanceof Date) {
+    return x.valueOf();
   } else {
     if(x === null) return 0;
     var t = typeof x;
@@ -89,13 +99,14 @@ function hashCode(x) {
         } else {
           var keys = Object.keys(x);
           if(keys.length == 0) {
-            code = transit$uid++;
+            code = transitUID++;
           } else {
             for(var i = 0; i < keys.length; i++) {
+              if(keys[i] === transitUIDProperty) continue;
               code = hashCombine(code, hashCode(x[keys[i]]));
             }
           }
-          x[transit$uid$property]
+          x[transitUIDProperty] = code;
           return code;
         }
         break;
@@ -107,5 +118,5 @@ module.exports = {
   equals: equals,
   hashCode: hashCode,
   hashCombine: hashCombine,
-  addHashCode: addHashCode
+  transitUIDProperty: transitUIDProperty
 };
