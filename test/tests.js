@@ -88,6 +88,17 @@ exports.testDecodeBasic = function(test) {
   test.done();
 }
 
+exports.testDecodeMaps = function(test) {
+  var dc = d.decoder();
+
+  test.deepEqual(dc.decode({a: 1}), {a: 1}, "Decoding a simple map returns an equal map");
+  test.deepEqual(dc.decode({a: 1, b: 2}), {a: 1, b: 2}, "Decoding a simple map with >1 KV pairs returns an equal map");
+  test.deepEqual(dc.decode({a: 1, b: "~f1.5"}), {a: 1, b: 1.5}, "Decoding a simple map with >1 KV pairs with encoded value returns an equal map");
+  test.deepEqual(dc.decode({"~~a": 1}), {"~a": 1}, "Decoding a simple map with escaped key returns an equal map");
+
+  test.done();
+}
+
 exports.testDecodeSymbol = function(test) {
   var dc = d.decoder(),
       v  = dc.decode("~$foo");
