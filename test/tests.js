@@ -83,12 +83,12 @@ exports.testDecodeBasic = function(test) {
   
   var uuid = dc.decode("~u531a379e-31bb-4ce1-8690-158dceb64be6");
 
-  test.ok(uuid.constructor === t.UUID, "decoding \"~uXXX\" returns a UUID");
+  test.ok(uuid instanceof t.UUID, "decoding \"~uXXX\" returns a UUID");
   test.ok(uuid.str === "531a379e-31bb-4ce1-8690-158dceb64be6", "decoding \"~uXXX\" returns UUID with expected property");
 
   var uri = dc.decode("~rhttp://foo.com");
 
-  test.ok(uri.constructor === url.Url, "decoding \"~rhttp://foo.com\" returns Url instance");
+  test.ok(uri instanceof url.Url, "decoding \"~rhttp://foo.com\" returns Url instance");
   test.ok(uri.href === "http://foo.com/", "decoding \"~rhttp://foo.com\" returns expected Url instance");
 
   test.done();
@@ -122,7 +122,7 @@ exports.testDefaultStringDecoder = function(test) {
 exports.testDecodeSymbol = function(test) {
   var dc = d.decoder(),
       v  = dc.decode("~$foo");
-  test.ok(v.constructor === t.Symbol, "~$foo is decoded into an instance of Symbol");
+  test.ok(v instanceof t.Symbol, "~$foo is decoded into an instance of Symbol");
   test.ok(v.name === "foo", "~$foo is decoded into a Symbol with the right properties");
   test.done();
 }
@@ -130,7 +130,7 @@ exports.testDecodeSymbol = function(test) {
 exports.testDecodeKeyword = function(test) {
   var dc = d.decoder(),
       v  = dc.decode("~:foo");
-  test.ok(v.constructor === t.Keyword, "~:foo is decoded into an instance of Keyword");
+  test.ok(v instanceof t.Keyword, "~:foo is decoded into an instance of Keyword");
   test.ok(v.name === "foo", "~:foo is decoded into a Keyword with the right properties");
   test.done();
 }
@@ -139,7 +139,7 @@ exports.testDecodeArrayOfKeywords = function(test) {
   var dc = d.decoder(),
       v  = dc.decode(["~:foo", "~:bar", "~:baz"]);
   test.ok(v.length === 3, "Decoding array of keywords returns array of same length");
-  test.ok(v[0].constructor === t.Keyword, "Decoding array of keywords returns an array of Keyword elements");
+  test.ok(v[0] instanceof t.Keyword, "Decoding array of keywords returns an array of Keyword elements");
   test.ok(v[2].name === "baz", "Decoding array of keywords returns elements of Keyword with expected properties");
   test.done();
 }
@@ -147,7 +147,7 @@ exports.testDecodeArrayOfKeywords = function(test) {
 exports.testDecodeSetOfKeywords = function(test) {
   var dc = d.decoder(),
       v  = dc.decode({"~#set": ["~:foo", "~:bar", "~:baz"]});
-  test.ok(v.constructor === t.Set, "Decoding a set of keywords produces a Set");
+  test.ok(v instanceof t.Set, "Decoding a set of keywords produces a Set");
   test.ok(v.size === 3, "Decoding a set of keywords returns a Set of the same size");
   test.done();
 }
@@ -156,7 +156,7 @@ exports.testDecodeSetOfKeywords = function(test) {
 exports.testDecodeDates = function(test) {
   var dc = d.decoder(),
       v = dc.decode("~t1985-04-12T23:20:50.052Z");
-  test.ok(v.constructor === Date, "Decoding a \"~t1985-04-12T23:20:50.052Z\" returns a Date instance");
+  test.ok(v instanceof Date, "Decoding a \"~t1985-04-12T23:20:50.052Z\" returns a Date instance");
   test.ok(v.valueOf() === (new Date(Date.UTC(1985,3,12,23,20,50,52))).valueOf(), "Decoding a \"~t1985-04-12T23:20:50.052Z\" returns expected Date instance");
   test.done();
 }
@@ -168,7 +168,7 @@ exports.testDecodeCMaps = function(test) {
   var dc = d.decoder(),
       v  = dc.decode({"~#cmap": ["foo", "a", "bar", "b"]});
 
-  test.ok(v.constructor === t.Map, "decoding a cmap returns a Map instance");
+  test.ok(v instanceof t.Map, "decoding a cmap returns a Map instance");
   test.ok(v.size === 2, "decoding a cmap returns a Map instance of expected size");
   test.ok(v.get("foo") === "a" && v.get("bar") === "b", "decoding a cmap returns expected Map instace");
 
@@ -187,7 +187,7 @@ exports.testDecodeTaggedValue = function(test) {
   test.ok(v.constructor === t.TaggedValue, "Decoding a tagged value of symbols produces a TaggedValue");
   test.ok(v.tag === "widget", "Decoding a TaggedValue has the correct tag");
   test.ok(v.value.length === 3, "Decoding a TaggedValue preserves properties of value");
-  test.ok(v.value[0].constructor === t.Keyword, "Decoding a TaggedValue has the correct decoded values");
+  test.ok(v.value[0] instanceof t.Keyword, "Decoding a TaggedValue has the correct decoded values");
   test.done();
 }
 

@@ -1,7 +1,9 @@
 "use strict";
 
 var url    = require("url"),
-    longjs = require("long");
+    longjs = require("long"),
+    eq     = require("./eq"),
+    transit$guid = 0;
 
 if(typeof Set == "undefined") {
   var Set = require("es6-set");
@@ -10,6 +12,7 @@ if(typeof Set == "undefined") {
 if(typeof Map == "undefined") {
   var Map = require("es6-map");
 }
+
 
 function nullValue() {
   return null;
@@ -31,25 +34,64 @@ function charValue(s) {
   return s;
 }
 
-function Keyword(s) {
-  this.s = s;
+function Keyword(name) {
+  this.name = name;
+  this.hashCode = -1;
 }
+
+Keyword.prototype = {
+  com$cognitect$transit$equals: function(other) {
+    return (other instanceof Keyword) && this.name == other.name;
+  },
+  com$cognitect$transit$hashCode: function() {
+    if(this.hashCode !== -1) {
+      return this.hashCode;
+    } else {
+    }
+  }
+};
 
 function keyword(s) {
   return new Keyword(s);
 }
 
-function Symbol(s) {
-  this.s = s;
+function Symbol(name) {
+  this.name = name;
+  this.hashCode = -1;
 }
+
+Symbol.prototype = {
+  com$cognitect$transit$equals: function(other) {
+    return (other instanceof Symbol) && this.name == other.name;
+  },
+  com$cognitect$transit$hashCode: function() {
+    if(this.hashCode !== -1) {
+      return this.hashCode;
+    } else {
+    }
+  }
+};
 
 function symbol(s) {
   return new Symbol(s);
 }
 
-function UUID(s) {
-  this.s = s;
+function UUID(str) {
+  this.str = str;
+  this.hashCode = -1;
 }
+
+UUID.prototype = {
+  com$cognitect$transit$equals: function(other) {
+    return (other instanceof UUID) && this.str == other.str;
+  },
+  com$cognitect$transit$hashCode: function() {
+    if(this.hashCode !== -1) {
+      return this.hashCode;
+    } else {
+    }
+  }
+};
 
 function uuid(s) {
   return new UUID(s);
@@ -93,7 +135,7 @@ function doubles(xs) {
 
 function bools(xs) {
   return xs;
-}
+}  
 
 function cmap(xs) {
   var m = new Map();
