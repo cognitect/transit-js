@@ -73,6 +73,7 @@ exports.testDecodeBasic = function(test) {
   test.ok(dc.decode("~f1.5") === 1.5, "decoding \"~i1.5\" returns 1.5");
   test.ok(dc.decode("~d1.5") === 1.5, "decoding \"~d1.5\" returns 1.5");
   test.ok(dc.decode("~ca") === "a", "decoding \"~ca\" returns \"a\"");
+  test.ok(dc.decode("~~foo") == "~foo", "decoding \"~~foo\" returns \"~foo\"");
   
   var uuid = dc.decode("~u531a379e-31bb-4ce1-8690-158dceb64be6");
 
