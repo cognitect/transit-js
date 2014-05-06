@@ -50,10 +50,6 @@ function equals(x, y) {
   }
 }
 
-function addHashCode(x) {
-  return x;
-}
-
 function hashCombine(seed, hash) {
   return seed ^ (hash + 0x9e3779b9 + (seed << 6) + (seed >> 2));
 }
