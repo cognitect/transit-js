@@ -190,7 +190,7 @@ TransitMap.prototype = {
         vals = this.map.get(code);
     if(vals !== null) {
       for(var i = 0; i < vals.length; i+=2) {
-        if(eq.equal(k,vals[i])) {
+        if(eq.equals(k,vals[i])) {
           return true;
         }
       }
