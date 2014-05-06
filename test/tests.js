@@ -99,6 +99,13 @@ exports.testDecodeMaps = function(test) {
   test.done();
 }
 
+exports.testDefaultStringDecoder = function(test) {
+  var dc = d.decoder(),
+      v  = dc.decode("~xfoo");
+  test.ok(dc.decode("~xfoo") === "`~xfoo", "Decoding a string that cannot be decoded encodes it");
+  test.done();
+}
+
 exports.testDecodeSymbol = function(test) {
   var dc = d.decoder(),
       v  = dc.decode("~$foo");

@@ -15,7 +15,7 @@ var ESC_ESC = regexpEscape(d.ESC),
     ESC_SUB = regexpEscape(d.SUB),
     ESC_RES = regexpEscape(d.RES),
     IS_ESCAPED  = new RegExp("^"+ESC_ESC+"("+ESC_SUB+"|"+ESC_ESC+"|"+ESC_RES+")"),
-    IS_UNRECOGNIZED = new RegExp("^"+d.ESC+"\w");
+    IS_UNRECOGNIZED = new RegExp("^"+d.ESC+"\\w");
 
 // =============================================================================
 // Decoder
@@ -55,7 +55,7 @@ Decoder.prototype = {
       "bools": function(v) { return types.bools(v); },
       "cmap": function(v) { return types.map(v); },
     },
-    defaultStringDecoder: function(v) { return "`"+s },
+    defaultStringDecoder: function(v) { return "`"+v },
     defaultHashDecoder: function(h) {
       var ks = Object.keys(h), key = ks[0];
       return types.taggedValue(key, h[key]);
