@@ -1,5 +1,7 @@
 "use strict";
 
+var transit$guid = 0;
+
 function equals(x, y) {
   if(x.com$cognitect$transit$equals) {
     return x.com$cognitect$transit$equals(y);
@@ -59,6 +61,14 @@ function hashCode(x) {
         return x ? 1 : 0;
         break;
       case 'string':
+        // a la goog.string.HashCode
+        // http://docs.closure-library.googlecode.com/git/local_closure_goog_string_string.js.source.html#line1206
+        var result = 0;
+        for (var i = 0; i < x.length; ++i) {
+          result = 31 * result + x.charCodeAt(i);
+          result %= 0x100000000;
+        }
+        return result;
         break;
       default:
         addHashCode(x);
