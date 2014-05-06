@@ -7,15 +7,19 @@ var caching = require("../src/transit/caching.js"),
     url     = require("url");
 
 // =============================================================================
+// Decoding
+// =============================================================================
+
+// -----------------------------------------------------------------------------
 // Implementation Tests
 
 exports.testIsCacheable = function(test) {
-  test.ok(caching.isCacheable("~:f", false) == false, "\"~:f\" should not be cached");
-  test.ok(caching.isCacheable("~:f", true) == false, "\"~:f\" with asMapKey true should be cached");
-  test.ok(caching.isCacheable("~:foobar", false) == true, "\"~:foobar\" should be cached");
-  test.ok(caching.isCacheable("~$foobar", false) == true, "\"~$foobar\" should be cached");
-  test.ok(caching.isCacheable("~#foobar", false) == true, "\"#foobar\" should be cached");
-  test.ok(caching.isCacheable("~foobar", false) == false, "\"~foobar\" should not be cached");
+  test.ok(caching.isCacheable("~:f", false) === false, "\"~:f\" should not be cached");
+  test.ok(caching.isCacheable("~:f", true) === false, "\"~:f\" with asMapKey true should be cached");
+  test.ok(caching.isCacheable("~:foobar", false) === true, "\"~:foobar\" should be cached");
+  test.ok(caching.isCacheable("~$foobar", false) === true, "\"~$foobar\" should be cached");
+  test.ok(caching.isCacheable("~#foobar", false) === true, "\"#foobar\" should be cached");
+  test.ok(caching.isCacheable("~foobar", false) === false, "\"~foobar\" should not be cached");
   test.done();
 };
 
@@ -54,7 +58,7 @@ exports.testDecoderGetDecoder = function(test) {
   test.done();
 };
 
-// =============================================================================
+// -----------------------------------------------------------------------------
 // Decoding
 
 exports.testDecodeBasic = function(test) {
@@ -73,7 +77,9 @@ exports.testDecodeBasic = function(test) {
   test.ok(dc.decode("~f1.5") === 1.5, "decoding \"~i1.5\" returns 1.5");
   test.ok(dc.decode("~d1.5") === 1.5, "decoding \"~d1.5\" returns 1.5");
   test.ok(dc.decode("~ca") === "a", "decoding \"~ca\" returns \"a\"");
-  test.ok(dc.decode("~~foo") == "~foo", "decoding \"~~foo\" returns \"~foo\"");
+  test.ok(dc.decode("~~foo") === "~foo", "decoding \"~~foo\" returns \"~foo\"");
+  test.deepEqual(dc.decode([]), [], "decoding an empty array returns an empty array");
+  test.deepEqual(dc.decode([1,2,3]), [1,2,3], "decoding an array returns an equal array");
   
   var uuid = dc.decode("~u531a379e-31bb-4ce1-8690-158dceb64be6");
 
@@ -105,6 +111,13 @@ exports.testDefaultStringDecoder = function(test) {
   test.ok(dc.decode("~xfoo") === "`~xfoo", "Decoding a string that cannot be decoded encodes it");
   test.done();
 }
+
+// exports.testDecodeIdentity = function(test) {
+//   var dc = d.decoder(),
+//       v  = dc.decode("~#'foo");
+//   test.ok(v === "foo", "decoding \"~#'foo\" returns \"foo\"");
+//   test.done();
+// }
 
 exports.testDecodeSymbol = function(test) {
   var dc = d.decoder(),
@@ -139,6 +152,19 @@ exports.testDecodeSetOfKeywords = function(test) {
   test.done();
 }
 
+// dates
+exports.testDecodeDates = function(test) {
+  var dc = d.decoder(),
+      v = dc.decode("~t1985-04-12T23:20:50.052Z");
+  test.ok(v.constructor === Date, "Decoding a \"~t1985-04-12T23:20:50.052Z\" returns a Date instance");
+  test.ok(v.valueOf() === (new Date(Date.UTC(1985,3,12,23,20,50,52))).valueOf(), "Decoding a \"~t1985-04-12T23:20:50.052Z\" returns expected Date instance");
+  test.done();
+}
+
+// typed arrays
+// lists
+// cmaps
+
 exports.testDecodeTaggedValue = function(test) {
   var dc = d.decoder(),
       v  = dc.decode({"~#widget": ["~:foo", "~:bar", "~:baz"]});
@@ -149,9 +175,15 @@ exports.testDecodeTaggedValue = function(test) {
   test.done();
 }
 
+// overrides
+
+// caching
+
 exports.testDecodeReadCache = function(test) {
   var dc = d.decoder(),
       v  = dc.decode(["~:foo", "^!", "~:bar", "^\""]);
   test.ok(v[0] === v[1] && v[2] == v[3], "Decoding from read cache works.");
   test.done();
 }
+
+// edge cases
