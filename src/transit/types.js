@@ -2,8 +2,7 @@
 
 var url    = require("url"),
     longjs = require("long"),
-    eq     = require("./eq"),
-    transit$guid = 0;
+    eq     = require("./eq");
 
 if(typeof Set == "undefined") {
   var Set = require("es6-set");
