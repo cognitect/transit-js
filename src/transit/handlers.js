@@ -9,10 +9,6 @@ var t = require("./types.js"),
     transitCtorGuidProperty = "com$cognitect$transit$ctor$guid";
 
 function typeTag(ctor) {
-  if(Array.isArray(ctor)) {
-    return "array";
-  }
-
   if(ctor == null) {
     return "null";
   }
@@ -27,6 +23,14 @@ function typeTag(ctor) {
 
   if(ctor === Number) {
     return "number";
+  }
+
+  if(ctor === Array) {
+    return "array";
+  }
+
+  if(ctor === Object) {
+    return "map";
   }
 
   ctor[transitCtorGuidProperty] = ++ctorGuid;

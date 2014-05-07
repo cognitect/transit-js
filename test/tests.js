@@ -327,18 +327,55 @@ exports.testDecodeReadCache = function(test) {
 // Encoding
 // =============================================================================
 
-exports.testWriterJSONMarshalling = function(test) {
-  var m = new wr.JSONMarshaller();
+exports.testWriterLowLevelEmit = function(test) {
+  var em = new wr.JSONMarshaller();
 
-  m.emitArrayStart();
-  m.emitArrayEnd();
+  em.emitArrayStart();
+  em.emitArrayEnd();
 
-  test.equal(m.flush(), "[]", "emitStartArray plus emitEndArray returns expected result");
+  test.equal(em.flush(), "[]", "emitStartArray plus emitEndArray returns expected result");
 
-  // m.emitMapStart();
-  // m.emitMapEnd();
+  em.emitMapStart();
+  em.emitMapEnd();
 
-  // test.equal(m.flush(), "{}", "emitMapStart plus emitMapEnd returns expected result");
+  test.equal(em.flush(), "{}", "emitMapStart plus emitMapEnd returns expected result");
+
+  em.emitMapStart();
+  em.writeObject("\"foo\"", true);
+  em.writeObject("\"bar\"", false);
+  em.emitMapEnd();
+
+  test.equal(em.flush(), "{\"foo\":\"bar\"}", "low level map emission returns expected result");
+
+  test.done();
+};
+
+exports.testDefaultHandlers = function(test) {
+  var em = new wr.JSONMarshaller(),
+      c  = caching.writeCache();
+
+  var h0 = em.handler(1),
+      h1 = em.handler(true),
+      h2 = em.handler(false),
+      h3 = em.handler(null),
+      h4 = em.handler([]),
+      h5 = em.handler({});
+
+  test.equal(h0.tag(1), "i", "Handler for 1 returns \"i\" for tag");
+  test.equal(h1.tag(true), "?", "Handler for true returns \"?\" for tag");
+  test.equal(h2.tag(false), "?", "Handler for false returns \"?\" for tag");
+  test.equal(h3.tag(null), "_", "Handler for null returns \"_\" for tag");
+  test.equal(h4.tag([]), "array", "Handler for [] returns \"array\" for tag");
+  test.equal(h5.tag({}), "map", "Handler for {} \"object\" for tag");
+
+  test.done();
+};
+
+exports.testWriterMarshalling = function(test) {
+  var em = new wr.JSONMarshaller(),
+      c  = caching.writeCache();
+
+  //wr.marshal(em, true, false, c);
 
   test.done();
 };

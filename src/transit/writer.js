@@ -128,20 +128,29 @@ JSONMarshaller.prototype = {
     this.buffer.push(c);
   },
 
+  writeObject: function(obj, asMapKey) {
+    asMapKey = asMapKey || false;
+    if(asMapKey) {
+      this.pushKey(obj);
+    } else {
+      this.pushValue(obj);
+    }
+  },
+
   emitNil: function(asMapKey, cache) {
     if(asMapKey) {
       this.emitString(d.ESC, "_", null, asMapKey, cache);
     } else {
-      this.write("null");
+      this.writeObject("null", false);
     }
   },
 
   emitString: function(prefix, tag, s, asMapKey, cache) {
-    var s = cache.write(prefix+tag+s, asMapKey);
+    var s = "\""+cache.write(prefix+tag+s, asMapKey)+"\"";
     if(asMapKey) {
-      this.write("\""+s+"\":");
+      this.writeObject(s, asMapKey);
     } else {
-      this.write(s);
+      this.writeObject(s, asMapKey);
     }
   },
 
@@ -150,7 +159,7 @@ JSONMarshaller.prototype = {
     if(asMapKey) {
       this.emitString(d.ESC, "?", s[0], asMapKey, cache);
     } else {
-      this.write(s);
+      this.writeObject(s, false);
     }
   },
 
@@ -158,7 +167,7 @@ JSONMarshaller.prototype = {
     if(asMapKey || (typeof i == "string") || (i > JSON_INT_MAX) || (i < JSON_INT_MAX)) {
       this.emitString(d.ESC, "i", i, asMapKey, cache);
     } else {
-      this.write(s);
+      this.writeObject(s);
     }
   },
 
@@ -166,7 +175,7 @@ JSONMarshaller.prototype = {
     if(asMapKey) {
       this.emitString(d.ESC, "d", d, asMapKey, cache);
     } else {
-      this.write(s);
+      this.writeObject(s);
     }
   },
 
@@ -284,6 +293,8 @@ function emitMap(em, obj, skip, cache) {
   em.emitMapStart();
   var ks = Object.keys(obj);
   for(var i = 0; i < ks.length; i++) {
+    marshal(em, ks[i], true, cache);
+    marshal(em, obj[ks[i]], false, cache);
   }
   em.emitMapEnd();
 }
@@ -316,9 +327,9 @@ function toBoolean(x) {
 }
 
 function marshal(em, obj, asMapKey, cache) {
-  var h   = em.handler(obj);
-      tag = h ? h.tag(o) : null,
-      rep = h ? h.rep(o) : null;
+  var h   = em.handler(obj),
+      tag = h ? h.tag(obj) : null,
+      rep = h ? h.rep(obj) : null;
 
   if(h && tag) {
     switch(tag) {
@@ -352,7 +363,7 @@ function marshal(em, obj, asMapKey, cache) {
       default:
         break;
     }
-    return emitEncoded(em, h, taga, obj, asMapKey, cache);
+    return emitEncoded(em, h, tag, obj, asMapKey, cache);
   } else {
     throw new Error("Not supported " + obj);
   }
@@ -402,5 +413,6 @@ function write(writer, obj) {
 
 module.exports = {
   write: write,
+  marshal: marshal,
   JSONMarshaller: JSONMarshaller
 };
