@@ -86,7 +86,11 @@ exports.testTransitMapBasic = function(test) {
 
   var m4 = t.transitMap(["foo", "bop"]);
 
-  test.notEqual(eq.hashCode(m0), eq.hashCode(m4), "TransmitMap({foo: \"bar\"}) and TransmitMap({foo: \"bop\") have different hash codes");
+  test.notEqual(eq.hashCode(m3), eq.hashCode(m4), "TransmitMap({foo: \"bar\"}) and TransmitMap({foo: \"bop\") have different hash codes");
+
+  var m5 = t.transitMap([[1,2], "foo", [3,4], "bar"]);
+
+  test.ok(m5.get([1,2]) === "foo" && (m5.get([3,4]) === "bar"), "Can access complex keys from TransitMap");
 
   return test.done();
 };
