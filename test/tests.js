@@ -8,7 +8,8 @@ var caching = require("../src/transit/caching.js"),
     d       = require("../src/transit/decoder.js"),
     t       = require("../src/transit/types.js"),
     url     = require("url"),
-    eq      = require("../src/transit/eq.js");
+    eq      = require("../src/transit/eq.js"),
+    wr      = require("../src/transit/writer.js");
 
 // =============================================================================
 // Equality & Hashing
@@ -78,7 +79,7 @@ exports.testHashCode = function(test) {
   test.equal(eq.hashCode(new Date(2014,4,6)), eq.hashCode(new Date(2014,4,6)), "hash code for dates are always the same");
 
   test.done();
-}
+};
 
 // =============================================================================
 // TransitMap
@@ -203,7 +204,7 @@ exports.testDecodeBasic = function(test) {
   test.ok(uri.href === "http://foo.com/", "decoding \"~rhttp://foo.com\" returns expected Url instance");
 
   test.done();
-}
+};
 
 exports.testDecodeMaps = function(test) {
   var dc = d.decoder();
@@ -226,7 +227,7 @@ exports.testDefaultStringDecoder = function(test) {
       v  = dc.decode("~xfoo");
   test.ok(dc.decode("~xfoo") === "`~xfoo", "Decoding a string that cannot be decoded encodes it");
   test.done();
-}
+};
 
 // exports.testDecodeIdentity = function(test) {
 //   var dc = d.decoder(),
@@ -241,7 +242,7 @@ exports.testDecodeSymbol = function(test) {
   test.ok(v instanceof t.Symbol, "~$foo is decoded into an instance of Symbol");
   test.ok(v.name === "foo", "~$foo is decoded into a Symbol with the right properties");
   test.done();
-}
+};
 
 exports.testDecodeKeyword = function(test) {
   var dc = d.decoder(),
@@ -249,7 +250,7 @@ exports.testDecodeKeyword = function(test) {
   test.ok(v instanceof t.Keyword, "~:foo is decoded into an instance of Keyword");
   test.ok(v.name === "foo", "~:foo is decoded into a Keyword with the right properties");
   test.done();
-}
+};
 
 exports.testDecodeArrayOfKeywords = function(test) {
   var dc = d.decoder(),
@@ -258,7 +259,7 @@ exports.testDecodeArrayOfKeywords = function(test) {
   test.ok(v[0] instanceof t.Keyword, "Decoding array of keywords returns an array of Keyword elements");
   test.ok(v[2].name === "baz", "Decoding array of keywords returns elements of Keyword with expected properties");
   test.done();
-}
+};
 
 exports.testDecodeSetOfKeywords = function(test) {
   var dc = d.decoder(),
@@ -266,7 +267,7 @@ exports.testDecodeSetOfKeywords = function(test) {
   test.ok(v instanceof t.Set, "Decoding a set of keywords produces a Set");
   test.ok(v.size === 3, "Decoding a set of keywords returns a Set of the same size");
   test.done();
-}
+};
 
 // dates
 exports.testDecodeDates = function(test) {
@@ -275,7 +276,7 @@ exports.testDecodeDates = function(test) {
   test.ok(v instanceof Date, "Decoding a \"~t1985-04-12T23:20:50.052Z\" returns a Date instance");
   test.ok(v.valueOf() === (new Date(Date.UTC(1985,3,12,23,20,50,52))).valueOf(), "Decoding a \"~t1985-04-12T23:20:50.052Z\" returns expected Date instance");
   test.done();
-}
+};
 
 // typed arrays
 // lists
@@ -307,7 +308,7 @@ exports.testDecodeTaggedValue = function(test) {
   test.ok(v.value.length === 3, "Decoding a TaggedValue preserves properties of value");
   test.ok(v.value[0] instanceof t.Keyword, "Decoding a TaggedValue has the correct decoded values");
   test.done();
-}
+};
 
 // overrides
 
@@ -318,6 +319,26 @@ exports.testDecodeReadCache = function(test) {
       v  = dc.decode(["~:foo", "^!", "~:bar", "^\""]);
   test.ok(v[0] === v[1] && v[2] == v[3], "Decoding from read cache works.");
   test.done();
-}
+};
 
 // edge cases
+
+// =============================================================================
+// Encoding
+// =============================================================================
+
+exports.testWriterJSONMarshalling = function(test) {
+  var m = new wr.JSONMarshaller();
+
+  m.emitArrayStart();
+  m.emitArrayEnd();
+
+  test.equal(m.flush(), "[]", "emitStartArray plus emitEndArray returns expected result");
+
+  m.emitMapStart();
+  m.emitMapEnd();
+
+  test.equal(m.flush(), "{}", "emitMapStart plus emitMapEnd returns expected result");
+
+  test.done();
+};

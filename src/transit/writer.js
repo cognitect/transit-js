@@ -4,6 +4,7 @@
 "use strict";
 
 var caching = require("./caching"),
+    h       = require("./handlers"),
     d       = require("./delimiters");
 
 var JSON_INT_MAX = Math.pow(2, 53);
@@ -23,13 +24,25 @@ function escape(string) {
   return null;
 }
 
-function JSONMarshaller() {
+function JSONMarshaller(options) {
+  this.handlers = (options && options.handlers) || {};
   this.buffer = [];
 }
 
 JSONMarshaller.prototype = {
+  defaultHandlers: h.defaultHandlers,
+
+  handler: function(obj) {
+    var t = obj == null ? "null" : h.typeTag(obj.constructor);
+    return this.handlers[t] || this.defaultHandlers[t];
+  },
+
+  registerHandler: function(ctor) {
+    var t = h.typeTag(ctor);
+    defaultHandlers[t] = handler;
+  },
+
   write: function(c) {
-    this.state = null;
     this.buffer.push(c);
   },
 
@@ -108,8 +121,10 @@ JSONMarshaller.prototype = {
     this.emitMapEnd();
   },
 
-  flushWriter: function(ignore) {
-    return this.buffer.join("");
+  flush: function(ignore) {
+    var ret = this.buffer.join("");
+    this.buffer = [];
+    return ret;
   },
 
   prefersString: function() {
@@ -184,6 +199,8 @@ function emitArray(em, iterable, skip, cache) {
 }
 
 function emitMap(em, iterable, skip, cache) {
+  em.emitMapStart();
+  em.emitMapEnd();
 }
 
 function AsTag(tag, rep, str) {
@@ -210,13 +227,68 @@ function emitTaggedMap(em, tag, rep, skip, cache) {
 function emitEncoded(em, h, tag, obj, asMapKey, cache) {
 }
 
-function marshal() {
+function toBoolean(x) {
 }
 
-function maybeQuoted(obj) {
+function marshal(em, obj, asMapKey, cache) {
+  var h   = em.handler(obj);
+      tag = h ? h.tag(o) : null,
+      rep = h ? h.rep(o) : null;
+
+  if(h && tag) {
+    switch(tag) {
+      case "_":
+        em.emitNil(asMapKey, cache);
+        break;
+      case "s":
+        em.emitString(null, null, escape(rep), asMapKey, cache);
+        break;
+      case "?":
+        em.emitBoolean(toBoolean(rep), asMapKey, cache);
+        break;
+      case "i":
+        em.emitInteger(rep, asMapKey, cache);
+        break;
+      case "d":
+        em.emitDouble(rep, asMapKey, cache);
+        break;
+      case "b":
+        em.emitBinary(rep, asMapKey, cache);
+        break;
+      case "'":
+        em.emitQuoted(rep, cache);
+        break;
+      case "array":
+        emitArray(em, rep, asMapKey, cache);
+        break;
+      case "map":
+        emitMap(em, rep, asMapKey, cache);
+        break;
+      default:
+        break;
+    }
+    return emitEncoded(em, h, taga, obj, asMapKey, cache);
+  } else {
+    throw new Error("Not supported " + obj);
+  }
 }
 
-function marshalTop() {
+function maybeQuoted(em, obj) {
+  var h = em.handler(obj);
+
+  if(h != null) {
+    if(h.tag(obj).length == 1) {
+      return quoted(obj);
+    } else {
+      return obj;
+    }
+  } else {
+    throw new Error("Not support " + obj);
+  }
+}
+
+function marshalTop(em, obj, cache) {
+  marshal(em, maybeQuoted(em, obj), false, cache);
 }
 
 function getItfHandler(ty) {
@@ -225,11 +297,8 @@ function getItfHandler(ty) {
 function getBaseHandler(ty) {
 }
 
-function handler(obj) {
-}
-
 function write(writer, obj) {
-  marshalTop(m, writer, obj, writeCache());
+  marshalTop(m, writer, obj, caching.writeCache());
 }
 
 module.exports = {
