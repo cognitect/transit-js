@@ -49,6 +49,8 @@ Keyword.prototype = {
     if(this.hashCode !== -1) {
       return this.hashCode;
     } else {
+      this.hashCode = eq.hashCode(this.name);
+      return this.hashCode;
     }
   }
 };
@@ -70,6 +72,8 @@ Symbol.prototype = {
     if(this.hashCode !== -1) {
       return this.hashCode;
     } else {
+      this.hashCode = eq.hashCode(this.name);
+      return this.hashCode;
     }
   }
 };
@@ -91,6 +95,8 @@ UUID.prototype = {
     if(this.hashCode !== -1) {
       return this.hashCode;
     } else {
+      this.hashCode = eq.hashCode(this.str);
+      return this.hashCode;
     }
   }
 };
