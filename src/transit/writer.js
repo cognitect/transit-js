@@ -334,7 +334,7 @@ function marshal(em, obj, asMapKey, cache) {
         em.emitNil(asMapKey, cache);
         break;
       case "s":
-        em.emitString(null, null, escape(rep), asMapKey, cache);
+        em.emitString("", "", escape(rep), asMapKey, cache);
         break;
       case "?":
         em.emitBoolean(rep, asMapKey, cache);

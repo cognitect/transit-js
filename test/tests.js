@@ -381,6 +381,8 @@ exports.testWriterMarshalling = function(test) {
   test.ok(em.flush() === "false", "marshalling false returns \"false\"");
   wr.marshal(em, 1, false, c);
   test.ok(em.flush() === "1", "marshalling false returns \"1\"");
+  wr.marshal(em, "foo", false, c);
+  test.equal(em.flush(), "\"foo\"", "marshalling \"foo\" returns \"\\\"foo\\\"\"");
 
   test.done();
 };
