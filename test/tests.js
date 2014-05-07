@@ -80,6 +80,14 @@ exports.testTransitMapBasic = function(test) {
   test.ok(m2.has("foo") && m2.has(101574), "TransitMap with collisions has expected keys");
   test.ok((m2.get("foo") == "bar") && (m2.get(101574) == "baz"), "Accessing keys of TransitMap with collisions returns expected result");
 
+  var m3 = t.transitMap(["foo", "bar"]);
+
+  test.equal(eq.hashCode(m1), eq.hashCode(m3), "hash codes for equivalent TransitMaps are always the same");
+
+  var m4 = t.transitMap(["foo", "bop"]);
+
+  test.notEqual(eq.hashCode(m0), eq.hashCode(m4), "TransmitMap({foo: \"bar\"}) and TransmitMap({foo: \"bop\") have different hash codes");
+
   return test.done();
 };
 

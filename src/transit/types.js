@@ -165,13 +165,11 @@ TransitMap.prototype = {
   },
 
   forEach: function(callback) {
-    var ks = this.map.keys();
-    for(var i = 0; i < ks.length; i++) {
-      var vals = this.map.get(ks[i]);
+    this.map.forEach(function(vals, hashCode, map) {
       for(var j = 0; j < vals.length; j+=2) {
-        callback(vals[i], vals[i+1], this);
+        callback(vals[j], vals[j+1], this);
       }
-    }
+    });
   },
   
   get: function(k) {
@@ -215,10 +213,10 @@ TransitMap.prototype = {
   },
   
   com$cognitect$transit$hashCode: function() {
-    var code = 0,
-        ks   = this.map.keys();
-    for(var i = 0; i < ks.length; i++) {
-    }
+    var code = this[eq.transitHashCodeProperty];
+    if(code != null) return code;
+    code = eq.hashMapLike(this);
+    this[eq.transitHashCodeProperty] = code;
     return code;
   },
   
