@@ -6,9 +6,8 @@
 var transitHashCodeProperty = "com$cognitect$transit$hashCode$" + Math.floor(Math.random() * 2147483648).toString(36);
 
 function equals(x, y) {
-  if(x.com$cognitect$transit$equals) {
-    return x.com$cognitect$transit$equals(y);
-  } else if(Array.isArray(x)) {
+  if(x === y) return true;
+  if(Array.isArray(x)) {
     if(Array.isArray(y)) {
       if(x.length === y.length) {
         for(var i = 0; i < x.length; i++) {
@@ -24,6 +23,9 @@ function equals(x, y) {
       return false;
     }
   } else if(typeof x === "object") {
+    if(x.com$cognitect$transit$equals) {
+      return x.com$cognitect$transit$equals(y);      
+    }
     if(typeof y === "object") {
       var sub   = 0,
           xklen = 0,
@@ -48,7 +50,7 @@ function equals(x, y) {
       return false;
     }
   } else {
-    return x === y;
+    return false
   }
 }
 
