@@ -1,3 +1,6 @@
+// Copyright (c) Cognitect, Inc.
+// All rights reserved.
+
 "use strict";
 
 var caching = require("../src/transit/caching.js"),
@@ -41,7 +44,24 @@ exports.testEquality = function(test) {
   test.ok(eq.equals(o1, o2), "{foo: \"bar\", baz: \"woz\"} instances equal even if hashCode added to all instances");
 
   test.done();
-}
+};
+
+exports.testEqualitySymbolsAndKeywords = function(test) {
+
+  var k0 = t.Keyword("foo"),
+      k1 = t.Keyword("foo"),
+      k2 = t.Keyword("bar"),
+      s0 = t.Symbol("foo"),
+      s1 = t.Symbol("foo"),
+      s2 = t.Symbol("bar");
+
+  test.ok(eq.equals(k0, k1), "The same keywords are always equal");
+  test.ok(eq.equals(k0, k2), "Different keywords are never equal");
+  test.ok(eq.equals(s0, s1), "The same symbols are always equal");
+  test.ok(eq.equals(s0, s2), "Different keywrods are never equal");
+
+  test.done();
+};
 
 exports.testHashCode = function(test) {
 
