@@ -74,6 +74,20 @@ registerHandler(
    stringRep: function(v) { v ? "t" : "f" }},
   defaultHandlers);
 
+registerHandler(
+  Array,
+  {tag: function(v) { return "array"; },
+   rep: function(v) { return v; },
+   stringRep: function(v) { return null; } },
+  defaultHandlers);
+
+registerHandler(
+  Object,
+  {tag: function(v) { return "map"; },
+   rep: function(v) { return v; },
+   stringRep: function(v) { return null; } },
+  defaultHandlers);
+
 module.exports = {
   typeTag: typeTag,
   constructor: constructor,

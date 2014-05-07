@@ -25,12 +25,94 @@ function escape(string) {
 }
 
 function JSONMarshaller(options) {
+  this.state = [];
   this.handlers = (options && options.handlers) || {};
   this.buffer = [];
 }
 
 JSONMarshaller.prototype = {
   defaultHandlers: h.defaultHandlers,
+
+  getState: function() {
+    return this.state[this.state.length-1];
+  },
+
+  pushState: function(newState) {
+    this.state.push(newState);
+    switch(newState) {
+      case "array":
+        this.state.push("array_first_value");
+        this.write("[");
+        break;
+      case "object":
+        this.state.push("object_first_key");
+        this.write("{");
+        break;
+      default:
+        throw new Error("JSONMarshaller: Invalid pushState " + state);
+        break;
+    }
+  },
+
+  popState: function() {
+    var state = this.getState();
+
+    while(state !== "object" && state !== "array") {
+      state = this.state.pop();
+    }
+    
+    switch(state) {
+      case "array":
+        this.write("]");
+        return "array"
+        break;
+      case "object":
+        this.write("}");
+        return "object"
+        break;
+      default:
+        throw new Error("JSONMarshaller: Popped unknown state " + state);
+        break;
+    }
+  },
+
+  pushKey: function(obj) {
+    var state = this.getState();
+    switch(state) {
+      case "object_key":
+        this.write(",");
+      case "object_first_key":
+        this.state.pop();
+        this.state.push("object_value");
+        this.write(obj);
+        break;
+      default:
+        throw new Error("JSONMarshaller: Cannot pushKey in state " + state);
+        break;
+    }
+    this.write(":");
+  },
+
+  pushValue: function(obj) {
+    var state = this.getState();
+    switch(state) {
+      case "array":
+        this.write(",");
+      case "array_first_value":
+        this.state.pop();
+        this.write(obj);
+        break;
+      case "object_value":
+        this.state.pop();
+        this.write(obj);
+        this.state.push("object_key");
+      default:
+        break;
+    }
+  },
+
+  mapSize: function(ignore) {
+  },
 
   handler: function(obj) {
     var t = obj == null ? "null" : h.typeTag(obj.constructor);
@@ -96,22 +178,22 @@ JSONMarshaller.prototype = {
   },
 
   emitArrayStart: function(size) {
-    this.write("[");
+    var lastState = this.pushState("array");
   },
 
   emitArrayEnd: function() {
-    this.write("]");
-  },
-
-  mapSize: function(ignore) {
+    var lastState = this.popState();
+    if(lastState !== "array") {
+      throw new Error("JSONMarshaller: Invalid array end");
+    }
   },
 
   emitMapStart: function(size) {
-    this.write("{");
+    this.pushState("object");
   },
 
   emitMapEnd: function() {
-    this.write("}");
+    this.popState();
   },
 
   emitQuoted: function(obj, cache) {
@@ -198,8 +280,11 @@ function emitArray(em, iterable, skip, cache) {
   em.emitArrayEnd();
 }
 
-function emitMap(em, iterable, skip, cache) {
+function emitMap(em, obj, skip, cache) {
   em.emitMapStart();
+  var ks = Object.keys(obj);
+  for(var i = 0; i < ks.length; i++) {
+  }
   em.emitMapEnd();
 }
 
@@ -291,14 +376,28 @@ function marshalTop(em, obj, cache) {
   marshal(em, maybeQuoted(em, obj), false, cache);
 }
 
-function getItfHandler(ty) {
+function Writer(obj, type, options) {
+  if(options.marshaller) {
+    this.marshaller = options.marshaller
+  } else {
+    if(type === "json") {
+      this.marshaller = new JSONMarshaller();
+    }
+  }
 }
 
-function getBaseHandler(ty) {
+Writer.prototype = {
+  register: function(type, handler) {
+    this.marshaller.registerHandler(type, handler);
+  }
+};
+
+function writer(obj, type, options) {
+  return new Writer(obj, type, options || {});
 }
 
 function write(writer, obj) {
-  marshalTop(m, writer, obj, caching.writeCache());
+  marshalTop(writer.marshaller, writer, obj, caching.writeCache());
 }
 
 module.exports = {
