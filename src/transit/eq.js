@@ -3,8 +3,7 @@
 
 "use strict";
 
-var transitUIDProperty = "com$cognitect$transit$uid$" + Math.floor(Math.random() * 2147483648).toString(36),
-    transitUID = 0;
+var transitUIDProperty = "com$cognitect$transit$uid$" + Math.floor(Math.random() * 2147483648).toString(36);
 
 function equals(x, y) {
   if(x.com$cognitect$transit$equals) {
@@ -101,13 +100,9 @@ function hashCode(x) {
           return code;
         } else {
           var keys = Object.keys(x);
-          if(keys.length == 0) {
-            code = transitUID++;
-          } else {
-            for(var i = 0; i < keys.length; i++) {
-              if(keys[i] === transitUIDProperty) continue;
-              code = hashCombine(code, hashCode(x[keys[i]]));
-            }
+          for(var i = 0; i < keys.length; i++) {
+            if(keys[i] === transitUIDProperty) continue;
+            code = hashCombine(code, hashCode(x[keys[i]]));
           }
           x[transitUIDProperty] = code;
           return code;
