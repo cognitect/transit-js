@@ -56,14 +56,28 @@ function hashCombine(seed, hash) {
   return seed ^ (hash + 0x9e3779b9 + (seed << 6) + (seed >> 2));
 }
 
+var stringCodeCache     = {},
+    stringCodeCacheSize = 0,
+    STR_CACHE_MAX       = 256;
+
 function hashString(str) {
   // a la goog.string.HashCode
   // http://docs.closure-library.googlecode.com/git/local_closure_goog_string_string.js.source.html#line1206
+  var cached = stringCodeCache[str];
+  if(cached != null) {
+    return cached;
+  }
   var code = 0;
   for (var i = 0; i < str.length; ++i) {
     code = 31 * code + str.charCodeAt(i);
     code %= 0x100000000;
   }
+  stringCodeCacheSize++;
+  if(stringCodeCacheSize >= STR_CACHE_MAX) {
+    stringCodeCache = {};
+    stringCodeCacheSize = 1;
+  }
+  stringCodeCache[str] = code;
   return code;
 }
 
