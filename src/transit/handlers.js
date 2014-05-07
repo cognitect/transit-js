@@ -74,7 +74,7 @@ registerHandler(
 registerHandler(
   Boolean,
   {tag: function(v) { return "?"; },
-   rep: function(v) { return null; },
+   rep: function(v) { return v; },
    stringRep: function(v) { v ? "t" : "f" }},
   defaultHandlers);
 

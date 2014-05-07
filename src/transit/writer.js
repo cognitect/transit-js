@@ -106,7 +106,9 @@ JSONMarshaller.prototype = {
         this.state.pop();
         this.write(obj);
         this.state.push("object_key");
+        break;
       default:
+        this.write(obj);
         break;
     }
   },
@@ -323,9 +325,6 @@ function emitTaggedMap(em, tag, rep, skip, cache) {
 function emitEncoded(em, h, tag, obj, asMapKey, cache) {
 }
 
-function toBoolean(x) {
-}
-
 function marshal(em, obj, asMapKey, cache) {
   var h   = em.handler(obj),
       tag = h ? h.tag(obj) : null,
@@ -340,7 +339,7 @@ function marshal(em, obj, asMapKey, cache) {
         em.emitString(null, null, escape(rep), asMapKey, cache);
         break;
       case "?":
-        em.emitBoolean(toBoolean(rep), asMapKey, cache);
+        em.emitBoolean(rep, asMapKey, cache);
         break;
       case "i":
         em.emitInteger(rep, asMapKey, cache);
@@ -361,9 +360,9 @@ function marshal(em, obj, asMapKey, cache) {
         emitMap(em, rep, asMapKey, cache);
         break;
       default:
+        emitEncoded(em, h, tag, obj, asMapKey, cache);
         break;
     }
-    return emitEncoded(em, h, tag, obj, asMapKey, cache);
   } else {
     throw new Error("Not supported " + obj);
   }
