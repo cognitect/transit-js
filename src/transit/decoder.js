@@ -62,7 +62,8 @@ Decoder.prototype = {
     defaultHashDecoder: function(h) {
       var ks = Object.keys(h), key = ks[0];
       return types.taggedValue(key, h[key]);
-    }
+    },
+    convertMaps: false
   },
   
   getOption: function(key) {
@@ -123,7 +124,7 @@ Decoder.prototype = {
     } else {
       var ret = {};
       for(var i = 0; i < ks.length; i++) {
-        var key = this.decode(ks[i], cache, true);
+        var key = this.getOption("covertMaps") ? this.decode(ks[i], cache, true) : ks[i];
         ret[key] = this.decode(hash[ks[i]], cache, false);
       }
       return ret;
