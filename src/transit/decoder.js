@@ -1,3 +1,6 @@
+// Copyright (c) Cognitect, Inc.
+// All rights reserved.
+
 "use strict";
 
 var caching = require("./caching"),

@@ -1,3 +1,6 @@
+// Copyright (c) Cognitect, Inc.
+// All rights reserved.
+
 "use strict";
 
 var transitUIDProperty = "com$cognitect$transit$uid$" + Math.floor(Math.random() * 2147483648).toString(36),
