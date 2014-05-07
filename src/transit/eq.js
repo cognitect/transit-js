@@ -56,11 +56,40 @@ function hashCombine(seed, hash) {
   return seed ^ (hash + 0x9e3779b9 + (seed << 6) + (seed >> 2));
 }
 
-function hashMap(m) {
+function hashString(str) {
+  // a la goog.string.HashCode
+  // http://docs.closure-library.googlecode.com/git/local_closure_goog_string_string.js.source.html#line1206
   var code = 0;
-  m.forEach(function(val, key, m) {
-    code = (code + (hashCode(key) ^ hashCode(val))) % 4503599627370496;
-  });
+  for (var i = 0; i < str.length; ++i) {
+    code = 31 * code + str.charCodeAt(i);
+    code %= 0x100000000;
+  }
+  return code;
+}
+
+function hashMapLike(m) {
+  var code = 0;
+  // ES6 Map-like case
+  if(m.forEach != null) {
+    m.forEach(function(val, key, m) {
+      code = (code + (hashCode(key) ^ hashCode(val))) % 4503599627370496;
+    });
+  } else {
+    // JS Object case
+    var keys = Object.keys(m);
+    for(var i = 0, key = keys[i], val = m[key]; i < keys.length; i++) {
+      if(key === transitUIDProperty) continue;
+      code = (code + (hashCode(key) ^ hashCode(val))) % 4503599627370496;
+    }
+  }
+  return code;
+}
+
+function hashArrayLike(arr) {
+  var code = 0;
+  for(var i = 0; i < arr.length; i++) {
+    code = hashCombine(code, hashCode(arr[i]));
+  }
   return code;
 }
 
@@ -82,28 +111,13 @@ function hashCode(x) {
         return x ? 1 : 0;
         break;
       case 'string':
-        // a la goog.string.HashCode
-        // http://docs.closure-library.googlecode.com/git/local_closure_goog_string_string.js.source.html#line1206
-        var result = 0;
-        for (var i = 0; i < x.length; ++i) {
-          result = 31 * result + x.charCodeAt(i);
-          result %= 0x100000000;
-        }
-        return result;
+        return hashString(x);
         break;
       default:
-        var code = 0;
         if(Array.isArray(x)) {
-          for(var i = 0; i < x.length; i++) {
-            code = hashCombine(code, hashCode(x[i]));
-          }
-          return code;
+          return hashArrayLike(x);
         } else {
-          var keys = Object.keys(x);
-          for(var i = 0; i < keys.length; i++) {
-            if(keys[i] === transitUIDProperty) continue;
-            code = hashCombine(code, hashCode(x[keys[i]]));
-          }
+          var code = hashMapLike(x);
           x[transitUIDProperty] = code;
           return code;
         }
@@ -112,9 +126,19 @@ function hashCode(x) {
   }
 }
 
+function extendToEQ(obj, opts) {
+  obj.com$cognitect$transit$hashCode = opts.hashCode;
+  obj.com$cognitect$transit$equals = opts.equals;
+  return obj;
+}
+
 module.exports = {
   equals: equals,
   hashCode: hashCode,
   hashCombine: hashCombine,
-  transitUIDProperty: transitUIDProperty
+  hashString: hashString,
+  hashArrayLike: hashArrayLike,
+  hashMapLike: hashMapLike,
+  transitUIDProperty: transitUIDProperty,
+  extendToEQ: extendToEQ
 };
