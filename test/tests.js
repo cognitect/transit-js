@@ -375,7 +375,12 @@ exports.testWriterMarshalling = function(test) {
   var em = new wr.JSONMarshaller(),
       c  = caching.writeCache();
 
-  //wr.marshal(em, true, false, c);
+  wr.marshal(em, true, false, c);
+  test.ok(em.flush() === "true", "marshalling true returns \"true\"");
+  wr.marshal(em, false, false, c);
+  test.ok(em.flush() === "false", "marshalling false returns \"false\"");
+  wr.marshal(em, 1, false, c);
+  test.ok(em.flush() === "1", "marshalling false returns \"1\"");
 
   test.done();
 };

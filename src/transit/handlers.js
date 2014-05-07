@@ -4,7 +4,6 @@
 "use strict";
 
 var t = require("./types.js"),
-    defaultHandlers = {},
     ctorGuid = 0,
     transitCtorGuidProperty = "com$cognitect$transit$ctor$guid";
 
@@ -37,10 +36,6 @@ function typeTag(ctor) {
   return ctor[transitCtorGuidProperty]
 }
 
-function registerHandler(ctor, handler, handlers) {
-  handlers[typeTag(ctor)] = handler;
-}
-
 function constructor(x) {
   if(x == null) {
     return null;
@@ -48,53 +43,76 @@ function constructor(x) {
   return x.constructor;
 }
 
-registerHandler(
-  null,
-  {tag: function(v) { return "_"; },
-   rep: function(v) { return null; },
-   stringRep: function(v) { return "null"; }},
-  defaultHandlers);
+function stringableKeys(m) {
+  var stringable = false,
+      ks = Object.keys(m);
 
-registerHandler(
-  String,
-  {tag: function(v) { return "s"; },
-   rep: function(v) { return v; },
-   stringRep: function(v) { return v; }},
-  defaultHandlers);
+  for(var i = 0; i < ks.length; i++) {
+  }
 
-registerHandler(
-  Number,
-  {tag: function(v) { return "i" },
-   rep: function(v) { return null; },
-   stringRep: function(v) {
-     return v;
-   }},
-  defaultHandlers);
+  return true;
+}
 
-registerHandler(
-  Boolean,
-  {tag: function(v) { return "?"; },
-   rep: function(v) { return v; },
-   stringRep: function(v) { v ? "t" : "f" }},
-  defaultHandlers);
+function defaultHandlers(hs) {
+  hs.set(
+    null,
+    {tag: function(v) { return "_"; },
+     rep: function(v) { return null; },
+     stringRep: function(v) { return "null"; }});
 
-registerHandler(
-  Array,
-  {tag: function(v) { return "array"; },
-   rep: function(v) { return v; },
-   stringRep: function(v) { return null; } },
-  defaultHandlers);
+  hs.set(
+    String,
+    {tag: function(v) { return "s"; },
+     rep: function(v) { return v; },
+     stringRep: function(v) { return v.toString(); }});
 
-registerHandler(
-  Object,
-  {tag: function(v) { return "map"; },
-   rep: function(v) { return v; },
-   stringRep: function(v) { return null; } },
-  defaultHandlers);
+  hs.set(
+    Number,
+    {tag: function(v) { return "i" },
+     rep: function(v) { return v; },
+     stringRep: function(v) { return v.toString(); }});
+
+  hs.set(
+    Boolean,
+    {tag: function(v) { return "?"; },
+     rep: function(v) { return v; },
+     stringRep: function(v) { return v.toString(); }});
+
+  hs.set(
+    Array,
+    {tag: function(v) { return "array"; },
+     rep: function(v) { return v; },
+     stringRep: function(v) { return null; }});
+
+  hs.set(
+    Object,
+    {tag: function(v) { return "map"; },
+     rep: function(v) { return v; },
+     stringRep: function(v) { return null; }});
+
+  return hs;
+}
+
+function Handlers() {
+  this.handlers = {};
+}
+
+Handlers.prototype.get = function(ctor) {
+  return this.handlers[typeTag(ctor)];
+}
+
+Handlers.prototype.set = function(ctor, handler) {
+  this.handlers[typeTag(ctor)] = handler;
+}
+
+function handlers(hs) {
+  var ret = new Handlers();
+  defaultHandlers(ret);
+  return ret;
+}
 
 module.exports = {
   typeTag: typeTag,
   constructor: constructor,
-  registerHandler: registerHandler,
-  defaultHandlers: defaultHandlers
+  handlers: handlers
 };

@@ -26,13 +26,11 @@ function escape(string) {
 
 function JSONMarshaller(options) {
   this.state = [];
-  this.handlers = (options && options.handlers) || {};
+  this.handlers = h.handlers();
   this.buffer = [];
 }
 
 JSONMarshaller.prototype = {
-  defaultHandlers: h.defaultHandlers,
-
   getState: function() {
     return this.state[this.state.length-1];
   },
@@ -117,13 +115,12 @@ JSONMarshaller.prototype = {
   },
 
   handler: function(obj) {
-    var t = obj == null ? "null" : h.typeTag(obj.constructor);
-    return this.handlers[t] || this.defaultHandlers[t];
+    var t = obj == null ? null : obj.constructor;
+    return this.handlers.get(t);
   },
 
-  registerHandler: function(ctor) {
-    var t = h.typeTag(ctor);
-    defaultHandlers[t] = handler;
+  registerHandler: function(ctor, handler) {
+    this.handlers.set(ctor, handler);
   },
 
   write: function(c) {
@@ -166,10 +163,10 @@ JSONMarshaller.prototype = {
   },
 
   emitInteger: function(i, asMapKey, cache) {
-    if(asMapKey || (typeof i == "string") || (i > JSON_INT_MAX) || (i < JSON_INT_MAX)) {
+    if(asMapKey || (typeof i == "string") || (i > JSON_INT_MAX) || (i < JSON_INT_MIN)) {
       this.emitString(d.ESC, "i", i, asMapKey, cache);
     } else {
-      this.writeObject(s);
+      this.writeObject(i);
     }
   },
 
@@ -216,6 +213,7 @@ JSONMarshaller.prototype = {
 
   flush: function(ignore) {
     var ret = this.buffer.join("");
+    this.state = [];
     this.buffer = [];
     return ret;
   },
