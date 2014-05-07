@@ -56,6 +56,15 @@ time(function() {
   }
 });
 
+console.log("1e6 iters, eq.equals(t.date(1399471321791), t.date(1399471321791))");
+time(function() {
+  var d0 = t.date(1399471321791),
+      d1 = t.date(1399471321791);
+  for(var i = 0; i < 1000000; i++) {
+    eq.equals(d0, d1);
+  }
+});
+
 console.log("1e6 iters, eq.equals(new Keyword(\"foo\"), new Keyword(\"bar\"))");
 time(function() {
   var k0 = t.Keyword("foo"),

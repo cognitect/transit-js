@@ -30,6 +30,8 @@ exports.testEquality = function(test) {
   test.ok(eq.equals({foo: "bar"}, {foo: "bar"}), "{foo: \"bar\"} equals {foo: \"bar\"}");
   test.ok(!eq.equals({foo: "bar", baz: "woz"}, {foo: "bar"}), "{foo: \"bar\", baz: \"woz\"} equals {foo: \"bar\"}");
   test.ok(!eq.equals({foo: "bar"}, {foo: "baz"}), "{foo: \"bar\"} does not equal {foo: \"baz\"}");
+  test.ok(eq.equals(t.date(1399471321791), t.date(1399471321791)), "equivalent dates are always equal");
+  test.ok(!eq.equals(t.date(1399471321791), t.date(1399471321792)), "different dates are never equal");
 
   var o  = {foo: "bar", baz: "woz"},
       hc = eq.hashCode(o);
@@ -209,7 +211,12 @@ exports.testDecodeMaps = function(test) {
   test.deepEqual(dc.decode({a: 1}), {a: 1}, "Decoding a simple map returns an equal map");
   test.deepEqual(dc.decode({a: 1, b: 2}), {a: 1, b: 2}, "Decoding a simple map with >1 KV pairs returns an equal map");
   test.deepEqual(dc.decode({a: 1, b: "~f1.5"}), {a: 1, b: 1.5}, "Decoding a simple map with >1 KV pairs with encoded value returns an equal map");
-  test.deepEqual(dc.decode({"~~a": 1}), {"~a": 1}, "Decoding a simple map with escaped key returns an equal map");
+
+  // we do not convert keys of objects
+  test.deepEqual(dc.decode({"~~a": 1}), {"~~a": 1}, "Decoding a simple map with escaped key returns same map");
+  test.ok(eq.equals(dc.decode({"~t1985-04-12T23:20:50.052Z": "~t1985-04-12T23:20:50.052Z"}),
+                              {"~t1985-04-12T23:20:50.052Z": t.date(482196050052)},
+                    "Decoding a simple map with encoded date key and encoded date value returns expected map"));
 
   test.done();
 }

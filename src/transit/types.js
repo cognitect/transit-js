@@ -124,6 +124,18 @@ function date(s) {
   return new Date(s);
 }
 
+Date.prototype.com$cognitect$transit$equals = function(other) {
+  if(other instanceof Date) {
+    return this.valueOf() === other.valueOf();
+  } else {
+    return false;
+  }
+}
+
+Date.prototype.com$cognitect$transit$hashCode = function() {
+  return this.valueOf();
+}
+
 function byteBuffer(data) {
   return new ByteBuffer(data);
 }
