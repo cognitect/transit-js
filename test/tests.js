@@ -253,6 +253,7 @@ exports.testDecodeDates = function(test) {
 // typed arrays
 // lists
 
+/*
 exports.testDecodeCMaps = function(test) {
   var dc = d.decoder(),
       v  = dc.decode({"~#cmap": ["foo", "a", "bar", "b"]});
@@ -269,6 +270,7 @@ exports.testDecodeCMaps = function(test) {
 
   test.done();
 }
+*/
 
 exports.testDecodeTaggedValue = function(test) {
   var dc = d.decoder(),
