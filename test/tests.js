@@ -76,7 +76,7 @@ exports.testTransitMapBasic = function(test) {
 
   var m2 = t.transitMap(["foo", "bar", 101574, "baz"]);
 
-  test.ok(m2.size == 1, "Size of TransitMap with collisions from array of two elements is 2");
+  test.ok(m2.size == 2, "Size of TransitMap with collisions from array of two elements is 2");
   test.ok(m2.has("foo") && m2.has(101574), "TransitMap with collisions has expected keys");
   test.ok((m2.get("foo") == "bar") && (m2.get(101574) == "baz"), "Accessing keys of TransitMap with collisions returns expected result");
 
