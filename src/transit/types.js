@@ -11,10 +11,11 @@ if(typeof Set == "undefined") {
   var Set = require("es6-set");
 }
 
+/*
 if(typeof Map == "undefined") {
   var Map = require("es6-map");
 }
-
+*/
 
 function nullValue() {
   return null;
@@ -151,9 +152,9 @@ function bools(xs) {
   return xs;
 }  
 
-function TransitMap(map) {
+function TransitMap(map, size) {
   this.map = map;
-  this.size = map.size;
+  this.size = size;
   this.hashCode = -1;
 }
 
@@ -171,17 +172,18 @@ TransitMap.prototype = {
   },
 
   forEach: function(callback) {
-    this.map.forEach(function(vals, hashCode, map) {
+    for(var code in this.map) {
+      var vals = this.map[code];
       for(var j = 0; j < vals.length; j+=2) {
         callback(vals[j], vals[j+1], this);
       }
-    });
+    }
   },
   
   get: function(k) {
     var code = eq.hashCode(k),
-        vals = this.map.get(code);
-    if(vals !== null) {
+        vals = this.map[code];
+    if(vals != null) {
       for(var i = 0; i < vals.length; i+=2) {
         if(eq.equals(k,vals[i])) {
           return vals[i+1];
@@ -194,7 +196,7 @@ TransitMap.prototype = {
 
   has: function(k) {
     var code = eq.hashCode(k),
-        vals = this.map.get(code);
+        vals = this.map[code];
     if(vals !== null) {
       for(var i = 0; i < vals.length; i+=2) {
         if(eq.equals(k,vals[i])) {
@@ -219,19 +221,16 @@ TransitMap.prototype = {
   },
   
   com$cognitect$transit$hashCode: function() {
-    var code = this[eq.transitHashCodeProperty];
-    if(code != null) return code;
-    code = eq.hashMapLike(this);
-    this[eq.transitHashCodeProperty] = code;
-    return code;
+    if(this.hashCode != -1) return this.hashCode;
+    this.hashCode = eq.hashMapLike(this);
+    return this.hashCode;
   },
   
   com$cognitect$transit$equals: function(other) {
     if((other instanceof TransitMap) &&
        (this.size === other.size)) {
-      var ks = this.map.keys();
-      for(var i = 0; i < ks.length; i++) {
-        var vals = this.map(get(ks[i]));
+      for(var code in this.map) {
+        var vals = this.map[code];
         for(var j = 0; j < vals.length; j++) {
           if(!eq.equals(vals[j+1], other.get(vals[j]))) {
             return false;
@@ -245,12 +244,12 @@ TransitMap.prototype = {
 };
 
 function transitMap(arr) {
-  var m = new Map();
+  var map = {};
   for(var i = 0; i < arr.length; i+=2) {
     var code = eq.hashCode(arr[i]),
-        vals = m.get(code);
+        vals = map[code];
     if(vals == null) {
-      m.set(code, [arr[i], arr[i+1]]);
+      map[code] = [arr[i], arr[i+1]];
     } else {
       var newEntry = true;
       for(var j = 0; j < vals.length; j+= 2) {
@@ -266,7 +265,7 @@ function transitMap(arr) {
       }
     }
   }
-  return new TransitMap(m);
+  return new TransitMap(map, arr.length / 2);
 }
 
 function cmap(xs) {
@@ -301,7 +300,7 @@ module.exports = {
   set: set,
   Set: Set,
   cmap: cmap,
-  Map: Map,
+  //Map: Map,
   TransitMap: TransitMap,
   transitMap: transitMap,
   date: date,
