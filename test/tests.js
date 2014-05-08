@@ -334,19 +334,19 @@ exports.testWriterLowLevelEmit = function(test) {
   em.emitArrayStart();
   em.emitArrayEnd();
 
-  test.equal(em.flush(), "[]", "emitStartArray plus emitEndArray returns expected result");
+  test.equal(em.flushWriter(), "[]", "emitStartArray plus emitEndArray returns expected result");
 
   em.emitMapStart();
   em.emitMapEnd();
 
-  test.equal(em.flush(), "{}", "emitMapStart plus emitMapEnd returns expected result");
+  test.equal(em.flushWriter(), "{}", "emitMapStart plus emitMapEnd returns expected result");
 
   em.emitMapStart();
   em.writeObject("\"foo\"", true);
   em.writeObject("\"bar\"", false);
   em.emitMapEnd();
 
-  test.equal(em.flush(), "{\"foo\":\"bar\"}", "low level map emission returns expected result");
+  test.equal(em.flushWriter(), "{\"foo\":\"bar\"}", "low level map emission returns expected result");
 
   test.done();
 };
@@ -377,29 +377,29 @@ exports.testWriterMarshalling = function(test) {
       c  = caching.writeCache();
 
   wr.marshal(em, null, false, c);
-  test.ok(em.flush() === "null", "marshalling null return \"null\"");
+  test.ok(em.flushWriter() === "null", "marshalling null return \"null\"");
   wr.marshal(em, true, false, c);
-  test.ok(em.flush() === "true", "marshalling true returns \"true\"");
+  test.ok(em.flushWriter() === "true", "marshalling true returns \"true\"");
   wr.marshal(em, false, false, c);
-  test.ok(em.flush() === "false", "marshalling false returns \"false\"");
+  test.ok(em.flushWriter() === "false", "marshalling false returns \"false\"");
   wr.marshal(em, 1, false, c);
-  test.ok(em.flush() === "1", "marshalling false returns \"1\"");
+  test.ok(em.flushWriter() === "1", "marshalling false returns \"1\"");
   wr.marshal(em, 1.5, false, c);
-  test.ok(em.flush() === "1.5", "marshalling false returns \"1.5\"");
+  test.ok(em.flushWriter() === "1.5", "marshalling false returns \"1.5\"");
   wr.marshal(em, "foo", false, c);
-  test.equal(em.flush(), "\"foo\"", "marshalling \"foo\" returns \"\\\"foo\\\"\"");
+  test.equal(em.flushWriter(), "\"foo\"", "marshalling \"foo\" returns \"\\\"foo\\\"\"");
   wr.marshal(em, [1,2,3], false, c);
-  test.ok(em.flush() === "[1,2,3]", "marshalling [1,2,3] returns \"[1,2,3]\"");
+  test.ok(em.flushWriter() === "[1,2,3]", "marshalling [1,2,3] returns \"[1,2,3]\"");
   wr.marshal(em, {foo: "bar"}, false, c);
-  test.ok(em.flush(), "{\"foo\":\"bar\"}", "marshalling {foo:\"bar\"} returns \"{\"foo\":\"bar\"}\"");
+  test.ok(em.flushWriter(), "{\"foo\":\"bar\"}", "marshalling {foo:\"bar\"} returns \"{\"foo\":\"bar\"}\"");
   wr.marshal(em, [1,[2,3],4], false, c);
-  test.ok(em.flush() === "[1,[2,3],4]", "marshalling [1,[2,3],4] returns \"[1,[2,3],4]\"");
+  test.ok(em.flushWriter() === "[1,[2,3],4]", "marshalling [1,[2,3],4] returns \"[1,[2,3],4]\"");
   wr.marshal(em, {foo:[1,2,3]}, false, c);
-  test.ok(em.flush() === "{\"foo\":[1,2,3]}", "marshalling {foo:[1,2,3]} returns \"{\"foo\":[1,2,3]}\"");
+  test.ok(em.flushWriter() === "{\"foo\":[1,2,3]}", "marshalling {foo:[1,2,3]} returns \"{\"foo\":[1,2,3]}\"");
   wr.marshal(em, {foo:[1,{bar:2},3]}, false, c);
-  test.ok(em.flush() === "{\"foo\":[1,{\"bar\":2},3]}", "marshalling {foo:[1,{bar:2},3]} returns \"{\"foo\":[1,{\"bar\":2},3]}\"");
+  test.ok(em.flushWriter() === "{\"foo\":[1,{\"bar\":2},3]}", "marshalling {foo:[1,{bar:2},3]} returns \"{\"foo\":[1,{\"bar\":2},3]}\"");
   wr.marshal(em, {foo:1,bar:2}, false, c);
-  test.ok(em.flush() === "{\"foo\":1,\"bar\":2}", "marshalling {foo:1,bar:2} returns \"{\"foo\":1,\"bar\":2}\"");
+  test.ok(em.flushWriter() === "{\"foo\":1,\"bar\":2}", "marshalling {foo:1,bar:2} returns \"{\"foo\":1,\"bar\":2}\"");
   
   test.done();
 };
@@ -413,21 +413,21 @@ exports.testWriterMarshallingMapKeys = function(test) {
   wr.marshal(em, null, false, c);
   em.emitMapEnd();
  
-  test.ok(em.flush() === "{\"~_\":null}", "marshalling map with null key returns expected string");
+  test.ok(em.flushWriter() === "{\"~_\":null}", "marshalling map with null key returns expected string");
   
   em.emitMapStart();
   wr.marshal(em, true, true, c);
   wr.marshal(em, true, false, c);
   em.emitMapEnd();
 
-  test.ok(em.flush() === "{\"~?t\":true}", "marshalling map with true key returns expected string");
+  test.ok(em.flushWriter() === "{\"~?t\":true}", "marshalling map with true key returns expected string");
 
   em.emitMapStart();
   wr.marshal(em, false, true, c);
   wr.marshal(em, false, false, c);
   em.emitMapEnd();
 
-  test.ok(em.flush() === "{\"~?f\":false}", "marshalling map with false key returns expected string");
+  test.ok(em.flushWriter() === "{\"~?f\":false}", "marshalling map with false key returns expected string");
 
   test.done();
 };
@@ -438,14 +438,37 @@ exports.testHandlerTypeTag = function(test) {
 };
 
 exports.testWriterEmitTaggedMap = function(test) {
-  var em = new wr.JSONMarshaller({prefersStrings: false}),
+  var em = new wr.JSONMarshaller(null, {prefersStrings: false}),
       c  = caching.writeCache(),
       d  = (new Date(Date.UTC(1985,3,12,23,20,50,52))),
       h  = em.handler(d);
 
   wr.emitTaggedMap(em, "t", h.rep(d), false, c);
-  test.equal(wr.flush(), "{\"~t\":482196050052}", "emitting date as tagged map and returns expected string");
+  test.equal(em.flushWriter(), "{\"~#t\":482196050052}", "emitting date as tagged map and returns expected string");
+  wr.marshal(em, d, false, c);
+  test.equal(em.flushWriter(), "{\"~#t\":482196050052}", "emitting date as tagged map via writer.marshal returns expected string");
 
   test.done();
 };
 
+// exports.testWriterMarshallingSingleCharNonGround = function(test) {
+//   var em = new wr.JSONMarshaller(),
+//       c  = caching.writeCache();
+
+//   wr.marshal(em, new Date(), false, c);
+//   console.log("WTF", em.flushWriter());
+
+//   test.done();
+// };
+
+// =============================================================================
+// API
+// =============================================================================
+
+exports.testWrite = function(test) {
+  test.done();
+};
+
+exports.testRead = function(test) {
+  test.done();
+};

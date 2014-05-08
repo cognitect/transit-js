@@ -5,7 +5,8 @@
 
 var caching = require("./caching"),
     h       = require("./handlers"),
-    d       = require("./delimiters");
+    d       = require("./delimiters"),
+    sb      = require("./stringbuilder.js");
 
 var JSON_INT_MAX = Math.pow(2, 53);
 var JSON_INT_MIN = -JSON_INT_MAX;
@@ -42,11 +43,11 @@ var OBJECT = "object",
     OBJECT_FIRST_KEY = "object_first_key",
     ARRAY_FIRST_VALUE = "array_first_value";
 
-function JSONMarshaller(options) {
-  this._prefersStrings = options ? options.prefersString || false : true;
+function JSONMarshaller(stream, options) {
+  this.stream = stream || sb.stringBuilder();
   this.state = [];
   this.handlers = h.handlers();
-  this.buffer = [];
+  this._prefersStrings = options ? options.prefersString || false : true;
 }
 
 JSONMarshaller.prototype = {
@@ -59,17 +60,17 @@ JSONMarshaller.prototype = {
     this.state.push(newState);
 
     if(oldState === ARRAY) {
-      this.write(",");
+      this.stream.write(",");
     }
 
     switch(newState) {
       case ARRAY:
         this.state.push(ARRAY_FIRST_VALUE);
-        this.write("[");
+        this.stream.write("[");
         break;
       case OBJECT:
         this.state.push(OBJECT_FIRST_KEY);
-        this.write("{");
+        this.stream.write("{");
         break;
       default:
         var err = new Error("JSONMarshaller: Invalid pushState, " + state);
@@ -88,11 +89,11 @@ JSONMarshaller.prototype = {
 
     switch(state) {
       case ARRAY:
-        this.write("]");
+        this.stream.write("]");
         return ARRAY;
         break;
       case OBJECT:
-        this.write("}");
+        this.stream.write("}");
         return OBJECT;
         break;
       default:
@@ -107,11 +108,11 @@ JSONMarshaller.prototype = {
     var state = this.getState();
     switch(state) {
       case OBJECT_KEY:
-        this.write(",");
+        this.stream.write(",");
       case OBJECT_FIRST_KEY:
         this.state.pop();
         this.state.push(OBJECT_VALUE);
-        this.write(obj);
+        this.stream.write(obj);
         break;
       default:
         var err = new Error("JSONMarshaller: Cannot pushKey in state " + state);
@@ -119,27 +120,27 @@ JSONMarshaller.prototype = {
         throw err;
         break;
     }
-    this.write(":");
+    this.stream.write(":");
   },
 
   pushValue: function(obj) {
     var state = this.getState();
     switch(state) {
       case ARRAY:
-        this.write(",");
-        this.write(obj);
+        this.stream.write(",");
+        this.stream.write(obj);
         break;
       case ARRAY_FIRST_VALUE:
         this.state.pop();
-        this.write(obj);
+        this.stream.write(obj);
         break;
       case OBJECT_VALUE:
         this.state.pop();
-        this.write(obj);
+        this.stream.write(obj);
         this.state.push(OBJECT_KEY);
         break;
       default:
-        this.write(obj);
+        this.stream.write(obj);
         break;
     }
   },
@@ -240,11 +241,9 @@ JSONMarshaller.prototype = {
     this.emitMapEnd();
   },
 
-  flush: function(ignore) {
-    var ret = this.buffer.join("");
+  flushWriter: function(ignore) {
     this.state = [];
-    this.buffer = [];
-    return ret;
+    return this.stream.flush();
   },
 
   prefersStrings: function() {
@@ -441,14 +440,10 @@ function marshalTop(em, obj, cache) {
   marshal(em, maybeQuoted(em, obj), false, cache);
 }
 
-function Writer(obj, type, options) {
-  if(options.marshaller) {
-    this.marshaller = options.marshaller
-  } else {
-    if(type === "json") {
-      this.marshaller = new JSONMarshaller();
-    }
-  }
+function Writer(marshaller, stm, options) {
+  this.marshaller = marshaller
+  this.stm = stm;
+  this.options = options;
 }
 
 Writer.prototype = {
@@ -457,8 +452,15 @@ Writer.prototype = {
   }
 };
 
-function writer(obj, type, options) {
-  return new Writer(obj, type, options || {});
+function writer(out, type, opts) {
+  if(type === "json") {
+    var marshaller = new JSONMarshaller(out, opts);
+    return new Writer(marshaller, out, opts);
+  } else {
+    var err = new Error("Type must be \"json\"");
+    err.data = {type: type};
+    throw err;
+  }
 }
 
 function write(writer, obj) {
@@ -466,6 +468,7 @@ function write(writer, obj) {
 }
 
 module.exports = {
+  writer: writer,
   write: write,
   marshal: marshal,
   emitTaggedMap: emitTaggedMap,
