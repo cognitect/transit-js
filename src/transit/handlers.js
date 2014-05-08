@@ -3,9 +3,9 @@
 
 "use strict";
 
-var t = require("./types.js"),
-    moment = require("moment"),
-    ctorGuid = 0,
+var t                       = require("./types.js"),
+    moment                  = require("moment"),
+    ctorGuid                = 0,
     transitCtorGuidProperty = "com$cognitect$transit$ctor$guid";
 
 function typeTag(ctor) {
