@@ -153,10 +153,6 @@ JSONMarshaller.prototype = {
     this.handlers.set(ctor, handler);
   },
 
-  write: function(c) {
-    this.buffer.push(c);
-  },
-
   writeObject: function(obj, asMapKey) {
     asMapKey = asMapKey || false;
     if(asMapKey) {
