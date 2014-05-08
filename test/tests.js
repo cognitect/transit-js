@@ -386,7 +386,9 @@ exports.testWriterMarshalling = function(test) {
   wr.marshal(em, "foo", false, c);
   test.equal(em.flush(), "\"foo\"", "marshalling \"foo\" returns \"\\\"foo\\\"\"");
   wr.marshal(em, [1,2,3], false, c);
-  test.ok(em.flush(), "[1,2,3]", "marshalling [1,2,3] returns \"[1,2,3]\"");
+  test.ok(em.flush() === "[1,2,3]", "marshalling [1,2,3] returns \"[1,2,3]\"");
+  wr.marshal(em, {foo: "bar"}, false, c);
+  test.ok(em.flush(), "{\"foo\":\"bar\"}", "marshalling {foo:\"bar\"} returns \"{\"foo\":\"bar\"}\"");
   
   test.done();
 };
