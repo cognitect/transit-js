@@ -96,6 +96,8 @@ JSONMarshaller.prototype = {
     switch(state) {
       case "array":
         this.write(",");
+        this.write(obj);
+        break;
       case "array_first_value":
         this.state.pop();
         this.write(obj);
@@ -186,7 +188,7 @@ JSONMarshaller.prototype = {
   },
 
   emitArrayStart: function(size) {
-    var lastState = this.pushState("array");
+    this.pushState("array");
   },
 
   emitArrayEnd: function() {
