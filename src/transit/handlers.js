@@ -100,13 +100,13 @@ function defaultHandlers(hs) {
      }});
 
   hs.set(
-    t.Keyword
+    t.Keyword,
     {tag: function(v) { return ":"; },
      rep: function(v) { return v.name; },
      stringRep: function(v) { return this.rep(v); }});
 
   hs.set(
-    t.Symbol
+    t.Symbol,
     {tag: function(v) { return "$"; },
      rep: function(v) { return v.name; },
      stringRep: function(v) { return this.rep(v); }});
