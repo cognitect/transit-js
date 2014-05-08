@@ -452,7 +452,7 @@ exports.testWriterEmitTaggedMap = function(test) {
 };
 
 exports.testWriterEmitQuoted = function(test) {
-  var em = new wr.JSONMarshaller(null, {prefersStrings: false}),
+  var em = new wr.JSONMarshaller(),
       c  = caching.writeCache();
 
   em.emitQuoted(1, c);
@@ -462,11 +462,18 @@ exports.testWriterEmitQuoted = function(test) {
 };
 
 exports.testWriterMarshalTop = function(test) {
-  var em = new wr.JSONMarshaller(null, {prefersStrings: false}),
-      c  = caching.writeCache();
+  var em = new wr.JSONMarshaller(),
+      c  = caching.writeCache(),
+      d  = (new Date(Date.UTC(1985,3,12,23,20,50,52)))
 
   wr.marshalTop(em, 1, c);
-  test.equal(em.flushWriter(), "{\"~'\":1}", "marshalling top level returns expected string");
+  test.equal(em.flushWriter(), "{\"~'\":1}", "marshalling number at top level returns expected string");
+  wr.marshalTop(em, {foo:"bar"}, c);
+  test.equal(em.flushWriter(), "{\"foo\":\"bar\"}", "marshalling object at top level returns expected string");
+  wr.marshalTop(em, [1,2,3], c);
+  test.equal(em.flushWriter(), "[1,2,3]", "marshalling array at top level returns expected string");
+  wr.marshalTop(em, {foo:d}, c);
+  test.equal(em.flushWriter(), "{\"foo\":\"~t1985-04-12T23:20:50.052Z\"}", "marshalling map containing date at top level returns expected string");
 
   test.done();
 };

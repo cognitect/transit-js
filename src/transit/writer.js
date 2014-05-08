@@ -339,7 +339,7 @@ function emitEncoded(em, h, tag, obj, asMapKey, cache) {
     } else if(asMapKey || em.prefersStrings()) {
       rep = h.stringRep(obj);
       if(typeof rep === "string") {
-        em.emitString(d.EST, tag, rep, asMapKey, cache);
+        em.emitString(d.ESC, tag, rep, asMapKey, cache);
       } else {
         var err = new Error("Cannot be encoded as string");
         err.data = {tag: tag, rep: rep, obj: obj};
