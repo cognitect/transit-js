@@ -36,7 +36,13 @@ JSONMarshaller.prototype = {
   },
 
   pushState: function(newState) {
+    var oldState = this.getState();
     this.state.push(newState);
+
+    if(oldState === "array") {
+      this.write(",");
+    }
+
     switch(newState) {
       case "array":
         this.state.push("array_first_value");
