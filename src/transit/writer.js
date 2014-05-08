@@ -43,6 +43,7 @@ var OBJECT = "object",
     ARRAY_FIRST_VALUE = "array_first_value";
 
 function JSONMarshaller(options) {
+  this.prefersString = (options && options.prefersString) || true;
   this.state = [];
   this.handlers = h.handlers();
   this.buffer = [];
