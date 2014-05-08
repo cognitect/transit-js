@@ -3,13 +3,14 @@
 
 "use strict";
 
-var caching = require("../src/transit/caching.js"),
+var url     = require("url"),
+    h       = require("../src/transit/handlers.js"),
     w       = require("../src/transit/writer.js"),
     d       = require("../src/transit/decoder.js"),
     t       = require("../src/transit/types.js"),
-    url     = require("url"),
     eq      = require("../src/transit/eq.js"),
-    wr      = require("../src/transit/writer.js");
+    wr      = require("../src/transit/writer.js"),
+    caching = require("../src/transit/caching.js");
 
 // =============================================================================
 // Equality & Hashing
