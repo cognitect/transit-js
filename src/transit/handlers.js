@@ -33,8 +33,13 @@ function typeTag(ctor) {
     return "map";
   }
 
-  ctor[transitCtorGuidProperty] = ++ctorGuid;
-  return ctor[transitCtorGuidProperty]
+  var tag = ctor[transitCtorGuidProperty];
+
+  if(tag == null) {
+    ctor[transitCtorGuidProperty] = tag = ++ctorGuid;
+  }
+
+  return tag;
 }
 
 function constructor(x) {
