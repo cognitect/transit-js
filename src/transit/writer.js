@@ -5,8 +5,9 @@
 
 var caching = require("./caching"),
     h       = require("./handlers"),
+    t       = require("./types"),
     d       = require("./delimiters"),
-    sb      = require("./stringbuilder.js");
+    sb      = require("./stringbuilder");
 
 var JSON_INT_MAX = Math.pow(2, 53);
 var JSON_INT_MIN = -JSON_INT_MAX;
@@ -406,7 +407,7 @@ function maybeQuoted(em, obj) {
 
   if(h != null) {
     if(h.tag(obj).length == 1) {
-      return quoted(obj);
+      return t.quoted(obj);
     } else {
       return obj;
     }

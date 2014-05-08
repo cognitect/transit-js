@@ -451,15 +451,25 @@ exports.testWriterEmitTaggedMap = function(test) {
   test.done();
 };
 
-// exports.testWriterMarshallingSingleCharNonGround = function(test) {
-//   var em = new wr.JSONMarshaller(),
-//       c  = caching.writeCache();
+exports.testWriterEmitQuoted = function(test) {
+  var em = new wr.JSONMarshaller(null, {prefersStrings: false}),
+      c  = caching.writeCache();
 
-//   wr.marshal(em, new Date(), false, c);
-//   console.log("WTF", em.flushWriter());
+  em.emitQuoted(1, c);
+  test.equal(em.flushWriter(), "{\"~'\":1}", "emitting quoted value returns expected string");
 
-//   test.done();
-// };
+  test.done();
+};
+
+exports.testWriterMarshalTop = function(test) {
+  var em = new wr.JSONMarshaller(null, {prefersStrings: false}),
+      c  = caching.writeCache();
+
+  wr.marshalTop(em, 1, c);
+  test.equal(em.flushWriter(), "{\"~'\":1}", "marshalling top level returns expected string");
+
+  test.done();
+};
 
 // =============================================================================
 // API
