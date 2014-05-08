@@ -43,7 +43,7 @@ var OBJECT = "object",
     ARRAY_FIRST_VALUE = "array_first_value";
 
 function JSONMarshaller(options) {
-  this.prefersString = (options && options.prefersString) || true;
+  this._prefersStrings = options ? options.prefersString || false : true;
   this.state = [];
   this.handlers = h.handlers();
   this.buffer = [];
@@ -248,7 +248,7 @@ JSONMarshaller.prototype = {
   },
 
   prefersString: function() {
-    return true;
+    return this._prefersStrings;
   }
 };
 
@@ -355,7 +355,7 @@ function emitEncoded(em, h, tag, obj, asMapKey, cache) {
     var rep = h.rep(obj);
     if(typeof rep === "string") {
       em.emitString(d.ESC, tag, rep, asMapKey, cache);
-    } else if(asMapKey || em.prefersStrings) {
+    } else if(asMapKey || em.prefersStrings()) {
       rep = h.stringRep(obj);
       if(typeof rep === "string") {
         em.emitString(d.EST, tag, rep, asMapKey, cache);
