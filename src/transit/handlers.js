@@ -4,6 +4,7 @@
 "use strict";
 
 var t = require("./types.js"),
+    moment = require("moment"),
     ctorGuid = 0,
     transitCtorGuidProperty = "com$cognitect$transit$ctor$guid";
 
@@ -89,6 +90,26 @@ function defaultHandlers(hs) {
     {tag: function(v) { return "map"; },
      rep: function(v) { return v; },
      stringRep: function(v) { return null; }});
+
+  hs.set(
+    Date,
+    {tag: function(v) { return "t"; },
+     rep: function(v) { return v; },
+     stringRep: function(v) {
+       return moment.utc(v.valueOf()).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+     }});
+
+  hs.set(
+    t.Keyword
+    {tag: function(v) { return ":"; },
+     rep: function(v) { return v.name; },
+     stringRep: function(v) { return this.rep(v); }});
+
+  hs.set(
+    t.Symbol
+    {tag: function(v) { return "$"; },
+     rep: function(v) { return v.name; },
+     stringRep: function(v) { return this.rep(v); }});
 
   return hs;
 }
