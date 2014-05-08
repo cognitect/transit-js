@@ -72,7 +72,9 @@ JSONMarshaller.prototype = {
         this.write("{");
         break;
       default:
-        throw new Error("JSONMarshaller: Invalid pushState " + state);
+        var err = new Error("JSONMarshaller: Invalid pushState, " + state);
+        err.data = {state: state};
+        throw err;
         break;
     }
   },
@@ -94,7 +96,9 @@ JSONMarshaller.prototype = {
         return OBJECT;
         break;
       default:
-        throw new Error("JSONMarshaller: Popped unknown state " + state);
+        var err = new Error("JSONMarshaller: Popped unknown state " + state);
+        err.data = {state: state}
+        throw err;
         break;
     }
   },
@@ -110,7 +114,9 @@ JSONMarshaller.prototype = {
         this.write(obj);
         break;
       default:
-        throw new Error("JSONMarshaller: Cannot pushKey in state " + state);
+        var err = new Error("JSONMarshaller: Cannot pushKey in state " + state);
+        err.data = {state: state};
+        throw err;
         break;
     }
     this.write(":");
@@ -385,7 +391,9 @@ function marshal(em, obj, asMapKey, cache) {
         break;
     }
   } else {
-    throw new Error("Not supported " + obj);
+    var err = new Error("Not supported");
+    err.data = {obj: obj, type: h.constructor(obj).name};
+    throw err;
   }
 }
 
@@ -399,7 +407,9 @@ function maybeQuoted(em, obj) {
       return obj;
     }
   } else {
-    throw new Error("Not support " + obj);
+    var err = new Error("Not supported");
+    err.data = {obj: obj, type: h.constructor(obj).name};
+    throw err;
   }
 }
 
