@@ -97,7 +97,7 @@ function defaultHandlers(hs) {
   hs.set(
     Date,
     {tag: function(v) { return "t"; },
-     rep: function(v) { return v; },
+     rep: function(v) { return v.valueOf(); },
      stringRep: function(v) {
        return moment.utc(v.valueOf()).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
      }});
