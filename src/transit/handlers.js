@@ -43,9 +43,7 @@ function typeTag(ctor) {
 }
 
 function constructor(x) {
-  if(x == null) {
-    return null;
-  }
+  if(x == null) return null;
   return x.constructor;
 }
 

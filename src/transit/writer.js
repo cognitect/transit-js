@@ -138,8 +138,7 @@ JSONMarshaller.prototype = {
   },
 
   handler: function(obj) {
-    var t = obj == null ? null : obj.constructor;
-    return this.handlers.get(t);
+    return this.handlers.get(h.constructor(obj));
   },
 
   registerHandler: function(ctor, handler) {
