@@ -288,6 +288,29 @@ function cmap(xs) {
   return m;
 }
 
+function AsTag(tag, rep, str) {
+  this.tag = tag;
+  this.rep = rep;
+  this.str = str;
+}
+
+function asTag(tag, rep, str) {
+  return new AsTag(tag, rep, str);
+}
+
+function Quote(obj) {
+  this.obj = obj;
+}
+
+function quoted(obj) {
+  return new Quote(obj);
+}
+
+function TaggedValue(tag, rep) {
+  this.tag = tag;
+  this.rep = rep;
+}
+
 function TaggedValue(tag, value) {
   this.tag = tag;
   this.value = value;
@@ -325,5 +348,9 @@ module.exports = {
   doubles: doubles,
   bools: bools,
   taggedValue: taggedValue,
-  TaggedValue: TaggedValue
+  TaggedValue: TaggedValue,
+  asTag: asTag,
+  AsTag: AsTag,
+  quoted: quoted,
+  Quote: Quote
 };

@@ -323,21 +323,6 @@ function emitMap(em, obj, skip, cache) {
   em.emitMapEnd();
 }
 
-function AsTag(tag, rep, str) {
-  this.tag = tag;
-  this.rep = rep;
-  this.str = str;
-}
-
-function Quote(obj) {
-  this.obj = obj;
-}
-
-function TaggedValue(tag, rep) {
-  this.tag = tag;
-  this.rep = rep;
-}
-
 function emitTaggedMap(em, tag, rep, skip, cache) {
   em.emitMapStart();
   em.emitString(d.ESC_TAG, tag, "", true, cache);
@@ -467,6 +452,7 @@ module.exports = {
   writer: writer,
   write: write,
   marshal: marshal,
+  marshalTop: marshalTop,
   emitTaggedMap: emitTaggedMap,
   JSONMarshaller: JSONMarshaller
 };

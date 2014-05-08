@@ -114,6 +114,24 @@ function defaultHandlers(hs) {
      rep: function(v) { return v.name; },
      stringRep: function(v) { return this.rep(v); }});
 
+  hs.set(
+    t.Quote,
+    {tag: function(v) { return "'"; },
+     rep: function(v) { return v.obj; },
+     stringRep: function(v) { return null; }});
+
+  hs.set(
+    t.AsTag,
+    {tag: function(v) { return v.tag; },
+     rep: function(v) { return v.rep; },
+     stringRep: function(v) { return v.str; }});
+
+  hs.set(
+    t.TaggedValue,
+    {tag: function(v) { return v.tag; },
+     rep: function(v) { return v.rep; },
+     stringRep: function(v) { return null; }});
+
   return hs;
 }
 
