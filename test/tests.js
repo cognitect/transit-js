@@ -436,3 +436,16 @@ exports.testHandlerTypeTag = function(test) {
   test.equal(h.typeTag(Date),h.typeTag(Date), "handler type tag for Date is always the same");
   test.done();
 };
+
+exports.testWriterEmitTaggedMap = function(test) {
+  var em = new wr.JSONMarshaller({prefersStrings: false}),
+      c  = caching.writeCache(),
+      d  = (new Date(Date.UTC(1985,3,12,23,20,50,52))),
+      h  = em.handler(d);
+
+  wr.emitTaggedMap(em, "t", h.rep(d), false, c);
+  test.equal(wr.flush(), "{\"~t\":482196050052}", "emitting date as tagged map and returns expected string");
+
+  test.done();
+};
+

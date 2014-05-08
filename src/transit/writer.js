@@ -468,5 +468,6 @@ function write(writer, obj) {
 module.exports = {
   write: write,
   marshal: marshal,
+  emitTaggedMap: emitTaggedMap,
   JSONMarshaller: JSONMarshaller
 };
