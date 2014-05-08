@@ -375,6 +375,8 @@ exports.testWriterMarshalling = function(test) {
   var em = new wr.JSONMarshaller(),
       c  = caching.writeCache();
 
+  wr.marshal(em, null, false, c);
+  test.ok(em.flush() === "null", "marshalling null return \"null\"");
   wr.marshal(em, true, false, c);
   test.ok(em.flush() === "true", "marshalling true returns \"true\"");
   wr.marshal(em, false, false, c);
@@ -400,3 +402,31 @@ exports.testWriterMarshalling = function(test) {
   
   test.done();
 };
+
+exports.testWriterMarshallingMapKeys = function(test) {
+  var em = new wr.JSONMarshaller(),
+      c  = caching.writeCache();
+
+  em.emitMapStart();
+  wr.marshal(em, null, true, c);
+  wr.marshal(em, null, false, c);
+  em.emitMapEnd();
+ 
+  test.ok(em.flush() === "{\"~_\":null}", "marshalling map with null key returns expected string");
+  
+  em.emitMapStart();
+  wr.marshal(em, true, true, c);
+  wr.marshal(em, true, false, c);
+  em.emitMapEnd();
+
+  test.ok(em.flush() === "{\"~?t\":true}", "marshalling map with true key returns expected string");
+
+  em.emitMapStart();
+  wr.marshal(em, false, true, c);
+  wr.marshal(em, false, false, c);
+  em.emitMapEnd();
+
+  test.ok(em.flush() === "{\"~?f\":false}", "marshalling map with false key returns expected string");
+
+  test.done();
+}
