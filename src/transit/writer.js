@@ -247,7 +247,7 @@ JSONMarshaller.prototype = {
     return ret;
   },
 
-  prefersString: function() {
+  prefersStrings: function() {
     return this._prefersStrings;
   }
 };
