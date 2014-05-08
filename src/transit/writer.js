@@ -295,7 +295,7 @@ function emitObjects(em, src, cache) {
 }
 
 function emitArray(em, iterable, skip, cache) {
-  em.emitArrayStart(em.arraySize(iterable));
+  em.emitArrayStart();
   if(iterable instanceof Int8Array) {
     emitChars(em, iterable, cache);
   } else if(iterable instanceof Int16Array) {
