@@ -430,4 +430,9 @@ exports.testWriterMarshallingMapKeys = function(test) {
   test.ok(em.flush() === "{\"~?f\":false}", "marshalling map with false key returns expected string");
 
   test.done();
-}
+};
+
+exports.testHandlerTypeTag = function(test) {
+  test.equal(h.typeTag(Date),h.typeTag(Date), "handler type tag for Date is always the same");
+  test.done();
+};
