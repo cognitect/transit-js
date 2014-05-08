@@ -343,13 +343,37 @@ function TaggedValue(tag, rep) {
   this.rep = rep;
 }
 
-function hasStringableKeys(m) {
-}
-
 function emitTaggedMap(em, tag, rep, skip, cache) {
+  em.emitMapStart();
+  em.emitString(d.ESC_TAG, tag, "", true, cache);
+  marshal(em, rep, false, cache);
+  em.emitMapEnd();
 }
 
 function emitEncoded(em, h, tag, obj, asMapKey, cache) {
+  if(tag.length === 1) {
+    var rep = h.rep(obj);
+    if(typeof rep === "string") {
+      em.emitString(d.ESC, tag, rep, asMapKey, cache);
+    } else if(asMapKey || em.prefersStrings) {
+      rep = h.stringRep(obj);
+      if(typeof rep === "string") {
+        em.emitString(d.EST, tag, rep, asMapKey, cache);
+      } else {
+        var err = new Error("Cannot be encoded as string");
+        err.data = {tag: tag, rep: rep, obj: obj};
+        throw err;
+      }
+    } else {
+      emitTaggedMap(em, tag, rep, asMapKey, cache);
+    }
+  } else if (asMapKey) {
+    var err = new Error("Cannot be used as map key");
+    err.data = {tag: tag, rep: rep, obj: obj};
+    throw err;
+  } else {
+    emitTaggedMap(em, tag, h.rep(obj), asMapKey, cache);
+  }
 }
 
 function marshal(em, obj, asMapKey, cache) {
