@@ -59,12 +59,12 @@ JSONMarshaller.prototype = {
   },
 
   popState: function() {
-    var state = this.getState();
+    var state = this.state.pop();
 
     while(state !== "object" && state !== "array") {
       state = this.state.pop();
     }
-    
+
     switch(state) {
       case "array":
         this.write("]");
@@ -209,7 +209,10 @@ JSONMarshaller.prototype = {
   },
 
   emitMapEnd: function() {
-    this.popState();
+    var lastState = this.popState();
+    if(lastState !== "object") {
+      throw new Error("JSONMarshaller: Invalid object end");
+    }
   },
 
   emitQuoted: function(obj, cache) {

@@ -391,6 +391,12 @@ exports.testWriterMarshalling = function(test) {
   test.ok(em.flush(), "{\"foo\":\"bar\"}", "marshalling {foo:\"bar\"} returns \"{\"foo\":\"bar\"}\"");
   wr.marshal(em, [1,[2,3],4], false, c);
   test.ok(em.flush() === "[1,[2,3],4]", "marshalling [1,[2,3],4] returns \"[1,[2,3],4]\"");
+  wr.marshal(em, {foo:[1,2,3]}, false, c);
+  test.ok(em.flush() === "{\"foo\":[1,2,3]}", "marshalling {foo:[1,2,3]} returns \"{\"foo\":[1,2,3]}\"");
+  wr.marshal(em, {foo:[1,{bar:2},3]}, false, c);
+  test.ok(em.flush() === "{\"foo\":[1,{\"bar\":2},3]}", "marshalling {foo:[1,{bar:2},3]} returns \"{\"foo\":[1,{\"bar\":2},3]}\"");
+  wr.marshal(em, {foo:1,bar:2}, false, c);
+  test.ok(em.flush() === "{\"foo\":1,\"bar\":2}", "marshalling {foo:1,bar:2} returns \"{\"foo\":1,\"bar\":2}\"");
   
   test.done();
 };
