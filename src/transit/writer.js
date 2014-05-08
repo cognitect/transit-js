@@ -137,9 +137,6 @@ JSONMarshaller.prototype = {
     }
   },
 
-  mapSize: function(ignore) {
-  },
-
   handler: function(obj) {
     var t = obj == null ? null : obj.constructor;
     return this.handlers.get(t);
@@ -208,9 +205,6 @@ JSONMarshaller.prototype = {
     this.emitBinary(d.ESC, "b", new Buffer(b).toString("base64"), asMapKey, cache);
   },
 
-  arraySize: function(arr) {
-  },
-
   emitArrayStart: function(size) {
     this.pushState(ARRAY);
   },
@@ -234,7 +228,7 @@ JSONMarshaller.prototype = {
   },
 
   emitQuoted: function(obj, cache) {
-    this.emitMapStart(1);
+    this.emitMapStart();
     this.emitString(d.ESC, "'", "", true, cache);
     marshal(this, obj, false, cache);
     this.emitMapEnd();
