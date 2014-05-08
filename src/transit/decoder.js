@@ -35,13 +35,13 @@ Decoder.prototype = {
   defaults: {
     decoders: {
       "_": function(v) { return types.nullValue(); },
-      ":": function(v) { return types.keyword(v); },
       "?": function(v) { return types.boolValue(v); },
       "b": function(v) { return types.byteBuffer(v); },
       "i": function(v) { return types.intValue(v); },
       "d": function(v) { return types.floatValue(v); },
       "f": function(v) { return types.floatValue(v); },
       "c": function(v) { return types.charValue(v); },
+      ":": function(v) { return types.keyword(v); },
       "$": function(v) { return types.symbol(v); },
       "r": function(v) { return types.uri(v); },
 
