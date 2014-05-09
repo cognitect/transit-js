@@ -6,6 +6,8 @@
 var eq      = require("../src/transit/eq.js"),
     t       = require("../src/transit/types.js"),
     wr      = require("../src/transit/writer.js"),
+    sr      = require("../src/transit/stringreader.js"),
+    transit = require("../src/transit.js"),
     caching = require("../src/transit/caching.js");
 
 function time(f) {
@@ -154,3 +156,23 @@ time(function() {
     em0.flushWriter();
   }
 });
+
+console.log("1e5 iters, JSON read transit map with two keyword value parirs");
+var json0  = "{\"~:foo\":\"bar\",\"~:baz\":\"woz\"}";
+console.log(JSON.parse(json0));
+time(function() {
+  for(var i = 0; i < 100000; i++) {
+    JSON.parse(json0);
+  }
+});
+
+console.log("1e5 iters, top level read, map two keyword value pairs");
+var r0      = sr.stringReader("{\"~:foo\":\"bar\",\"~:baz\":\"woz\"}"),
+    reader = transit.reader(r0, "json");
+console.log(transit.read(reader));
+time(function() {
+  for(var i = 0; i < 100000; i++) {
+    transit.read(reader);
+  }
+});
+

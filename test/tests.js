@@ -511,3 +511,12 @@ exports.testRead = function(test) {
 
   test.done();
 };
+
+exports.testReadTypes = function(test) {
+  var r      = sr.stringReader("{\"~:foo\":\"bar\"}"),
+      reader = transit.reader(r, "json");
+ 
+  test.deepEqual(transit.read(reader), {"~:foo":"bar"}, "top level api read object with keywords returns the expected result");
+
+  test.done();
+};
