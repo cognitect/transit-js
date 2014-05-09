@@ -157,7 +157,7 @@ time(function() {
   }
 });
 
-console.log("1e5 iters, JSON read transit map with two keyword value parirs");
+console.log("1e5 iters, JSON read transit map with two keyword/string value pairs");
 var json0  = "{\"~:foo\":\"bar\",\"~:baz\":\"woz\"}";
 console.log(JSON.parse(json0));
 time(function() {
@@ -166,7 +166,7 @@ time(function() {
   }
 });
 
-console.log("1e5 iters, top level read, map two keyword value pairs");
+console.log("1e5 iters, top level read, map two keyword/string value pairs");
 var r0     = sr.stringReader("{\"~:foo\":\"bar\",\"~:baz\":\"woz\"}"),
     c2     = caching.readCache(),
     opts0  = {cache: c2},
@@ -175,6 +175,27 @@ console.log(transit.read(reader));
 time(function() {
   for(var i = 0; i < 100000; i++) {
     transit.read(reader, opts0);
+  }
+});
+
+console.log("1e5 iters, JSON read transit map with two keyword/number value parirs");
+var json1  = "{\"~:foo\":1,\"~:bar\":2}";
+console.log(JSON.parse(json1));
+time(function() {
+  for(var i = 0; i < 100000; i++) {
+    JSON.parse(json1);
+  }
+});
+
+console.log("1e5 iters, top level read, map two keyword/number value pairs");
+var r1     = sr.stringReader(json1),
+    c3     = caching.readCache(),
+    opts1  = {cache: c3},
+    reader = transit.reader(r1, "json");
+console.log(transit.read(reader));
+time(function() {
+  for(var i = 0; i < 100000; i++) {
+    transit.read(reader, opts1);
   }
 });
 
