@@ -478,6 +478,17 @@ exports.testWriterMarshalTop = function(test) {
   test.done();
 };
 
+exports.testWriterMarshalTopPreferStringsFalse = function(test) {
+  var em = new wr.JSONMarshaller(null, {prefersStrings:false}),
+      c  = caching.writeCache(),
+      d  = (new Date(Date.UTC(1985,3,12,23,20,50,52)))
+
+  wr.marshalTop(em, {foo:d}, c);
+  test.equal(em.flushWriter(), "{\"foo\":{\"~#t\":482196050052}}", "marshalling map with prefersStrings false containing date at top level returns expected string");
+
+  test.done();
+};
+
 // =============================================================================
 // API
 // =============================================================================

@@ -119,7 +119,7 @@ time(function() {
 });
 
 console.log("1e5 iters, marshal {foo:new Date(Date.UTC(1985,3,12,23,20,50,52))}");
-var d0  = (new Date(Date.UTC(1985,3,12,23,20,50,52))),
+var d0  = new Date(Date.UTC(1985,3,12,23,20,50,52)),
     m1  = {foo:d0};
 wr.marshalTop(em0, m1, c0);
 console.log(em0.flushWriter());
@@ -127,6 +127,20 @@ time(function() {
   for(var i = 0; i < 100000; i++) {
     wr.marshalTop(em0, m1, c0);
     em0.flushWriter();
+  }
+});
+
+console.log("1e5 iters, marshal {foo:new Date(Date.UTC(1985,3,12,23,20,50,52))}, (prefersStrings false)");
+var em1 = new wr.JSONMarshaller(null, {prefersStrings: false}),
+    c1  = caching.writeCache(),
+    d1  = new Date(Date.UTC(1985,3,12,23,20,50,52)),
+    m2  = {foo:d1};
+wr.marshalTop(em1, m2, c1);
+console.log(em1.flushWriter());
+time(function() {
+  for(var i = 0; i < 100000; i++) {
+    wr.marshalTop(em1, m2, c1);
+    em1.flushWriter();
   }
 });
 
