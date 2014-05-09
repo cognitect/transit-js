@@ -320,6 +320,45 @@ function taggedValue(tag, value) {
   return new TaggedValue(tag, value);
 }
 
+function LinkedList(head, tail) {
+  this.head = head;
+  this.tail = tail;
+}
+
+function cons(x, tail) {
+  return new LinkedList(x, tail);
+};
+
+function Queue() {
+  this.list = null;
+}
+
+Queue.prototype = {
+  peek: function() {
+    if(this.list) {
+      return this.list.head;
+    } else {
+      return null;
+    }
+  },
+  push: function(x) {
+    this.list = cons(x, this.list);
+  },
+  pop: function(x) {
+    if(this.list) {
+      var ret = this.list.head;
+      this.list = this.list.tail;
+      return ret;
+    } else {
+      return null;
+    }
+  }
+};
+
+function queue() {
+  return new Queue();
+}
+
 module.exports = {
   nullValue: nullValue,
   boolValue: boolValue,
@@ -352,5 +391,7 @@ module.exports = {
   asTag: asTag,
   AsTag: AsTag,
   quoted: quoted,
-  Quote: Quote
+  Quote: Quote,
+  queue: queue,
+  Queue: Queue
 };

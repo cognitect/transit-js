@@ -46,14 +46,14 @@ var OBJECT = "object",
 
 function JSONMarshaller(stream, options) {
   this.stream = stream || sb.stringBuilder();
-  this.state = [];
+  this.state = t.queue();
   this.handlers = h.handlers();
   this._prefersStrings = options ? options.prefersString || false : true;
 }
 
 JSONMarshaller.prototype = {
   getState: function() {
-    return this.state[this.state.length-1];
+    return this.state.peek();
   },
 
   pushState: function(newState) {
@@ -239,7 +239,7 @@ JSONMarshaller.prototype = {
   },
 
   flushWriter: function(ignore) {
-    this.state = [];
+    this.state = t.queue();
     return this.stream.flush();
   },
 

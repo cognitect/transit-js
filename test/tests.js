@@ -492,6 +492,29 @@ exports.testWriterMarshalTopPreferStringsFalse = function(test) {
 };
 
 // =============================================================================
+// Queue
+// =============================================================================
+
+exports.testQueue = function(test) {
+  var q = t.queue();
+
+  q.push(1);
+  test.equal(q.peek(), 1, "1 is at the head of the queue");
+  q.push(2);
+  test.equal(q.peek(), 2, "2 is at the head of the queue");
+  q.push(3);
+  test.equal(q.peek(), 3, "3 is at the head of the queue");
+  q.pop();
+  test.equal(q.peek(), 2, "2 is at the head of the queue after pop");
+  q.pop();
+  test.equal(q.peek(), 1, "1 is at the head of the queue after pop");
+  q.pop();
+  test.equal(q.peek(), null, "null is at the head of the queue after pop");
+
+  test.done();
+};
+
+// =============================================================================
 // API
 // =============================================================================
 
