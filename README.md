@@ -2,6 +2,8 @@
 
 ## Usage
 
+You must have [grunt](http://gruntjs.com) installed.
+
 Use grunt to test.
 
 Test
