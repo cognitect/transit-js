@@ -14,7 +14,7 @@ StringReader.prototype = {
 };
 
 function stringReader(str) {
-  return new StringReader();
+  return new StringReader(str);
 }
 
 module.exports = {

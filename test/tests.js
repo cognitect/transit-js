@@ -11,6 +11,7 @@ var url     = require("url"),
     t       = require("../src/transit/types.js"),
     eq      = require("../src/transit/eq.js"),
     wr      = require("../src/transit/writer.js"),
+    sr      = require("../src/transit/stringreader.js"),
     caching = require("../src/transit/caching.js");
 
 // =============================================================================
@@ -497,11 +498,16 @@ exports.testWriterMarshalTopPreferStringsFalse = function(test) {
 exports.testWrite = function(test) {
   var writer = transit.writer(null, "json");
 
-  test.equal(transit.write(writer, {foo:"bar"}), "{\"foo\":\"bar\"}");
+  test.equal(transit.write(writer, {foo:"bar"}), "{\"foo\":\"bar\"}", "top level api write returns expected results");
 
   test.done();
 };
 
 exports.testRead = function(test) {
+  var r      = sr.stringReader("{\"foo\":\"bar\"}"),
+      reader = transit.reader(r, "json");
+ 
+  test.deepEqual(transit.read(reader), {foo:"bar"}, "top level api read returns the expected result");
+
   test.done();
 };

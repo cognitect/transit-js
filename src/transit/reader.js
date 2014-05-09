@@ -8,12 +8,13 @@ var caching = require("./caching"),
 
 function JSONUnmarshaller(stream) {
   this.stream = stream;
+  this.decoder = decoder.decoder();
 };
 
 JSONUnmarshaller.prototype = {
   unmarshal: function(cache) {
     var json = JSON.parse(this.stream.read());
-    return decoder.decode(json, cache);
+    return this.decoder.decode(json, cache);
   }
 }
 
