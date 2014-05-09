@@ -406,7 +406,7 @@ function maybeQuoted(em, obj) {
   var h = em.handler(obj);
 
   if(h != null) {
-    if(h.tag(obj).length == 1) {
+    if(h.tag(obj).length === 1) {
       return t.quoted(obj);
     } else {
       return obj;
@@ -445,8 +445,9 @@ function writer(out, type, opts) {
   }
 }
 
-function write(writer, obj) {
-  marshalTop(writer.marshaller, obj, caching.writeCache());
+function write(writer, obj, opts) {
+  var cache = (opts && opts.cache) || caching.writeCache(); 
+  marshalTop(writer.marshaller, obj, cache);
   return writer.marshaller.flushWriter(writer.stm);
 }
 

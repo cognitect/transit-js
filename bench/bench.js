@@ -199,3 +199,23 @@ time(function() {
   }
 });
 
+console.log("1e5 iters, JSON.stringify, map two keyword/number value pairs");
+var m3 = {foo:1,bar:2};
+console.log(JSON.stringify(m3));
+time(function() {
+  for(var i = 0; i < 100000; i++) {
+    JSON.stringify(m3);
+  }
+});
+
+console.log("1e5 iters, top level write, map two keyword/number value pairs");
+var w0    = transit.writer(null, "json"),
+    c4    = caching.writeCache(),
+    opts2 = {cache: c4};
+console.log(transit.write(w0, m3, opts2));
+time(function() {
+  for(var i = 0; i < 100000; i++) {
+    transit.write(w0, m3, opts2);
+  }
+});
+

@@ -4,17 +4,17 @@
 "use strict";
 
 function StringBuilder() {
-  this.buffer = [];
+  this.buffer = "";
 }
 
 StringBuilder.prototype = {
   write: function(data) {
-    this.buffer.push(data);
+    this.buffer += data;
   },
 
   flush: function() {
-    var ret = this.buffer.join("");
-    this.buffer = [];
+    var ret = this.buffer
+    this.buffer = "";
     return ret;
   }
 };
