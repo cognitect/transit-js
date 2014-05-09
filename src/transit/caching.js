@@ -46,7 +46,7 @@ WriteCache.prototype = {
       if(val) {
         return val;
       } else {
-        if(this.idx == MAX_CACHE_ENTRIES) {
+        if(this.idx === MAX_CACHE_ENTRIES) {
           this.idx = 0;
           this.cache = {};
         }

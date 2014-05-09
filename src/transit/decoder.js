@@ -151,7 +151,9 @@ Decoder.prototype = {
   },
 
   parseString: function(string, cache, asMapKey) {
-    if(IS_ESCAPED.test(string)) {
+    if(string[0] !== d.ESC) {
+      return string;
+    } else if(IS_ESCAPED.test(string)) {
       return string.substring(1);
     } else {
       var decoder = this.getDecoder(string[1]);
