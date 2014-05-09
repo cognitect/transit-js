@@ -82,17 +82,24 @@ Decoder.prototype = {
     cache = cache || new caching.readCache();
     asMapKey = asMapKey || false;
 
-    if(typeof node === "string") {
-      return this.decodeString(node, cache, asMapKey);
-    } else if(Array.isArray(node)) {
-      return this.decodeArray(node, cache);
-    } else if(node === null) {
-      return node;
-    } else if(typeof node === "object") {
-      return this.decodeHash(node, cache, asMapKey);
-    } else {
-      return node;
+    if(node == null) return null;
+
+    var t = typeof node;
+
+    switch(t) {
+      case "string":
+        return this.decodeString(node, cache, asMapKey);
+        break;
+      case "object":
+        if(Array.isArray(node)) {
+          return this.decodeArray(node, cache);
+        } else {
+          return this.decodeHash(node, cache, asMapKey);
+        }
+        break;
     }
+
+    return node;
   },
 
   decodeString: function(string, cache, asMapKey) {
@@ -123,9 +130,13 @@ Decoder.prototype = {
       }
     } else {
       var ret = {};
-      for(var i = 0; i < ks.length; i++) {
-        var key = this.getOption("prefersStrings") ? ks[i] : this.decode(ks[i], cache, true);
-        ret[key] = this.decode(hash[ks[i]], cache, false);
+      if(this.getOption("prefersStrings")) {
+        for(var i = 0; i < ks.length; i++) {
+          var key = ks[i];
+          ret[key] = this.decode(hash[key], cache, false);
+        }
+      } else {
+        /* check for tags */
       }
       return ret;
     }
