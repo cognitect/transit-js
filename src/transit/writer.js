@@ -37,12 +37,14 @@ var OBJECT = 0,
     ARRAY_FIRST_VALUE = 5;
 */
 
+/*
 var OBJECT = "object",
     ARRAY = "array",
     OBJECT_KEY = "object_key",
     OBJECT_VALUE = "object_value",
     OBJECT_FIRST_KEY = "object_first_key",
     ARRAY_FIRST_VALUE = "array_first_value";
+*/
 
 function JSONMarshaller(stream, options) {
   this.stream = stream || sb.stringBuilder();
@@ -60,17 +62,17 @@ JSONMarshaller.prototype = {
     var oldState = this.getState();
     this.state.push(newState);
 
-    if(oldState === ARRAY) {
+    if(oldState === 1) {
       this.stream.write(",");
     }
 
     switch(newState) {
-      case ARRAY:
-        this.state.push(ARRAY_FIRST_VALUE);
+      case 1:
+        this.state.push(5);
         this.stream.write("[");
         break;
-      case OBJECT:
-        this.state.push(OBJECT_FIRST_KEY);
+      case 0:
+        this.state.push(4);
         this.stream.write("{");
         break;
       default:
@@ -84,18 +86,18 @@ JSONMarshaller.prototype = {
   popState: function() {
     var state = this.state.pop();
 
-    while(state !== OBJECT && state !== ARRAY) {
+    while(state !== 0 && state !== 1) {
       state = this.state.pop();
     }
 
     switch(state) {
-      case ARRAY:
+      case 1:
         this.stream.write("]");
-        return ARRAY;
+        return 1;
         break;
-      case OBJECT:
+      case 0:
         this.stream.write("}");
-        return OBJECT;
+        return 0;
         break;
       default:
         var err = new Error("JSONMarshaller: Popped unknown state " + state);
@@ -108,11 +110,11 @@ JSONMarshaller.prototype = {
   pushKey: function(obj) {
     var state = this.getState();
     switch(state) {
-      case OBJECT_KEY:
+      case 2:
         this.stream.write(",");
-      case OBJECT_FIRST_KEY:
+      case 4:
         this.state.pop();
-        this.state.push(OBJECT_VALUE);
+        this.state.push(3);
         this.stream.write(obj);
         break;
       default:
@@ -127,18 +129,18 @@ JSONMarshaller.prototype = {
   pushValue: function(obj) {
     var state = this.getState();
     switch(state) {
-      case ARRAY:
+      case 1:
         this.stream.write(",");
         this.stream.write(obj);
         break;
-      case ARRAY_FIRST_VALUE:
+      case 5:
         this.state.pop();
         this.stream.write(obj);
         break;
-      case OBJECT_VALUE:
+      case 3:
         this.state.pop();
         this.stream.write(obj);
-        this.state.push(OBJECT_KEY);
+        this.state.push(2);
         break;
       default:
         this.stream.write(obj);
@@ -210,23 +212,23 @@ JSONMarshaller.prototype = {
   },
 
   emitArrayStart: function(size) {
-    this.pushState(ARRAY);
+    this.pushState(1);
   },
 
   emitArrayEnd: function() {
     var lastState = this.popState();
-    if(lastState !== ARRAY) {
+    if(lastState !== 1) {
       throw new Error("JSONMarshaller: Invalid array end");
     }
   },
 
   emitMapStart: function(size) {
-    this.pushState(OBJECT);
+    this.pushState(0);
   },
 
   emitMapEnd: function() {
     var lastState = this.popState();
-    if(lastState !== OBJECT) {
+    if(lastState !== 0) {
       throw new Error("JSONMarshaller: Invalid object end");
     }
   },
