@@ -33,7 +33,8 @@ function reader(stream, type, options) {
 }
 
 function read(reader, opts) {
-  return reader.unmarshaller.unmarshal(caching.readCache());
+  var cache = (opts && opts.cache) || caching.readCache();
+  return reader.unmarshaller.unmarshal(cache);
 }
 
 module.exports = {

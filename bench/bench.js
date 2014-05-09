@@ -167,12 +167,14 @@ time(function() {
 });
 
 console.log("1e5 iters, top level read, map two keyword value pairs");
-var r0      = sr.stringReader("{\"~:foo\":\"bar\",\"~:baz\":\"woz\"}"),
+var r0     = sr.stringReader("{\"~:foo\":\"bar\",\"~:baz\":\"woz\"}"),
+    c2     = caching.readCache(),
+    opts0  = {cache: c2},
     reader = transit.reader(r0, "json");
 console.log(transit.read(reader));
 time(function() {
   for(var i = 0; i < 100000; i++) {
-    transit.read(reader);
+    transit.read(reader, opts0);
   }
 });
 
