@@ -3,22 +3,39 @@
 
 "use strict";
 
-var decoder = require("decoder");
+var caching = require("./caching"),
+    decoder = require("./decoder");
 
-function JSONUnmarshaller() {}
+function JSONUnmarshaller(stream) {
+  this.stream = stream;
+};
 
 JSONUnmarshaller.prototype = {
-  unmarshal: function(str) {
-    return JSON.parse(str);
+  unmarshal: function(cache) {
+    var json = JSON.parse(this.stream.read());
+    return decoder.decode(json, cache);
   }
 }
 
-
-function read(stream, opts) {
-  var unmarshaller = new JSONUnmarshaller();
+function Reader(unmarshaller, options) {
+  this.unmarshaler = unmarshaler;
+  this.options = options || {};
 }
 
+function reader(stream, type, options) {
+  if(type == "json") {
+    unmarshaler = JSONUnmarshaller(stream);
+    return new Reader(unmarshaler, options);
+  } else {
+    throw new Error("Cannot create reader of type " + type);
+  }
+}
+
+function read(reader, opts) {
+  return reader.unmarshaler.unmarshal(caching.readCache());
+}
 
 module.exports = {
-  decoder: decoder
+  reader: reader,
+  read: read
 };

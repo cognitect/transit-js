@@ -157,7 +157,7 @@ Decoder.prototype = {
 
 function decoder(options) {
   return new Decoder(options);
-}
+};
 
 module.exports = {
   decoder: decoder,
