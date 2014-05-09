@@ -264,6 +264,7 @@ exports.testDecodeArrayOfKeywords = function(test) {
   test.done();
 };
 
+/*
 exports.testDecodeSetOfKeywords = function(test) {
   var dc = d.decoder(),
       v  = dc.decode({"~#set": ["~:foo", "~:bar", "~:baz"]});
@@ -271,6 +272,7 @@ exports.testDecodeSetOfKeywords = function(test) {
   test.ok(v.size === 3, "Decoding a set of keywords returns a Set of the same size");
   test.done();
 };
+*/
 
 // dates
 exports.testDecodeDates = function(test) {
@@ -540,6 +542,19 @@ exports.testReadTypes = function(test) {
       reader = transit.reader(r, "json");
  
   test.deepEqual(transit.read(reader), {"~:foo":"bar"}, "top level api read object with keywords returns the expected result");
+
+  test.done();
+};
+
+exports.testWriteTransitTypes = function(test) {
+  var writer = transit.writer(null, "json");
+
+  test.equal(transit.write(writer, [t.keyword("foo")]), "[\"~:foo\"]", "writing [t.keyword(\"foo\")] returns \"[\\\"~:foo\"]\\\"");
+  test.equal(transit.write(writer, [t.symbol("foo")]), "[\"~$foo\"]", "writing [t.symbol(\"foo\")] returns \"[\\\"~$foo\"]\\\"");
+  test.equal(transit.write(writer, [t.date(482196050052)]), "[\"~t1985-04-12T23:20:50.052Z\"]", "writing [t.date(482196050052)] returns \"[\\\"~t1985-04-12T23:20:50.052Z\\\"]\"");
+
+  test.equal(transit.write(writer, [t.keyword("foo"),t.symbol("bar")]), "[\"~:foo\",\"~$bar\"]");
+  test.equal(transit.write(writer, [t.symbol("foo"),t.keyword("bar")]), "[\"~$foo\",\"~:bar\"]");
 
   test.done();
 };

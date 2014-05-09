@@ -7,16 +7,6 @@ var url    = require("url"),
     longjs = require("long"),
     eq     = require("./eq");
 
-if(typeof Set == "undefined") {
-  var Set = require("es6-set");
-}
-
-/*
-if(typeof Map == "undefined") {
-  var Map = require("es6-map");
-}
-*/
-
 function nullValue() {
   return null;
 }
@@ -101,16 +91,6 @@ UUID.prototype.com$cognitecat$transit$hashCode = function() {
 
 function uuid(s) {
   return new UUID(s);
-}
-
-Set.prototype.com$cognitect$transit$equals = function(other) {
-}
-
-Set.prototype.com$cognitect$transit$hashCode = function(other) {
-}
-
-function set(arr) {
-  return new Set(arr);
 }
 
 function list(xs) {
@@ -281,6 +261,50 @@ function cmap(xs) {
     m.set(xs[i], xs[i+1]);
   }
   return m;
+}
+
+function Set(map) {
+  this.map = map;
+}
+
+Set.prototype.add = function(value) {
+};
+
+Set.prototype.clear = function() {
+};
+
+Set.prototype.delete = function(value) {
+};
+
+Set.prototype.entries = function() {
+};
+
+Set.prototype.forEach = function(iterator) {
+};
+
+Set.prototype.has = function(value) {
+};
+
+Set.prototype.keys = function() {
+};
+
+Set.prototype.value = function() {
+};
+
+Set.prototype.com$cognitect$transit$equals = function(other) {
+  if(other instanceof Set) {
+    return eq.equals(this.map, other.map);
+  } else {
+    return false;
+  }
+};
+
+Set.prototype.com$cognitect$transit$hashCode = function(other) {
+  return eq.hashCode(this.map);
+};
+
+function set(arr) {
+  return new Set();
 }
 
 function AsTag(tag, rep, str) {
