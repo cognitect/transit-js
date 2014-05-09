@@ -13,6 +13,10 @@ StringReader.prototype = {
   }
 };
 
+function stringReader(str) {
+  return new StringReader();
+}
+
 module.exports = {
   StringReader: StringReader,
   stringReader: stringReader

@@ -18,21 +18,21 @@ JSONUnmarshaller.prototype = {
 }
 
 function Reader(unmarshaller, options) {
-  this.unmarshaler = unmarshaler;
+  this.unmarshaller = unmarshaller;
   this.options = options || {};
 }
 
 function reader(stream, type, options) {
   if(type == "json") {
-    unmarshaler = JSONUnmarshaller(stream);
-    return new Reader(unmarshaler, options);
+    var unmarshaller = new JSONUnmarshaller(stream);
+    return new Reader(unmarshaller, options);
   } else {
     throw new Error("Cannot create reader of type " + type);
   }
 }
 
 function read(reader, opts) {
-  return reader.unmarshaler.unmarshal(caching.readCache());
+  return reader.unmarshaller.unmarshal(caching.readCache());
 }
 
 module.exports = {
