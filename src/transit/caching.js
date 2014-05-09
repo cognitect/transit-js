@@ -68,35 +68,11 @@ function writeCache() {
 // ReadCache
 
 function isCacheCode(string) {
-  return string[0] == d.SUB;
+  return string[0] === d.SUB;
 }
 
 function codeToIdx(code) {
   return code.charCodeAt(1) - BASE_CHAR_IDX;
-}
-
-function parseString(string, decoder) {
-  if(typeof string == "string" &&
-     (string.length > 1) &&
-     (d.ESC == string[0])) {
-    var res = null;
-    switch(string[1]) {
-      case "~": // ESC
-      case "^": // SUB
-      case "`": // RESERVED
-        res = string.substring(1);
-        break;
-      case "#": // TAG
-        res = string;
-        break;
-      default:
-        res = decoder.decode(string[1], string.substring(2));
-        break;
-    }
-    return res;
-  } else {
-    return string;
-  }
 }
 
 var ReadCache = function() {
