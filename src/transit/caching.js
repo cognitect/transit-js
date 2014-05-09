@@ -100,16 +100,21 @@ function parseString(string, decoder) {
 }
 
 var ReadCache = function() {
-  var cache = [];
   this.idx = 0;
-  for(var i = 0; i < MAX_CACHE_ENTRIES; i++) {
-    cache.push(null);
-  }
-  this.cache = cache;
+  this.cache = null;
 };
 
 ReadCache.prototype = {
+  guaranteeCache: function() {
+    if(this.cache) return;
+    this.cache = []
+    for(var i = 0; i < MAX_CACHE_ENTRIES; i++) {
+      this.cache.push(null);
+    }
+  },
+  
   write: function(string, obj) {
+    this.guaranteeCache();
     if(this.idx == MAX_CACHE_ENTRIES) {
       this.idx = 0;
     }
@@ -119,6 +124,7 @@ ReadCache.prototype = {
   },
 
   read: function(string, asMapKey) {
+    this.guaranteeCache();
     return this.cache[codeToIdx(string)];
   }
 };
