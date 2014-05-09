@@ -537,11 +537,31 @@ exports.testRead = function(test) {
   test.done();
 };
 
-exports.testReadTypes = function(test) {
-  var r      = sr.stringReader("{\"~:foo\":\"bar\"}"),
-      reader = transit.reader(r, "json");
+exports.testReadTransitTypes = function(test) {
+  var sr0 = sr.stringReader("{\"~:foo\":\"bar\"}"),
+      r0  = transit.reader(sr0, "json");
  
-  test.deepEqual(transit.read(reader), {"~:foo":"bar"}, "top level api read object with keywords returns the expected result");
+  test.deepEqual(transit.read(r0), {"~:foo":"bar"}, "top level api read object with keywords returns the expected result");
+
+  var sr1 = sr.stringReader("{\"~#ints\":[1,2,3]}"),
+      r1  = transit.reader(sr1, "json"); 
+  test.deepEqual(transit.read(r1), [1,2,3]);
+
+  var sr2 = sr.stringReader("{\"~#longs\":[1,2,3]}"),
+      r2  = transit.reader(sr2, "json"); 
+  test.deepEqual(transit.read(r2), [1,2,3]);
+
+  var sr3 = sr.stringReader("{\"~#floats\":[1.5,2.5,3.5]}"),
+      r3  = transit.reader(sr3, "json"); 
+  test.deepEqual(transit.read(r3), [1.5,2.5,3.5]);
+
+  var sr4 = sr.stringReader("{\"~#doubles\":[1.5,2.5,3.5]}"),
+      r4  = transit.reader(sr4, "json"); 
+  test.deepEqual(transit.read(r4), [1.5,2.5,3.5]);
+
+  var sr5 = sr.stringReader("{\"~#bools\":[\"~?t\",\"~?f\",\"~?t\"]}"),
+      r5  = transit.reader(sr5, "json");
+  test.deepEqual(transit.read(r5), [true,false,true]);
 
   test.done();
 };
