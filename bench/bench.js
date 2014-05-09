@@ -3,8 +3,10 @@
 
 "use strict";
 
-var eq = require("../src/transit/eq.js"),
-    t  = require("../src/transit/types.js");
+var eq      = require("../src/transit/eq.js"),
+    t       = require("../src/transit/types.js"),
+    wr      = require("../src/transit/writer.js"),
+    caching = require("../src/transit/caching.js");
 
 function time(f) {
   //for(var i = 0; i < 10; i++) {
@@ -99,5 +101,42 @@ time(function() {
   var key = [1,2];
   for(var i = 0; i < 100000; i++) {
     tm1.get(key);
+  }
+});
+
+
+console.log("1e5 iters, marshal {foo:\"bar\"}");
+var em0 = new wr.JSONMarshaller(),
+    c0  = caching.writeCache(),
+    m0  = {foo:"bar"};
+wr.marshalTop(em0, m0, c0);
+console.log(em0.flushWriter());
+time(function() {
+  for(var i = 0; i < 100000; i++) {
+    wr.marshalTop(em0, m0, c0);
+    em0.flushWriter();
+  }
+});
+
+console.log("1e5 iters, marshal {foo:new Date(Date.UTC(1985,3,12,23,20,50,52))}");
+var d0  = (new Date(Date.UTC(1985,3,12,23,20,50,52))),
+    m1  = {foo:d0};
+wr.marshalTop(em0, m1, c0);
+console.log(em0.flushWriter());
+time(function() {
+  for(var i = 0; i < 100000; i++) {
+    wr.marshalTop(em0, m1, c0);
+    em0.flushWriter();
+  }
+});
+
+console.log("1e5 iters, marshal [1,2,3]");
+var arr0 = [1,2,3];
+wr.marshalTop(em0, arr0, c0);
+console.log(em0.flushWriter());
+time(function() {
+  for(var i = 0; i < 100000; i++) {
+    wr.marshalTop(em0, arr0, c0);
+    em0.flushWriter();
   }
 });
