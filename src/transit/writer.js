@@ -62,17 +62,20 @@ JSONMarshaller.prototype = {
     var oldState = this.getState();
     this.state.push(newState);
 
+    // ARRAY
     if(oldState === 1) {
       this.stream.write(",");
     }
 
     switch(newState) {
+      // ARRAY
       case 1:
-        this.state.push(5);
+        this.state.push(5); // ARRAY_FIRST_VALUE
         this.stream.write("[");
         break;
+      // OBJECT
       case 0:
-        this.state.push(4);
+        this.state.push(4); // OBJECT_FIRST_KEY
         this.stream.write("{");
         break;
       default:
@@ -86,18 +89,21 @@ JSONMarshaller.prototype = {
   popState: function() {
     var state = this.state.pop();
 
+    // while !OBJECT && !ARRAY
     while(state !== 0 && state !== 1) {
       state = this.state.pop();
     }
 
     switch(state) {
+      // ARRAY
       case 1:
         this.stream.write("]");
-        return 1;
+        return 1; // ARRAY
         break;
+      // OBJECT
       case 0:
         this.stream.write("}");
-        return 0;
+        return 0; // OBJECT
         break;
       default:
         var err = new Error("JSONMarshaller: Popped unknown state " + state);
@@ -110,11 +116,13 @@ JSONMarshaller.prototype = {
   pushKey: function(obj) {
     var state = this.getState();
     switch(state) {
+      // OBJECT_KEY
       case 2:
         this.stream.write(",");
+      // OBJECT_FIRST_KEY
       case 4:
         this.state.pop();
-        this.state.push(3);
+        this.state.push(3); // OBJECT_VALUE
         this.stream.write(obj);
         break;
       default:
@@ -129,14 +137,17 @@ JSONMarshaller.prototype = {
   pushValue: function(obj) {
     var state = this.getState();
     switch(state) {
+      // ARRAY
       case 1:
         this.stream.write(",");
         this.stream.write(obj);
         break;
+      // ARRAY_FIRST_VALUE
       case 5:
         this.state.pop();
         this.stream.write(obj);
         break;
+      // OBJECT_VALUE
       case 3:
         this.state.pop();
         this.stream.write(obj);
@@ -192,7 +203,7 @@ JSONMarshaller.prototype = {
   },
 
   emitInteger: function(i, asMapKey, cache) {
-    if(asMapKey || (typeof i == "string") || (i > JSON_INT_MAX) || (i < JSON_INT_MIN)) {
+    if(asMapKey || (typeof i === "string") || (i > JSON_INT_MAX) || (i < JSON_INT_MIN)) {
       this.emitString(d.ESC, "i", i, asMapKey, cache);
     } else {
       this.writeObject(i);
@@ -212,12 +223,12 @@ JSONMarshaller.prototype = {
   },
 
   emitArrayStart: function(size) {
-    this.pushState(1);
+    this.pushState(1); // ARRAY
   },
 
   emitArrayEnd: function() {
     var lastState = this.popState();
-    if(lastState !== 1) {
+    if(lastState !== 1) { // ARRAY
       throw new Error("JSONMarshaller: Invalid array end");
     }
   },
