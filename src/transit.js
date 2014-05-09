@@ -3,10 +3,11 @@
 
 "use strict";
 
-var reader = require("./transit/reader.js"),
+var //reader = require("./transit/reader.js"),
     writer = require("./transit/writer.js");
 
-exports = {
-  read: reader.read,
+module.exports = {
+  //read: reader.read,
+  writer: writer.writer,
   write: writer.write
 };

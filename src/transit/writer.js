@@ -99,7 +99,7 @@ JSONMarshaller.prototype = {
         break;
       default:
         var err = new Error("JSONMarshaller: Popped unknown state " + state);
-        err.data = {state: state}
+        err.data = {state: state};
         throw err;
         break;
     }
@@ -446,7 +446,8 @@ function writer(out, type, opts) {
 }
 
 function write(writer, obj) {
-  marshalTop(writer.marshaller, writer, obj, caching.writeCache());
+  marshalTop(writer.marshaller, obj, caching.writeCache());
+  return writer.marshaller.flushWriter(writer.stm);
 }
 
 module.exports = {

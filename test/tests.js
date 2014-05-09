@@ -4,6 +4,7 @@
 "use strict";
 
 var url     = require("url"),
+    transit = require("../src/transit.js"),
     h       = require("../src/transit/handlers.js"),
     w       = require("../src/transit/writer.js"),
     d       = require("../src/transit/decoder.js"),
@@ -494,6 +495,10 @@ exports.testWriterMarshalTopPreferStringsFalse = function(test) {
 // =============================================================================
 
 exports.testWrite = function(test) {
+  var writer = transit.writer(null, "json");
+
+  test.equal(transit.write(writer, {foo:"bar"}), "{\"foo\":\"bar\"}");
+
   test.done();
 };
 
