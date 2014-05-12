@@ -303,9 +303,15 @@ function emitBooleans(em, src, cache) {
     }
 }
 
-function emitObjects(em, src, cache) {
-    for(var i = 0; i < src.length; i++) {
-        marshal(em, src[i], false, cache);
+function emitObjects(em, iterable, cache) {
+    if(Array.isArray(iterable)) {
+        for(var i = 0; i < iterable.length; i++) {
+            marshal(em, iterable[i], false, cache);
+        }
+    } else {
+        iterable.forEach(function(v, i) {
+            marshal(em, v, false, cache);
+        });
     }
 }
 
