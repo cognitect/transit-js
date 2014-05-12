@@ -11,40 +11,31 @@ var t                       = require("./types.js"),
 function typeTag(ctor) {
   if(ctor == null) {
     return "null";
-  }
-
-  if(ctor === String) {
+  } else if(ctor === String) {
     return "string";
-  }
-
-  if(ctor === Boolean) {
+  } else if(ctor === Boolean) {
     return "boolean";
-  }
-
-  if(ctor === Number) {
+  } else if(ctor === Number) {
     return "number";
-  }
-
-  if(ctor === Array) {
+  } else if(ctor === Array) {
     return "array";
-  }
-
-  if(ctor === Object) {
+  } else if(ctor === Object) {
     return "map";
+  } else {
+    var tag = ctor[transitCtorGuidProperty];
+    if(tag == null) {
+      ctor[transitCtorGuidProperty] = tag = ++ctorGuid;
+    }
+    return tag;
   }
-
-  var tag = ctor[transitCtorGuidProperty];
-
-  if(tag == null) {
-    ctor[transitCtorGuidProperty] = tag = ++ctorGuid;
-  }
-
-  return tag;
 }
 
 function constructor(x) {
-  if(x == null) return null;
-  return x.constructor;
+  if(x == null) {
+    return null;
+  } else {
+    return x.constructor;
+  }
 }
 
 function stringableKeys(m) {
