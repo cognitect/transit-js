@@ -26,6 +26,14 @@ time(function() {
   }
 });
 
+console.log("1e6 iters, eq.hashCode([1,2,3])");
+var arr0 = [1,2,3];
+time(function() {
+  for(var i = 0; i < 1000000; i++) {
+    eq.hashCode(arr0);
+  }
+});
+
 console.log("1e6 iters, eq.equals(\"foo\", \"foo\")");
 time(function() {
   for(var i = 0; i < 1000000; i++) {
