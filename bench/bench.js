@@ -144,13 +144,13 @@ time(function() {
     }
 });
 
-console.log("1e5 iters, marshal {foo:new Date(Date.UTC(1985,3,12,23,20,50,52))}");
+console.log("1e4 iters, marshal {foo:new Date(Date.UTC(1985,3,12,23,20,50,52))}");
 var d0  = new Date(Date.UTC(1985,3,12,23,20,50,52)),
     m1  = {foo:d0};
 wr.marshalTop(em0, m1, c0);
 console.log(em0.flushBuffer());
 time(function() {
-    for(var i = 0; i < 100000; i++) {
+    for(var i = 0; i < 10000; i++) {
         wr.marshalTop(em0, m1, c0);
         em0.flushBuffer();
     }
@@ -236,13 +236,64 @@ time(function() {
 });
 
 console.log("1e5 iters, top level write, map two keyword/number value pairs");
-var buf    = sb.stringBuilder(),
-    writer = transit.writer(buf, "json");
-writer.write(m3)
+var buf     = sb.stringBuilder(),
+    writer0 = transit.writer(buf, "json");
+writer0.write(m3)
 console.log(buf.flush());
 time(function() {
     for(var i = 0; i < 100000; i++) {
-        writer.write(m3);
+        writer0.write(m3);
         buf.flush();
     }
 });
+
+console.log("1 iter, JSON.stringfy JS object with 100000 kv pairs");
+var large0 = {};
+for(var i = 0; i < 100000; i++) {
+    large0["foo"+i] = i;
+}
+time(function() {
+    JSON.stringify(large0);
+});
+
+console.log("1 iter, transit write large JS object with 100000 kv pairs");
+var large1  = {},
+    buf     = sb.stringBuilder(),
+    writer1 = transit.writer(buf, "json");
+for(var i = 0; i < 100000; i++) {
+    large1["~:foo"+i] = i;
+}
+time(function() {
+    writer1.write(large1);
+    buf.flush();
+});
+
+console.log("1 iter, JSON.parse JS object with 100000 kv pairs");
+var arr3 = []
+for(var i = 0; i < 100000; i++) {
+    arr3.push("\"foo"+i+"\":"+i)
+}
+var larges0 = "{"+arr3.join(",")+"}";
+console.log(Object.keys(JSON.parse(larges0)).length);
+time(function() {
+    JSON.parse(larges0);
+});
+
+console.log("1 iter, transit read large transit map with 100000 kv pairs");
+var arr4   = [],
+    buf    = sb.stringBuilder(),
+    reader = transit.writer(buf, "json");
+for(var i = 0; i < 100000; i++) {
+    arr4.push("\"~:foo"+i+"\":"+i);
+}
+var larges1 = "{"+arr4.join(",")+"}",
+    ins     = sr.stringReader(larges1),
+    reader  = transit.reader("json");
+reader.read(ins, function(d) {
+    console.log(Object.keys(d).length);
+});
+time(function() {
+    ins = sr.stringReader(larges1);
+    reader.read(ins, function(data) {});
+});
+
