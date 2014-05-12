@@ -47,7 +47,7 @@ var OBJECT = "object",
 */
 
 function JSONMarshaller(stream, options) {
-    this.stream = stream || sb.stringBuilder();
+    this.buffer = (options && options.buffer) || sb.stringBuilder();
     this.state = t.queue();
     this.handlers = h.handlers();
     this._prefersStrings = options ? options.prefersString || false : true;
@@ -64,19 +64,19 @@ JSONMarshaller.prototype = {
 
         // ARRAY
         if(oldState === 1) {
-            this.stream.write(",");
+            this.buffer.write(",");
         }
 
         switch(newState) {
             // ARRAY
         case 1:
             this.state.push(5); // ARRAY_FIRST_VALUE
-            this.stream.write("[");
+            this.buffer.write("[");
             break;
             // OBJECT
         case 0:
             this.state.push(4); // OBJECT_FIRST_KEY
-            this.stream.write("{");
+            this.buffer.write("{");
             break;
         default:
             var err = new Error("JSONMarshaller: Invalid pushState, " + state);
@@ -97,12 +97,12 @@ JSONMarshaller.prototype = {
         switch(state) {
             // ARRAY
         case 1:
-            this.stream.write("]");
+            this.buffer.write("]");
             return 1; // ARRAY
             break;
             // OBJECT
         case 0:
-            this.stream.write("}");
+            this.buffer.write("}");
             return 0; // OBJECT
             break;
         default:
@@ -118,12 +118,12 @@ JSONMarshaller.prototype = {
         switch(state) {
             // OBJECT_KEY
         case 2:
-            this.stream.write(",");
+            this.buffer.write(",");
             // OBJECT_FIRST_KEY
         case 4:
             this.state.pop();
             this.state.push(3); // OBJECT_VALUE
-            this.stream.write(obj);
+            this.buffer.write(obj);
             break;
         default:
             var err = new Error("JSONMarshaller: Cannot pushKey in state " + state);
@@ -131,7 +131,7 @@ JSONMarshaller.prototype = {
             throw err;
             break;
         }
-        this.stream.write(":");
+        this.buffer.write(":");
     },
 
     pushValue: function(obj) {
@@ -139,22 +139,22 @@ JSONMarshaller.prototype = {
         switch(state) {
             // ARRAY
         case 1:
-            this.stream.write(",");
-            this.stream.write(obj);
+            this.buffer.write(",");
+            this.buffer.write(obj);
             break;
             // ARRAY_FIRST_VALUE
         case 5:
             this.state.pop();
-            this.stream.write(obj);
+            this.buffer.write(obj);
             break;
             // OBJECT_VALUE
         case 3:
             this.state.pop();
-            this.stream.write(obj);
+            this.buffer.write(obj);
             this.state.push(2);
             break;
         default:
-            this.stream.write(obj);
+            this.buffer.write(obj);
             break;
         }
     },
@@ -251,9 +251,9 @@ JSONMarshaller.prototype = {
         this.emitMapEnd();
     },
 
-    flushWriter: function(ignore) {
+    flushBuffer: function(ignore) {
         this.state = t.queue();
-        return this.stream.flush();
+        return this.buffer.flush();
     },
 
     prefersStrings: function() {
@@ -441,21 +441,31 @@ function marshalTop(em, obj, cache) {
     marshal(em, maybeQuoted(em, obj), false, cache);
 }
 
-function Writer(marshaller, stm, options) {
-    this.marshaller = marshaller
-    this.stm = stm;
-    this.options = options;
+function Writer(marshaller, stream, options) {
+    this.marshaller = marshaller;
+    this.stream = stream;
+    this.options = options || {};
+    this.cache = this.options.cache ? this.options.cache : caching.writeCache();
 }
 
 Writer.prototype = {
+    write: function(obj) {
+        marshalTop(this.marshaller, obj, this.cache)
+        this.stream.write(this.marshaller.flushBuffer());
+    },
+
     register: function(type, handler) {
         this.marshaller.registerHandler(type, handler);
+    },
+
+    clearCache: function() {
+        this.cache = this.options.cache ? new this.options.cache.constructor() : caching.writeCache();
     }
 };
 
 function writer(out, type, opts) {
     if(type === "json") {
-        var marshaller = new JSONMarshaller(out, opts);
+        var marshaller = new JSONMarshaller(opts);
         return new Writer(marshaller, out, opts);
     } else {
         var err = new Error("Type must be \"json\"");
@@ -464,15 +474,8 @@ function writer(out, type, opts) {
     }
 }
 
-function write(writer, obj, opts) {
-    var cache = (opts && opts.cache) || caching.writeCache(); 
-    marshalTop(writer.marshaller, obj, cache);
-    return writer.marshaller.flushWriter(writer.stm);
-}
-
 module.exports = {
     writer: writer,
-    write: write,
     marshal: marshal,
     marshalTop: marshalTop,
     emitTaggedMap: emitTaggedMap,

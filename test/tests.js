@@ -12,6 +12,7 @@ var url     = require("url"),
     eq      = require("../src/transit/eq.js"),
     wr      = require("../src/transit/writer.js"),
     sr      = require("../src/transit/stringreader.js"),
+    sb      = require("../src/transit/stringbuilder.js"),
     caching = require("../src/transit/caching.js");
 
 // =============================================================================
@@ -380,19 +381,19 @@ exports.testWriterLowLevelEmit = function(test) {
     em.emitArrayStart();
     em.emitArrayEnd();
 
-    test.equal(em.flushWriter(), "[]", "emitStartArray plus emitEndArray returns expected result");
+    test.equal(em.flushBuffer(), "[]", "emitStartArray plus emitEndArray returns expected result");
 
     em.emitMapStart();
     em.emitMapEnd();
 
-    test.equal(em.flushWriter(), "{}", "emitMapStart plus emitMapEnd returns expected result");
+    test.equal(em.flushBuffer(), "{}", "emitMapStart plus emitMapEnd returns expected result");
 
     em.emitMapStart();
     em.writeObject("\"foo\"", true);
     em.writeObject("\"bar\"", false);
     em.emitMapEnd();
 
-    test.equal(em.flushWriter(), "{\"foo\":\"bar\"}", "low level map emission returns expected result");
+    test.equal(em.flushBuffer(), "{\"foo\":\"bar\"}", "low level map emission returns expected result");
 
     test.done();
 };
@@ -423,29 +424,29 @@ exports.testWriterMarshalling = function(test) {
         c  = caching.writeCache();
 
     wr.marshal(em, null, false, c);
-    test.ok(em.flushWriter() === "null", "marshalling null return \"null\"");
+    test.ok(em.flushBuffer() === "null", "marshalling null return \"null\"");
     wr.marshal(em, true, false, c);
-    test.ok(em.flushWriter() === "true", "marshalling true returns \"true\"");
+    test.ok(em.flushBuffer() === "true", "marshalling true returns \"true\"");
     wr.marshal(em, false, false, c);
-    test.ok(em.flushWriter() === "false", "marshalling false returns \"false\"");
+    test.ok(em.flushBuffer() === "false", "marshalling false returns \"false\"");
     wr.marshal(em, 1, false, c);
-    test.ok(em.flushWriter() === "1", "marshalling false returns \"1\"");
+    test.ok(em.flushBuffer() === "1", "marshalling false returns \"1\"");
     wr.marshal(em, 1.5, false, c);
-    test.ok(em.flushWriter() === "1.5", "marshalling false returns \"1.5\"");
+    test.ok(em.flushBuffer() === "1.5", "marshalling false returns \"1.5\"");
     wr.marshal(em, "foo", false, c);
-    test.equal(em.flushWriter(), "\"foo\"", "marshalling \"foo\" returns \"\\\"foo\\\"\"");
+    test.equal(em.flushBuffer(), "\"foo\"", "marshalling \"foo\" returns \"\\\"foo\\\"\"");
     wr.marshal(em, [1,2,3], false, c);
-    test.ok(em.flushWriter() === "[1,2,3]", "marshalling [1,2,3] returns \"[1,2,3]\"");
+    test.ok(em.flushBuffer() === "[1,2,3]", "marshalling [1,2,3] returns \"[1,2,3]\"");
     wr.marshal(em, {foo: "bar"}, false, c);
-    test.ok(em.flushWriter(), "{\"foo\":\"bar\"}", "marshalling {foo:\"bar\"} returns \"{\"foo\":\"bar\"}\"");
+    test.ok(em.flushBuffer(), "{\"foo\":\"bar\"}", "marshalling {foo:\"bar\"} returns \"{\"foo\":\"bar\"}\"");
     wr.marshal(em, [1,[2,3],4], false, c);
-    test.ok(em.flushWriter() === "[1,[2,3],4]", "marshalling [1,[2,3],4] returns \"[1,[2,3],4]\"");
+    test.ok(em.flushBuffer() === "[1,[2,3],4]", "marshalling [1,[2,3],4] returns \"[1,[2,3],4]\"");
     wr.marshal(em, {foo:[1,2,3]}, false, c);
-    test.ok(em.flushWriter() === "{\"foo\":[1,2,3]}", "marshalling {foo:[1,2,3]} returns \"{\"foo\":[1,2,3]}\"");
+    test.ok(em.flushBuffer() === "{\"foo\":[1,2,3]}", "marshalling {foo:[1,2,3]} returns \"{\"foo\":[1,2,3]}\"");
     wr.marshal(em, {foo:[1,{bar:2},3]}, false, c);
-    test.ok(em.flushWriter() === "{\"foo\":[1,{\"bar\":2},3]}", "marshalling {foo:[1,{bar:2},3]} returns \"{\"foo\":[1,{\"bar\":2},3]}\"");
+    test.ok(em.flushBuffer() === "{\"foo\":[1,{\"bar\":2},3]}", "marshalling {foo:[1,{bar:2},3]} returns \"{\"foo\":[1,{\"bar\":2},3]}\"");
     wr.marshal(em, {foo:1,bar:2}, false, c);
-    test.ok(em.flushWriter() === "{\"foo\":1,\"bar\":2}", "marshalling {foo:1,bar:2} returns \"{\"foo\":1,\"bar\":2}\"");
+    test.ok(em.flushBuffer() === "{\"foo\":1,\"bar\":2}", "marshalling {foo:1,bar:2} returns \"{\"foo\":1,\"bar\":2}\"");
     
     test.done();
 };
@@ -459,21 +460,21 @@ exports.testWriterMarshallingMapKeys = function(test) {
     wr.marshal(em, null, false, c);
     em.emitMapEnd();
     
-    test.ok(em.flushWriter() === "{\"~_\":null}", "marshalling map with null key returns expected string");
+    test.ok(em.flushBuffer() === "{\"~_\":null}", "marshalling map with null key returns expected string");
     
     em.emitMapStart();
     wr.marshal(em, true, true, c);
     wr.marshal(em, true, false, c);
     em.emitMapEnd();
 
-    test.ok(em.flushWriter() === "{\"~?t\":true}", "marshalling map with true key returns expected string");
+    test.ok(em.flushBuffer() === "{\"~?t\":true}", "marshalling map with true key returns expected string");
 
     em.emitMapStart();
     wr.marshal(em, false, true, c);
     wr.marshal(em, false, false, c);
     em.emitMapEnd();
 
-    test.ok(em.flushWriter() === "{\"~?f\":false}", "marshalling map with false key returns expected string");
+    test.ok(em.flushBuffer() === "{\"~?f\":false}", "marshalling map with false key returns expected string");
 
     test.done();
 };
@@ -490,9 +491,9 @@ exports.testWriterEmitTaggedMap = function(test) {
         h  = em.handler(d);
 
     wr.emitTaggedMap(em, "t", h.rep(d), false, c);
-    test.equal(em.flushWriter(), "{\"~#t\":482196050052}", "emitting date as tagged map and returns expected string");
+    test.equal(em.flushBuffer(), "{\"~#t\":482196050052}", "emitting date as tagged map and returns expected string");
     wr.marshal(em, d, false, c);
-    test.equal(em.flushWriter(), "{\"~#t\":482196050052}", "emitting date as tagged map via writer.marshal returns expected string");
+    test.equal(em.flushBuffer(), "{\"~#t\":482196050052}", "emitting date as tagged map via writer.marshal returns expected string");
 
     test.done();
 };
@@ -502,7 +503,7 @@ exports.testWriterEmitQuoted = function(test) {
         c  = caching.writeCache();
 
     em.emitQuoted(1, c);
-    test.equal(em.flushWriter(), "{\"~'\":1}", "emitting quoted value returns expected string");
+    test.equal(em.flushBuffer(), "{\"~'\":1}", "emitting quoted value returns expected string");
 
     test.done();
 };
@@ -513,13 +514,13 @@ exports.testWriterMarshalTop = function(test) {
         d  = (new Date(Date.UTC(1985,3,12,23,20,50,52)))
 
     wr.marshalTop(em, 1, c);
-    test.equal(em.flushWriter(), "{\"~'\":1}", "marshalling number at top level returns expected string");
+    test.equal(em.flushBuffer(), "{\"~'\":1}", "marshalling number at top level returns expected string");
     wr.marshalTop(em, {foo:"bar"}, c);
-    test.equal(em.flushWriter(), "{\"foo\":\"bar\"}", "marshalling object at top level returns expected string");
+    test.equal(em.flushBuffer(), "{\"foo\":\"bar\"}", "marshalling object at top level returns expected string");
     wr.marshalTop(em, [1,2,3], c);
-    test.equal(em.flushWriter(), "[1,2,3]", "marshalling array at top level returns expected string");
+    test.equal(em.flushBuffer(), "[1,2,3]", "marshalling array at top level returns expected string");
     wr.marshalTop(em, {foo:d}, c);
-    test.equal(em.flushWriter(), "{\"foo\":\"~t1985-04-12T23:20:50.052Z\"}", "marshalling map containing date at top level returns expected string");
+    test.equal(em.flushBuffer(), "{\"foo\":\"~t1985-04-12T23:20:50.052Z\"}", "marshalling map containing date at top level returns expected string");
 
     test.done();
 };
@@ -530,7 +531,7 @@ exports.testWriterMarshalTopPreferStringsFalse = function(test) {
         d  = (new Date(Date.UTC(1985,3,12,23,20,50,52)))
 
     wr.marshalTop(em, {foo:d}, c);
-    test.equal(em.flushWriter(), "{\"foo\":{\"~#t\":482196050052}}", "marshalling map with prefersStrings false containing date at top level returns expected string");
+    test.equal(em.flushBuffer(), "{\"foo\":{\"~#t\":482196050052}}", "marshalling map with prefersStrings false containing date at top level returns expected string");
 
     test.done();
 };
@@ -563,82 +564,121 @@ exports.testQueue = function(test) {
 // =============================================================================
 
 exports.testWrite = function(test) {
-    var writer = transit.writer(null, "json");
+    var buf    = sb.stringBuilder(),
+        writer = transit.writer(buf, "json");
 
-    test.equal(transit.write(writer, {foo:"bar"}), "{\"foo\":\"bar\"}", "top level api write returns expected results");
+    writer.write({foo:"bar"});
+    test.equal(buf.flush(), "{\"foo\":\"bar\"}", "top level api write returns expected results");
 
     test.done();
 };
 
 exports.testRead = function(test) {
     var r      = sr.stringReader("{\"foo\":\"bar\"}"),
-        reader = transit.reader(r, "json");
-    
-    test.deepEqual(transit.read(reader), {foo:"bar"}, "top level api read returns the expected result");
+        reader = transit.reader("json");
 
-    test.done();
+    reader.read(r, function(d) {
+        test.deepEqual(d, {foo:"bar"}, "top level api read returns the expected result");        
+        test.done();
+    });
 };
 
 exports.testReadTransitTypes = function(test) {
     var sr0 = sr.stringReader("{\"~:foo\":\"bar\"}"),
-        r0  = transit.reader(sr0, "json");
+        r0  = transit.reader("json");
     
-    test.deepEqual(transit.read(r0), {"~:foo":"bar"}, "top level api read object with keywords returns the expected result");
+    r0.read(sr0, function(d) {
+        test.deepEqual(d, {"~:foo":"bar"}, "top level api read object with keywords returns the expected result");
+    });
 
     var sr1 = sr.stringReader("{\"~#ints\":[1,2,3]}"),
-        r1  = transit.reader(sr1, "json"); 
-    test.deepEqual(transit.read(r1), [1,2,3]);
+        r1  = transit.reader("json"); 
+
+    r1.read(sr1, function(d) {
+        test.deepEqual(d, [1,2,3]);
+    });
 
     var sr2 = sr.stringReader("{\"~#longs\":[1,2,3]}"),
-        r2  = transit.reader(sr2, "json"); 
-    test.deepEqual(transit.read(r2), [1,2,3]);
+        r2  = transit.reader("json"); 
+
+    r2.read(sr2, function(d) {
+        test.deepEqual(d, [1,2,3]);        
+    });
 
     var sr3 = sr.stringReader("{\"~#floats\":[1.5,2.5,3.5]}"),
-        r3  = transit.reader(sr3, "json"); 
-    test.deepEqual(transit.read(r3), [1.5,2.5,3.5]);
+        r3  = transit.reader("json"); 
+
+    r3.read(sr3, function(d) {
+        test.deepEqual(d, [1.5,2.5,3.5]);
+    });
 
     var sr4 = sr.stringReader("{\"~#doubles\":[1.5,2.5,3.5]}"),
-        r4  = transit.reader(sr4, "json"); 
-    test.deepEqual(transit.read(r4), [1.5,2.5,3.5]);
+        r4  = transit.reader("json"); 
+
+    r4.read(sr4, function(d) {
+        test.deepEqual(d, [1.5,2.5,3.5]);
+    });
 
     var sr5 = sr.stringReader("{\"~#bools\":[\"~?t\",\"~?f\",\"~?t\"]}"),
-        r5  = transit.reader(sr5, "json");
-    test.deepEqual(transit.read(r5), [true,false,true]);
+        r5  = transit.reader("json");
+
+    r5.read(sr5, function(d) {
+        test.deepEqual(d, [true,false,true]);
+    });
 
     test.done();
 };
 
 exports.testWriteTransitTypes = function(test) {
-    var writer = transit.writer(null, "json");
+    var buf    = sb.stringBuilder(),
+        writer = transit.writer(buf, "json");
 
-    test.equal(transit.write(writer, [t.keyword("foo")]), "[\"~:foo\"]", "writing [t.keyword(\"foo\")] returns \"[\\\"~:foo\"]\\\"");
-    test.equal(transit.write(writer, [t.symbol("foo")]), "[\"~$foo\"]", "writing [t.symbol(\"foo\")] returns \"[\\\"~$foo\"]\\\"");
-    test.equal(transit.write(writer, [t.date(482196050052)]), "[\"~t1985-04-12T23:20:50.052Z\"]", "writing [t.date(482196050052)] returns \"[\\\"~t1985-04-12T23:20:50.052Z\\\"]\"");
+    writer.write([t.keyword("foo")])
+    test.equal(buf.flush(), "[\"~:foo\"]", "writing [t.keyword(\"foo\")] returns \"[\\\"~:foo\"]\\\"");
+    writer.clearCache();
 
-    test.equal(transit.write(writer, [t.keyword("foo"),t.symbol("bar")]), "[\"~:foo\",\"~$bar\"]");
-    test.equal(transit.write(writer, [t.symbol("foo"),t.keyword("bar")]), "[\"~$foo\",\"~:bar\"]");
+    writer.write([t.symbol("foo")])
+    test.equal(buf.flush(), "[\"~$foo\"]", "writing [t.symbol(\"foo\")] returns \"[\\\"~$foo\"]\\\"");
+    writer.clearCache();
+
+    writer.write([t.date(482196050052)])
+    test.equal(buf.flush(), "[\"~t1985-04-12T23:20:50.052Z\"]", "writing [t.date(482196050052)] returns \"[\\\"~t1985-04-12T23:20:50.052Z\\\"]\"");
+    writer.clearCache();
+
+    writer.write([t.keyword("foo"),t.symbol("bar")])
+    test.equal(buf.flush(), "[\"~:foo\",\"~$bar\"]");
+    writer.clearCache();
+
+    writer.write([t.symbol("foo"),t.keyword("bar")])
+    test.equal(buf.flush(), "[\"~$foo\",\"~:bar\"]");
+    writer.clearCache();
 
     test.done();
 };
 
 exports.testWriteTransitComplexTypes = function(test) {
-    var writer = transit.writer(null, "json");
+    var buf    = sb.stringBuilder(),
+        writer = transit.writer(buf, "json"),
+        s0     = t.set(["foo","bar","baz"]),
+        m0     = t.map(["foo","bar","baz","woz"]);
 
-    var s0 = t.set(["foo","bar","baz"]),
-        m0 = t.map(["foo","bar","baz","woz"]);
-    
-    test.equal(transit.write(writer, s0),"{\"~#set\":[\"foo\",\"bar\",\"baz\"]}","writing a transit set returns the expected result");
+    writer.write(s0);
+    test.equal(buf.flush(),"{\"~#set\":[\"foo\",\"bar\",\"baz\"]}","writing a transit set returns the expected result");
 
     test.done();
 }; 
 
 exports.testRoundtrip = function(test) {
-    var writer = transit.writer(null, "json"),
+    var buf    = sb.stringBuilder(),
+        writer = transit.writer(buf, "json"),
         s      = "{\"~#set\":[\"foo\",\"bar\",\"baz\"]}",
         ins    = sr.stringReader(s),
-        r      = transit.reader(ins, "json");
+        reader = transit.reader("json");
 
-    test.equal(s, transit.write(writer, transit.read(r)), "round tripping produces the expected result");
+    reader.read(ins, function(d) {
+        writer.write(d);
+        test.equal(s, buf.flush(), "round tripping produces the expected result");        
+    });
 
     test.done();
 };

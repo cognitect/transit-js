@@ -8,8 +8,11 @@ function StringReader(str) {
 };
 
 StringReader.prototype = {
-    read: function() {
-        return this.str;
+    on: function(t, cb) {
+        if(t === "data") {
+            cb(this.str);
+            this.str = null;
+        }
     }
 };
 

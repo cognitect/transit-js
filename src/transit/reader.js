@@ -4,40 +4,40 @@
 "use strict";
 
 var caching = require("./caching"),
-decoder = require("./decoder");
+    decoder = require("./decoder");
 
-function JSONUnmarshaller(stream) {
-    this.stream = stream;
+function JSONUnmarshaller() {
     this.decoder = decoder.decoder();
-};
+}
 
 JSONUnmarshaller.prototype = {
-    unmarshal: function(cache) {
-        var json = JSON.parse(this.stream.read());
-        return this.decoder.decode(json, cache);
+    unmarshal: function(x, cache) {
+        return this.decoder.decode(JSON.parse(x), cache);
     }
-}
+};
 
 function Reader(unmarshaller, options) {
     this.unmarshaller = unmarshaller;
     this.options = options || {};
+    this.cache = this.options.cache ? this.options.cache : caching.readCache();
 }
 
-function reader(stream, type, options) {
-    if(type == "json") {
-        var unmarshaller = new JSONUnmarshaller(stream);
+Reader.prototype.read = function(ins, cb) {
+    var self = this;
+    ins.on("data", function(data) {
+        cb(self.unmarshaller.unmarshal(data, self.cache));
+    });
+}
+
+function reader(type, options) {
+    if(type === "json") {
+        var unmarshaller = new JSONUnmarshaller();
         return new Reader(unmarshaller, options);
     } else {
         throw new Error("Cannot create reader of type " + type);
     }
 }
 
-function read(reader, opts) {
-    var cache = (opts && opts.cache) || caching.readCache();
-    return reader.unmarshaller.unmarshal(cache);
-}
-
 module.exports = {
-    reader: reader,
-    read: read
+    reader: reader
 };
