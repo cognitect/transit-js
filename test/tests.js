@@ -635,23 +635,18 @@ exports.testWriteTransitTypes = function(test) {
 
     writer.write([t.keyword("foo")])
     test.equal(buf.flush(), "[\"~:foo\"]", "writing [t.keyword(\"foo\")] returns \"[\\\"~:foo\"]\\\"");
-    writer.clearCache();
 
     writer.write([t.symbol("foo")])
     test.equal(buf.flush(), "[\"~$foo\"]", "writing [t.symbol(\"foo\")] returns \"[\\\"~$foo\"]\\\"");
-    writer.clearCache();
 
     writer.write([t.date(482196050052)])
     test.equal(buf.flush(), "[\"~t1985-04-12T23:20:50.052Z\"]", "writing [t.date(482196050052)] returns \"[\\\"~t1985-04-12T23:20:50.052Z\\\"]\"");
-    writer.clearCache();
 
     writer.write([t.keyword("foo"),t.symbol("bar")])
     test.equal(buf.flush(), "[\"~:foo\",\"~$bar\"]");
-    writer.clearCache();
 
     writer.write([t.symbol("foo"),t.keyword("bar")])
     test.equal(buf.flush(), "[\"~$foo\",\"~:bar\"]");
-    writer.clearCache();
 
     test.done();
 };

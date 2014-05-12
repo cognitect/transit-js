@@ -443,14 +443,11 @@ Writer.prototype = {
     write: function(obj) {
         marshalTop(this.marshaller, obj, this.cache)
         this.stream.write(this.marshaller.flushBuffer());
+        this.cache.clear();
     },
 
     register: function(type, handler) {
         this.marshaller.registerHandler(type, handler);
-    },
-
-    clearCache: function() {
-        this.cache = this.options.cache ? new this.options.cache.constructor() : caching.writeCache();
     }
 };
 

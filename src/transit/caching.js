@@ -57,6 +57,11 @@ WriteCache.prototype = {
         } else {
             return string;
         }
+    },
+
+    clear: function() {
+        this.cache = {};
+        this.idx = 0;
     }
 };
 
@@ -83,7 +88,7 @@ var ReadCache = function() {
 ReadCache.prototype = {
     guaranteeCache: function() {
         if(this.cache) return;
-        this.cache = []
+        this.cache = [];
         for(var i = 0; i < MAX_CACHE_ENTRIES; i++) {
             this.cache.push(null);
         }
@@ -102,6 +107,10 @@ ReadCache.prototype = {
     read: function(string, asMapKey) {
         this.guaranteeCache();
         return this.cache[codeToIdx(string)];
+    },
+
+    clear: function() {
+        this.idx = 0;
     }
 };
 

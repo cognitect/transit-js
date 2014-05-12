@@ -26,6 +26,7 @@ Reader.prototype.read = function(ins, cb) {
     var self = this;
     ins.on("data", function(data) {
         cb(self.unmarshaller.unmarshal(data, self.cache));
+        self.cache.clear();
     });
 }
 
