@@ -346,7 +346,7 @@ function emitEncoded(em, h, tag, obj, asMapKey, cache) {
         var rep = h.rep(obj);
         if(typeof rep === "string") {
             em.emitString(d.ESC, tag, rep, asMapKey, cache);
-        } else if(asMapKey || em.prefersStrings()) {
+        } else if((asMapKey === true) || em.prefersStrings()) {
             rep = h.stringRep(obj);
             if(typeof rep === "string") {
                 em.emitString(d.ESC, tag, rep, asMapKey, cache);
@@ -358,7 +358,7 @@ function emitEncoded(em, h, tag, obj, asMapKey, cache) {
         } else {
             emitTaggedMap(em, tag, rep, asMapKey, cache);
         }
-    } else if (asMapKey) {
+    } else if (asMapKey === true) {
         var err = new Error("Cannot be used as map key");
         err.data = {tag: tag, rep: rep, obj: obj};
         throw err;
@@ -372,7 +372,7 @@ function marshal(em, obj, asMapKey, cache) {
         tag = h ? h.tag(obj) : null,
         rep = h ? h.rep(obj) : null;
 
-    if(h && tag) {
+    if(h != null && tag != null) {
         switch(tag) {
         case "_":
             em.emitNil(asMapKey, cache);
