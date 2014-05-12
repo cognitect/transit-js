@@ -118,7 +118,17 @@ exports.testTransitMapBasic = function(test) {
 
     test.ok(m5.get([1,2]) === "foo" && (m5.get([3,4]) === "bar"), "Can access complex keys from TransitMap");
 
-    
+    var m5 = t.transitMap(["foo", "bar", "foo", "baz"]);
+
+    test.equal(m5.size, 1, "t.transitMap([\"foo\", \"bar\", \"foo\", \"baz\"]) returns map of size 1");
+    test.equal(m5.get("foo"), "baz", "getting element from previous map returns last value");
+
+    var m6 = t.transitMap(["foo", "bar", "baz", "woz"]),
+        m7 = t.transitMap(["foo", "bar", "baz", "woz"]),
+        m8 = t.transitMap(["baz", "woz", "foo", "bar"]);
+
+    test.ok(eq.equals(m6,m7), "Two maps representing the same logical value are always equal");
+    test.ok(eq.equals(m7,m8), "Two maps representing the same logical value are always equal regardless of key value order")
 
     return test.done();
 };
@@ -139,6 +149,12 @@ exports.testTransitSetBasic = function(test) {
     var s2 = t.transitSet([1,1,2]);
 
     test.equal(s2.size, 2, "Size of t.transitSet([1,1,2]) is 2");
+
+    var s3 = t.transitSet(["foo","bar","baz"]);
+    test.ok(s3.has("foo") && s3.has("bar"), s3.has("baz"), "set contains all of the expected values");
+
+    var s4 = t.transitSet(["baz","bar","foo"]);
+    //test.ok(eq.equals(s3,s4), "The same logical sets are always equal");
 
     test.done();
 }

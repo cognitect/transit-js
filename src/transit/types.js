@@ -219,12 +219,13 @@ TransitMap.prototype.com$cognitect$transit$equals = function(other) {
        (this.size === other.size)) {
         for(var code in this.map) {
             var vals = this.map[code];
-            for(var j = 0; j < vals.length; j++) {
+            for(var j = 0; j < vals.length; j+=2) {
                 if(!eq.equals(vals[j+1], other.get(vals[j]))) {
                     return false;
                 }
             }
         }
+        return true;
     } else {
         return false;
     }
@@ -306,8 +307,10 @@ TransitSet.prototype.values = function() {
 };
 
 TransitSet.prototype.com$cognitect$transit$equals = function(other) {
-    if(other instanceof Set) {
-        return eq.equals(this.map, other.map);
+    if(other instanceof TransitSet) {
+        if(this.size === other.size) {
+            return eq.equals(this.map, other.map);
+        }
     } else {
         return false;
     }
