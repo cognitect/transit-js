@@ -620,3 +620,14 @@ exports.testWriteTransitTypes = function(test) {
 
     test.done();
 };
+
+exports.testWriteTransitComplexTypes = function(test) {
+    var writer = transit.writer(null, "json");
+
+    var s0 = t.transitSet(["foo","bar","baz"]),
+        m0 = t.transitMap(["foo","bar","baz","woz"]);
+    
+    test.equal(transit.write(writer, s0),"{\"~#set\":[\"foo\",\"bar\",\"baz\"]}","writing a transit set returns the expected result");
+
+    test.done();
+}

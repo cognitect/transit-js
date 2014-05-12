@@ -329,7 +329,7 @@ function transitSet(arr) {
         var code = eq.hashCode(arr[i]),
             vals = map[code];
         if(vals == null) {
-            keys.push(arr[i]);
+            keys.push(code);
             map[code] = [arr[i], true];
         } else {
             var newEntry = true;
@@ -340,7 +340,7 @@ function transitSet(arr) {
                 }
             }
             if(newEntry) {
-                keys.push(arr[i]);
+                keys.push(code);
                 vals.push(arr[i]);
                 vals.push(true);
                 size++;
