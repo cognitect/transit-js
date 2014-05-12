@@ -141,9 +141,10 @@ function bools(xs) {
     return xs;
 }  
 
-function TransitMap(map, size) {
+function TransitMap(keys, map) {
     this.map = map;
-    this.size = size;
+    this.keys = keys;
+    this.size = keys.length;
     this.hashCode = -1;
 }
 
@@ -160,8 +161,8 @@ TransitMap.prototype.entries = function() {
 };
 
 TransitMap.prototype.forEach = function(callback) {
-    for(var code in this.map) {
-        var vals = this.map[code];
+    for(var i = 0; i < this.keys.length; i++) {
+        var vals = this.map[this.keys[i]];
         for(var j = 0; j < vals.length; j+=2) {
             callback(vals[j], vals[j+1], this);
         }
@@ -234,13 +235,13 @@ TransitMap.prototype.com$cognitect$transit$equals = function(other) {
 
 function transitMap(arr) {
     var map  = {},
-        size = 0;
+        keys = [];
     for(var i = 0; i < arr.length; i+=2) {
         var code = eq.hashCode(arr[i]),
             vals = map[code];
         if(vals == null) {
+            keys.push(code);
             map[code] = [arr[i], arr[i+1]];
-            size++;
         } else {
             var newEntry = true;
             for(var j = 0; j < vals.length; j+= 2) {
@@ -251,13 +252,13 @@ function transitMap(arr) {
                 }
             }
             if(newEntry) {
+                keys.push(code);
                 vals.push(arr[i]);
                 vals.push(arr[i+1]);
-                size++;
             }
         }
     }
-    return new TransitMap(map, size);
+    return new TransitMap(keys, map);
 }
 
 function cmap(xs) {
@@ -323,13 +324,13 @@ TransitSet.prototype.com$cognitect$transit$hashCode = function(other) {
 
 function transitSet(arr) {
     var map  = {},
-        size = 0;
+        keys = [];
     for(var i = 0; i < arr.length; i++) {
         var code = eq.hashCode(arr[i]),
             vals = map[code];
         if(vals == null) {
+            keys.push(arr[i]);
             map[code] = [arr[i], true];
-            size++;
         } else {
             var newEntry = true;
             for(var j = 0; j < vals.length; j+= 2) {
@@ -339,13 +340,14 @@ function transitSet(arr) {
                 }
             }
             if(newEntry) {
+                keys.push(arr[i]);
                 vals.push(arr[i]);
                 vals.push(true);
                 size++;
             }
         }
     }
-    return new TransitSet(new TransitMap(map, size));
+    return new TransitSet(new TransitMap(keys, map));
 }
 
 function Quote(obj) {

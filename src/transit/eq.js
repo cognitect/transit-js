@@ -6,27 +6,27 @@
 var transitHashCodeProperty = "com$cognitect$transit$hashCode$" + Math.floor(Math.random() * 2147483648).toString(36);
 
 function equals(x, y) {
-    if(x === y) return true;
-    if(Array.isArray(x)) {
-        if(Array.isArray(y)) {
-            if(x.length === y.length) {
-                for(var i = 0; i < x.length; i++) {
-                    if(!equals(x[i], y[i])) {
-                        return false;
+    if(x === y) {
+        return true
+    } else if(typeof x === "object") {
+        if(Array.isArray(x)) {
+            if(Array.isArray(y)) {
+                if(x.length === y.length) {
+                    for(var i = 0; i < x.length; i++) {
+                        if(!equals(x[i], y[i])) {
+                            return false;
+                        }
                     }
+                    return true;
+                } else {
+                    return false;
                 }
-                return true;
             } else {
                 return false;
             }
-        } else {
-            return false;
-        }
-    } else if(typeof x === "object") {
-        if(x.com$cognitect$transit$equals) {
+        } else if(x.com$cognitect$transit$equals) {
             return x.com$cognitect$transit$equals(y);      
-        }
-        if(typeof y === "object") {
+        } else if(typeof y === "object") {
             var sub   = 0,
                 xklen = 0,
                 yklen = Object.keys(y).length;
@@ -112,28 +112,29 @@ function hashArrayLike(arr) {
 }
 
 function hashCode(x) {
-    if(x.com$cognitect$transit$hashCode) {
-        return x.com$cognitect$transit$hashCode();
-    } else if(x[transitHashCodeProperty]) {
-        return x[transitHashCodeProperty];
-    } if(x instanceof Date) {
-        return x.valueOf();
+    if(x === null) {
+        return 0;
     } else {
-        if(x === null) return 0;
         var t = typeof x;
         switch(t) {
         case 'number':
             return x;
             break;
         case 'boolean':
-            return x ? 1 : 0;
+            return x === true ? 1 : 0;
             break;
         case 'string':
             return hashString(x);
             break;
         default:
-            if(Array.isArray(x)) {
+            if(x instanceof Date) {
+                return x.valueOf();
+            } else if(Array.isArray(x)) {
                 return hashArrayLike(x);
+            } if(x.com$cognitect$transit$hashCode) {
+                return x.com$cognitect$transit$hashCode();
+            } else if(x[transitHashCodeProperty]) {
+                return x[transitHashCodeProperty];
             } else {
                 var code = hashMapLike(x);
                 x[transitHashCodeProperty] = code;

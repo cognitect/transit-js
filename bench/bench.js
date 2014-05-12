@@ -19,6 +19,13 @@ function time(f) {
   console.log("----------");
 }
 
+console.log("1e6 iters, eq.hashCode(\"foo\")");
+time(function() {
+  for(var i = 0; i < 1000000; i++) {
+    eq.hashCode("foo");
+  }
+});
+
 console.log("1e6 iters, eq.equals(\"foo\", \"foo\")");
 time(function() {
   for(var i = 0; i < 1000000; i++) {
@@ -106,12 +113,12 @@ time(function() {
   }
 });
 
-console.log("1e5 iters, Complex TransitSet \"bar\"");
+console.log("1e6 iters, Complex TransitSet \"bar\"");
 var ts0 = t.transitSet(["foo",1,"bar",[1,2]])
 console.log(ts0.has("bar"));
 time(function() {
   var key = "bar";
-  for(var i = 0; i < 100000; i++) {
+  for(var i = 0; i < 1000000; i++) {
     ts0.has(key);
   }
 });
