@@ -3,9 +3,9 @@
   
 "use strict";
 
-var url    = require("url"),
-    longjs = require("long"),
-    eq     = require("./eq");
+var url  = require("url"),
+    Long = require("long"),
+    eq   = require("./eq");
 
 function nullValue() {
     return null;
@@ -16,7 +16,7 @@ function boolValue(s) {
 }
 
 function intValue(s) {
-    return longjs.fromString(s, false, 10);
+    return Long.fromString(s, false, 10);
 }
 
 function floatValue(s) {
