@@ -106,6 +106,16 @@ time(function() {
   }
 });
 
+console.log("1e5 iters, Complex TransitSet \"bar\"");
+var ts0 = t.transitSet(["foo",1,"bar",[1,2]])
+console.log(ts0.has("bar"));
+time(function() {
+  var key = "bar";
+  for(var i = 0; i < 100000; i++) {
+    ts0.has(key);
+  }
+});
+
 
 console.log("1e5 iters, marshal {foo:\"bar\"}");
 var em0 = new wr.JSONMarshaller(),

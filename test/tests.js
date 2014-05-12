@@ -156,6 +156,9 @@ exports.testTransitSetBasic = function(test) {
     var s4 = t.transitSet(["baz","bar","foo"]);
     test.ok(eq.equals(s3,s4), "Two sets representing the same logical vlaue are always equal");
 
+    var s5 = t.transitSet(["foo",1,"bar",[1,2]]);
+    test.ok(s5.has("bar"), "Set with complex values returns true for has on contained value");
+
     test.done();
 }
 

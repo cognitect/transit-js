@@ -184,13 +184,14 @@ TransitMap.prototype.get = function(k) {
 
 TransitMap.prototype.has = function(k) {
     var code = eq.hashCode(k),
-    vals = this.map[code];
-    if(vals !== null) {
+        vals = this.map[code];
+    if(vals != null) {
         for(var i = 0; i < vals.length; i+=2) {
             if(eq.equals(k,vals[i])) {
                 return true;
             }
         }
+        return false;
     } else {
         return false;
     }
