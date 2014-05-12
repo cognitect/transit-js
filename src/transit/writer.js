@@ -37,15 +37,6 @@ var OBJECT = 0,
     ARRAY_FIRST_VALUE = 5;
 */
 
-/*
-var OBJECT = "object",
-    ARRAY = "array",
-    OBJECT_KEY = "object_key",
-    OBJECT_VALUE = "object_value",
-    OBJECT_FIRST_KEY = "object_first_key",
-    ARRAY_FIRST_VALUE = "array_first_value";
-*/
-
 function JSONMarshaller(stream, options) {
     this.buffer = (options && options.buffer) || sb.stringBuilder();
     this.state = t.queue();
@@ -68,12 +59,12 @@ JSONMarshaller.prototype = {
         }
 
         switch(newState) {
-            // ARRAY
+        // ARRAY
         case 1:
             this.state.push(5); // ARRAY_FIRST_VALUE
             this.buffer.write("[");
             break;
-            // OBJECT
+        // OBJECT
         case 0:
             this.state.push(4); // OBJECT_FIRST_KEY
             this.buffer.write("{");
@@ -95,12 +86,12 @@ JSONMarshaller.prototype = {
         }
 
         switch(state) {
-            // ARRAY
+        // ARRAY
         case 1:
             this.buffer.write("]");
             return 1; // ARRAY
             break;
-            // OBJECT
+        // OBJECT
         case 0:
             this.buffer.write("}");
             return 0; // OBJECT
@@ -116,10 +107,10 @@ JSONMarshaller.prototype = {
     pushKey: function(obj) {
         var state = this.getState();
         switch(state) {
-            // OBJECT_KEY
+        // OBJECT_KEY
         case 2:
             this.buffer.write(",");
-            // OBJECT_FIRST_KEY
+        // OBJECT_FIRST_KEY
         case 4:
             this.state.pop();
             this.state.push(3); // OBJECT_VALUE
@@ -137,17 +128,17 @@ JSONMarshaller.prototype = {
     pushValue: function(obj) {
         var state = this.getState();
         switch(state) {
-            // ARRAY
+        // ARRAY
         case 1:
             this.buffer.write(",");
             this.buffer.write(obj);
             break;
-            // ARRAY_FIRST_VALUE
+        // ARRAY_FIRST_VALUE
         case 5:
             this.state.pop();
             this.buffer.write(obj);
             break;
-            // OBJECT_VALUE
+        // OBJECT_VALUE
         case 3:
             this.state.pop();
             this.buffer.write(obj);
