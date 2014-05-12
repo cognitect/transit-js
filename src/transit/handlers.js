@@ -4,6 +4,8 @@
 "use strict";
 
 var t                       = require("./types.js"),
+    url                     = require("url"),
+    Long                    = require("long"),
     moment                  = require("moment"),
     ctorGuid                = 0,
     transitCtorGuidProperty = "com$cognitect$transit$ctor$guid";
@@ -68,6 +70,18 @@ function defaultHandlers(hs) {
          stringRep: function(v) { return v.toString(); }});
 
     hs.set(
+        Long,
+        {tag: function(v) { return "i" },
+         rep: function(v) { return v; },
+         stringRep: function(v) { return v.toString(); }});
+
+    hs.set(
+        Number,
+        {tag: function(v) { return "i" },
+         rep: function(v) { return v; },
+         stringRep: function(v) { return v.toString(); }});
+
+    hs.set(
         Boolean,
         {tag: function(v) { return "?"; },
          rep: function(v) { return v; },
@@ -92,6 +106,22 @@ function defaultHandlers(hs) {
          stringRep: function(v) {
              return moment.utc(v.valueOf()).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
          }});
+
+    hs.set(
+        t.UUID,
+        {tag: function(v) { return "u"; },
+         rep: function(v) {
+             return v.valueOf();
+         },
+         stringRep: function(v) {
+             return v.str;
+         }});
+
+    hs.set(
+        url.Url,
+        {tag: function(v) { return "r"; },
+         rep: function(v) { return v.href; },
+         stringRep: function(v) { return v.href; }});
 
     hs.set(
         t.Keyword,
@@ -120,7 +150,7 @@ function defaultHandlers(hs) {
     hs.set(
         t.TransitSet,
         {tag: function(v) { return "set"; },
-         rep: function(v) { return t.asTag("array", s, null); },
+         rep: function(v) { return t.taggedValue("array", v, null); },
          stringRep: function(v) { return null; }});
 
     hs.set(
@@ -128,11 +158,11 @@ function defaultHandlers(hs) {
         {tag: function(v) { return "cmap"; },
          rep: function(v) {
              var arr = [];
-             s.forEach(function(v, k, m) {
-                 arr.push(k);
-                 arr.push(v);
+             v.forEach(function(val, key, map) {
+                 arr.push(key);
+                 arr.push(val);
              });
-             return t.asTag("array", arr, null);
+             return t.taggedValue("array", arr, null);
          },
          stringRep: function(v) { return null; }});
 
