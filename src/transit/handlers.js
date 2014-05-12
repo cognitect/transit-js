@@ -123,6 +123,19 @@ function defaultHandlers(hs) {
          rep: function(v) { return t.asTag("array", s, null); },
          stringRep: function(v) { return null; }});
 
+    hs.set(
+        t.TransitMap,
+        {tag: function(v) { return "cmap"; },
+         rep: function(v) {
+             var arr = [];
+             s.forEach(function(v, k, m) {
+                 arr.push(k);
+                 arr.push(v);
+             });
+             return t.asTag("array", arr, null);
+         },
+         stringRep: function(v) { return null; }});
+
     return hs;
 }
 
