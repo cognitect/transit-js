@@ -231,17 +231,19 @@ TransitMap.prototype.com$cognitect$transit$equals = function(other) {
 };
 
 function transitMap(arr) {
-    var map = {};
+    var map  = {},
+        size = 0;
     for(var i = 0; i < arr.length; i+=2) {
         var code = eq.hashCode(arr[i]),
             vals = map[code];
         if(vals == null) {
             map[code] = [arr[i], arr[i+1]];
+            size++;
         } else {
             var newEntry = true;
             for(var j = 0; j < vals.length; j+= 2) {
                 if(eq.equals(vals[j], arr[i])) {
-                    vals[j] = arr[i+1];
+                    vals[j+1] = arr[i+1];
                     newEntry = false;
                     break;
                 }
@@ -249,10 +251,11 @@ function transitMap(arr) {
             if(newEntry) {
                 vals.push(arr[i]);
                 vals.push(arr[i+1]);
+                size++;
             }
         }
     }
-    return new TransitMap(map, arr.length / 2);
+    return new TransitMap(map, size);
 }
 
 function cmap(xs) {
@@ -263,41 +266,46 @@ function cmap(xs) {
     return m;
 }
 
-function Set(map) {
+function TransitSet(map) {
     this.map = map;
+    this.size = map.size;
 }
 
-Set.prototype.add = function(value) {
+TransitSet.prototype.add = function(value) {
     throw new Error("Unsupported operation: add");
 };
 
-Set.prototype.clear = function() {
+TransitSet.prototype.clear = function() {
     throw new Error("Unsupported operation: clear");
 };
 
-Set.prototype.delete = function(value) {
+TransitSet.prototype.delete = function(value) {
     throw new Error("Unsupported operation: delete");
 };
 
-Set.prototype.entries = function() {
+TransitSet.prototype.entries = function() {
     throw new Error("Unsupported operation: entries");
 };
 
-Set.prototype.forEach = function(iterator) {
+TransitSet.prototype.forEach = function(iterator, thisArg) {
+    this.map.forEach(function(v, k, m) {
+        iterator(v, this);
+    });
 };
 
-Set.prototype.has = function(value) {
+TransitSet.prototype.has = function(value) {
+    return this.map.has(value);
 };
 
-Set.prototype.keys = function() {
+TransitSet.prototype.keys = function() {
     throw new Error("Unsupported operation: keys");
 };
 
-Set.prototype.values = function() {
+TransitSet.prototype.values = function() {
     throw new Error("Unsupported operation: valuesa");
 };
 
-Set.prototype.com$cognitect$transit$equals = function(other) {
+TransitSet.prototype.com$cognitect$transit$equals = function(other) {
     if(other instanceof Set) {
         return eq.equals(this.map, other.map);
     } else {
@@ -305,22 +313,23 @@ Set.prototype.com$cognitect$transit$equals = function(other) {
     }
 };
 
-Set.prototype.com$cognitect$transit$hashCode = function(other) {
+TransitSet.prototype.com$cognitect$transit$hashCode = function(other) {
     return eq.hashCode(this.map);
 };
 
-function set(arr) {
-    var map = {};
+function transitSet(arr) {
+    var map  = {},
+        size = 0;
     for(var i = 0; i < arr.length; i++) {
         var code = eq.hashCode(arr[i]),
             vals = map[code];
         if(vals == null) {
             map[code] = [arr[i], true];
+            size++;
         } else {
             var newEntry = true;
             for(var j = 0; j < vals.length; j+= 2) {
                 if(eq.equals(vals[j], arr[i])) {
-                    vals[j] = arr[i+1];
                     newEntry = false;
                     break;
                 }
@@ -328,10 +337,11 @@ function set(arr) {
             if(newEntry) {
                 vals.push(arr[i]);
                 vals.push(true);
+                size++;
             }
         }
     }
-    return new Set(map);
+    return new TransitSet(new TransitMap(map, size));
 }
 
 function AsTag(tag, rep, str) {
@@ -417,12 +427,11 @@ module.exports = {
     Symbol: Symbol,
     uuid: uuid,
     UUID: UUID,
-    set: set,
-    Set: Set,
-    cmap: cmap,
-    //Map: Map,
     TransitMap: TransitMap,
     transitMap: transitMap,
+    transitSet: transitSet,
+    TransitSet: TransitSet,
+    cmap: cmap,
     date: date,
     byteBuffer: byteBuffer,
     uri: uri,
