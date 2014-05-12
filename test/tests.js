@@ -90,42 +90,42 @@ exports.testHashCode = function(test) {
 
 exports.testTransitMapBasic = function(test) {
 
-    var m0 = t.transitMap([]);
+    var m0 = t.map([]);
 
     test.ok(m0.size == 0, "Size of empty TransitMap is 0");
 
-    var m1 = t.transitMap(["foo", "bar"]);
+    var m1 = t.map(["foo", "bar"]);
 
     test.ok(m1.size == 1, "Size of TransitMap from array of two elements is 1");
     test.ok(m1.has("foo"), "TransitMap has expected key");
     test.equal(m1.get("foo"), "bar", "Accessing key of TransitMap returns expected result");
 
-    var m2 = t.transitMap(["foo", "bar", 101574, "baz"]);
+    var m2 = t.map(["foo", "bar", 101574, "baz"]);
 
     test.ok(m2.size == 2, "Size of TransitMap with collisions from array of two elements is 2");
     test.ok(m2.has("foo") && m2.has(101574), "TransitMap with collisions has expected keys");
     test.ok((m2.get("foo") == "bar") && (m2.get(101574) == "baz"), "Accessing keys of TransitMap with collisions returns expected result");
 
-    var m3 = t.transitMap(["foo", "bar"]);
+    var m3 = t.map(["foo", "bar"]);
 
     test.equal(eq.hashCode(m1), eq.hashCode(m3), "hash codes for equivalent TransitMaps are always the same");
 
-    var m4 = t.transitMap(["foo", "bop"]);
+    var m4 = t.map(["foo", "bop"]);
 
     test.notEqual(eq.hashCode(m3), eq.hashCode(m4), "TransmitMap({foo: \"bar\"}) and TransmitMap({foo: \"bop\") have different hash codes");
 
-    var m5 = t.transitMap([[1,2], "foo", [3,4], "bar"]);
+    var m5 = t.map([[1,2], "foo", [3,4], "bar"]);
 
     test.ok(m5.get([1,2]) === "foo" && (m5.get([3,4]) === "bar"), "Can access complex keys from TransitMap");
 
-    var m5 = t.transitMap(["foo", "bar", "foo", "baz"]);
+    var m5 = t.map(["foo", "bar", "foo", "baz"]);
 
-    test.equal(m5.size, 1, "t.transitMap([\"foo\", \"bar\", \"foo\", \"baz\"]) returns map of size 1");
+    test.equal(m5.size, 1, "t.map([\"foo\", \"bar\", \"foo\", \"baz\"]) returns map of size 1");
     test.equal(m5.get("foo"), "baz", "getting element from previous map returns last value");
 
-    var m6 = t.transitMap(["foo", "bar", "baz", "woz"]),
-        m7 = t.transitMap(["foo", "bar", "baz", "woz"]),
-        m8 = t.transitMap(["baz", "woz", "foo", "bar"]);
+    var m6 = t.map(["foo", "bar", "baz", "woz"]),
+        m7 = t.map(["foo", "bar", "baz", "woz"]),
+        m8 = t.map(["baz", "woz", "foo", "bar"]);
 
     test.ok(eq.equals(m6,m7), "Two maps representing the same logical value are always equal");
     test.ok(eq.equals(m7,m8), "Two maps representing the same logical value are always equal regardless of key value order")
@@ -138,25 +138,25 @@ exports.testTransitMapBasic = function(test) {
 // =============================================================================
 
 exports.testTransitSetBasic = function(test) {
-    var s0 = t.transitSet([]);
+    var s0 = t.set([]);
 
     test.equal(s0.size, 0, "Size of empty set is 0");
 
-    var s1 = t.transitSet([1]);
+    var s1 = t.set([1]);
 
     test.equal(s1.size, 1, "Size of set with one element is 1");
 
-    var s2 = t.transitSet([1,1,2]);
+    var s2 = t.set([1,1,2]);
 
-    test.equal(s2.size, 2, "Size of t.transitSet([1,1,2]) is 2");
+    test.equal(s2.size, 2, "Size of t.set([1,1,2]) is 2");
 
-    var s3 = t.transitSet(["foo","bar","baz"]);
+    var s3 = t.set(["foo","bar","baz"]);
     test.ok(s3.has("foo") && s3.has("bar"), s3.has("baz"), "set contains all of the expected values");
 
-    var s4 = t.transitSet(["baz","bar","foo"]);
+    var s4 = t.set(["baz","bar","foo"]);
     test.ok(eq.equals(s3,s4), "Two sets representing the same logical vlaue are always equal");
 
-    var s5 = t.transitSet(["foo",1,"bar",[1,2]]);
+    var s5 = t.set(["foo",1,"bar",[1,2]]);
     test.ok(s5.has("bar"), "Set with complex values returns true for has on contained value");
 
     test.done();
@@ -624,10 +624,21 @@ exports.testWriteTransitTypes = function(test) {
 exports.testWriteTransitComplexTypes = function(test) {
     var writer = transit.writer(null, "json");
 
-    var s0 = t.transitSet(["foo","bar","baz"]),
-        m0 = t.transitMap(["foo","bar","baz","woz"]);
+    var s0 = t.set(["foo","bar","baz"]),
+        m0 = t.map(["foo","bar","baz","woz"]);
     
     test.equal(transit.write(writer, s0),"{\"~#set\":[\"foo\",\"bar\",\"baz\"]}","writing a transit set returns the expected result");
 
     test.done();
-}
+}; 
+
+exports.testRoundtrip = function(test) {
+    var writer = transit.writer(null, "json"),
+        s      = "{\"~#set\":[\"foo\",\"bar\",\"baz\"]}",
+        ins    = sr.stringReader(s),
+        r      = transit.reader(ins, "json");
+
+    test.equal(s, transit.write(writer, transit.read(r)), "round tripping produces the expected result");
+
+    test.done();
+};
