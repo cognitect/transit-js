@@ -123,6 +123,12 @@ function defaultHandlers(hs) {
          rep: function(v) { return v.rep; },
          stringRep: function(v) { return null; }});
 
+    hs.set(
+        t.TransitSet,
+        {tag: function(v) { return "set"; },
+         rep: function(v) { return t.asTag("array", s, null); },
+         stringRep: function(v) { return null; }});
+
     return hs;
 }
 
