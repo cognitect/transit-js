@@ -154,7 +154,7 @@ exports.testTransitSetBasic = function(test) {
     test.ok(s3.has("foo") && s3.has("bar"), s3.has("baz"), "set contains all of the expected values");
 
     var s4 = t.transitSet(["baz","bar","foo"]);
-    //test.ok(eq.equals(s3,s4), "The same logical sets are always equal");
+    test.ok(eq.equals(s3,s4), "Two sets representing the same logical vlaue are always equal");
 
     test.done();
 }
