@@ -8,143 +8,143 @@ var url    = require("url"),
     eq     = require("./eq");
 
 function nullValue() {
-  return null;
+    return null;
 }
 
 function boolValue(s) {
-  return s === "t";
+    return s === "t";
 }
 
 function intValue(s) {
-  return longjs.fromString(s, false, 10);
+    return longjs.fromString(s, false, 10);
 }
 
 function floatValue(s) {
-  return parseFloat(s);
+    return parseFloat(s);
 }
 
 function charValue(s) {
-  return s;
+    return s;
 }
 
 function Keyword(name) {
-  this.name = name;
-  this.hashCode = -1;
+    this.name = name;
+    this.hashCode = -1;
 }
 
 Keyword.prototype.com$cognitect$transit$equals = function(other) {
-  return (other instanceof Keyword) && this.name == other.name;
+    return (other instanceof Keyword) && this.name == other.name;
 };
 
 Keyword.prototype.com$cognitect$transit$hashCode = function() {
-  if(this.hashCode !== -1) {
-    return this.hashCode;
-  } else {
-    this.hashCode = eq.hashCode(this.name);
-    return this.hashCode;
-  }
+    if(this.hashCode !== -1) {
+        return this.hashCode;
+    } else {
+        this.hashCode = eq.hashCode(this.name);
+        return this.hashCode;
+    }
 }
 
 function keyword(s) {
-  return new Keyword(s);
+    return new Keyword(s);
 }
 
 function Symbol(name) {
-  this.name = name;
-  this.hashCode = -1;
+    this.name = name;
+    this.hashCode = -1;
 }
 
 Symbol.prototype.com$cognitect$transit$equals = function(other) {
-  return (other instanceof Symbol) && this.name == other.name;
+    return (other instanceof Symbol) && this.name == other.name;
 }
 
 Symbol.prototype.com$cognitect$transit$hashCode = function() {
-  if(this.hashCode !== -1) {
-    return this.hashCode;
-  } else {
-    this.hashCode = eq.hashCode(this.name);
-    return this.hashCode;
-  }
+    if(this.hashCode !== -1) {
+        return this.hashCode;
+    } else {
+        this.hashCode = eq.hashCode(this.name);
+        return this.hashCode;
+    }
 }
 
 function symbol(s) {
-  return new Symbol(s);
+    return new Symbol(s);
 }
 
 function UUID(str) {
-  this.str = str;
-  this.hashCode = -1;
+    this.str = str;
+    this.hashCode = -1;
 }
 
 UUID.prototype.com$cognitect$transit$equals = function(other) {
-  return (other instanceof UUID) && this.str == other.str;
+    return (other instanceof UUID) && this.str == other.str;
 };
 
 UUID.prototype.com$cognitecat$transit$hashCode = function() {
-  if(this.hashCode !== -1) {
-    return this.hashCode;
-  } else {
-    this.hashCode = eq.hashCode(this.str);
-    return this.hashCode;
-  }
+    if(this.hashCode !== -1) {
+        return this.hashCode;
+    } else {
+        this.hashCode = eq.hashCode(this.str);
+        return this.hashCode;
+    }
 };
 
 function uuid(s) {
-  return new UUID(s);
+    return new UUID(s);
 }
 
 function list(xs) {
-  return xs;
+    return xs;
 }
 
 function date(s) {
-  return new Date(s);
+    return new Date(s);
 }
 
 Date.prototype.com$cognitect$transit$equals = function(other) {
-  if(other instanceof Date) {
-    return this.valueOf() === other.valueOf();
-  } else {
-    return false;
-  }
+    if(other instanceof Date) {
+        return this.valueOf() === other.valueOf();
+    } else {
+        return false;
+    }
 }
 
 Date.prototype.com$cognitect$transit$hashCode = function() {
-  return this.valueOf();
+    return this.valueOf();
 }
 
 function byteBuffer(data) {
-  return new ByteBuffer(data);
+    return new ByteBuffer(data);
 }
 
 function uri(s) {
-  return url.parse(s);
+    return url.parse(s);
 }
 
 function ints(xs) {
-  return xs;
+    return xs;
 }
 
 function longs(xs) {
-  return xs;
+    return xs;
 }
 
 function floats(xs) {
-  return xs;
+    return xs;
 }
 
 function doubles(xs) {
-  return xs;
+    return xs;
 }
 
 function bools(xs) {
-  return xs;
+    return xs;
 }  
 
 function TransitMap(map, size) {
-  this.map = map;
-  this.size = size;
-  this.hashCode = -1;
+    this.map = map;
+    this.size = size;
+    this.hashCode = -1;
 }
 
 TransitMap.prototype.clear = function() {
@@ -152,131 +152,135 @@ TransitMap.prototype.clear = function() {
 };
 
 TransitMap.prototype.delete = function() {
-  throw new Error("Unsupported operation: delete");
+    throw new Error("Unsupported operation: delete");
 };
 
 TransitMap.prototype.entries = function() {
-  throw new Error("Unsupported operation: entries");
+    throw new Error("Unsupported operation: entries");
 };
 
 TransitMap.prototype.forEach = function(callback) {
-  for(var code in this.map) {
-    var vals = this.map[code];
-    for(var j = 0; j < vals.length; j+=2) {
-      callback(vals[j], vals[j+1], this);
+    for(var code in this.map) {
+        var vals = this.map[code];
+        for(var j = 0; j < vals.length; j+=2) {
+            callback(vals[j], vals[j+1], this);
+        }
     }
-  }
 };
-  
+
 TransitMap.prototype.get = function(k) {
   var code = eq.hashCode(k),
       vals = this.map[code];
-  if(vals != null) {
-    for(var i = 0; i < vals.length; i+=2) {
-      if(eq.equals(k,vals[i])) {
-        return vals[i+1];
-      }
-    }
-  } else {
-    return null;
-  } 
+    if(vals != null) {
+        for(var i = 0; i < vals.length; i+=2) {
+            if(eq.equals(k,vals[i])) {
+                return vals[i+1];
+            }
+        }
+    } else {
+        return null;
+    } 
 };
 
 TransitMap.prototype.has = function(k) {
-  var code = eq.hashCode(k),
-      vals = this.map[code];
-  if(vals !== null) {
-    for(var i = 0; i < vals.length; i+=2) {
-      if(eq.equals(k,vals[i])) {
-        return true;
-      }
+    var code = eq.hashCode(k),
+    vals = this.map[code];
+    if(vals !== null) {
+        for(var i = 0; i < vals.length; i+=2) {
+            if(eq.equals(k,vals[i])) {
+                return true;
+            }
+        }
+    } else {
+        return false;
     }
-  } else {
-    return false;
-  }
 };
 
 TransitMap.prototype.keys = function() {
-  throw new Error("Unsupported operation: keys");
+    throw new Error("Unsupported operation: keys");
 };
   
 TransitMap.prototype.set = function(k, v) {
-  throw new Error("Unsupported operation: set");
+    throw new Error("Unsupported operation: set");
 };
 
 TransitMap.prototype.values = function() {
-  throw new Error("Unsupported operation: value");
+    throw new Error("Unsupported operation: value");
 };
   
 TransitMap.prototype.com$cognitect$transit$hashCode = function() {
-  if(this.hashCode != -1) return this.hashCode;
-  this.hashCode = eq.hashMapLike(this);
-  return this.hashCode;
+    if(this.hashCode != -1) return this.hashCode;
+    this.hashCode = eq.hashMapLike(this);
+    return this.hashCode;
 };
-  
+
 TransitMap.prototype.com$cognitect$transit$equals = function(other) {
-  if((other instanceof TransitMap) &&
-     (this.size === other.size)) {
-    for(var code in this.map) {
-      var vals = this.map[code];
-      for(var j = 0; j < vals.length; j++) {
-        if(!eq.equals(vals[j+1], other.get(vals[j]))) {
-          return false;
+    if((other instanceof TransitMap) &&
+       (this.size === other.size)) {
+        for(var code in this.map) {
+            var vals = this.map[code];
+            for(var j = 0; j < vals.length; j++) {
+                if(!eq.equals(vals[j+1], other.get(vals[j]))) {
+                    return false;
+                }
+            }
         }
-      }
+    } else {
+        return false;
     }
-  } else {
-    return false;
-  }
 };
 
 function transitMap(arr) {
-  var map = {};
-  for(var i = 0; i < arr.length; i+=2) {
-    var code = eq.hashCode(arr[i]),
-        vals = map[code];
-    if(vals == null) {
-      map[code] = [arr[i], arr[i+1]];
-    } else {
-      var newEntry = true;
-      for(var j = 0; j < vals.length; j+= 2) {
-        if(eq.equals(vals[j], arr[i])) {
-          vals[j] = arr[i+1];
-          newEntry = false;
-          break;
+    var map = {};
+    for(var i = 0; i < arr.length; i+=2) {
+        var code = eq.hashCode(arr[i]),
+            vals = map[code];
+        if(vals == null) {
+            map[code] = [arr[i], arr[i+1]];
+        } else {
+            var newEntry = true;
+            for(var j = 0; j < vals.length; j+= 2) {
+                if(eq.equals(vals[j], arr[i])) {
+                    vals[j] = arr[i+1];
+                    newEntry = false;
+                    break;
+                }
+            }
+            if(newEntry) {
+                vals.push(arr[i]);
+                vals.push(arr[i+1]);
+            }
         }
-      }
-      if(newEntry) {
-        vals.push(arr[i]);
-        vals.push(arr[i+1]);
-      }
     }
-  }
-  return new TransitMap(map, arr.length / 2);
+    return new TransitMap(map, arr.length / 2);
 }
 
 function cmap(xs) {
-  var m = new Map();
-  for(var i = 0; i < xs.length; i += 2) {
-    m.set(xs[i], xs[i+1]);
-  }
-  return m;
+    var m = new Map();
+    for(var i = 0; i < xs.length; i += 2) {
+        m.set(xs[i], xs[i+1]);
+    }
+    return m;
 }
 
 function Set(map) {
-  this.map = map;
+    this.map = map;
 }
 
 Set.prototype.add = function(value) {
+    throw new Error("Unsupported operation: add");
 };
 
 Set.prototype.clear = function() {
+    throw new Error("Unsupported operation: clear");
 };
 
 Set.prototype.delete = function(value) {
+    throw new Error("Unsupported operation: delete");
 };
 
 Set.prototype.entries = function() {
+    throw new Error("Unsupported operation: entries");
 };
 
 Set.prototype.forEach = function(iterator) {
@@ -286,131 +290,154 @@ Set.prototype.has = function(value) {
 };
 
 Set.prototype.keys = function() {
+    throw new Error("Unsupported operation: keys");
 };
 
-Set.prototype.value = function() {
+Set.prototype.values = function() {
+    throw new Error("Unsupported operation: valuesa");
 };
 
 Set.prototype.com$cognitect$transit$equals = function(other) {
-  if(other instanceof Set) {
-    return eq.equals(this.map, other.map);
-  } else {
-    return false;
-  }
+    if(other instanceof Set) {
+        return eq.equals(this.map, other.map);
+    } else {
+        return false;
+    }
 };
 
 Set.prototype.com$cognitect$transit$hashCode = function(other) {
-  return eq.hashCode(this.map);
+    return eq.hashCode(this.map);
 };
 
 function set(arr) {
-  return new Set();
+    var map = {};
+    for(var i = 0; i < arr.length; i++) {
+        var code = eq.hashCode(arr[i]),
+            vals = map[code];
+        if(vals == null) {
+            map[code] = [arr[i], true];
+        } else {
+            var newEntry = true;
+            for(var j = 0; j < vals.length; j+= 2) {
+                if(eq.equals(vals[j], arr[i])) {
+                    vals[j] = arr[i+1];
+                    newEntry = false;
+                    break;
+                }
+            }
+            if(newEntry) {
+                vals.push(arr[i]);
+                vals.push(true);
+            }
+        }
+    }
+    return new Set(map);
 }
 
 function AsTag(tag, rep, str) {
-  this.tag = tag;
-  this.rep = rep;
-  this.str = str;
+    this.tag = tag;
+    this.rep = rep;
+    this.str = str;
 }
 
 function asTag(tag, rep, str) {
-  return new AsTag(tag, rep, str);
+    return new AsTag(tag, rep, str);
 }
 
 function Quote(obj) {
-  this.obj = obj;
+    this.obj = obj;
 }
 
 function quoted(obj) {
-  return new Quote(obj);
+    return new Quote(obj);
 }
 
 function TaggedValue(tag, rep) {
-  this.tag = tag;
-  this.rep = rep;
+    this.tag = tag;
+    this.rep = rep;
 }
 
 function TaggedValue(tag, value) {
-  this.tag = tag;
-  this.value = value;
+    this.tag = tag;
+    this.value = value;
 }
 
 function taggedValue(tag, value) {
-  return new TaggedValue(tag, value);
+    return new TaggedValue(tag, value);
 }
 
 function LinkedList(head, tail) {
-  this.head = head;
-  this.tail = tail;
+    this.head = head;
+    this.tail = tail;
 }
 
 function cons(x, tail) {
-  return new LinkedList(x, tail);
+    return new LinkedList(x, tail);
 };
 
 function Queue() {
-  this.list = null;
+    this.list = null;
 }
 
 Queue.prototype.peek = function() {
-  if(this.list) {
-    return this.list.head;
-  } else {
-    return null;
-  }
+    if(this.list) {
+        return this.list.head;
+    } else {
+        return null;
+    }
 };
 
 Queue.prototype.push = function(x) {
-  this.list = cons(x, this.list);
+    this.list = cons(x, this.list);
 };
 
 Queue.prototype.pop = function(x) {
-  if(this.list) {
-    var ret = this.list.head;
-    this.list = this.list.tail;
-    return ret;
-  } else {
-    return null;
-  }
+    if(this.list) {
+        var ret = this.list.head;
+        this.list = this.list.tail;
+        return ret;
+    } else {
+        return null;
+    }
 };
 
 function queue() {
-  return new Queue();
+    return new Queue();
 }
 
 module.exports = {
-  nullValue: nullValue,
-  boolValue: boolValue,
-  intValue: intValue,
-  floatValue: floatValue,
-  charValue: charValue,
-  keyword: keyword,
-  Keyword: Keyword,
-  symbol: symbol,
-  Symbol: Symbol,
-  uuid: uuid,
-  UUID: UUID,
-  set: set,
-  Set: Set,
-  cmap: cmap,
-  //Map: Map,
-  TransitMap: TransitMap,
-  transitMap: transitMap,
-  date: date,
-  byteBuffer: byteBuffer,
-  uri: uri,
-  list: list,
-  ints: ints,
-  longs: longs,
-  floats: floats,
-  doubles: doubles,
-  bools: bools,
-  taggedValue: taggedValue,
-  TaggedValue: TaggedValue,
-  asTag: asTag,
-  AsTag: AsTag,
-  quoted: quoted,
-  Quote: Quote,
-  queue: queue,
-  Queue: Queue
+    nullValue: nullValue,
+    boolValue: boolValue,
+    intValue: intValue,
+    floatValue: floatValue,
+    charValue: charValue,
+    keyword: keyword,
+    Keyword: Keyword,
+    symbol: symbol,
+    Symbol: Symbol,
+    uuid: uuid,
+    UUID: UUID,
+    set: set,
+    Set: Set,
+    cmap: cmap,
+    //Map: Map,
+    TransitMap: TransitMap,
+    transitMap: transitMap,
+    date: date,
+    byteBuffer: byteBuffer,
+    uri: uri,
+    list: list,
+    ints: ints,
+    longs: longs,
+    floats: floats,
+    doubles: doubles,
+    bools: bools,
+    taggedValue: taggedValue,
+    TaggedValue: TaggedValue,
+    asTag: asTag,
+    AsTag: AsTag,
+    quoted: quoted,
+    Quote: Quote,
+    queue: queue,
+    Queue: Queue
 };

@@ -4,26 +4,26 @@
 "use strict";
 
 function StringBuilder() {
-  this.buffer = "";
+    this.buffer = "";
 }
 
 StringBuilder.prototype = {
-  write: function(data) {
-    this.buffer += data;
-  },
+    write: function(data) {
+        this.buffer += data;
+    },
 
-  flush: function() {
-    var ret = this.buffer
-    this.buffer = "";
-    return ret;
-  }
+    flush: function() {
+        var ret = this.buffer
+        this.buffer = "";
+        return ret;
+    }
 };
 
 function stringBuilder() {
-  return new StringBuilder();
+    return new StringBuilder();
 }
 
 module.exports = {
-  StringBuilder: StringBuilder,
-  stringBuilder: stringBuilder
+    StringBuilder: StringBuilder,
+    stringBuilder: stringBuilder
 };

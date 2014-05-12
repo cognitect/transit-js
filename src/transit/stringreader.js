@@ -4,20 +4,20 @@
 "use strict";
 
 function StringReader(str) {
-  this.str = str;
+    this.str = str;
 };
 
 StringReader.prototype = {
-  read: function() {
-    return this.str;
-  }
+    read: function() {
+        return this.str;
+    }
 };
 
 function stringReader(str) {
-  return new StringReader(str);
+    return new StringReader(str);
 }
 
 module.exports = {
-  StringReader: StringReader,
-  stringReader: stringReader
+    StringReader: StringReader,
+    stringReader: stringReader
 };
