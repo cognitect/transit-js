@@ -347,16 +347,6 @@ function transitSet(arr) {
     return new TransitSet(new TransitMap(map, size));
 }
 
-function AsTag(tag, rep, str) {
-    this.tag = tag;
-    this.rep = rep;
-    this.str = str;
-}
-
-function asTag(tag, rep, str) {
-    return new AsTag(tag, rep, str);
-}
-
 function Quote(obj) {
     this.obj = obj;
 }
@@ -370,13 +360,8 @@ function TaggedValue(tag, rep) {
     this.rep = rep;
 }
 
-function TaggedValue(tag, value) {
-    this.tag = tag;
-    this.value = value;
-}
-
-function taggedValue(tag, value) {
-    return new TaggedValue(tag, value);
+function taggedValue(tag, rep) {
+    return new TaggedValue(tag, rep);
 }
 
 function LinkedList(head, tail) {
@@ -446,8 +431,6 @@ module.exports = {
     bools: bools,
     taggedValue: taggedValue,
     TaggedValue: TaggedValue,
-    asTag: asTag,
-    AsTag: AsTag,
     quoted: quoted,
     Quote: Quote,
     queue: queue,

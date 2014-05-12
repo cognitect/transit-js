@@ -112,12 +112,6 @@ function defaultHandlers(hs) {
          stringRep: function(v) { return null; }});
 
     hs.set(
-        t.AsTag,
-        {tag: function(v) { return v.tag; },
-         rep: function(v) { return v.rep; },
-         stringRep: function(v) { return v.str; }});
-
-    hs.set(
         t.TaggedValue,
         {tag: function(v) { return v.tag; },
          rep: function(v) { return v.rep; },
