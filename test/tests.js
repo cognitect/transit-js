@@ -633,3 +633,17 @@ exports.testWriteTransitObjectMap = function(test) {
     
     test.done();
 };
+
+exports.testWriteEdgeCases = function(test) {
+
+    var writer = transit.writer("json");
+
+    test.equal(writer.write([[1,2]]), "[[1,2]]", "Writing [[1,2]] returns expected result");
+    test.equal(writer.write([[1,2],[3,4]]), "[[1,2],[3,4]]", "Writing [[1,2],[3,4]] returns expected result");
+    test.equal(writer.write([[[1,2]]]), "[[[1,2]]]", "Writing [[[1,2]]] returns expected result");
+    test.equal(writer.write([{foo:[1,2]}]), "[{\"foo\":[1,2]}]", "Writing [{foo:[1,2]}] returns expected result");
+    test.equal(writer.write([{foo:[1,2,{}]}]), "[{\"foo\":[1,2,{}]}]", "Writing [{foo:[1,2,{}]}] returns expected result");
+    test.equal(writer.write({foo:{bar:1},baz:{woz:2}}), "{\"foo\":{\"bar\":1,\"noz\":3},\"baz\":{\"woz\":2,\"goz\":4}}", "Writing {foo:{bar:1,noz:3},baz:{woz:2,goz:4}} returns expected result");
+
+    test.done();
+};
