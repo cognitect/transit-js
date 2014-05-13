@@ -41,9 +41,9 @@ var WriteCache = function() {
 
 WriteCache.prototype = {
     write: function(string, asMapKey) {
-        if(string && isCacheable(string, asMapKey)) {
+        if(string != null && isCacheable(string, asMapKey)) {
             var val = this.cache[string];
-            if(val) {
+            if(val != null) {
                 return val;
             } else {
                 if(this.idx === MAX_CACHE_ENTRIES) {

@@ -267,7 +267,7 @@ time(function() {
 console.log("1 iter, JSON.stringfy JS object with 100000 kv pairs");
 var large0 = {};
 for(var i = 0; i < 100000; i++) {
-    large0["foo"+i] = i;
+    large0["foo"+i] = ["bar"+i, i];
 }
 time(function() {
     JSON.stringify(large0);
@@ -275,14 +275,14 @@ time(function() {
 
 console.log("1 iter, transit write large JS object with 100000 kv pairs");
 var large1  = {},
-    buf     = sb.stringBuilder(),
-    writer1 = transit.writer(buf, "json");
+    buf0     = sb.stringBuilder(),
+    writer1 = transit.writer(buf0, "json");
 for(var i = 0; i < 100000; i++) {
-    large1["~:foo"+i] = i;
+    large1["~:foo"+i] = [t.keyword("bar"+i),i];
 }
 time(function() {
     writer1.write(large1);
-    buf.flush();
+    buf0.flush();
 });
 
 console.log("1 iter, JSON.parse JS object with 100000 kv pairs");
@@ -297,11 +297,6 @@ console.log(json1["foo0"]);
 time(function() {
     JSON.parse(larges0);
 });
-
-
-if(global.gc) {
-    global.gc();
-}
 
 console.log("1 iter, transit read large transit map with 100000 kv pairs");
 var arr4   = [],
@@ -321,4 +316,3 @@ time(function() {
     ins = sr.stringReader(larges1);
     reader.read(ins, function(data) {});
 });
-
