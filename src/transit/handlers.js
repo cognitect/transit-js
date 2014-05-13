@@ -150,7 +150,7 @@ function defaultHandlers(hs) {
     hs.set(
         t.TransitSet,
         {tag: function(v) { return "set"; },
-         rep: function(v) { return t.taggedValue("array", v, null); },
+         rep: function(v) { return t.taggedValue("array", v); },
          stringRep: function(v) { return null; }});
 
     hs.set(
@@ -162,8 +162,14 @@ function defaultHandlers(hs) {
                  arr.push(key);
                  arr.push(val);
              });
-             return t.taggedValue("array", arr, null);
+             return t.taggedValue("array", arr);
          },
+         stringRep: function(v) { return null; }});
+
+    hs.set(
+        t.List,
+        {tag: function(v) { return "list"; },
+         rep: function(v) { return t.taggedValue("array", v.arr); },
          stringRep: function(v) { return null; }});
 
     return hs;

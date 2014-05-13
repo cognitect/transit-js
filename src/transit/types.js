@@ -93,10 +93,6 @@ function uuid(s) {
     return new UUID(s);
 }
 
-function list(xs) {
-    return xs;
-}
-
 function date(s) {
     return new Date(s);
 }
@@ -406,6 +402,14 @@ function queue() {
     return new Queue();
 }
 
+function List(arr) {
+    this.arr = arr;
+}
+
+function list(xs) {
+    return new List(xs);
+}
+
 module.exports = {
     nullValue: nullValue,
     boolValue: boolValue,
@@ -426,6 +430,7 @@ module.exports = {
     date: date,
     byteBuffer: byteBuffer,
     uri: uri,
+    List: List,
     list: list,
     ints: ints,
     longs: longs,

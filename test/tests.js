@@ -594,11 +594,17 @@ exports.testReadTransitTypes = function(test) {
 exports.testWriteTransitTypes = function(test) {
     var writer = transit.writer("json");
     
+    test.equal(writer.write(["foo"]), "[\"foo\"]", "writing [\"foo\"] returns expected result");
+    test.equal(writer.write([1]), "[1]", "writing [1] returns expected result");
+    test.equal(writer.write([true]), "[true]", "writing [true] returns expected result");
+    test.equal(writer.write([false]), "[false]", "writing [false] expected result");
     test.equal(writer.write([t.keyword("foo")]), "[\"~:foo\"]", "writing [t.keyword(\"foo\")] returns \"[\\\"~:foo\"]\\\"");
     test.equal(writer.write([t.symbol("foo")]), "[\"~$foo\"]", "writing [t.symbol(\"foo\")] returns \"[\\\"~$foo\"]\\\"");
     test.equal(writer.write([t.date(482196050052)]), "[\"~t1985-04-12T23:20:50.052Z\"]", "writing [t.date(482196050052)] returns \"[\\\"~t1985-04-12T23:20:50.052Z\\\"]\"");
     test.equal(writer.write([t.keyword("foo"),t.symbol("bar")]), "[\"~:foo\",\"~$bar\"]");
     test.equal(writer.write([t.symbol("foo"),t.keyword("bar")]), "[\"~$foo\",\"~:bar\"]");
+    test.equal(writer.write([t.uri("http://foo.com/")]), "[\"~rhttp://foo.com/\"]", "writing [t.uri(\"http://foo.com\")] returns expected result");
+    test.equal(writer.write(t.list([1,2,3])), "{\"~#list\":[1,2,3]}", "writing [t.list([1,2,3])] returns expected result");
 
     test.done();
 };
@@ -643,7 +649,7 @@ exports.testWriteEdgeCases = function(test) {
     test.equal(writer.write([[[1,2]]]), "[[[1,2]]]", "Writing [[[1,2]]] returns expected result");
     test.equal(writer.write([{foo:[1,2]}]), "[{\"foo\":[1,2]}]", "Writing [{foo:[1,2]}] returns expected result");
     test.equal(writer.write([{foo:[1,2,{}]}]), "[{\"foo\":[1,2,{}]}]", "Writing [{foo:[1,2,{}]}] returns expected result");
-    test.equal(writer.write({foo:{bar:1},baz:{woz:2}}), "{\"foo\":{\"bar\":1,\"noz\":3},\"baz\":{\"woz\":2,\"goz\":4}}", "Writing {foo:{bar:1,noz:3},baz:{woz:2,goz:4}} returns expected result");
+    test.equal(writer.write({foo:{bar:1,noz:3},baz:{woz:2,goz:4}}), "{\"foo\":{\"bar\":1,\"noz\":3},\"baz\":{\"woz\":2,\"goz\":4}}", "Writing {foo:{bar:1,noz:3},baz:{woz:2,goz:4}} returns expected result");
 
     test.done();
 };
