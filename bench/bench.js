@@ -11,11 +11,14 @@ var eq      = require("../src/transit/eq.js"),
     transit = require("../src/transit.js"),
     caching = require("../src/transit/caching.js");
 
-function time(f) {
-    var s = new Date();
-    f();
-    console.log("Elapsed "+((new Date()).valueOf()-s.valueOf())+"ms");
-    console.log("----------");
+function time(f, iters) {
+    iters = iters || 1;
+    for(var i = 0; i < iters; i++) {
+        var s = new Date();
+        f();
+        console.log("Elapsed "+((new Date()).valueOf()-s.valueOf())+"ms");
+        console.log("----------");
+    }
 }
 
 console.log("1e6 iters, eq.hashCode(\"foo\")");
@@ -294,6 +297,7 @@ console.log(json1["foo0"]);
 time(function() {
     JSON.parse(larges0);
 });
+
 
 if(global.gc) {
     global.gc();

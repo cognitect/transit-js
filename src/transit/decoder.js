@@ -115,22 +115,23 @@ Decoder.prototype = {
     },
 
     decodeHash: function(hash, cache, asMapKey) {
-        var ks = Object.keys(hash);
-        if((ks.length === 1) &&
-           (ks[0][0]  === d.ESC) &&
-           (ks[0][1]  === d.TAG)) {
-            var key     = ks[0],
-                val     = hash[ks[0]],
-                decoder = this.getDecoder(key.substring(2));
-            if(decoder) {
+        var ks     = Object.keys(hash),
+            tagKey = ks.length == 1 ? ks[0] : null;
+
+        if((tagKey != null) &&
+           (tagKey[0] === d.ESC) &&
+           (tagKey[1] === d.TAG)) {
+            var val     = hash[tagKey],
+                decoder = this.getDecoder(tagKey.substring(2));
+            if(decoder != null) {
                 return decoder(this.decode(val, cache, false));
             } else {
-                var h = {}; h[key.substring(2)] = this.decode(val,cache);
+                var h = {}; h[tagKey.substring(2)] = this.decode(val,cache);
                 return this.getOption("defaultHashDecoder")(h, cache, false); 
             }
         } else {
             var ret = {};
-            if(this.getOption("prefersStrings")) {
+            if(this.getOption("prefersStrings") === true) {
                 for(var i = 0; i < ks.length; i++) {
                     var key = ks[i];
                     ret[key] = this.decode(hash[key], cache, false);
