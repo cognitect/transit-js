@@ -108,12 +108,12 @@ JSONMarshaller.prototype = {
 
     debugState: function() {
         var l   = this.state.list,
-            ret = [STATES[l.head]];
-        while(l.tail) {
+            ret = [];
+        while(l) {
             ret.push(STATES[l.head]);
             l = l.tail;
         }
-        return ret;
+        return ret.reverse();
     },
 
     pushKey: function(obj) {
