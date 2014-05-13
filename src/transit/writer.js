@@ -106,6 +106,16 @@ JSONMarshaller.prototype = {
         }
     },
 
+    debugState: function() {
+        var l   = this.state.list,
+            ret = [STATES[l.head]];
+        while(l.tail) {
+            ret.push(STATES[l.head]);
+            l = l.tail;
+        }
+        return ret;
+    },
+
     pushKey: function(obj) {
         var state = this.getState();
         switch(state) {
@@ -119,7 +129,7 @@ JSONMarshaller.prototype = {
             this.buffer.write(obj);
             break;
         default:
-            var err = new Error("JSONMarshaller: Cannot pushKey in state " + STATES[state]);
+            var err = new Error("JSONMarshaller: Cannot pushKey in state " + STATES[state] + " " + obj);
             err.data = {state: state};
             throw err;
             break;
