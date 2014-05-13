@@ -609,7 +609,8 @@ exports.testWriteTransitTypes = function(test) {
     test.equal(writer.write([t.list([1,2,3])]), "[{\"~#list\":[1,2,3]}]", "writing [t.list([1,2,3])] returns expected result");
     test.equal(writer.write(t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}", "writing t.uid(\"531a379e-31bb-4ce1-8690-158dceb64be6\") returns expected result");
     test.equal(writer.write([t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")]), "[\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]", "writing t.uid(\"531a379e-31bb-4ce1-8690-158dceb64be6\") returns expected result");
-
+    test.equal(writer.write([t.binary("c3VyZS4=")]), "[\"~bc3VyZS4=\"]", "writing [t.binary(\"c3VyZS4=\")] returns expected value");
+    
     test.done();
 };
 

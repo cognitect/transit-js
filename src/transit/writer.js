@@ -231,7 +231,7 @@ JSONMarshaller.prototype = {
     },
 
     emitBinary: function(b, asMapKey, cache) {
-        this.emitBinary(d.ESC, "b", new Buffer(b).toString("base64"), asMapKey, cache);
+        this.emitString(d.ESC, "b", b, asMapKey, cache);
     },
 
     emitArrayStart: function(size) {
