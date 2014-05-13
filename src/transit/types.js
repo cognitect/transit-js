@@ -109,8 +109,12 @@ Date.prototype.com$cognitect$transit$hashCode = function() {
     return this.valueOf();
 }
 
-function byteBuffer(data) {
-    return new ByteBuffer(data);
+function Binary(str) {
+    this.str = str;
+}
+
+function binary(str) {
+    return new Binary(str);
 }
 
 function uri(s) {
@@ -428,7 +432,8 @@ module.exports = {
     TransitSet: TransitSet,
     cmap: cmap,
     date: date,
-    byteBuffer: byteBuffer,
+    Binary: Binary,
+    binary: binary,
     uri: uri,
     List: List,
     list: list,

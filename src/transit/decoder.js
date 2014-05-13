@@ -36,7 +36,7 @@ Decoder.prototype = {
         decoders: {
             "_": function(v) { return types.nullValue(); },
             "?": function(v) { return types.boolValue(v); },
-            "b": function(v) { return types.byteBuffer(v); },
+            "b": function(v) { return types.binary(v); },
             "i": function(v) { return types.intValue(v); },
             "d": function(v) { return types.floatValue(v); },
             "f": function(v) { return types.floatValue(v); },

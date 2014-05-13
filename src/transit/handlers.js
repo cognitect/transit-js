@@ -108,10 +108,16 @@ function defaultHandlers(hs) {
          }});
 
     hs.set(
+        t.Binary,
+        {tag: function(v) { return "b"; },
+         rep: function(v) { return v.str; },
+         stringRep: function(v) { return v.str; }});
+
+    hs.set(
         t.UUID,
         {tag: function(v) { return "u"; },
          rep: function(v) {
-             return v.valueOf();
+             return v.str;
          },
          stringRep: function(v) {
              return v.str;

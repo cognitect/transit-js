@@ -596,6 +596,7 @@ exports.testWriteTransitTypes = function(test) {
     
     test.equal(writer.write(["foo"]), "[\"foo\"]", "writing [\"foo\"] returns expected result");
     test.equal(writer.write([1]), "[1]", "writing [1] returns expected result");
+    test.equal(writer.write([1.5]), "[1.5]", "writing [1.5] returns expected result");
     test.equal(writer.write([true]), "[true]", "writing [true] returns expected result");
     test.equal(writer.write([false]), "[false]", "writing [false] expected result");
     test.equal(writer.write([t.keyword("foo")]), "[\"~:foo\"]", "writing [t.keyword(\"foo\")] returns \"[\\\"~:foo\"]\\\"");
@@ -604,7 +605,10 @@ exports.testWriteTransitTypes = function(test) {
     test.equal(writer.write([t.keyword("foo"),t.symbol("bar")]), "[\"~:foo\",\"~$bar\"]");
     test.equal(writer.write([t.symbol("foo"),t.keyword("bar")]), "[\"~$foo\",\"~:bar\"]");
     test.equal(writer.write([t.uri("http://foo.com/")]), "[\"~rhttp://foo.com/\"]", "writing [t.uri(\"http://foo.com\")] returns expected result");
-    test.equal(writer.write(t.list([1,2,3])), "{\"~#list\":[1,2,3]}", "writing [t.list([1,2,3])] returns expected result");
+    test.equal(writer.write(t.list([1,2,3])), "{\"~#list\":[1,2,3]}", "writing t.list([1,2,3]) returns expected result");
+    test.equal(writer.write([t.list([1,2,3])]), "[{\"~#list\":[1,2,3]}]", "writing [t.list([1,2,3])] returns expected result");
+    test.equal(writer.write(t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}", "writing t.uid(\"531a379e-31bb-4ce1-8690-158dceb64be6\") returns expected result");
+    test.equal(writer.write([t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")]), "[\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]", "writing t.uid(\"531a379e-31bb-4ce1-8690-158dceb64be6\") returns expected result");
 
     test.done();
 };
