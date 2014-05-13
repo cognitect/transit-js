@@ -47,6 +47,8 @@ function JSONMarshaller(stream, options) {
 }
 
 JSONMarshaller.prototype = {
+    NO_WRITE: {},
+
     getState: function() {
         return this.state.peek();
     },
@@ -87,23 +89,14 @@ JSONMarshaller.prototype = {
             state = this.state.pop();
         }
 
-        // if OBJECT_VALUE STATE, pop
-        // and push OBJECT_KEY STATE
-        if(this.state.peek() === 3) {
-            this.state.pop();
-            this.state.push(2);
-        }
-
         switch(state) {
         // ARRAY
         case 1:
             this.buffer.write("]");
-            return 1; // ARRAY
             break;
         // OBJECT
         case 0:
             this.buffer.write("}");
-            return 0; // OBJECT
             break;
         default:
             var err = new Error("JSONMarshaller: Popped unknown state " + STATES[state]);
@@ -111,6 +104,10 @@ JSONMarshaller.prototype = {
             throw err;
             break;
         }
+
+        this.pushValue(this.NO_WRITE);
+
+        return state;
     },
 
     debugState: function() {
@@ -149,22 +146,30 @@ JSONMarshaller.prototype = {
         switch(state) {
         // ARRAY
         case 1:
-            this.buffer.write(",");
-            this.buffer.write(obj);
+            if(obj !== this.NO_WRITE) {
+                this.buffer.write(",");
+                this.buffer.write(obj);
+            }
             break;
         // ARRAY_FIRST_VALUE
         case 5:
             this.state.pop();
-            this.buffer.write(obj);
+            if(obj !== this.NO_WRITE) {
+                this.buffer.write(obj);
+            }
             break;
         // OBJECT_VALUE
         case 3:
             this.state.pop();
-            this.buffer.write(obj);
+            if(obj !== this.NO_WRITE) {
+                this.buffer.write(obj);
+            }
             this.state.push(2);
             break;
         default:
-            this.buffer.write(obj);
+            if(obj !== this.NO_WRITE) {
+                this.buffer.write(obj);
+            }
             break;
         }
     },
