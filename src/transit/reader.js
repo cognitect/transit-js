@@ -22,12 +22,10 @@ function Reader(unmarshaller, options) {
     this.cache = this.options.cache ? this.options.cache : caching.readCache();
 }
 
-Reader.prototype.read = function(ins, cb) {
-    var self = this;
-    ins.on("data", function(data) {
-        cb(self.unmarshaller.unmarshal(data, self.cache));
-        self.cache.clear();
-    });
+Reader.prototype.read = function(str) {
+    var ret = this.unmarshaller.unmarshal(str, this.cache)
+    this.cache.clear();
+    return ret;
 }
 
 function reader(type, options) {

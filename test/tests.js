@@ -11,7 +11,6 @@ var url     = require("url"),
     t       = require("../src/transit/types.js"),
     eq      = require("../src/transit/eq.js"),
     wr      = require("../src/transit/writer.js"),
-    sr      = require("../src/transit/stringreader.js"),
     sb      = require("../src/transit/stringbuilder.js"),
     caching = require("../src/transit/caching.js");
 
@@ -485,7 +484,7 @@ exports.testHandlerTypeTag = function(test) {
 };
 
 exports.testWriterEmitTaggedMap = function(test) {
-    var em = new wr.JSONMarshaller(null, {prefersStrings: false}),
+    var em = new wr.JSONMarshaller({prefersStrings: false}),
         c  = caching.writeCache(),
         d  = (new Date(Date.UTC(1985,3,12,23,20,50,52))),
         h  = em.handler(d);
@@ -526,7 +525,7 @@ exports.testWriterMarshalTop = function(test) {
 };
 
 exports.testWriterMarshalTopPreferStringsFalse = function(test) {
-    var em = new wr.JSONMarshaller(null, {prefersStrings:false}),
+    var em = new wr.JSONMarshaller({prefersStrings:false}),
         c  = caching.writeCache(),
         d  = (new Date(Date.UTC(1985,3,12,23,20,50,52)))
 
@@ -564,116 +563,62 @@ exports.testQueue = function(test) {
 // =============================================================================
 
 exports.testWrite = function(test) {
-    var buf    = sb.stringBuilder(),
-        writer = transit.writer(buf, "json");
+    var writer = transit.writer("json");
 
-    writer.write({foo:"bar"});
-    test.equal(buf.flush(), "{\"foo\":\"bar\"}", "top level api write returns expected results");
+    test.equal(writer.write({foo:"bar"}), "{\"foo\":\"bar\"}", "top level api write returns expected results");
 
     test.done();
 };
 
 exports.testRead = function(test) {
-    var r      = sr.stringReader("{\"foo\":\"bar\"}"),
-        reader = transit.reader("json");
+    var reader = transit.reader("json");
 
-    reader.read(r, function(d) {
-        test.deepEqual(d, {foo:"bar"}, "top level api read returns the expected result");        
-        test.done();
-    });
+    test.deepEqual(reader.read("{\"foo\":\"bar\"}"), {foo:"bar"}, "top level api read returns the expected result");
+
+    test.done();
 };
 
 exports.testReadTransitTypes = function(test) {
-    var sr0 = sr.stringReader("{\"~:foo\":\"bar\"}"),
-        r0  = transit.reader("json");
-    
-    r0.read(sr0, function(d) {
-        test.deepEqual(d, {"~:foo":"bar"}, "top level api read object with keywords returns the expected result");
-    });
+    var reader = transit.reader("json");
 
-    var sr1 = sr.stringReader("{\"~#ints\":[1,2,3]}"),
-        r1  = transit.reader("json"); 
-
-    r1.read(sr1, function(d) {
-        test.deepEqual(d, [1,2,3]);
-    });
-
-    var sr2 = sr.stringReader("{\"~#longs\":[1,2,3]}"),
-        r2  = transit.reader("json"); 
-
-    r2.read(sr2, function(d) {
-        test.deepEqual(d, [1,2,3]);        
-    });
-
-    var sr3 = sr.stringReader("{\"~#floats\":[1.5,2.5,3.5]}"),
-        r3  = transit.reader("json"); 
-
-    r3.read(sr3, function(d) {
-        test.deepEqual(d, [1.5,2.5,3.5]);
-    });
-
-    var sr4 = sr.stringReader("{\"~#doubles\":[1.5,2.5,3.5]}"),
-        r4  = transit.reader("json"); 
-
-    r4.read(sr4, function(d) {
-        test.deepEqual(d, [1.5,2.5,3.5]);
-    });
-
-    var sr5 = sr.stringReader("{\"~#bools\":[\"~?t\",\"~?f\",\"~?t\"]}"),
-        r5  = transit.reader("json");
-
-    r5.read(sr5, function(d) {
-        test.deepEqual(d, [true,false,true]);
-    });
+    test.deepEqual(reader.read("{\"~:foo\":\"bar\"}"), {"~:foo":"bar"}, "top level api read object with keywords returns the expected result");
+    test.deepEqual(reader.read("{\"~#ints\":[1,2,3]}"), [1,2,3]);
+    test.deepEqual(reader.read("{\"~#longs\":[1,2,3]}"), [1,2,3]);
+    test.deepEqual(reader.read("{\"~#floats\":[1.5,2.5,3.5]}"), [1.5,2.5,3.5]);
+    test.deepEqual(reader.read("{\"~#doubles\":[1.5,2.5,3.5]}"), [1.5,2.5,3.5]);
+    test.deepEqual(reader.read("{\"~#bools\":[\"~?t\",\"~?f\",\"~?t\"]}"), [true,false,true]);
 
     test.done();
 };
 
 exports.testWriteTransitTypes = function(test) {
-    var buf    = sb.stringBuilder(),
-        writer = transit.writer(buf, "json");
-
-    writer.write([t.keyword("foo")])
-    test.equal(buf.flush(), "[\"~:foo\"]", "writing [t.keyword(\"foo\")] returns \"[\\\"~:foo\"]\\\"");
-
-    writer.write([t.symbol("foo")])
-    test.equal(buf.flush(), "[\"~$foo\"]", "writing [t.symbol(\"foo\")] returns \"[\\\"~$foo\"]\\\"");
-
-    writer.write([t.date(482196050052)])
-    test.equal(buf.flush(), "[\"~t1985-04-12T23:20:50.052Z\"]", "writing [t.date(482196050052)] returns \"[\\\"~t1985-04-12T23:20:50.052Z\\\"]\"");
-
-    writer.write([t.keyword("foo"),t.symbol("bar")])
-    test.equal(buf.flush(), "[\"~:foo\",\"~$bar\"]");
-
-    writer.write([t.symbol("foo"),t.keyword("bar")])
-    test.equal(buf.flush(), "[\"~$foo\",\"~:bar\"]");
+    var writer = transit.writer("json");
+    
+    test.equal(writer.write([t.keyword("foo")]), "[\"~:foo\"]", "writing [t.keyword(\"foo\")] returns \"[\\\"~:foo\"]\\\"");
+    test.equal(writer.write([t.symbol("foo")]), "[\"~$foo\"]", "writing [t.symbol(\"foo\")] returns \"[\\\"~$foo\"]\\\"");
+    test.equal(writer.write([t.date(482196050052)]), "[\"~t1985-04-12T23:20:50.052Z\"]", "writing [t.date(482196050052)] returns \"[\\\"~t1985-04-12T23:20:50.052Z\\\"]\"");
+    test.equal(writer.write([t.keyword("foo"),t.symbol("bar")]), "[\"~:foo\",\"~$bar\"]");
+    test.equal(writer.write([t.symbol("foo"),t.keyword("bar")]), "[\"~$foo\",\"~:bar\"]");
 
     test.done();
 };
 
 exports.testWriteTransitComplexTypes = function(test) {
-    var buf    = sb.stringBuilder(),
-        writer = transit.writer(buf, "json"),
+    var writer = transit.writer("json"),
         s0     = t.set(["foo","bar","baz"]),
         m0     = t.map(["foo","bar","baz","woz"]);
 
-    writer.write(s0);
-    test.equal(buf.flush(),"{\"~#set\":[\"foo\",\"bar\",\"baz\"]}","writing a transit set returns the expected result");
+    test.equal(writer.write(s0),"{\"~#set\":[\"foo\",\"bar\",\"baz\"]}","writing a transit set returns the expected result");
 
     test.done();
 }; 
 
 exports.testRoundtrip = function(test) {
-    var buf    = sb.stringBuilder(),
-        writer = transit.writer(buf, "json"),
+    var writer = transit.writer("json"),
         s      = "{\"~#set\":[\"foo\",\"bar\",\"baz\"]}",
-        ins    = sr.stringReader(s),
         reader = transit.reader("json");
 
-    reader.read(ins, function(d) {
-        writer.write(d);
-        test.equal(s, buf.flush(), "round tripping produces the expected result");        
-    });
+    test.equal(s, writer.write(reader.read(s)), "round tripping produces the expected result");
 
     test.done();
 };
@@ -681,11 +626,9 @@ exports.testRoundtrip = function(test) {
 exports.testWriteTransitObjectMap = function(test) {
     var x      = {"~:foo0": [t.keyword("bar"+0), 0],
                   "~:foo1": [t.keyword("bar"+1), 1]},
-        buf    = sb.stringBuilder(),
-        writer = transit.writer(buf, "json");
+        writer = transit.writer("json");
 
-    writer.write(x);
-    test.equal(buf.flush(),"{\"~~:foo0\":[\"~:bar0\",0],\"~~:foo1\":[\"~:bar1\",1]}",
+    test.equal(writer.write(x),"{\"~~:foo0\":[\"~:bar0\",0],\"~~:foo1\":[\"~:bar1\",1]}",
                "transit write of map with arrays returns expected results and not an error");
     
     test.done();

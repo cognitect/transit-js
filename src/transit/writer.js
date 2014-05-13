@@ -39,7 +39,7 @@ var OBJECT = 0,
     ARRAY_FIRST_VALUE = 5;
 */
 
-function JSONMarshaller(stream, options) {
+function JSONMarshaller(options) {
     this.buffer = (options && options.buffer) || sb.stringBuilder();
     this.state = t.queue();
     this.handlers = h.handlers();
@@ -453,9 +453,8 @@ function marshalTop(em, obj, cache) {
     marshal(em, maybeQuoted(em, obj), false, cache);
 }
 
-function Writer(marshaller, stream, options) {
+function Writer(marshaller, options) {
     this.marshaller = marshaller;
-    this.stream = stream;
     this.options = options || {};
     this.cache = this.options.cache ? this.options.cache : caching.writeCache();
 }
@@ -463,8 +462,9 @@ function Writer(marshaller, stream, options) {
 Writer.prototype = {
     write: function(obj) {
         marshalTop(this.marshaller, obj, this.cache)
-        this.stream.write(this.marshaller.flushBuffer());
+        var ret = this.marshaller.flushBuffer();
         this.cache.clear();
+        return ret;
     },
 
     register: function(type, handler) {
@@ -472,10 +472,10 @@ Writer.prototype = {
     }
 };
 
-function writer(out, type, opts) {
+function writer(type, opts) {
     if(type === "json") {
         var marshaller = new JSONMarshaller(opts);
-        return new Writer(marshaller, out, opts);
+        return new Writer(marshaller, opts);
     } else {
         var err = new Error("Type must be \"json\"");
         err.data = {type: type};
