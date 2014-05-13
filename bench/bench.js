@@ -285,10 +285,12 @@ time(function() {
 console.log("1 iter, JSON.parse JS object with 100000 kv pairs");
 var arr3 = []
 for(var i = 0; i < 100000; i++) {
-    arr3.push("\"foo"+i+"\":"+i)
+    arr3.push("\"foo"+i+"\":[\"bar"+i+"\","+i+"]")
 }
-var larges0 = "{"+arr3.join(",")+"}";
-console.log(Object.keys(JSON.parse(larges0)).length);
+var larges0 = "{"+arr3.join(",")+"}",
+    json1   = JSON.parse(larges0);
+console.log(Object.keys(json1).length);
+console.log(json1["foo0"]);
 time(function() {
     JSON.parse(larges0);
 });
