@@ -87,6 +87,13 @@ JSONMarshaller.prototype = {
             state = this.state.pop();
         }
 
+        // if OBJECT_VALUE STATE, pop
+        // and push OBJECT_KEY STATE
+        if(this.state.peek() === 3) {
+            this.state.pop();
+            this.state.push(2);
+        }
+
         switch(state) {
         // ARRAY
         case 1:
@@ -189,11 +196,7 @@ JSONMarshaller.prototype = {
 
     emitString: function(prefix, tag, s, asMapKey, cache) {
         var s = "\""+cache.write(prefix+tag+s, asMapKey)+"\"";
-        if(asMapKey) {
-            this.writeObject(s, asMapKey);
-        } else {
-            this.writeObject(s, asMapKey);
-        }
+        this.writeObject(s, asMapKey);
     },
 
     emitBoolean: function(b, asMapKey, cache) {
