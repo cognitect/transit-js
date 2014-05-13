@@ -8,6 +8,5 @@ var reader = require("./transit/reader.js"),
 
 module.exports = {
     reader: reader.reader,
-    writer: writer.writer,
-    write: writer.write
+    writer: writer.writer
 };
