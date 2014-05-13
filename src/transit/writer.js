@@ -28,6 +28,8 @@ function escape(string) {
 
 // STATES
 
+var STATES = ["OBJECT", "ARRAY", "OBJECT_KEY", "OBJECT_VALUE",
+              "OBJECT_FIRST_KEY", "ARRAY_FIRST_VALUE"];
 /*
 var OBJECT = 0,
     ARRAY = 1,
@@ -70,8 +72,8 @@ JSONMarshaller.prototype = {
             this.buffer.write("{");
             break;
         default:
-            var err = new Error("JSONMarshaller: Invalid pushState, " + state);
-            err.data = {state: state};
+            var err = new Error("JSONMarshaller: Invalid pushState, " + STATES[newState]);
+            err.data = {state: newState};
             throw err;
             break;
         }
@@ -97,7 +99,7 @@ JSONMarshaller.prototype = {
             return 0; // OBJECT
             break;
         default:
-            var err = new Error("JSONMarshaller: Popped unknown state " + state);
+            var err = new Error("JSONMarshaller: Popped unknown state " + STATES[state]);
             err.data = {state: state};
             throw err;
             break;
@@ -117,7 +119,7 @@ JSONMarshaller.prototype = {
             this.buffer.write(obj);
             break;
         default:
-            var err = new Error("JSONMarshaller: Cannot pushKey in state " + state);
+            var err = new Error("JSONMarshaller: Cannot pushKey in state " + STATES[state]);
             err.data = {state: state};
             throw err;
             break;
