@@ -677,3 +677,15 @@ exports.testRoundtrip = function(test) {
 
     test.done();
 };
+
+exports.testWriteTransitObjectMap = function(test) {
+    var x      = {"~:foo0": [t.keyword("bar"+0), 0],
+                  "~:foo1": [t.keyword("bar"+1), 1]},
+        buf    = sb.stringBuilder(),
+        writer = transit.writer(buf, "json");
+
+    writer.write(x);
+    console.log(buf.flush());
+    
+    test.done();
+};
