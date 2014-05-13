@@ -273,12 +273,24 @@ time(function() {
     JSON.stringify(large0);
 });
 
-console.log("1 iter, transit write large JS object with 100000 kv pairs");
+console.log("1 iter, transit write large JS object with 100000 kv pairs, complex");
 var large1  = {},
     buf0     = sb.stringBuilder(),
     writer1 = transit.writer(buf0, "json");
 for(var i = 0; i < 100000; i++) {
     large1["~:foo"+i] = [t.keyword("bar"+i),i];
+}
+time(function() {
+    writer1.write(large1);
+    buf0.flush();
+});
+
+console.log("1 iter, transit write large JS object with 100000 kv pairs, simple");
+var large1  = {},
+    buf0     = sb.stringBuilder(),
+    writer1 = transit.writer(buf0, "json");
+for(var i = 0; i < 100000; i++) {
+    large1["~:foo"+i] = 1;
 }
 time(function() {
     writer1.write(large1);
