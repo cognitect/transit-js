@@ -110,6 +110,7 @@ JSONMarshaller.prototype = {
         return state;
     },
 
+    // a debugging helper, pour state queue into an array & reverse
     debugState: function() {
         var l   = this.state.list,
             ret = [];

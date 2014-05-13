@@ -685,7 +685,8 @@ exports.testWriteTransitObjectMap = function(test) {
         writer = transit.writer(buf, "json");
 
     writer.write(x);
-    console.log(buf.flush());
+    test.equal(buf.flush(),"{\"~~:foo0\":[\"~:bar0\",0],\"~~:foo1\":[\"~:bar1\",1]}",
+               "transit write of map with arrays returns expected results and not an error");
     
     test.done();
 };
