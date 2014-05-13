@@ -226,6 +226,20 @@ time(function() {
     }
 });
 
+console.log("1e5 iters, top level read, read keyword");
+var kws    = "\"~:foo\"",
+    kwsr   = sr.stringReader(kws),
+    reader = transit.reader("json");
+reader.read(kwsr, function(d) {
+    console.log(d);
+});
+time(function() {
+    for(var i = 0; i < 100000; i++) {
+        kwsr = sr.stringReader(kws);
+        reader.read(kwsr, function(d) {});
+    }
+});
+
 console.log("1e5 iters, JSON.stringify, map two keyword/number value pairs");
 var m3 = {foo:1,bar:2};
 console.log(JSON.stringify(m3));
@@ -279,18 +293,23 @@ time(function() {
     JSON.parse(larges0);
 });
 
+if(global.gc) {
+    global.gc();
+}
+
 console.log("1 iter, transit read large transit map with 100000 kv pairs");
 var arr4   = [],
     buf    = sb.stringBuilder(),
     reader = transit.writer(buf, "json");
 for(var i = 0; i < 100000; i++) {
-    arr4.push("\"~:foo"+i+"\":"+i);
+    arr4.push("\"~:foo"+i+"\":[\"~:bar"+i+"\","+i+"]");
 }
 var larges1 = "{"+arr4.join(",")+"}",
     ins     = sr.stringReader(larges1),
     reader  = transit.reader("json");
 reader.read(ins, function(d) {
     console.log(Object.keys(d).length);
+    console.log(d["~:foo0"]);
 });
 time(function() {
     ins = sr.stringReader(larges1);
