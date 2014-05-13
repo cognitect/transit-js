@@ -2,9 +2,12 @@
 
 ## Usage
 
-You must have [grunt](http://gruntjs.com) installed.
+Install the project dependencies with the following command from the
+repo directory:
 
-Use grunt to test.
+```
+npm install
+```
 
 Test
 
