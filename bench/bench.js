@@ -300,7 +300,7 @@ largeMap = "{"+arr.join(",")+"}",
 reader   = transit.reader("json");
 var largeTransitMap = reader.read(largeMap);
 console.log(Object.keys(largeTransitMap).length);
-console.log(largeTransitMap["~:foo0"]);
+console.log(largeTransitMap["`~:foo0"]);
 time(function() {
     reader.read(largeMap);
 });
