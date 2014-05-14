@@ -211,7 +211,7 @@ exports.testDecoderGetDecoder = function(test) {
     var dc = d.decoder();
     test.ok(dc.getDecoder(":")("foo").name == "foo");
     test.ok(dc.getDecoder("i")("1") == 1);
-    test.ok(dc.getDecoder("f")("1.5") == 1.5);
+    test.ok(dc.getDecoder("f")("1.5").value == "1.5");
     test.done();
 };
 
@@ -231,7 +231,7 @@ exports.testDecodeBasic = function(test) {
     test.ok(dc.decode("~?t") === true);
     test.ok(dc.decode("~?f") === false);
     test.ok(dc.decode("~i10") == 10);
-    test.ok(dc.decode("~f1.5") === 1.5);
+    test.ok(dc.decode("~f1.5").value === "1.5");
     test.ok(dc.decode("~d1.5") === 1.5);
     test.ok(dc.decode("~ca") === "a");
     test.ok(dc.decode("~~foo") === "~foo");
@@ -256,7 +256,7 @@ exports.testDecodeMaps = function(test) {
 
     test.deepEqual(dc.decode({a: 1}), {a: 1});
     test.deepEqual(dc.decode({a: 1, b: 2}), {a: 1, b: 2});
-    test.deepEqual(dc.decode({a: 1, b: "~f1.5"}), {a: 1, b: 1.5});
+    test.deepEqual(dc.decode({a: 1, b: "~d1.5"}), {a: 1, b: 1.5});
 
     // we do not convert keys of objects
     test.deepEqual(dc.decode({"~~a": 1}), {"~~a": 1});
