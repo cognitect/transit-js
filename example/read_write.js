@@ -2,8 +2,6 @@
 
 process.stdin.setEncoding("utf8");
 
-console.log(process.argv[2]);
-
 var transit   = require("../src/transit.js"),
     transport = process.argv[2] || "json",
     r         = transit.reader(transport),
