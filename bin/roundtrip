@@ -2,4 +2,4 @@
 
 cd `dirname $0`/..
 
-exec excample/read_write.js "$@"
+exec example/read_write.js "$@"
