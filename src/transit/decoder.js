@@ -39,7 +39,7 @@ Decoder.prototype = {
             "b": function(v) { return types.binary(v); },
             "i": function(v) { return types.intValue(v); },
             "d": function(v) { return types.floatValue(v); },
-            "f": function(v) { return types.floatValue(v); },
+            "f": function(v) { return types.bigDecimalValue(v); },
             "c": function(v) { return types.charValue(v); },
             ":": function(v) { return types.keyword(v); },
             "$": function(v) { return types.symbol(v); },

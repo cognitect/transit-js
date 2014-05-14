@@ -23,6 +23,14 @@ function floatValue(s) {
     return parseFloat(s);
 }
 
+function BigDecimal(s) {
+    this.value = s;
+}
+
+function bigDecimalValue(s) {
+    return new BigDecimal(s);
+}
+
 function charValue(s) {
     return s;
 }
@@ -419,6 +427,8 @@ module.exports = {
     boolValue: boolValue,
     intValue: intValue,
     floatValue: floatValue,
+    BigDecimal: BigDecimal,
+    bigDecimalValue: bigDecimalValue,
     charValue: charValue,
     keyword: keyword,
     Keyword: Keyword,

@@ -76,10 +76,10 @@ function defaultHandlers(hs) {
          stringRep: function(v) { return v.toString(); }});
 
     hs.set(
-        Number,
-        {tag: function(v) { return "i" },
-         rep: function(v) { return v; },
-         stringRep: function(v) { return v.toString(); }});
+        t.BigDecimal,
+        {tag: function(v) { return "f" },
+         rep: function(v) { return v.value; },
+         stringRep: function(v) { return v.value; }});
 
     hs.set(
         Boolean,
