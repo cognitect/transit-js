@@ -14,12 +14,6 @@ function regexpEscape(s) {
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 };
 
-var ESC_ESC = regexpEscape(d.ESC),
-    ESC_SUB = regexpEscape(d.SUB),
-    ESC_RES = regexpEscape(d.RES),
-    IS_ESCAPED  = new RegExp("^"+ESC_ESC+"("+ESC_SUB+"|"+ESC_ESC+"|"+ESC_RES+")"),
-    IS_UNRECOGNIZED = new RegExp("^"+d.ESC+"\\w");
-
 // =============================================================================
 // Decoder
 
@@ -57,11 +51,6 @@ Decoder.prototype = {
             "doubles": function(v) { return types.doubles(v); },
             "bools": function(v) { return types.bools(v); },
             "cmap": function(v) { return types.cmap(v); },
-        },
-        defaultStringDecoder: function(v) { return "`"+v },
-        defaultHashDecoder: function(h) {
-            var ks = Object.keys(h), key = ks[0];
-            return types.taggedValue(key, h[key]);
         },
         prefersStrings: true
     },
@@ -126,18 +115,14 @@ Decoder.prototype = {
             if(decoder != null) {
                 return decoder(this.decode(val, cache, false));
             } else {
-                var h = {}; h[tagKey.substring(2)] = this.decode(val,cache);
-                return this.getOption("defaultHashDecoder")(h, cache, false); 
+                return types.taggedValue(tagKey.substring(2), this.decode(val, cache));
             }
         } else {
             var ret = {};
-            if(this.getOption("prefersStrings") === true) {
-                for(var i = 0; i < ks.length; i++) {
-                    var key = ks[i];
-                    ret[key] = this.decode(hash[key], cache, false);
-                }
-            } else {
-                /* check for tags */
+            for(var i = 0; i < ks.length; i++) {
+                var key  = ks[i],
+                    skey = this.decode(key, cache, true);
+                ret[skey] = this.decode(hash[key], cache, false);
             }
             return ret;
         }
@@ -152,19 +137,22 @@ Decoder.prototype = {
     },
 
     parseString: function(string, cache, asMapKey) {
-        if(string[0] !== d.ESC) {
-            return string;
-        } else if(IS_ESCAPED.test(string)) {
-            return string.substring(1);
-        } else {
-            var decoder = this.getDecoder(string[1]);
-            if(decoder) {
-                return decoder(string.substring(2));
-            } else if(IS_UNRECOGNIZED.test(string)) {
-                return this.getOption("defaultStringDecoder")(string);
-            } else {
+        if(string[0] === d.ESC) {
+            var c = string[1];
+            if(c === d.ESC || c === d.SUB || c === d.RES) {
+                return string.substring(1);
+            } else if (c === d.TAG) {
                 return string;
+            } else {
+                var decoder = this.getDecoder(c);
+                if(asMapKey == true || decoder == null) {
+                    return d.RES+string;
+                } else {
+                    return decoder(string.substring(2));
+                }
             }
+        } else {
+            return string;
         }
     }
 };
