@@ -15,7 +15,7 @@ var JSON_INT_MIN = -JSON_INT_MAX;
 function escape(string) {
     if(string.length > 0) {
         var c = string[0];
-        if(c === d.RES && string[1] === ESC) {
+        if(c === d.RES && string[1] === d.ESC) {
             return string.substring(1);
         } else if(c === d.ESC || c === d.SUB || c === d.RES) {
             return d.ESC+string;
