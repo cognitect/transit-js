@@ -473,7 +473,8 @@ Writer.prototype = {
 };
 
 function writer(type, opts) {
-    if(type === "json") {
+    if(type === "json" || type == null) {
+        type = "json";
         var marshaller = new JSONMarshaller(opts);
         return new Writer(marshaller, opts);
     } else {

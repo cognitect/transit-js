@@ -29,7 +29,8 @@ Reader.prototype.read = function(str) {
 }
 
 function reader(type, options) {
-    if(type === "json") {
+    if(type === "json" || type == null) {
+        type = "json";
         var unmarshaller = new JSONUnmarshaller();
         return new Reader(unmarshaller, options);
     } else {
