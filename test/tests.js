@@ -20,34 +20,34 @@ var url     = require("url"),
 
 exports.testEquality = function(test) {
 
-    test.ok(eq.equals(1, 1), "1 equals 1");
-    test.ok(!eq.equals(1, 2), "1 does not equal 2");
-    test.ok(eq.equals("foo", "foo"), "\"foo\" equals \"foo\"");
-    test.ok(!eq.equals("foo", "bar"), "\"foo\" does not equal \"bar\"");
-    test.ok(eq.equals([], []), "[]  equals []");
-    test.ok(eq.equals([1,2,3], [1,2,3]), "[1,2,3] equals [1,2,3]");
-    test.ok(!eq.equals([2,2,3], [1,2,3]), "[2,2,3] does not equal [1,2,3]");
-    test.ok(eq.equals([1,[2,3],4], [1,[2,3],4]), "[1,[2,3],4] equals [1,[2,3],4]");
-    test.ok(!eq.equals([1,[3,3],4], [1,[2,3],4]), "[1,[3,3],4] does not equal [1,[2,3],4]");
-    test.ok(!eq.equals([1,2,3], {}), "[1,2,3] does not equal {}");
-    test.ok(eq.equals({}, {}), "{} equals {}");
-    test.ok(eq.equals({foo: "bar"}, {foo: "bar"}), "{foo: \"bar\"} equals {foo: \"bar\"}");
-    test.ok(!eq.equals({foo: "bar", baz: "woz"}, {foo: "bar"}), "{foo: \"bar\", baz: \"woz\"} equals {foo: \"bar\"}");
-    test.ok(!eq.equals({foo: "bar"}, {foo: "baz"}), "{foo: \"bar\"} does not equal {foo: \"baz\"}");
-    test.ok(eq.equals(t.date(1399471321791), t.date(1399471321791)), "equivalent dates are always equal");
-    test.ok(!eq.equals(t.date(1399471321791), t.date(1399471321792)), "different dates are never equal");
+    test.ok(eq.equals(1, 1));
+    test.ok(!eq.equals(1, 2));
+    test.ok(eq.equals("foo", "foo"));
+    test.ok(!eq.equals("foo", "bar"));
+    test.ok(eq.equals([], []));
+    test.ok(eq.equals([1,2,3], [1,2,3]));
+    test.ok(!eq.equals([2,2,3], [1,2,3]));
+    test.ok(eq.equals([1,[2,3],4], [1,[2,3],4]));
+    test.ok(!eq.equals([1,[3,3],4], [1,[2,3],4]));
+    test.ok(!eq.equals([1,2,3], {}));
+    test.ok(eq.equals({}, {}));
+    test.ok(eq.equals({foo: "bar"}, {foo: "bar"}));
+    test.ok(!eq.equals({foo: "bar", baz: "woz"}, {foo: "bar"}));
+    test.ok(!eq.equals({foo: "bar"}, {foo: "baz"}));
+    test.ok(eq.equals(t.date(1399471321791), t.date(1399471321791)));
+    test.ok(!eq.equals(t.date(1399471321791), t.date(1399471321792)));
 
     var o  = {foo: "bar", baz: "woz"},
         hc = eq.hashCode(o);
 
-    test.ok(eq.equals(o, {foo: "bar", baz: "woz"}), "{foo: \"bar\", baz: \"woz\"} instances equal even if hashCode added to one instance");
+    test.ok(eq.equals(o, {foo: "bar", baz: "woz"}));
 
     var o1  = {foo: "bar", baz: "woz"},
         hc1 = eq.hashCode(o1),
         o2  = {foo: "bar", baz: "woz"},
         hc2 = eq.hashCode(o2);
 
-    test.ok(eq.equals(o1, o2), "{foo: \"bar\", baz: \"woz\"} instances equal even if hashCode added to all instances");
+    test.ok(eq.equals(o1, o2));
 
     test.done();
 };
@@ -61,25 +61,25 @@ exports.testEqualitySymbolsAndKeywords = function(test) {
         s1 = t.Symbol("foo"),
         s2 = t.Symbol("bar");
 
-    test.ok(eq.equals(k0, k1), "The same keywords are always equal");
-    test.ok(eq.equals(k0, k2), "Different keywords are never equal");
-    test.ok(eq.equals(s0, s1), "The same symbols are always equal");
-    test.ok(eq.equals(s0, s2), "Different keywrods are never equal");
+    test.ok(eq.equals(k0, k1));
+    test.ok(eq.equals(k0, k2));
+    test.ok(eq.equals(s0, s1));
+    test.ok(eq.equals(s0, s2));
 
     test.done();
 };
 
 exports.testHashCode = function(test) {
 
-    test.equal(eq.hashCode("foo"), eq.hashCode("foo"), "hash code for \"foo\" is always the same");
-    test.notEqual(eq.hashCode("foo"), eq.hashCode("fop"), "hash code for \"foo\" is not same as \"fop\"");
-    test.equal(eq.hashCode([]), 0, "hash code for [] is 0");
-    test.equal(eq.hashCode([1,2,3]), eq.hashCode([1,2,3]), "hash code for [1,2,3] is always the same");
-    test.notEqual(eq.hashCode([1,2,3]), eq.hashCode([1,2,4]), "hash code for [1,2,3] and [1,2,4] is differed");
-    test.equal(eq.hashCode({foo: "bar"}), eq.hashCode({foo: "bar"}), "hash code for {foo: \"bar\"} is always the same");
-    test.notEqual(eq.hashCode({foo: "bar"}), eq.hashCode({foo: "baz"}), "hash code for {foo: \"bar\"} and {foo: \"baz\" is not the same");
-    test.equal(eq.hashCode({}), eq.hashCode({}), "hash code for {} is always the same");
-    test.equal(eq.hashCode(new Date(2014,4,6)), eq.hashCode(new Date(2014,4,6)), "hash code for dates are always the same");
+    test.equal(eq.hashCode("foo"), eq.hashCode("foo"));
+    test.notEqual(eq.hashCode("foo"), eq.hashCode("fop"));
+    test.equal(eq.hashCode([]), 0);
+    test.equal(eq.hashCode([1,2,3]), eq.hashCode([1,2,3]));
+    test.notEqual(eq.hashCode([1,2,3]), eq.hashCode([1,2,4]));
+    test.equal(eq.hashCode({foo: "bar"}), eq.hashCode({foo: "bar"}));
+    test.notEqual(eq.hashCode({foo: "bar"}), eq.hashCode({foo: "baz"}));
+    test.equal(eq.hashCode({}), eq.hashCode({}));
+    test.equal(eq.hashCode(new Date(2014,4,6)), eq.hashCode(new Date(2014,4,6)));
 
     test.done();
 };
@@ -92,43 +92,43 @@ exports.testTransitMapBasic = function(test) {
 
     var m0 = t.map([]);
 
-    test.ok(m0.size == 0, "Size of empty TransitMap is 0");
+    test.ok(m0.size == 0);
 
     var m1 = t.map(["foo", "bar"]);
 
-    test.ok(m1.size == 1, "Size of TransitMap from array of two elements is 1");
-    test.ok(m1.has("foo"), "TransitMap has expected key");
-    test.equal(m1.get("foo"), "bar", "Accessing key of TransitMap returns expected result");
+    test.ok(m1.size == 1);
+    test.ok(m1.has("foo"));
+    test.equal(m1.get("foo"), "bar");
 
     var m2 = t.map(["foo", "bar", 101574, "baz"]);
 
-    test.ok(m2.size == 2, "Size of TransitMap with collisions from array of two elements is 2");
-    test.ok(m2.has("foo") && m2.has(101574), "TransitMap with collisions has expected keys");
-    test.ok((m2.get("foo") == "bar") && (m2.get(101574) == "baz"), "Accessing keys of TransitMap with collisions returns expected result");
+    test.ok(m2.size == 2);
+    test.ok(m2.has("foo") && m2.has(101574));
+    test.ok((m2.get("foo") == "bar") && (m2.get(101574) == "baz"));
 
     var m3 = t.map(["foo", "bar"]);
 
-    test.equal(eq.hashCode(m1), eq.hashCode(m3), "hash codes for equivalent TransitMaps are always the same");
+    test.equal(eq.hashCode(m1), eq.hashCode(m3));
 
     var m4 = t.map(["foo", "bop"]);
 
-    test.notEqual(eq.hashCode(m3), eq.hashCode(m4), "TransmitMap({foo: \"bar\"}) and TransmitMap({foo: \"bop\") have different hash codes");
+    test.notEqual(eq.hashCode(m3), eq.hashCode(m4));
 
     var m5 = t.map([[1,2], "foo", [3,4], "bar"]);
 
-    test.ok(m5.get([1,2]) === "foo" && (m5.get([3,4]) === "bar"), "Can access complex keys from TransitMap");
+    test.ok(m5.get([1,2]) === "foo" && (m5.get([3,4]) === "bar"));
 
     var m5 = t.map(["foo", "bar", "foo", "baz"]);
 
-    test.equal(m5.size, 1, "t.map([\"foo\", \"bar\", \"foo\", \"baz\"]) returns map of size 1");
-    test.equal(m5.get("foo"), "baz", "getting element from previous map returns last value");
+    test.equal(m5.size, 1);
+    test.equal(m5.get("foo"), "baz");
 
     var m6 = t.map(["foo", "bar", "baz", "woz"]),
         m7 = t.map(["foo", "bar", "baz", "woz"]),
         m8 = t.map(["baz", "woz", "foo", "bar"]);
 
-    test.ok(eq.equals(m6,m7), "Two maps representing the same logical value are always equal");
-    test.ok(eq.equals(m7,m8), "Two maps representing the same logical value are always equal regardless of key value order")
+    test.ok(eq.equals(m6,m7));
+    test.ok(eq.equals(m7,m8))
 
     return test.done();
 };
@@ -140,24 +140,24 @@ exports.testTransitMapBasic = function(test) {
 exports.testTransitSetBasic = function(test) {
     var s0 = t.set([]);
 
-    test.equal(s0.size, 0, "Size of empty set is 0");
+    test.equal(s0.size, 0);
 
     var s1 = t.set([1]);
 
-    test.equal(s1.size, 1, "Size of set with one element is 1");
+    test.equal(s1.size, 1);
 
     var s2 = t.set([1,1,2]);
 
-    test.equal(s2.size, 2, "Size of t.set([1,1,2]) is 2");
+    test.equal(s2.size, 2);
 
     var s3 = t.set(["foo","bar","baz"]);
-    test.ok(s3.has("foo") && s3.has("bar"), s3.has("baz"), "set contains all of the expected values");
+    test.ok(s3.has("foo") && s3.has("bar"), s3.has("baz"));
 
     var s4 = t.set(["baz","bar","foo"]);
-    test.ok(eq.equals(s3,s4), "Two sets representing the same logical vlaue are always equal");
+    test.ok(eq.equals(s3,s4));
 
     var s5 = t.set(["foo",1,"bar",[1,2]]);
-    test.ok(s5.has("bar"), "Set with complex values returns true for has on contained value");
+    test.ok(s5.has("bar"));
 
     test.done();
 }
@@ -171,47 +171,47 @@ exports.testTransitSetBasic = function(test) {
 // Implementation Tests
 
 exports.testIsCacheable = function(test) {
-    test.ok(caching.isCacheable("~:f", false) === false, "\"~:f\" should not be cached");
-    test.ok(caching.isCacheable("~:f", true) === false, "\"~:f\" with asMapKey true should be cached");
-    test.ok(caching.isCacheable("~:foobar", false) === true, "\"~:foobar\" should be cached");
-    test.ok(caching.isCacheable("~$foobar", false) === true, "\"~$foobar\" should be cached");
-    test.ok(caching.isCacheable("~#foobar", false) === true, "\"#foobar\" should be cached");
-    test.ok(caching.isCacheable("~foobar", false) === false, "\"~foobar\" should not be cached");
+    test.ok(caching.isCacheable("~:f", false) === false);
+    test.ok(caching.isCacheable("~:f", true) === false);
+    test.ok(caching.isCacheable("~:foobar", false) === true);
+    test.ok(caching.isCacheable("~$foobar", false) === true);
+    test.ok(caching.isCacheable("~#foobar", false) === true);
+    test.ok(caching.isCacheable("~foobar", false) === false);
     test.done();
 };
 
 exports.testWriteCacheWrite = function(test) {
     var cache = caching.writeCache();
     cache.write("~:foobar", false);
-    test.deepEqual(cache.cache, {"~:foobar":"^!"}, "First cache write should map to \"^!\"");
+    test.deepEqual(cache.cache, {"~:foobar":"^!"});
     test.done();
 };
 
 exports.testIsCacheCode = function(test) {
-    test.ok(caching.isCacheCode("^!"), "\"^!\" is a cache code");
+    test.ok(caching.isCacheCode("^!"));
     test.done();
 };
 
 exports.testReadCacheWrite = function(test) {
     var cache = caching.readCache();
     cache.write("~:foo", "foo");
-    test.ok(cache.cache.length == caching.MAX_CACHE_ENTRIES, "Read cache size does not exceed maximum");
-    test.ok(cache.idx == 1, "Single read cache write bumps cache index");
+    test.ok(cache.cache.length == caching.MAX_CACHE_ENTRIES);
+    test.ok(cache.idx == 1);
     test.done();
 };
 
 exports.testReadCacheRead = function(test) {
     var cache = caching.readCache();
     cache.write("~:foo", "foo");
-    test.ok(cache.read("^!") == "foo", "Single read cache read after cache write returns expected value");
+    test.ok(cache.read("^!") == "foo");
     test.done();
 };
 
 exports.testDecoderGetDecoder = function(test) {
     var dc = d.decoder();
-    test.ok(dc.getDecoder(":")("foo").name == "foo", "Can access symbol decoder and invoke");
-    test.ok(dc.getDecoder("i")("1") == 1, "Can access integer decoder and invoke");
-    test.ok(dc.getDecoder("f")("1.5") == 1.5, "Can access float decoder and invoke");
+    test.ok(dc.getDecoder(":")("foo").name == "foo");
+    test.ok(dc.getDecoder("i")("1") == 1);
+    test.ok(dc.getDecoder("f")("1.5") == 1.5);
     test.done();
 };
 
@@ -221,32 +221,32 @@ exports.testDecoderGetDecoder = function(test) {
 exports.testDecodeBasic = function(test) {
     var dc = d.decoder();
 
-    test.ok(dc.decode(null) === null, "decoding null returns null");
-    test.ok(dc.decode(true) === true, "decoding true returns true");
-    test.ok(dc.decode(false) === false, "decoding false returns false");
-    test.ok(dc.decode(10) === 10, "decoding 10 returns 10");
-    test.ok(dc.decode(1.5) === 1.5, "decoding 1.5 returns 1.5");
-    test.ok(dc.decode("foo") === "foo", "decoding \"foo\" returns \"foo\"");
-    test.ok(dc.decode("~_") === null, "decoding \"~_\" returns null");
-    test.ok(dc.decode("~?t") === true, "decoding \"~?t\" returns true");
-    test.ok(dc.decode("~?f") === false, "decoding \"~?f\" returns false");
-    test.ok(dc.decode("~i10") == 10, "decoding \"~i10\" returns value equal to 10");
-    test.ok(dc.decode("~f1.5") === 1.5, "decoding \"~i1.5\" returns 1.5");
-    test.ok(dc.decode("~d1.5") === 1.5, "decoding \"~d1.5\" returns 1.5");
-    test.ok(dc.decode("~ca") === "a", "decoding \"~ca\" returns \"a\"");
-    test.ok(dc.decode("~~foo") === "~foo", "decoding \"~~foo\" returns \"~foo\"");
-    test.deepEqual(dc.decode([]), [], "decoding an empty array returns an empty array");
-    test.deepEqual(dc.decode([1,2,3]), [1,2,3], "decoding an array returns an equal array");
+    test.ok(dc.decode(null) === null);
+    test.ok(dc.decode(true) === true);
+    test.ok(dc.decode(false) === false);
+    test.ok(dc.decode(10) === 10);
+    test.ok(dc.decode(1.5) === 1.5);
+    test.ok(dc.decode("foo") === "foo");
+    test.ok(dc.decode("~_") === null);
+    test.ok(dc.decode("~?t") === true);
+    test.ok(dc.decode("~?f") === false);
+    test.ok(dc.decode("~i10") == 10);
+    test.ok(dc.decode("~f1.5") === 1.5);
+    test.ok(dc.decode("~d1.5") === 1.5);
+    test.ok(dc.decode("~ca") === "a");
+    test.ok(dc.decode("~~foo") === "~foo");
+    test.deepEqual(dc.decode([]), []);
+    test.deepEqual(dc.decode([1,2,3]), [1,2,3]);
     
     var uuid = dc.decode("~u531a379e-31bb-4ce1-8690-158dceb64be6");
 
-    test.ok(uuid instanceof t.UUID, "decoding \"~uXXX\" returns a UUID");
-    test.ok(uuid.str === "531a379e-31bb-4ce1-8690-158dceb64be6", "decoding \"~uXXX\" returns UUID with expected property");
+    test.ok(uuid instanceof t.UUID);
+    test.ok(uuid.str === "531a379e-31bb-4ce1-8690-158dceb64be6");
 
     var uri = dc.decode("~rhttp://foo.com");
 
-    test.ok(uri instanceof url.Url, "decoding \"~rhttp://foo.com\" returns Url instance");
-    test.ok(uri.href === "http://foo.com/", "decoding \"~rhttp://foo.com\" returns expected Url instance");
+    test.ok(uri instanceof url.Url);
+    test.ok(uri.href === "http://foo.com/");
 
     test.done();
 };
@@ -254,15 +254,14 @@ exports.testDecodeBasic = function(test) {
 exports.testDecodeMaps = function(test) {
     var dc = d.decoder();
 
-    test.deepEqual(dc.decode({a: 1}), {a: 1}, "Decoding a simple map returns an equal map");
-    test.deepEqual(dc.decode({a: 1, b: 2}), {a: 1, b: 2}, "Decoding a simple map with >1 KV pairs returns an equal map");
-    test.deepEqual(dc.decode({a: 1, b: "~f1.5"}), {a: 1, b: 1.5}, "Decoding a simple map with >1 KV pairs with encoded value returns an equal map");
+    test.deepEqual(dc.decode({a: 1}), {a: 1});
+    test.deepEqual(dc.decode({a: 1, b: 2}), {a: 1, b: 2});
+    test.deepEqual(dc.decode({a: 1, b: "~f1.5"}), {a: 1, b: 1.5});
 
     // we do not convert keys of objects
-    test.deepEqual(dc.decode({"~~a": 1}), {"~~a": 1}, "Decoding a simple map with escaped key returns same map");
+    test.deepEqual(dc.decode({"~~a": 1}), {"~~a": 1});
     test.ok(eq.equals(dc.decode({"~t1985-04-12T23:20:50.052Z": "~t1985-04-12T23:20:50.052Z"}),
-                                {"~t1985-04-12T23:20:50.052Z": t.date(482196050052)},
-                      "Decoding a simple map with encoded date key and encoded date value returns expected map"));
+                                {"~t1985-04-12T23:20:50.052Z": t.date(482196050052)}));
 
     test.done();
 }
@@ -270,7 +269,7 @@ exports.testDecodeMaps = function(test) {
 exports.testDefaultStringDecoder = function(test) {
     var dc = d.decoder(),
         v  = dc.decode("~xfoo");
-    test.ok(dc.decode("~xfoo") === "`~xfoo", "Decoding a string that cannot be decoded encodes it");
+    test.ok(dc.decode("~xfoo") === "`~xfoo");
     test.done();
 };
 
@@ -284,25 +283,25 @@ exports.testDefaultStringDecoder = function(test) {
 exports.testDecodeSymbol = function(test) {
     var dc = d.decoder(),
         v  = dc.decode("~$foo");
-    test.ok(v instanceof t.Symbol, "~$foo is decoded into an instance of Symbol");
-    test.ok(v.name === "foo", "~$foo is decoded into a Symbol with the right properties");
+    test.ok(v instanceof t.Symbol);
+    test.ok(v.name === "foo");
     test.done();
 };
 
 exports.testDecodeKeyword = function(test) {
     var dc = d.decoder(),
         v  = dc.decode("~:foo");
-    test.ok(v instanceof t.Keyword, "~:foo is decoded into an instance of Keyword");
-    test.ok(v.name === "foo", "~:foo is decoded into a Keyword with the right properties");
+    test.ok(v instanceof t.Keyword);
+    test.ok(v.name === "foo");
     test.done();
 };
 
 exports.testDecodeArrayOfKeywords = function(test) {
     var dc = d.decoder(),
         v  = dc.decode(["~:foo", "~:bar", "~:baz"]);
-    test.ok(v.length === 3, "Decoding array of keywords returns array of same length");
-    test.ok(v[0] instanceof t.Keyword, "Decoding array of keywords returns an array of Keyword elements");
-    test.ok(v[2].name === "baz", "Decoding array of keywords returns elements of Keyword with expected properties");
+    test.ok(v.length === 3);
+    test.ok(v[0] instanceof t.Keyword);
+    test.ok(v[2].name === "baz");
     test.done();
 };
 
@@ -319,9 +318,9 @@ exports.testDecodeSetOfKeywords = function(test) {
 // dates
 exports.testDecodeDates = function(test) {
     var dc = d.decoder(),
-        v = dc.decode("~t1985-04-12T23:20:50.052Z");
-    test.ok(v instanceof Date, "Decoding a \"~t1985-04-12T23:20:50.052Z\" returns a Date instance");
-    test.ok(v.valueOf() === (new Date(Date.UTC(1985,3,12,23,20,50,52))).valueOf(), "Decoding a \"~t1985-04-12T23:20:50.052Z\" returns expected Date instance");
+        v  = dc.decode("~t1985-04-12T23:20:50.052Z");
+    test.ok(v instanceof Date);
+    test.ok(v.valueOf() === (new Date(Date.UTC(1985,3,12,23,20,50,52))).valueOf());
     test.done();
 };
 
@@ -350,10 +349,10 @@ exports.testDecodeCMaps = function(test) {
 exports.testDecodeTaggedValue = function(test) {
     var dc = d.decoder(),
         v  = dc.decode({"~#widget": ["~:foo", "~:bar", "~:baz"]});
-    test.ok(v.constructor === t.TaggedValue, "Decoding a tagged value of symbols produces a TaggedValue");
-    test.ok(v.tag === "widget", "Decoding a TaggedValue has the correct tag");
-    test.ok(v.rep.length === 3, "Decoding a TaggedValue preserves properties of value");
-    test.ok(v.rep[0] instanceof t.Keyword, "Decoding a TaggedValue has the correct decoded values");
+    test.ok(v.constructor === t.TaggedValue);
+    test.ok(v.tag === "widget");
+    test.ok(v.rep.length === 3);
+    test.ok(v.rep[0] instanceof t.Keyword);
     test.done();
 };
 
@@ -364,7 +363,7 @@ exports.testDecodeTaggedValue = function(test) {
 exports.testDecodeReadCache = function(test) {
     var dc = d.decoder(),
         v  = dc.decode(["~:foo", "^!", "~:bar", "^\""]);
-    test.ok(v[0] === v[1] && v[2] == v[3], "Decoding from read cache works.");
+    test.ok(v[0] === v[1] && v[2] == v[3]);
     test.done();
 };
 
@@ -380,19 +379,19 @@ exports.testWriterLowLevelEmit = function(test) {
     em.emitArrayStart();
     em.emitArrayEnd();
 
-    test.equal(em.flushBuffer(), "[]", "emitStartArray plus emitEndArray returns expected result");
+    test.equal(em.flushBuffer(), "[]");
 
     em.emitMapStart();
     em.emitMapEnd();
 
-    test.equal(em.flushBuffer(), "{}", "emitMapStart plus emitMapEnd returns expected result");
+    test.equal(em.flushBuffer(), "{}");
 
     em.emitMapStart();
     em.writeObject("\"foo\"", true);
     em.writeObject("\"bar\"", false);
     em.emitMapEnd();
 
-    test.equal(em.flushBuffer(), "{\"foo\":\"bar\"}", "low level map emission returns expected result");
+    test.equal(em.flushBuffer(), "{\"foo\":\"bar\"}");
 
     test.done();
 };
@@ -408,12 +407,12 @@ exports.testDefaultHandlers = function(test) {
         h4 = em.handler([]),
         h5 = em.handler({});
 
-    test.equal(h0.tag(1), "i", "Handler for 1 returns \"i\" for tag");
-    test.equal(h1.tag(true), "?", "Handler for true returns \"?\" for tag");
-    test.equal(h2.tag(false), "?", "Handler for false returns \"?\" for tag");
-    test.equal(h3.tag(null), "_", "Handler for null returns \"_\" for tag");
-    test.equal(h4.tag([]), "array", "Handler for [] returns \"array\" for tag");
-    test.equal(h5.tag({}), "map", "Handler for {} \"object\" for tag");
+    test.equal(h0.tag(1), "i");
+    test.equal(h1.tag(true), "?");
+    test.equal(h2.tag(false), "?");
+    test.equal(h3.tag(null), "_");
+    test.equal(h4.tag([]), "array");
+    test.equal(h5.tag({}), "map");
 
     test.done();
 };
@@ -423,29 +422,29 @@ exports.testWriterMarshalling = function(test) {
         c  = caching.writeCache();
 
     wr.marshal(em, null, false, c);
-    test.ok(em.flushBuffer() === "null", "marshalling null return \"null\"");
+    test.ok(em.flushBuffer() === "null");
     wr.marshal(em, true, false, c);
-    test.ok(em.flushBuffer() === "true", "marshalling true returns \"true\"");
+    test.ok(em.flushBuffer() === "true");
     wr.marshal(em, false, false, c);
-    test.ok(em.flushBuffer() === "false", "marshalling false returns \"false\"");
+    test.ok(em.flushBuffer() === "false");
     wr.marshal(em, 1, false, c);
-    test.ok(em.flushBuffer() === "1", "marshalling false returns \"1\"");
+    test.ok(em.flushBuffer() === "1");
     wr.marshal(em, 1.5, false, c);
-    test.ok(em.flushBuffer() === "1.5", "marshalling false returns \"1.5\"");
+    test.ok(em.flushBuffer() === "1.5");
     wr.marshal(em, "foo", false, c);
-    test.equal(em.flushBuffer(), "\"foo\"", "marshalling \"foo\" returns \"\\\"foo\\\"\"");
+    test.equal(em.flushBuffer(), "\"foo\"");
     wr.marshal(em, [1,2,3], false, c);
-    test.ok(em.flushBuffer() === "[1,2,3]", "marshalling [1,2,3] returns \"[1,2,3]\"");
+    test.ok(em.flushBuffer() === "[1,2,3]");
     wr.marshal(em, {foo: "bar"}, false, c);
-    test.ok(em.flushBuffer(), "{\"foo\":\"bar\"}", "marshalling {foo:\"bar\"} returns \"{\"foo\":\"bar\"}\"");
+    test.ok(em.flushBuffer(), "{\"foo\":\"bar\"}");
     wr.marshal(em, [1,[2,3],4], false, c);
-    test.ok(em.flushBuffer() === "[1,[2,3],4]", "marshalling [1,[2,3],4] returns \"[1,[2,3],4]\"");
+    test.ok(em.flushBuffer() === "[1,[2,3],4]");
     wr.marshal(em, {foo:[1,2,3]}, false, c);
-    test.ok(em.flushBuffer() === "{\"foo\":[1,2,3]}", "marshalling {foo:[1,2,3]} returns \"{\"foo\":[1,2,3]}\"");
+    test.ok(em.flushBuffer() === "{\"foo\":[1,2,3]}");
     wr.marshal(em, {foo:[1,{bar:2},3]}, false, c);
-    test.ok(em.flushBuffer() === "{\"foo\":[1,{\"bar\":2},3]}", "marshalling {foo:[1,{bar:2},3]} returns \"{\"foo\":[1,{\"bar\":2},3]}\"");
+    test.ok(em.flushBuffer() === "{\"foo\":[1,{\"bar\":2},3]}");
     wr.marshal(em, {foo:1,bar:2}, false, c);
-    test.ok(em.flushBuffer() === "{\"foo\":1,\"bar\":2}", "marshalling {foo:1,bar:2} returns \"{\"foo\":1,\"bar\":2}\"");
+    test.ok(em.flushBuffer() === "{\"foo\":1,\"bar\":2}");
     
     test.done();
 };
@@ -459,27 +458,27 @@ exports.testWriterMarshallingMapKeys = function(test) {
     wr.marshal(em, null, false, c);
     em.emitMapEnd();
     
-    test.ok(em.flushBuffer() === "{\"~_\":null}", "marshalling map with null key returns expected string");
+    test.ok(em.flushBuffer() === "{\"~_\":null}");
     
     em.emitMapStart();
     wr.marshal(em, true, true, c);
     wr.marshal(em, true, false, c);
     em.emitMapEnd();
 
-    test.ok(em.flushBuffer() === "{\"~?t\":true}", "marshalling map with true key returns expected string");
+    test.ok(em.flushBuffer() === "{\"~?t\":true}");
 
     em.emitMapStart();
     wr.marshal(em, false, true, c);
     wr.marshal(em, false, false, c);
     em.emitMapEnd();
 
-    test.ok(em.flushBuffer() === "{\"~?f\":false}", "marshalling map with false key returns expected string");
+    test.ok(em.flushBuffer() === "{\"~?f\":false}");
 
     test.done();
 };
 
 exports.testHandlerTypeTag = function(test) {
-    test.equal(h.typeTag(Date),h.typeTag(Date), "handler type tag for Date is always the same");
+    test.equal(h.typeTag(Date),h.typeTag(Date));
     test.done();
 };
 
@@ -490,9 +489,9 @@ exports.testWriterEmitTaggedMap = function(test) {
         h  = em.handler(d);
 
     wr.emitTaggedMap(em, "t", h.rep(d), false, c);
-    test.equal(em.flushBuffer(), "{\"~#t\":482196050052}", "emitting date as tagged map and returns expected string");
+    test.equal(em.flushBuffer(), "{\"~#t\":482196050052}");
     wr.marshal(em, d, false, c);
-    test.equal(em.flushBuffer(), "{\"~#t\":482196050052}", "emitting date as tagged map via writer.marshal returns expected string");
+    test.equal(em.flushBuffer(), "{\"~#t\":482196050052}");
 
     test.done();
 };
@@ -502,7 +501,7 @@ exports.testWriterEmitQuoted = function(test) {
         c  = caching.writeCache();
 
     em.emitQuoted(1, c);
-    test.equal(em.flushBuffer(), "{\"~'\":1}", "emitting quoted value returns expected string");
+    test.equal(em.flushBuffer(), "{\"~'\":1}");
 
     test.done();
 };
@@ -513,13 +512,13 @@ exports.testWriterMarshalTop = function(test) {
         d  = (new Date(Date.UTC(1985,3,12,23,20,50,52)))
 
     wr.marshalTop(em, 1, c);
-    test.equal(em.flushBuffer(), "{\"~'\":1}", "marshalling number at top level returns expected string");
+    test.equal(em.flushBuffer(), "{\"~'\":1}");
     wr.marshalTop(em, {foo:"bar"}, c);
-    test.equal(em.flushBuffer(), "{\"foo\":\"bar\"}", "marshalling object at top level returns expected string");
+    test.equal(em.flushBuffer(), "{\"foo\":\"bar\"}");
     wr.marshalTop(em, [1,2,3], c);
-    test.equal(em.flushBuffer(), "[1,2,3]", "marshalling array at top level returns expected string");
+    test.equal(em.flushBuffer(), "[1,2,3]");
     wr.marshalTop(em, {foo:d}, c);
-    test.equal(em.flushBuffer(), "{\"foo\":\"~t1985-04-12T23:20:50.052Z\"}", "marshalling map containing date at top level returns expected string");
+    test.equal(em.flushBuffer(), "{\"foo\":\"~t1985-04-12T23:20:50.052Z\"}");
 
     test.done();
 };
@@ -530,7 +529,7 @@ exports.testWriterMarshalTopPreferStringsFalse = function(test) {
         d  = (new Date(Date.UTC(1985,3,12,23,20,50,52)))
 
     wr.marshalTop(em, {foo:d}, c);
-    test.equal(em.flushBuffer(), "{\"foo\":{\"~#t\":482196050052}}", "marshalling map with prefersStrings false containing date at top level returns expected string");
+    test.equal(em.flushBuffer(), "{\"foo\":{\"~#t\":482196050052}}");
 
     test.done();
 };
@@ -543,17 +542,17 @@ exports.testQueue = function(test) {
     var q = t.queue();
 
     q.push(1);
-    test.equal(q.peek(), 1, "1 is at the head of the queue");
+    test.equal(q.peek(), 1);
     q.push(2);
-    test.equal(q.peek(), 2, "2 is at the head of the queue");
+    test.equal(q.peek(), 2);
     q.push(3);
-    test.equal(q.peek(), 3, "3 is at the head of the queue");
+    test.equal(q.peek(), 3);
     q.pop();
-    test.equal(q.peek(), 2, "2 is at the head of the queue after pop");
+    test.equal(q.peek(), 2);
     q.pop();
-    test.equal(q.peek(), 1, "1 is at the head of the queue after pop");
+    test.equal(q.peek(), 1);
     q.pop();
-    test.equal(q.peek(), null, "null is at the head of the queue after pop");
+    test.equal(q.peek(), null);
 
     test.done();
 };
@@ -565,7 +564,7 @@ exports.testQueue = function(test) {
 exports.testWrite = function(test) {
     var writer = transit.writer("json");
 
-    test.equal(writer.write({foo:"bar"}), "{\"foo\":\"bar\"}", "top level api write returns expected results");
+    test.equal(writer.write({foo:"bar"}), "{\"foo\":\"bar\"}");
 
     test.done();
 };
@@ -573,7 +572,7 @@ exports.testWrite = function(test) {
 exports.testRead = function(test) {
     var reader = transit.reader("json");
 
-    test.deepEqual(reader.read("{\"foo\":\"bar\"}"), {foo:"bar"}, "top level api read returns the expected result");
+    test.deepEqual(reader.read("{\"foo\":\"bar\"}"), {foo:"bar"});
 
     test.done();
 };
@@ -581,7 +580,7 @@ exports.testRead = function(test) {
 exports.testReadTransitTypes = function(test) {
     var reader = transit.reader("json");
 
-    test.deepEqual(reader.read("{\"~:foo\":\"bar\"}"), {"~:foo":"bar"}, "top level api read object with keywords returns the expected result");
+    test.deepEqual(reader.read("{\"~:foo\":\"bar\"}"), {"~:foo":"bar"});
     test.deepEqual(reader.read("{\"~#ints\":[1,2,3]}"), [1,2,3]);
     test.deepEqual(reader.read("{\"~#longs\":[1,2,3]}"), [1,2,3]);
     test.deepEqual(reader.read("{\"~#floats\":[1.5,2.5,3.5]}"), [1.5,2.5,3.5]);
@@ -594,22 +593,22 @@ exports.testReadTransitTypes = function(test) {
 exports.testWriteTransitTypes = function(test) {
     var writer = transit.writer("json");
     
-    test.equal(writer.write(["foo"]), "[\"foo\"]", "writing [\"foo\"] returns expected result");
-    test.equal(writer.write([1]), "[1]", "writing [1] returns expected result");
-    test.equal(writer.write([1.5]), "[1.5]", "writing [1.5] returns expected result");
-    test.equal(writer.write([true]), "[true]", "writing [true] returns expected result");
-    test.equal(writer.write([false]), "[false]", "writing [false] expected result");
-    test.equal(writer.write([t.keyword("foo")]), "[\"~:foo\"]", "writing [t.keyword(\"foo\")] returns \"[\\\"~:foo\"]\\\"");
-    test.equal(writer.write([t.symbol("foo")]), "[\"~$foo\"]", "writing [t.symbol(\"foo\")] returns \"[\\\"~$foo\"]\\\"");
-    test.equal(writer.write([t.date(482196050052)]), "[\"~t1985-04-12T23:20:50.052Z\"]", "writing [t.date(482196050052)] returns \"[\\\"~t1985-04-12T23:20:50.052Z\\\"]\"");
+    test.equal(writer.write(["foo"]), "[\"foo\"]");
+    test.equal(writer.write([1]), "[1]");
+    test.equal(writer.write([1.5]), "[1.5]");
+    test.equal(writer.write([true]), "[true]");
+    test.equal(writer.write([false]), "[false]");
+    test.equal(writer.write([t.keyword("foo")]), "[\"~:foo\"]");
+    test.equal(writer.write([t.symbol("foo")]), "[\"~$foo\"]");
+    test.equal(writer.write([t.date(482196050052)]), "[\"~t1985-04-12T23:20:50.052Z\"]");
     test.equal(writer.write([t.keyword("foo"),t.symbol("bar")]), "[\"~:foo\",\"~$bar\"]");
     test.equal(writer.write([t.symbol("foo"),t.keyword("bar")]), "[\"~$foo\",\"~:bar\"]");
-    test.equal(writer.write([t.uri("http://foo.com/")]), "[\"~rhttp://foo.com/\"]", "writing [t.uri(\"http://foo.com\")] returns expected result");
-    test.equal(writer.write(t.list([1,2,3])), "{\"~#list\":[1,2,3]}", "writing t.list([1,2,3]) returns expected result");
-    test.equal(writer.write([t.list([1,2,3])]), "[{\"~#list\":[1,2,3]}]", "writing [t.list([1,2,3])] returns expected result");
-    test.equal(writer.write(t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}", "writing t.uid(\"531a379e-31bb-4ce1-8690-158dceb64be6\") returns expected result");
-    test.equal(writer.write([t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")]), "[\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]", "writing t.uid(\"531a379e-31bb-4ce1-8690-158dceb64be6\") returns expected result");
-    test.equal(writer.write([t.binary("c3VyZS4=")]), "[\"~bc3VyZS4=\"]", "writing [t.binary(\"c3VyZS4=\")] returns expected value");
+    test.equal(writer.write([t.uri("http://foo.com/")]), "[\"~rhttp://foo.com/\"]");
+    test.equal(writer.write(t.list([1,2,3])), "{\"~#list\":[1,2,3]}");
+    test.equal(writer.write([t.list([1,2,3])]), "[{\"~#list\":[1,2,3]}]");
+    test.equal(writer.write(t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}");
+    test.equal(writer.write([t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")]), "[\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]");
+    test.equal(writer.write([t.binary("c3VyZS4=")]), "[\"~bc3VyZS4=\"]");
     
     test.done();
 };
@@ -619,7 +618,7 @@ exports.testWriteTransitComplexTypes = function(test) {
         s0     = t.set(["foo","bar","baz"]),
         m0     = t.map(["foo","bar","baz","woz"]);
 
-    test.equal(writer.write(s0),"{\"~#set\":[\"foo\",\"bar\",\"baz\"]}","writing a transit set returns the expected result");
+    test.equal(writer.write(s0),"{\"~#set\":[\"foo\",\"bar\",\"baz\"]}");
 
     test.done();
 }; 
@@ -629,7 +628,7 @@ exports.testRoundtrip = function(test) {
         s      = "{\"~#set\":[\"foo\",\"bar\",\"baz\"]}",
         reader = transit.reader("json");
 
-    test.equal(s, writer.write(reader.read(s)), "round tripping produces the expected result");
+    test.equal(s, writer.write(reader.read(s)));
 
     test.done();
 };
@@ -639,8 +638,7 @@ exports.testWriteTransitObjectMap = function(test) {
                   "~:foo1": [t.keyword("bar"+1), 1]},
         writer = transit.writer("json");
 
-    test.equal(writer.write(x),"{\"~~:foo0\":[\"~:bar0\",0],\"~~:foo1\":[\"~:bar1\",1]}",
-               "transit write of map with arrays returns expected results and not an error");
+    test.equal(writer.write(x),"{\"~~:foo0\":[\"~:bar0\",0],\"~~:foo1\":[\"~:bar1\",1]}");
     
     test.done();
 };
@@ -649,12 +647,35 @@ exports.testWriteEdgeCases = function(test) {
 
     var writer = transit.writer("json");
 
-    test.equal(writer.write([[1,2]]), "[[1,2]]", "Writing [[1,2]] returns expected result");
-    test.equal(writer.write([[1,2],[3,4]]), "[[1,2],[3,4]]", "Writing [[1,2],[3,4]] returns expected result");
-    test.equal(writer.write([[[1,2]]]), "[[[1,2]]]", "Writing [[[1,2]]] returns expected result");
-    test.equal(writer.write([{foo:[1,2]}]), "[{\"foo\":[1,2]}]", "Writing [{foo:[1,2]}] returns expected result");
-    test.equal(writer.write([{foo:[1,2,{}]}]), "[{\"foo\":[1,2,{}]}]", "Writing [{foo:[1,2,{}]}] returns expected result");
-    test.equal(writer.write({foo:{bar:1,noz:3},baz:{woz:2,goz:4}}), "{\"foo\":{\"bar\":1,\"noz\":3},\"baz\":{\"woz\":2,\"goz\":4}}", "Writing {foo:{bar:1,noz:3},baz:{woz:2,goz:4}} returns expected result");
+    test.equal(writer.write([[1,2]]), "[[1,2]]");
+    test.equal(writer.write([[1,2],[3,4]]), "[[1,2],[3,4]]");
+    test.equal(writer.write([[[1,2]]]), "[[[1,2]]]");
+    test.equal(writer.write([{foo:[1,2]}]), "[{\"foo\":[1,2]}]");
+    test.equal(writer.write([{foo:[1,2,{}]}]), "[{\"foo\":[1,2,{}]}]");
+    test.equal(writer.write({foo:{bar:1,noz:3},baz:{woz:2,goz:4}}), "{\"foo\":{\"bar\":1,\"noz\":3},\"baz\":{\"woz\":2,\"goz\":4}}");
+
+    test.done();
+};
+
+// =============================================================================
+// Verify Test Cases
+// =============================================================================
+
+exports.testVerifyJSONCornerCases = function(test) {
+
+    var reader = transit.reader("json"),
+        writer = transit.writer("json");
+
+    test.ok(writer.write(reader.read("{\"~#point\":[1,2]}")), "{\"~#point\":[1,2]}");
+
+    /*
+    "{\"foo\":\"~xfoo\"}"
+    "{\"~/t\":null}"
+    "{\"~/f\":null}"
+    "{\"~#'\":\"~f-1.1E-1\"}"
+    "{\"~#'\":\"~f-1.10E-1\"}"
+    "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}"
+    */
 
     test.done();
 };
