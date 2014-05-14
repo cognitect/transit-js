@@ -105,12 +105,13 @@ Decoder.prototype = {
 
     decodeHash: function(hash, cache, asMapKey) {
         var ks     = Object.keys(hash),
-            tagKey = ks.length == 1 ? this.decode(ks[0], cache, false) : null;
+            key    = ks[0],
+            tagKey = ks.length == 1 ? this.decode(key, cache, false) : null;
 
         if((tagKey != null) &&
            (tagKey[0] === d.ESC) &&
            (tagKey[1] === d.TAG)) {
-            var val     = hash[tagKey],
+            var val     = hash[key],
                 decoder = this.getDecoder(tagKey.substring(2));
             if(decoder != null) {
                 return decoder(this.decode(val, cache, false));

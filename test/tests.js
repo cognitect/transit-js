@@ -677,7 +677,7 @@ exports.testVerifyRoundTripCachedKeys = function(test) {
 
     test.equal(writer.write(reader.read("[\"~:foo\",\"~:bar\",{\"^\\\"\":[1,2]}]")), "[\"~:foo\",\"~:bar\",{\"^\\\"\":[1,2]}]");
 
-    test.done();  
+    test.done();
 };
 
 exports.testVerifyJSONCornerCases = function(test) {
