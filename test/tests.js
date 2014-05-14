@@ -4,6 +4,7 @@
 "use strict";
 
 var url     = require("url"),
+    Long    = require("long"),
     transit = require("../src/transit.js"),
     h       = require("../src/transit/handlers.js"),
     w       = require("../src/transit/writer.js"),
@@ -595,6 +596,8 @@ exports.testWriteTransitTypes = function(test) {
     
     test.equal(writer.write(["foo"]), "[\"foo\"]");
     test.equal(writer.write([1]), "[1]");
+    test.equal(writer.write([w.JSON_INT_MAX.add(Long.fromInt(1))]), "[\"~i9007199254740993\"]");
+    test.equal(writer.write([w.JSON_INT_MIN.subtract(Long.fromInt(1))]), "[\"~i-9007199254740993\"]");
     test.equal(writer.write([1.5]), "[1.5]");
     test.equal(writer.write([true]), "[true]");
     test.equal(writer.write([false]), "[false]");
@@ -672,10 +675,9 @@ exports.testVerifyJSONCornerCases = function(test) {
     test.equal(writer.write(reader.read("{\"~/f\":null}")), "{\"~/f\":null}");
     test.equal(writer.write(reader.read("{\"~#'\":\"~f-1.1E-1\"}")), "{\"~#'\":\"~f-1.1E-1\"}");
     test.equal(writer.write(reader.read("{\"~#'\":\"~f-1.10E-1\"}")), "{\"~#'\":\"~f-1.10E-1\"}");
-    /*
-    test.equal(writer.write(reader.read("{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}")),
-               "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}")
-    */           
+    // test.equal(writer.write(reader.read(
+    //            "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}")),
+    //            "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}");
 
     test.done();
 };

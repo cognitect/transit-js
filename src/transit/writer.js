@@ -5,12 +5,21 @@
 
 var caching = require("./caching"),
     h       = require("./handlers"),
+    Long    = require("long"),
     t       = require("./types"),
     d       = require("./delimiters"),
     sb      = require("./stringbuilder");
 
-var JSON_INT_MAX = Math.pow(2, 53);
-var JSON_INT_MIN = -JSON_INT_MAX;
+var JSON_INT_MAX = Long.fromNumber(Math.pow(2, 53));
+var JSON_INT_MIN = Long.fromNumber(-JSON_INT_MAX);
+
+function isLong(i) {
+    if(i instanceof Long) {
+        return i.lessThan(JSON_INT_MIN) || i.greaterThan(JSON_INT_MAX);
+    } else {
+        return false;
+    }
+}
 
 function escape(string) {
     if(string.length > 0) {
@@ -215,8 +224,8 @@ JSONMarshaller.prototype = {
     },
 
     emitInteger: function(i, asMapKey, cache) {
-        if(asMapKey || (typeof i === "string") || (i > JSON_INT_MAX) || (i < JSON_INT_MIN)) {
-            this.emitString(d.ESC, "i", i, asMapKey, cache);
+        if(asMapKey || (typeof i === "string") || isLong(i)) {
+            this.emitString(d.ESC, "i", i.toString(), asMapKey, cache);
         } else {
             this.writeObject(i);
         }
@@ -485,6 +494,8 @@ function writer(type, opts) {
 }
 
 module.exports = {
+    JSON_INT_MAX: JSON_INT_MAX,
+    JSON_INT_MIN: JSON_INT_MIN,
     writer: writer,
     marshal: marshal,
     marshalTop: marshalTop,
