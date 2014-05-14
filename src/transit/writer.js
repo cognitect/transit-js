@@ -258,7 +258,7 @@ JSONMarshaller.prototype = {
 
     emitQuoted: function(obj, cache) {
         this.emitMapStart();
-        this.emitString(d.ESC, "'", "", true, cache);
+        this.emitString(d.ESC_TAG, "'", "", true, cache);
         marshal(this, obj, false, cache);
         this.emitMapEnd();
     },

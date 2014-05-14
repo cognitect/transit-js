@@ -501,7 +501,7 @@ exports.testWriterEmitQuoted = function(test) {
         c  = caching.writeCache();
 
     em.emitQuoted(1, c);
-    test.equal(em.flushBuffer(), "{\"~'\":1}");
+    test.equal(em.flushBuffer(), "{\"~#'\":1}");
 
     test.done();
 };
@@ -512,7 +512,7 @@ exports.testWriterMarshalTop = function(test) {
         d  = (new Date(Date.UTC(1985,3,12,23,20,50,52)))
 
     wr.marshalTop(em, 1, c);
-    test.equal(em.flushBuffer(), "{\"~'\":1}");
+    test.equal(em.flushBuffer(), "{\"~#'\":1}");
     wr.marshalTop(em, {foo:"bar"}, c);
     test.equal(em.flushBuffer(), "{\"foo\":\"bar\"}");
     wr.marshalTop(em, [1,2,3], c);
@@ -606,7 +606,7 @@ exports.testWriteTransitTypes = function(test) {
     test.equal(writer.write([t.uri("http://foo.com/")]), "[\"~rhttp://foo.com/\"]");
     test.equal(writer.write(t.list([1,2,3])), "{\"~#list\":[1,2,3]}");
     test.equal(writer.write([t.list([1,2,3])]), "[{\"~#list\":[1,2,3]}]");
-    test.equal(writer.write(t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}");
+    test.equal(writer.write(t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~#'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}");
     test.equal(writer.write([t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")]), "[\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]");
     test.equal(writer.write([t.binary("c3VyZS4=")]), "[\"~bc3VyZS4=\"]");
     
