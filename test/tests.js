@@ -363,8 +363,9 @@ exports.testDecodeTaggedValue = function(test) {
 
 exports.testDecodeReadCache = function(test) {
     var dc = d.decoder(),
-        v  = dc.decode(["~:foo", "^!", "~:bar", "^\""]);
-    test.ok(v[0] === v[1] && v[2] == v[3]);
+        c  = caching.readCache(),
+        v  = dc.decode(["~:foo", "^!", "~:bar", "^\""], c, false);
+    test.ok(v[0] === v[1] && v[2] === v[3]);
     test.done();
 };
 
@@ -502,7 +503,7 @@ exports.testWriterEmitQuoted = function(test) {
         c  = caching.writeCache();
 
     em.emitQuoted(1, c);
-    test.equal(em.flushBuffer(), "{\"~#'\":1}");
+    test.equal(em.flushBuffer(), "{\"~#\\\'\":1}");
 
     test.done();
 };
@@ -513,7 +514,7 @@ exports.testWriterMarshalTop = function(test) {
         d  = (new Date(Date.UTC(1985,3,12,23,20,50,52)))
 
     wr.marshalTop(em, 1, c);
-    test.equal(em.flushBuffer(), "{\"~#'\":1}");
+    test.equal(em.flushBuffer(), "{\"~#\\\'\":1}");
     wr.marshalTop(em, {foo:"bar"}, c);
     test.equal(em.flushBuffer(), "{\"foo\":\"bar\"}");
     wr.marshalTop(em, [1,2,3], c);
@@ -609,7 +610,7 @@ exports.testWriteTransitTypes = function(test) {
     test.equal(writer.write([t.uri("http://foo.com/")]), "[\"~rhttp://foo.com/\"]");
     test.equal(writer.write(t.list([1,2,3])), "{\"~#list\":[1,2,3]}");
     test.equal(writer.write([t.list([1,2,3])]), "[{\"~#list\":[1,2,3]}]");
-    test.equal(writer.write(t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~#'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}");
+    test.equal(writer.write(t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~#\\\'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}");
     test.equal(writer.write([t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")]), "[\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]");
     test.equal(writer.write([t.binary("c3VyZS4=")]), "[\"~bc3VyZS4=\"]");
     
@@ -664,6 +665,21 @@ exports.testWriteEdgeCases = function(test) {
 // Verify Test Cases
 // =============================================================================
 
+exports.testVerifyCaching = function(test) {
+    var writer = transit.writer("json");
+
+    test.done();
+};
+
+exports.testVerifyRoundTripCachedKeys = function(test) {
+    var reader = transit.reader("json"),
+        writer = transit.writer("json");
+
+    test.equal(writer.write(reader.read("[\"~:foo\",\"~:bar\",{\"^\\\"\":[1,2]}]")), "[\"~:foo\",\"~:bar\",{\"^\\\"\":[1,2]}]");
+
+    test.done();  
+};
+
 exports.testVerifyJSONCornerCases = function(test) {
 
     var reader = transit.reader("json"),
@@ -673,11 +689,11 @@ exports.testVerifyJSONCornerCases = function(test) {
     test.equal(writer.write(reader.read("{\"foo\":\"~xfoo\"}")), "{\"foo\":\"~xfoo\"}");
     test.equal(writer.write(reader.read("{\"~/t\":null}")), "{\"~/t\":null}");
     test.equal(writer.write(reader.read("{\"~/f\":null}")), "{\"~/f\":null}");
-    test.equal(writer.write(reader.read("{\"~#'\":\"~f-1.1E-1\"}")), "{\"~#'\":\"~f-1.1E-1\"}");
-    test.equal(writer.write(reader.read("{\"~#'\":\"~f-1.10E-1\"}")), "{\"~#'\":\"~f-1.10E-1\"}");
-    // test.equal(writer.write(reader.read(
-    //            "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}")),
-    //            "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}");
+    test.equal(writer.write(reader.read("{\"~#'\":\"~f-1.1E-1\"}")), "{\"~#\\\'\":\"~f-1.1E-1\"}");
+    test.equal(writer.write(reader.read("{\"~#'\":\"~f-1.10E-1\"}")), "{\"~#\\\'\":\"~f-1.10E-1\"}");
+    test.equal(writer.write(reader.read(
+                "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}")),
+                "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}");
 
     test.done();
 };

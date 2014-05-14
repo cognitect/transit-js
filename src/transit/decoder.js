@@ -94,10 +94,10 @@ Decoder.prototype = {
     decodeString: function(string, cache, asMapKey) {
         if(caching.isCacheable(string, asMapKey)) {
             var val = this.parseString(string, cache, asMapKey);
-            cache.write(string, val);
+            cache.write(string, val, asMapKey);
             return val;
         } else if(caching.isCacheCode(string)) {
-            return cache.read(string);
+            return cache.read(string, asMapKey);
         } else {
             return this.parseString(string, cache, asMapKey);
         }
@@ -105,7 +105,7 @@ Decoder.prototype = {
 
     decodeHash: function(hash, cache, asMapKey) {
         var ks     = Object.keys(hash),
-            tagKey = ks.length == 1 ? ks[0] : null;
+            tagKey = ks.length == 1 ? this.decode(ks[0], cache, false) : null;
 
         if((tagKey != null) &&
            (tagKey[0] === d.ESC) &&
@@ -115,7 +115,7 @@ Decoder.prototype = {
             if(decoder != null) {
                 return decoder(this.decode(val, cache, false));
             } else {
-                return types.taggedValue(tagKey.substring(2), this.decode(val, cache));
+                return types.taggedValue(tagKey.substring(2), this.decode(val, cache, false));
             }
         } else {
             var ret = {};

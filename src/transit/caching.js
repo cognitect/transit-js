@@ -94,19 +94,24 @@ ReadCache.prototype = {
         }
     },
     
-    write: function(string, obj) {
+    write: function(string, obj, asMapKey) {
         this.guaranteeCache();
         if(this.idx == MAX_CACHE_ENTRIES) {
             this.idx = 0;
         }
-        this.cache[this.idx] = obj;
+        this.cache[this.idx] = [obj, string];
         this.idx++;
         return obj;
     },
 
     read: function(string, asMapKey) {
         this.guaranteeCache();
-        return this.cache[codeToIdx(string)];
+        var ret = this.cache[codeToIdx(string)];
+        if(asMapKey) {
+            return d.RES+ret[1];
+        } else {
+            return ret[0];
+        }
     },
 
     clear: function() {

@@ -21,6 +21,27 @@ function isLong(i) {
     }
 }
 
+// from http://github.com/joliss/js-string-escape
+function escapeJSString(string) {
+  return ('' + string).replace(/["'\\\n\r\u2028\u2029]/g, function (character) {
+    switch (character) {
+      case '"':
+      case "'":
+      case '\\':
+        return '\\' + character
+      // Four possible LineTerminator characters need to be escaped:
+      case '\n':
+        return '\\n'
+      case '\r':
+        return '\\r'
+      case '\u2028':
+        return '\\u2028'
+      case '\u2029':
+        return '\\u2029'
+    }
+  })
+}
+
 function escape(string) {
     if(string.length > 0) {
         var c = string[0];
@@ -210,7 +231,8 @@ JSONMarshaller.prototype = {
     },
 
     emitString: function(prefix, tag, s, asMapKey, cache) {
-        var s = "\""+cache.write(prefix+tag+s, asMapKey)+"\"";
+        var cached = cache.write(prefix+tag+s, asMapKey),
+            s      = "\""+escapeJSString(cached)+"\"";
         this.writeObject(s, asMapKey);
     },
 
