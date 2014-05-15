@@ -155,7 +155,13 @@ function defaultHandlers(hs) {
     hs.set(
         t.TransitSet,
         {tag: function(v) { return "set"; },
-         rep: function(v) { return t.taggedValue("array", v); },
+         rep: function(v) {
+             var arr = [];
+             v.forEach(function(key, set) {
+                 arr.push(key);
+             });
+             return t.taggedValue("array", arr);
+         },
          stringRep: function(v) { return null; }});
 
     hs.set(
