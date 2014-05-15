@@ -9,7 +9,7 @@ repo directory:
 npm install
 ```
 
-Test
+To run the tests:
 
 ```
 grunt nodeunit
