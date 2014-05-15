@@ -152,10 +152,10 @@ function bools(xs) {
     return xs;
 }  
 
-function TransitMap(keys, map) {
+function TransitMap(keys, map, size) {
     this.map = map;
     this.keys = keys;
-    this.size = keys.length;
+    this.size = size;
     this.hashCode = -1;
 }
 
@@ -246,13 +246,15 @@ TransitMap.prototype.com$cognitect$transit$equals = function(other) {
 
 function transitMap(arr) {
     var map  = {},
-        keys = [];
+        keys = [],
+        size = 0;
     for(var i = 0; i < arr.length; i+=2) {
         var code = eq.hashCode(arr[i]),
             vals = map[code];
         if(vals == null) {
             keys.push(code);
             map[code] = [arr[i], arr[i+1]];
+            size++;
         } else {
             var newEntry = true;
             for(var j = 0; j < vals.length; j+= 2) {
@@ -263,13 +265,13 @@ function transitMap(arr) {
                 }
             }
             if(newEntry) {
-                keys.push(code);
                 vals.push(arr[i]);
                 vals.push(arr[i+1]);
+                size++;
             }
         }
     }
-    return new TransitMap(keys, map);
+    return new TransitMap(keys, map, size);
 }
 
 function cmap(xs) {
@@ -298,8 +300,9 @@ TransitSet.prototype.entries = function() {
 };
 
 TransitSet.prototype.forEach = function(iterator, thisArg) {
+    var self = this;
     this.map.forEach(function(v, k, m) {
-        iterator(k, this);
+        iterator(k, self);
     });
 };
 
@@ -331,13 +334,15 @@ TransitSet.prototype.com$cognitect$transit$hashCode = function(other) {
 
 function transitSet(arr) {
     var map  = {},
-        keys = [];
+        keys = [],
+        size = 0;
     for(var i = 0; i < arr.length; i++) {
         var code = eq.hashCode(arr[i]),
             vals = map[code];
         if(vals == null) {
             keys.push(code);
             map[code] = [arr[i], true];
+            size++
         } else {
             var newEntry = true;
             for(var j = 0; j < vals.length; j+= 2) {
@@ -347,14 +352,13 @@ function transitSet(arr) {
                 }
             }
             if(newEntry) {
-                keys.push(code);
                 vals.push(arr[i]);
                 vals.push(true);
                 size++;
             }
         }
     }
-    return new TransitSet(new TransitMap(keys, map));
+    return new TransitSet(new TransitMap(keys, map, size));
 }
 
 function Quote(obj) {
