@@ -8,13 +8,6 @@ var caching = require("./caching"),
     d       = require("./delimiters");
 
 // =============================================================================
-// Utilities
-
-function regexpEscape(s) {
-    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-};
-
-// =============================================================================
 // Decoder
 
 var Decoder = function(options) {
