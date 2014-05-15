@@ -626,3 +626,12 @@ exports.testVerifyJSONCornerCases = function(test) {
 
     test.done();
 };
+
+exports.testVerifyRoundtripCmap = function(test) {
+    var reader = transit.reader("json"),
+        writer = transit.writer("json");
+
+    test.equal(writer.write(reader.read("{\"~#cmap\":[[2,2],\"two\",[1,1],\"one\"]}")), "{\"~#cmap\":[[2,2],\"two\",[1,1],\"one\"]}");
+
+    test.done();
+};

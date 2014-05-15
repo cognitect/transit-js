@@ -172,7 +172,7 @@ TransitMap.prototype.forEach = function(callback) {
     for(var i = 0; i < this.keys.length; i++) {
         var vals = this.map[this.keys[i]];
         for(var j = 0; j < vals.length; j+=2) {
-            callback(vals[j], vals[j+1], this);
+            callback(vals[j+1], vals[j], this);
         }
     }
 };
@@ -270,11 +270,7 @@ function transitMap(arr) {
 }
 
 function cmap(xs) {
-    var m = new Map();
-    for(var i = 0; i < xs.length; i += 2) {
-        m.set(xs[i], xs[i+1]);
-    }
-    return m;
+    return transitMap(xs);
 }
 
 function TransitSet(map) {
@@ -300,7 +296,7 @@ TransitSet.prototype.entries = function() {
 
 TransitSet.prototype.forEach = function(iterator, thisArg) {
     this.map.forEach(function(v, k, m) {
-        iterator(v, this);
+        iterator(k, this);
     });
 };
 
