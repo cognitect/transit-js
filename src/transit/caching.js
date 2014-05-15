@@ -108,7 +108,11 @@ ReadCache.prototype = {
         this.guaranteeCache();
         var ret = this.cache[codeToIdx(string)];
         if(asMapKey) {
-            return d.RES+ret[1];
+            if(ret[0] === ret[1]) {
+                return ret[1];
+            } else {
+                return d.RES+ret[1];
+            }
         } else {
             return ret[0];
         }

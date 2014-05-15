@@ -594,44 +594,38 @@ exports.testWriteEdgeCases = function(test) {
 // Verify Test Cases
 // =============================================================================
 
-exports.testVerifyCaching = function(test) {
-    var writer = transit.writer("json");
-
-    test.done();
-};
-
-exports.testVerifyRoundTripCachedKeys = function(test) {
+function roundtrip(s) {
     var reader = transit.reader("json"),
         writer = transit.writer("json");
+    return writer.write(reader.read(s));
+}
 
-    test.equal(writer.write(reader.read("[\"~:foo\",\"~:bar\",{\"^\\\"\":[1,2]}]")), "[\"~:foo\",\"~:bar\",{\"^\\\"\":[1,2]}]");
-
+exports.testVerifyRoundTripCachedKeys = function(test) {
+    test.equal(roundtrip("[\"~:foo\",\"~:bar\",{\"^\\\"\":[1,2]}]"), "[\"~:foo\",\"~:bar\",{\"^\\\"\":[1,2]}]");
     test.done();
 };
 
 exports.testVerifyJSONCornerCases = function(test) {
-
-    var reader = transit.reader("json"),
-        writer = transit.writer("json");
-
-    test.equal(writer.write(reader.read("{\"~#point\":[1,2]}")), "{\"~#point\":[1,2]}");
-    test.equal(writer.write(reader.read("{\"foo\":\"~xfoo\"}")), "{\"foo\":\"~xfoo\"}");
-    test.equal(writer.write(reader.read("{\"~/t\":null}")), "{\"~/t\":null}");
-    test.equal(writer.write(reader.read("{\"~/f\":null}")), "{\"~/f\":null}");
-    test.equal(writer.write(reader.read("{\"~#'\":\"~f-1.1E-1\"}")), "{\"~#\'\":\"~f-1.1E-1\"}");
-    test.equal(writer.write(reader.read("{\"~#'\":\"~f-1.10E-1\"}")), "{\"~#\'\":\"~f-1.10E-1\"}");
-    test.equal(writer.write(reader.read(
-                "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}")),
+    test.equal(roundtrip("{\"~#point\":[1,2]}"), "{\"~#point\":[1,2]}");
+    test.equal(roundtrip("{\"foo\":\"~xfoo\"}"), "{\"foo\":\"~xfoo\"}");
+    test.equal(roundtrip("{\"~/t\":null}"), "{\"~/t\":null}");
+    test.equal(roundtrip("{\"~/f\":null}"), "{\"~/f\":null}");
+    test.equal(roundtrip("{\"~#'\":\"~f-1.1E-1\"}"), "{\"~#\'\":\"~f-1.1E-1\"}");
+    test.equal(roundtrip("{\"~#'\":\"~f-1.10E-1\"}"), "{\"~#\'\":\"~f-1.10E-1\"}");
+    test.equal(roundtrip(
+                "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}"),
                 "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}");
 
     test.done();
 };
 
 exports.testVerifyRoundtripCmap = function(test) {
-    var reader = transit.reader("json"),
-        writer = transit.writer("json");
+    test.equal(roundtrip("{\"~#cmap\":[[2,2],\"two\",[1,1],\"one\"]}"), "{\"~#cmap\":[[2,2],\"two\",[1,1],\"one\"]}");
+    test.done();
+};
 
-    test.equal(writer.write(reader.read("{\"~#cmap\":[[2,2],\"two\",[1,1],\"one\"]}")), "{\"~#cmap\":[[2,2],\"two\",[1,1],\"one\"]}");
-
+exports.testVerifyRoundtripMapCachedStrings = function(test) {
+    test.equal(roundtrip("[{\"aaaa\":1,\"bbbb\":2},{\"^!\":3,\"^\\\"\":4},{\"^!\":5,\"^\\\"\":6}]"),
+                         "[{\"aaaa\":1,\"bbbb\":2},{\"^!\":3,\"^\\\"\":4},{\"^!\":5,\"^\\\"\":6}]");
     test.done();
 };
