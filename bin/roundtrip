@@ -2,4 +2,4 @@
 
 cd `dirname $0`/..
 
-exec example/read_write.js "$@"
+exec bin/read_write.js "$@"
