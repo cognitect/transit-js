@@ -3,8 +3,7 @@
   
 "use strict";
 
-var url  = require("url"),
-    Long = require("long"),
+var Long = require("long"),
     eq   = require("./eq");
 
 function nullValue() {
@@ -125,8 +124,12 @@ function binary(str) {
     return new Binary(str);
 }
 
+function URI(uri) {
+    this.uri = uri;
+}
+
 function uri(s) {
-    return url.parse(s);
+    return new URI(s);
 }
 
 function ints(xs) {
@@ -440,6 +443,7 @@ module.exports = {
     date: date,
     Binary: Binary,
     binary: binary,
+    URI: URI,
     uri: uri,
     List: List,
     list: list,

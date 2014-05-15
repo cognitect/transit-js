@@ -4,7 +4,6 @@
 "use strict";
 
 var t                       = require("./types.js"),
-    url                     = require("url"),
     Long                    = require("long"),
     moment                  = require("moment"),
     ctorGuid                = 0,
@@ -124,10 +123,10 @@ function defaultHandlers(hs) {
          }});
 
     hs.set(
-        url.Url,
+        t.URI,
         {tag: function(v) { return "r"; },
-         rep: function(v) { return v.href; },
-         stringRep: function(v) { return v.href; }});
+         rep: function(v) { return v.uri; },
+         stringRep: function(v) { return v.uri; }});
 
     hs.set(
         t.Keyword,

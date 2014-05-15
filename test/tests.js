@@ -246,8 +246,8 @@ exports.testDecodeBasic = function(test) {
 
     var uri = dc.decode("~rhttp://foo.com");
 
-    test.ok(uri instanceof url.Url);
-    test.ok(uri.href === "http://foo.com/");
+    test.ok(uri instanceof t.URI);
+    test.ok(uri.uri === "http://foo.com");
 
     test.done();
 };
