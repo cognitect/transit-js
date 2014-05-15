@@ -31,8 +31,9 @@ function escape(string) {
         } else {
             return string;
         }
+    } else {
+        return string;
     }
-    return null;
 }
 
 // STATES

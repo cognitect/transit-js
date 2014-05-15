@@ -629,3 +629,13 @@ exports.testVerifyRoundtripMapCachedStrings = function(test) {
                          "[{\"aaaa\":1,\"bbbb\":2},{\"^!\":3,\"^\\\"\":4},{\"^!\":5,\"^\\\"\":6}]");
     test.done();
 };
+
+exports.testVerifyRoundtripEmptyString = function(test) {
+    var reader = transit.reader("json"),
+        writer = transit.writer("json");
+
+    test.equal(roundtrip("[\"\",\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\"]"),
+                         "[\"\",\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\"]");
+
+    test.done();
+};
