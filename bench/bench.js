@@ -137,24 +137,20 @@ console.log("1e5 iters, marshal {foo:\"bar\"}");
 var em = new wr.JSONMarshaller(),
     c  = caching.writeCache(),
     m  = {foo:"bar"};
-wr.marshalTop(em, m, c);
-console.log(em.flushBuffer());
+console.log(wr.marshalTop(em, m, c));
 time(function() {
     for(var i = 0; i < 100000; i++) {
         wr.marshalTop(em, m, c);
-        em.flushBuffer();
     }
 });
 
 console.log("1e4 iters, marshal {foo:new Date(Date.UTC(1985,3,12,23,20,50,52))}");
 var d = new Date(Date.UTC(1985,3,12,23,20,50,52));
 m = {foo:d};
-wr.marshalTop(em, m, c);
-console.log(em.flushBuffer());
+console.log(wr.marshalTop(em, m, c));
 time(function() {
     for(var i = 0; i < 10000; i++) {
         wr.marshalTop(em, m, c);
-        em.flushBuffer();
     }
 });
 
@@ -163,23 +159,19 @@ em = new wr.JSONMarshaller({prefersStrings: false}),
 c  = caching.writeCache(),
 d  = new Date(Date.UTC(1985,3,12,23,20,50,52)),
 m  = {foo:d};
-wr.marshalTop(em, m, c);
-console.log(em.flushBuffer());
+console.log(wr.marshalTop(em, m, c));
 time(function() {
     for(var i = 0; i < 100000; i++) {
         wr.marshalTop(em, m, c);
-        em.flushBuffer();
     }
 });
 
 console.log("1e5 iters, marshal [1,2,3]");
 arr = [1,2,3];
-wr.marshalTop(em, arr, c);
-console.log(em.flushBuffer());
+console.log(wr.marshalTop(em, arr, c));
 time(function() {
     for(var i = 0; i < 100000; i++) {
         wr.marshalTop(em, arr, c);
-        em.flushBuffer();
     }
 });
 

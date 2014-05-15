@@ -375,29 +375,6 @@ exports.testDecodeReadCache = function(test) {
 // Encoding
 // =============================================================================
 
-exports.testWriterLowLevelEmit = function(test) {
-    var em = new wr.JSONMarshaller();
-
-    em.emitArrayStart();
-    em.emitArrayEnd();
-
-    test.equal(em.flushBuffer(), "[]");
-
-    em.emitMapStart();
-    em.emitMapEnd();
-
-    test.equal(em.flushBuffer(), "{}");
-
-    em.emitMapStart();
-    em.writeObject("\"foo\"", true);
-    em.writeObject("\"bar\"", false);
-    em.emitMapEnd();
-
-    test.equal(em.flushBuffer(), "{\"foo\":\"bar\"}");
-
-    test.done();
-};
-
 exports.testDefaultHandlers = function(test) {
     var em = new wr.JSONMarshaller(),
         c  = caching.writeCache();
@@ -423,59 +400,19 @@ exports.testWriterMarshalling = function(test) {
     var em = new wr.JSONMarshaller(),
         c  = caching.writeCache();
 
-    wr.marshal(em, null, false, c);
-    test.ok(em.flushBuffer() === "null");
-    wr.marshal(em, true, false, c);
-    test.ok(em.flushBuffer() === "true");
-    wr.marshal(em, false, false, c);
-    test.ok(em.flushBuffer() === "false");
-    wr.marshal(em, 1, false, c);
-    test.ok(em.flushBuffer() === "1");
-    wr.marshal(em, 1.5, false, c);
-    test.ok(em.flushBuffer() === "1.5");
-    wr.marshal(em, "foo", false, c);
-    test.equal(em.flushBuffer(), "\"foo\"");
-    wr.marshal(em, [1,2,3], false, c);
-    test.ok(em.flushBuffer() === "[1,2,3]");
-    wr.marshal(em, {foo: "bar"}, false, c);
-    test.ok(em.flushBuffer(), "{\"foo\":\"bar\"}");
-    wr.marshal(em, [1,[2,3],4], false, c);
-    test.ok(em.flushBuffer() === "[1,[2,3],4]");
-    wr.marshal(em, {foo:[1,2,3]}, false, c);
-    test.ok(em.flushBuffer() === "{\"foo\":[1,2,3]}");
-    wr.marshal(em, {foo:[1,{bar:2},3]}, false, c);
-    test.ok(em.flushBuffer() === "{\"foo\":[1,{\"bar\":2},3]}");
-    wr.marshal(em, {foo:1,bar:2}, false, c);
-    test.ok(em.flushBuffer() === "{\"foo\":1,\"bar\":2}");
+    test.equal(wr.marshal(em, null, false, c), null);
+    test.equal(wr.marshal(em, true, false, c), true);
+    test.equal(wr.marshal(em, false, false, c), false);
+    test.equal(wr.marshal(em, 1, false, c), 1);
+    test.equal(wr.marshal(em, 1.5, false, c), 1.5);
+    test.equal(wr.marshal(em, "foo", false, c), "foo");
+    test.deepEqual(wr.marshal(em, [1,2,3], false, c), [1,2,3]);
+    test.deepEqual(wr.marshal(em, {foo: "bar"}, false, c), {"foo":"bar"});
+    test.deepEqual(wr.marshal(em, [1,[2,3],4], false, c), [1,[2,3],4]);
+    test.deepEqual(wr.marshal(em, {foo:[1,2,3]}, false, c), {"foo":[1,2,3]});
+    test.deepEqual(wr.marshal(em, {foo:[1,{bar:2},3]}, false, c), {"foo":[1,{"bar":2},3]});
+    test.deepEqual(wr.marshal(em, {foo:1,bar:2}, false, c), {"foo":1,"bar":2});
     
-    test.done();
-};
-
-exports.testWriterMarshallingMapKeys = function(test) {
-    var em = new wr.JSONMarshaller(),
-        c  = caching.writeCache();
-
-    em.emitMapStart();
-    wr.marshal(em, null, true, c);
-    wr.marshal(em, null, false, c);
-    em.emitMapEnd();
-    
-    test.ok(em.flushBuffer() === "{\"~_\":null}");
-    
-    em.emitMapStart();
-    wr.marshal(em, true, true, c);
-    wr.marshal(em, true, false, c);
-    em.emitMapEnd();
-
-    test.ok(em.flushBuffer() === "{\"~?t\":true}");
-
-    em.emitMapStart();
-    wr.marshal(em, false, true, c);
-    wr.marshal(em, false, false, c);
-    em.emitMapEnd();
-
-    test.ok(em.flushBuffer() === "{\"~?f\":false}");
-
     test.done();
 };
 
@@ -490,10 +427,8 @@ exports.testWriterEmitTaggedMap = function(test) {
         d  = (new Date(Date.UTC(1985,3,12,23,20,50,52))),
         h  = em.handler(d);
 
-    wr.emitTaggedMap(em, "t", h.rep(d), false, c);
-    test.equal(em.flushBuffer(), "{\"~#t\":482196050052}");
-    wr.marshal(em, d, false, c);
-    test.equal(em.flushBuffer(), "{\"~#t\":482196050052}");
+    test.deepEqual(wr.emitTaggedMap(em, "t", h.rep(d), false, c), {"~#t":482196050052});
+    test.deepEqual(wr.marshal(em, d, false, c), {"~#t":482196050052});
 
     test.done();
 };
@@ -502,8 +437,7 @@ exports.testWriterEmitQuoted = function(test) {
     var em = new wr.JSONMarshaller(),
         c  = caching.writeCache();
 
-    em.emitQuoted(1, c);
-    test.equal(em.flushBuffer(), "{\"~#\\\'\":1}");
+    test.deepEqual(em.emitQuoted(1, c), {"~#\'":1});
 
     test.done();
 };
@@ -513,14 +447,10 @@ exports.testWriterMarshalTop = function(test) {
         c  = caching.writeCache(),
         d  = (new Date(Date.UTC(1985,3,12,23,20,50,52)))
 
-    wr.marshalTop(em, 1, c);
-    test.equal(em.flushBuffer(), "{\"~#\\\'\":1}");
-    wr.marshalTop(em, {foo:"bar"}, c);
-    test.equal(em.flushBuffer(), "{\"foo\":\"bar\"}");
-    wr.marshalTop(em, [1,2,3], c);
-    test.equal(em.flushBuffer(), "[1,2,3]");
-    wr.marshalTop(em, {foo:d}, c);
-    test.equal(em.flushBuffer(), "{\"foo\":\"~t1985-04-12T23:20:50.052Z\"}");
+    test.deepEqual(wr.marshalTop(em, 1, c), "{\"~#\'\":1}");
+    test.deepEqual(wr.marshalTop(em, {foo:"bar"}, c), "{\"foo\":\"bar\"}");
+    test.deepEqual(wr.marshalTop(em, [1,2,3], c), "[1,2,3]");
+    test.deepEqual(wr.marshalTop(em, {foo:d}, c), "{\"foo\":\"~t1985-04-12T23:20:50.052Z\"}");
 
     test.done();
 };
@@ -530,8 +460,7 @@ exports.testWriterMarshalTopPreferStringsFalse = function(test) {
         c  = caching.writeCache(),
         d  = (new Date(Date.UTC(1985,3,12,23,20,50,52)))
 
-    wr.marshalTop(em, {foo:d}, c);
-    test.equal(em.flushBuffer(), "{\"foo\":{\"~#t\":482196050052}}");
+    test.equal(wr.marshalTop(em, {foo:d}, c), "{\"foo\":{\"~#t\":482196050052}}");
 
     test.done();
 };
@@ -610,7 +539,7 @@ exports.testWriteTransitTypes = function(test) {
     test.equal(writer.write([t.uri("http://foo.com/")]), "[\"~rhttp://foo.com/\"]");
     test.equal(writer.write(t.list([1,2,3])), "{\"~#list\":[1,2,3]}");
     test.equal(writer.write([t.list([1,2,3])]), "[{\"~#list\":[1,2,3]}]");
-    test.equal(writer.write(t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~#\\\'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}");
+    test.equal(writer.write(t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~#\'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}");
     test.equal(writer.write([t.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")]), "[\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]");
     test.equal(writer.write([t.binary("c3VyZS4=")]), "[\"~bc3VyZS4=\"]");
     
@@ -689,8 +618,8 @@ exports.testVerifyJSONCornerCases = function(test) {
     test.equal(writer.write(reader.read("{\"foo\":\"~xfoo\"}")), "{\"foo\":\"~xfoo\"}");
     test.equal(writer.write(reader.read("{\"~/t\":null}")), "{\"~/t\":null}");
     test.equal(writer.write(reader.read("{\"~/f\":null}")), "{\"~/f\":null}");
-    test.equal(writer.write(reader.read("{\"~#'\":\"~f-1.1E-1\"}")), "{\"~#\\\'\":\"~f-1.1E-1\"}");
-    test.equal(writer.write(reader.read("{\"~#'\":\"~f-1.10E-1\"}")), "{\"~#\\\'\":\"~f-1.10E-1\"}");
+    test.equal(writer.write(reader.read("{\"~#'\":\"~f-1.1E-1\"}")), "{\"~#\'\":\"~f-1.1E-1\"}");
+    test.equal(writer.write(reader.read("{\"~#'\":\"~f-1.10E-1\"}")), "{\"~#\'\":\"~f-1.10E-1\"}");
     test.equal(writer.write(reader.read(
                 "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}")),
                 "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}");

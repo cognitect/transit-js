@@ -21,27 +21,6 @@ function isLong(i) {
     }
 }
 
-// from http://github.com/joliss/js-string-escape
-function escapeJSString(string) {
-  return ('' + string).replace(/["'\\\n\r\u2028\u2029]/g, function (character) {
-    switch (character) {
-      case '"':
-      case "'":
-      case '\\':
-        return '\\' + character
-      // Four possible LineTerminator characters need to be escaped:
-      case '\n':
-        return '\\n'
-      case '\r':
-        return '\\r'
-      case '\u2028':
-        return '\\u2028'
-      case '\u2029':
-        return '\\u2029'
-    }
-  })
-}
-
 function escape(string) {
     if(string.length > 0) {
         var c = string[0];
@@ -58,153 +37,13 @@ function escape(string) {
 
 // STATES
 
-var STATES = ["OBJECT", "ARRAY", "OBJECT_KEY", "OBJECT_VALUE",
-              "OBJECT_FIRST_KEY", "ARRAY_FIRST_VALUE"];
-/*
-var OBJECT = 0,
-    ARRAY = 1,
-    OBJECT_KEY = 2,
-    OBJECT_VALUE = 3,
-    OBJECT_FIRST_KEY = 4,
-    ARRAY_FIRST_VALUE = 5;
-*/
-
 function JSONMarshaller(options) {
     this.buffer = (options && options.buffer) || sb.stringBuilder();
-    this.state = t.queue();
     this.handlers = h.handlers();
     this._prefersStrings = options ? options.prefersString || false : true;
 }
 
 JSONMarshaller.prototype = {
-    NO_WRITE: {},
-
-    getState: function() {
-        return this.state.peek();
-    },
-
-    pushState: function(newState) {
-        var oldState = this.getState();
-        this.state.push(newState);
-
-        // ARRAY
-        if(oldState === 1) {
-            this.buffer.write(",");
-        }
-
-        switch(newState) {
-        // ARRAY
-        case 1:
-            this.state.push(5); // ARRAY_FIRST_VALUE
-            this.buffer.write("[");
-            break;
-        // OBJECT
-        case 0:
-            this.state.push(4); // OBJECT_FIRST_KEY
-            this.buffer.write("{");
-            break;
-        default:
-            var err = new Error("JSONMarshaller: Invalid pushState, " + STATES[newState]);
-            err.data = {state: newState};
-            throw err;
-            break;
-        }
-    },
-
-    popState: function() {
-        var state = this.state.pop();
-
-        // while !OBJECT && !ARRAY
-        while(state !== 0 && state !== 1) {
-            state = this.state.pop();
-        }
-
-        switch(state) {
-        // ARRAY
-        case 1:
-            this.buffer.write("]");
-            break;
-        // OBJECT
-        case 0:
-            this.buffer.write("}");
-            break;
-        default:
-            var err = new Error("JSONMarshaller: Popped unknown state " + STATES[state]);
-            err.data = {state: state};
-            throw err;
-            break;
-        }
-
-        this.pushValue(this.NO_WRITE);
-
-        return state;
-    },
-
-    // a debugging helper, pour state queue into an array & reverse
-    debugState: function() {
-        var l   = this.state.list,
-            ret = [];
-        while(l) {
-            ret.push(STATES[l.head]);
-            l = l.tail;
-        }
-        return ret.reverse();
-    },
-
-    pushKey: function(obj) {
-        var state = this.getState();
-        switch(state) {
-        // OBJECT_KEY
-        case 2:
-            this.buffer.write(",");
-        // OBJECT_FIRST_KEY
-        case 4:
-            this.state.pop();
-            this.state.push(3); // OBJECT_VALUE
-            this.buffer.write(obj);
-            break;
-        default:
-            var err = new Error("JSONMarshaller: Cannot pushKey in state " + STATES[state] + " " + obj);
-            err.data = {state: state};
-            throw err;
-            break;
-        }
-        this.buffer.write(":");
-    },
-
-    pushValue: function(obj) {
-        var state = this.getState();
-        switch(state) {
-        // ARRAY
-        case 1:
-            if(obj !== this.NO_WRITE) {
-                this.buffer.write(",");
-                this.buffer.write(obj);
-            }
-            break;
-        // ARRAY_FIRST_VALUE
-        case 5:
-            this.state.pop();
-            if(obj !== this.NO_WRITE) {
-                this.buffer.write(obj);
-            }
-            break;
-        // OBJECT_VALUE
-        case 3:
-            this.state.pop();
-            if(obj !== this.NO_WRITE) {
-                this.buffer.write(obj);
-            }
-            this.state.push(2);
-            break;
-        default:
-            if(obj !== this.NO_WRITE) {
-                this.buffer.write(obj);
-            }
-            break;
-        }
-    },
-
     handler: function(obj) {
         return this.handlers.get(h.constructor(obj));
     },
@@ -213,90 +52,51 @@ JSONMarshaller.prototype = {
         this.handlers.set(ctor, handler);
     },
 
-    writeObject: function(obj, asMapKey) {
-        asMapKey = asMapKey || false;
-        if(asMapKey) {
-            this.pushKey(obj);
-        } else {
-            this.pushValue(obj);
-        }
-    },
-
     emitNil: function(asMapKey, cache) {
         if(asMapKey) {
-            this.emitString(d.ESC, "_", "", asMapKey, cache);
+            return this.emitString(d.ESC, "_", "", asMapKey, cache);
         } else {
-            this.writeObject("null", false);
+            return null;
         }
     },
 
     emitString: function(prefix, tag, s, asMapKey, cache) {
-        var cached = cache.write(prefix+tag+s, asMapKey),
-            s      = "\""+escapeJSString(cached)+"\"";
-        this.writeObject(s, asMapKey);
+        return cache.write(prefix+tag+s, asMapKey);
     },
 
     emitBoolean: function(b, asMapKey, cache) {
-        var s = b.toString();
         if(asMapKey) {
-            this.emitString(d.ESC, "?", s[0], asMapKey, cache);
+            return this.emitString(d.ESC, "?", s[0], asMapKey, cache);
         } else {
-            this.writeObject(s, false);
+            return b;
         }
     },
 
     emitInteger: function(i, asMapKey, cache) {
         if(asMapKey || (typeof i === "string") || isLong(i)) {
-            this.emitString(d.ESC, "i", i.toString(), asMapKey, cache);
+            return this.emitString(d.ESC, "i", i.toString(), asMapKey, cache);
         } else {
-            this.writeObject(i);
+            return i;
         }
     },
 
     emitDouble: function(d, asMapKey, cache) {
         if(asMapKey) {
-            this.emitString(d.ESC, "d", d, asMapKey, cache);
+            return this.emitString(d.ESC, "d", d, asMapKey, cache);
         } else {
-            this.writeObject(s);
+            return d;
         }
     },
 
     emitBinary: function(b, asMapKey, cache) {
-        this.emitString(d.ESC, "b", b, asMapKey, cache);
-    },
-
-    emitArrayStart: function(size) {
-        this.pushState(1); // ARRAY
-    },
-
-    emitArrayEnd: function() {
-        var lastState = this.popState();
-        if(lastState !== 1) { // ARRAY
-            throw new Error("JSONMarshaller: Invalid array end");
-        }
-    },
-
-    emitMapStart: function(size) {
-        this.pushState(0);
-    },
-
-    emitMapEnd: function() {
-        var lastState = this.popState();
-        if(lastState !== 0) {
-            throw new Error("JSONMarshaller: Invalid object end");
-        }
+        return this.emitString(d.ESC, "b", b, asMapKey, cache);
     },
 
     emitQuoted: function(obj, cache) {
-        this.emitMapStart();
-        this.emitString(d.ESC_TAG, "'", "", true, cache);
-        marshal(this, obj, false, cache);
-        this.emitMapEnd();
-    },
-
-    flushBuffer: function(ignore) {
-        this.state = t.queue();
-        return this.buffer.flush();
+        var ret = {},
+            k   = this.emitString(d.ESC_TAG, "'", "", true, cache);
+        ret[k] = marshal(this, obj, false, cache);
+        return ret;
     },
 
     prefersStrings: function() {
@@ -305,117 +105,129 @@ JSONMarshaller.prototype = {
 };
 
 function emitInts(em, src, cache) {
+    var ret = [];
     for(var i = 0; i < src.length; i++) {
-        em.emitInt(em, src[i], false, cache);
+        ret.push(em.emitInt(em, src[i], false, cache));
     }
+    return ret;
 }
 
 function emitShorts(em, src, cache) {
+    var ret = [];
     for(var i = 0; i < src.length; i++) {
-        em.emitShort(em, src[i], false, cache);
+        ret.push(em.emitShort(em, src[i], false, cache));
     }
+    return ret;
 }
 
 function emitLongs(em, src, cache) {
+    var ret = [];
     for(var i = 0; i < src.length; i++) {
-        em.emitLong(em, src[i], false, cache);
+        ret.push(em.emitLong(em, src[i], false, cache));
     }
+    return ret;
 }
 
 function emitFloats(em, src, cache) {
+    var ret = [];
     for(var i = 0; i < src.length; i++) {
-        em.emitFloat(em, src[i], false, cache);
+        ret.push(em.emitFloat(em, src[i], false, cache));
     }
+    return ret;
 }
 
 function emitDouble(em, src, cache) {
+    var ret = [];
     for(var i = 0; i < src.length; i++) {
-        em.emitDouble(em, src[i], false, cache);
+        ret.push(em.emitDouble(em, src[i], false, cache));
     }
+    return ret;
 }
 
 function emitChars(em, src, cache) {
+    var ret = [];
     for(var i = 0; i < src.length; i++) {
-        marshal(em, src[i], false, cache);
+        ret.push(marshal(em, src[i], false, cache));
     }
+    return ret;
 }
 
 function emitBooleans(em, src, cache) {
+    var ret = [];
     for(var i = 0; i < src.length; i++) {
-        em.emitBoolean(em, src[i], false, cache);
+        ret.push(em.emitBoolean(em, src[i], false, cache));
     }
+    return ret;
 }
 
 function emitObjects(em, iterable, cache) {
+    var ret = [];
     if(Array.isArray(iterable)) {
         for(var i = 0; i < iterable.length; i++) {
-            marshal(em, iterable[i], false, cache);
+            ret.push(marshal(em, iterable[i], false, cache));
         }
     } else {
         iterable.forEach(function(v, i) {
-            marshal(em, v, false, cache);
+            ret.push(marshal(em, v, false, cache));
         });
     }
+    return ret;
 }
 
 function emitArray(em, iterable, skip, cache) {
-    em.emitArrayStart();
     if(iterable instanceof Int8Array) {
-        emitChars(em, iterable, cache);
+        return emitChars(em, iterable, cache);
     } else if(iterable instanceof Int16Array) {
-        emitShorts(em, iterable, cache);
+        return emitShorts(em, iterable, cache);
     } else if(iterable instanceof Int32Array) {
-        emitInts(em, iterable, cache);
+        return emitInts(em, iterable, cache);
     } else if(iterable instanceof Float32Array) {
-        emitFloats(em, iterable, cache);
+        return emitFloats(em, iterable, cache);
     } else if(iterable instanceof Float64Array) {
-        emitDoubles(em, iterable, cache);
+        return emitDoubles(em, iterable, cache);
     } else {
-        emitObjects(em, iterable, cache);
+        return emitObjects(em, iterable, cache);
     }
-    em.emitArrayEnd();
 }
 
 function emitMap(em, obj, skip, cache) {
-    em.emitMapStart();
+    var ret = {};
     var ks = Object.keys(obj);
     for(var i = 0; i < ks.length; i++) {
-        marshal(em, ks[i], true, cache);
-        marshal(em, obj[ks[i]], false, cache);
+        ret[marshal(em, ks[i], true, cache)] = marshal(em, obj[ks[i]], false, cache);
     }
-    em.emitMapEnd();
+    return ret;
 }
 
 function emitTaggedMap(em, tag, rep, skip, cache) {
-    em.emitMapStart();
-    em.emitString(d.ESC_TAG, tag, "", true, cache);
-    marshal(em, rep, false, cache);
-    em.emitMapEnd();
+    var ret = {};
+    ret[em.emitString(d.ESC_TAG, tag, "", true, cache)] = marshal(em, rep, false, cache);
+    return ret;
 }
 
 function emitEncoded(em, h, tag, obj, asMapKey, cache) {
     if(tag.length === 1) {
         var rep = h.rep(obj);
         if(typeof rep === "string") {
-            em.emitString(d.ESC, tag, rep, asMapKey, cache);
+            return em.emitString(d.ESC, tag, rep, asMapKey, cache);
         } else if((asMapKey === true) || em.prefersStrings()) {
             rep = h.stringRep(obj);
             if(typeof rep === "string") {
-                em.emitString(d.ESC, tag, rep, asMapKey, cache);
+                return em.emitString(d.ESC, tag, rep, asMapKey, cache);
             } else {
                 var err = new Error("Cannot be encoded as string");
                 err.data = {tag: tag, rep: rep, obj: obj};
                 throw err;
             }
         } else {
-            emitTaggedMap(em, tag, rep, asMapKey, cache);
+            return emitTaggedMap(em, tag, rep, asMapKey, cache);
         }
     } else if (asMapKey === true) {
         var err = new Error("Cannot be used as map key");
         err.data = {tag: tag, rep: rep, obj: obj};
         throw err;
     } else {
-        emitTaggedMap(em, tag, h.rep(obj), asMapKey, cache);
+        return emitTaggedMap(em, tag, h.rep(obj), asMapKey, cache);
     }
 }
 
@@ -427,34 +239,34 @@ function marshal(em, obj, asMapKey, cache) {
     if(h != null && tag != null) {
         switch(tag) {
         case "_":
-            em.emitNil(asMapKey, cache);
+            return em.emitNil(asMapKey, cache);
             break;
         case "s":
-            em.emitString("", "", escape(rep), asMapKey, cache);
+            return em.emitString("", "", escape(rep), asMapKey, cache);
             break;
         case "?":
-            em.emitBoolean(rep, asMapKey, cache);
+            return em.emitBoolean(rep, asMapKey, cache);
             break;
         case "i":
-            em.emitInteger(rep, asMapKey, cache);
+            return em.emitInteger(rep, asMapKey, cache);
             break;
         case "d":
-            em.emitDouble(rep, asMapKey, cache);
+            return em.emitDouble(rep, asMapKey, cache);
             break;
         case "b":
-            em.emitBinary(rep, asMapKey, cache);
+            return em.emitBinary(rep, asMapKey, cache);
             break;
         case "'":
-            em.emitQuoted(rep, cache);
+            return em.emitQuoted(rep, cache);
             break;
         case "array":
-            emitArray(em, rep, asMapKey, cache);
+            return emitArray(em, rep, asMapKey, cache);
             break;
         case "map":
-            emitMap(em, rep, asMapKey, cache);
+            return emitMap(em, rep, asMapKey, cache);
             break;
         default:
-            emitEncoded(em, h, tag, obj, asMapKey, cache);
+            return emitEncoded(em, h, tag, obj, asMapKey, cache);
             break;
         }
     } else {
@@ -481,7 +293,7 @@ function maybeQuoted(em, obj) {
 }
 
 function marshalTop(em, obj, cache) {
-    marshal(em, maybeQuoted(em, obj), false, cache);
+    return JSON.stringify(marshal(em, maybeQuoted(em, obj), false, cache));
 }
 
 function Writer(marshaller, options) {
@@ -492,8 +304,7 @@ function Writer(marshaller, options) {
 
 Writer.prototype = {
     write: function(obj) {
-        marshalTop(this.marshaller, obj, this.cache)
-        var ret = this.marshaller.flushBuffer();
+        var ret = marshalTop(this.marshaller, obj, this.cache)
         this.cache.clear();
         return ret;
     },
