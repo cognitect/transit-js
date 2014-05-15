@@ -6,8 +6,10 @@
 var transitHashCodeProperty = "com$cognitect$transit$hashCode$" + Math.floor(Math.random() * 2147483648).toString(36);
 
 function equals(x, y) {
-    if(x === y) {
-        return true
+    if(x == null) {
+        return y == null;
+    } else if(x === y) {
+        return true;
     } else if(typeof x === "object") {
         if(Array.isArray(x)) {
             if(Array.isArray(y)) {
