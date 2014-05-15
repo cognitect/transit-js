@@ -3,8 +3,7 @@
   
 "use strict";
 
-var Long = require("long"),
-    eq   = require("./eq");
+var eq = require("./eq");
 
 function nullValue() {
     return null;
@@ -14,8 +13,12 @@ function boolValue(s) {
     return s === "t";
 }
 
+function Integer(str) {
+    this.str = str;
+}
+
 function intValue(s) {
-    return Long.fromString(s, false, 10);
+    return new Integer(s);
 }
 
 function floatValue(s) {
@@ -428,6 +431,7 @@ function list(xs) {
 module.exports = {
     nullValue: nullValue,
     boolValue: boolValue,
+    Integer: Integer,
     intValue: intValue,
     floatValue: floatValue,
     BigDecimal: BigDecimal,

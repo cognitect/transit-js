@@ -4,7 +4,6 @@
 "use strict";
 
 var t                       = require("./types.js"),
-    Long                    = require("long"),
     moment                  = require("moment"),
     ctorGuid                = 0,
     transitCtorGuidProperty = "com$cognitect$transit$ctor$guid";
@@ -69,10 +68,10 @@ function defaultHandlers(hs) {
          stringRep: function(v) { return v.toString(); }});
 
     hs.set(
-        Long,
+        t.Integer,
         {tag: function(v) { return "i" },
-         rep: function(v) { return v; },
-         stringRep: function(v) { return v.toString(); }});
+         rep: function(v) { return v.str; },
+         stringRep: function(v) { return v.str; }});
 
     hs.set(
         t.BigDecimal,

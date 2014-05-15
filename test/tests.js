@@ -4,7 +4,6 @@
 "use strict";
 
 var url     = require("url"),
-    Long    = require("long"),
     transit = require("../src/transit.js"),
     h       = require("../src/transit/handlers.js"),
     w       = require("../src/transit/writer.js"),
@@ -211,7 +210,6 @@ exports.testReadCacheRead = function(test) {
 exports.testDecoderGetDecoder = function(test) {
     var dc = d.decoder();
     test.ok(dc.getDecoder(":")("foo").name == "foo");
-    test.ok(dc.getDecoder("i")("1") == 1);
     test.ok(dc.getDecoder("f")("1.5").value == "1.5");
     test.done();
 };
@@ -231,7 +229,6 @@ exports.testDecodeBasic = function(test) {
     test.ok(dc.decode("~_") === null);
     test.ok(dc.decode("~?t") === true);
     test.ok(dc.decode("~?f") === false);
-    test.ok(dc.decode("~i10") == 10);
     test.ok(dc.decode("~f1.5").value === "1.5");
     test.ok(dc.decode("~d1.5") === 1.5);
     test.ok(dc.decode("~ca") === "a");
@@ -526,8 +523,8 @@ exports.testWriteTransitTypes = function(test) {
     
     test.equal(writer.write(["foo"]), "[\"foo\"]");
     test.equal(writer.write([1]), "[1]");
-    test.equal(writer.write([w.JSON_INT_MAX.add(Long.fromInt(1))]), "[\"~i9007199254740993\"]");
-    test.equal(writer.write([w.JSON_INT_MIN.subtract(Long.fromInt(1))]), "[\"~i-9007199254740993\"]");
+    test.equal(writer.write([t.intValue("9007199254740993")]), "[\"~i9007199254740993\"]");
+    test.equal(writer.write([t.intValue("-9007199254740993")]), "[\"~i-9007199254740993\"]");
     test.equal(writer.write([1.5]), "[1.5]");
     test.equal(writer.write([true]), "[true]");
     test.equal(writer.write([false]), "[false]");
@@ -631,11 +628,13 @@ exports.testVerifyRoundtripMapCachedStrings = function(test) {
 };
 
 exports.testVerifyRoundtripEmptyString = function(test) {
-    var reader = transit.reader("json"),
-        writer = transit.writer("json");
-
     test.equal(roundtrip("[\"\",\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\"]"),
                          "[\"\",\"a\",\"ab\",\"abc\",\"abcd\",\"abcde\",\"abcdef\"]");
+    test.done();
+};
 
+exports.testVerifyRoundtripLong = function(test) {
+    test.equal(roundtrip("{\"~#'\":\"~i8987676543234565432178765987645654323456554331234566789\"}"),
+                         "{\"~#'\":\"~i8987676543234565432178765987645654323456554331234566789\"}");
     test.done();
 };
