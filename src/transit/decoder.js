@@ -12,8 +12,12 @@ var caching = require("./caching"),
 
 var Decoder = function(options) {
     this.options = options || {};
-    if(!this.options.decoders) {
-        this.options.decoders = {};
+    this.decoders = {};
+    for(var decoder in this.defaults.decoders) {
+        this.decoders[decoder] = this.defaults.decoders[decoder];
+    }
+    for(var decoder in this.options.decoders) {
+        this.decoders[decoder] = this.options.decoders[decoder];
     }
 };
 
@@ -46,18 +50,6 @@ Decoder.prototype = {
             "cmap": function(v) { return types.cmap(v); }
         },
         prefersStrings: true
-    },
-    
-    getOption: function(key) {
-        return this.options[key] || this.defaults[key];
-    },
-
-    getDecoder: function(key) {
-        return this.options.decoders[key] || this.defaults.decoders[key];
-    },
-
-    setDecoder: function(key, b) {
-        this.options.decoders[key] = b;
     },
 
     decode: function(node, cache, asMapKey) {
@@ -105,7 +97,7 @@ Decoder.prototype = {
            (tagKey[0] === d.ESC) &&
            (tagKey[1] === d.TAG)) {
             var val     = hash[key],
-                decoder = this.getDecoder(tagKey.substring(2));
+                decoder = this.decoders[tagKey.substring(2)];
             if(decoder != null) {
                 return decoder(this.decode(val, cache, false));
             } else {
@@ -138,7 +130,7 @@ Decoder.prototype = {
             } else if (c === d.TAG) {
                 return string;
             } else {
-                var decoder = this.getDecoder(c);
+                var decoder = this.decoders[c];
                 if(asMapKey == true || decoder == null) {
                     return d.RES+string;
                 } else {

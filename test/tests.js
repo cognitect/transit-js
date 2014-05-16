@@ -209,8 +209,8 @@ exports.testReadCacheRead = function(test) {
 
 exports.testDecoderGetDecoder = function(test) {
     var dc = d.decoder();
-    test.ok(dc.getDecoder(":")("foo").name == "foo");
-    test.ok(dc.getDecoder("f")("1.5").value == "1.5");
+    test.ok(dc.decoders[":"]("foo").name == "foo");
+    test.ok(dc.decoders["f"]("1.5").value == "1.5");
     test.done();
 };
 
