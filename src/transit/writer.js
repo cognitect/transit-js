@@ -53,6 +53,7 @@ JSONMarshaller.prototype = {
 
     emitBoolean: function(b, asMapKey, cache) {
         if(asMapKey) {
+            var s = b.toString();
             return this.emitString(d.ESC, "?", s[0], asMapKey, cache);
         } else {
             return b;
