@@ -24,8 +24,6 @@ function escape(string) {
     }
 }
 
-// STATES
-
 function JSONMarshaller(options) {
     this.buffer = (options && options.buffer) || sb.stringBuilder();
     this.handlers = h.handlers();
