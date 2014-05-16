@@ -4,7 +4,6 @@
 "use strict";
 
 var t                       = require("./types.js"),
-    moment                  = require("moment"),
     ctorGuid                = 0,
     transitCtorGuidProperty = "com$cognitect$transit$ctor$guid";
 
@@ -36,6 +35,14 @@ function constructor(x) {
     } else {
         return x.constructor;
     }
+}
+
+function padZeros(n,m) {
+    var s = n.toString();
+    for(var i = s.length; i < m; i++) {
+        s = "0"+s;
+    }
+    return s;
 }
 
 function stringableKeys(m) {
@@ -102,7 +109,10 @@ function defaultHandlers(hs) {
         {tag: function(v) { return "t"; },
          rep: function(v) { return v.valueOf(); },
          stringRep: function(v) {
-             return moment.utc(v.valueOf()).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+             return v.getUTCFullYear()+"-"+padZeros(v.getUTCMonth()+1,2)+"-"+
+                    padZeros(v.getUTCDate(),2)+"T"+padZeros(v.getUTCHours(),2)+":"+
+                    padZeros(v.getUTCMinutes(),2)+":"+padZeros(v.getUTCSeconds(),2)+"."+
+                    padZeros(v.getUTCMilliseconds(),3)+"Z";
          }});
 
     hs.set(
