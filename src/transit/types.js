@@ -166,7 +166,7 @@ TransitMap.prototype.clear = function() {
     throw new Error("Unsupported operation: clear");
 };
 
-TransitMap.prototype.delete = function() {
+TransitMap.prototype['delete'] = function() {
     throw new Error("Unsupported operation: delete");
 };
 
@@ -294,7 +294,7 @@ TransitSet.prototype.clear = function() {
     throw new Error("Unsupported operation: clear");
 };
 
-TransitSet.prototype.delete = function(value) {
+TransitSet.prototype['delete'] = function(value) {
     throw new Error("Unsupported operation: delete");
 };
 
