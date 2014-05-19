@@ -3,20 +3,21 @@
 
 "use strict";
 
-var d = require("./delimiters");
+goog.provide("transit.caching");
+goog.require("transit.delimiters");
 
-var MIN_SIZE_CACHEABLE = 3;
-var MAX_CACHE_ENTRIES  = 94;
-var BASE_CHAR_IDX      = 33;
+transit.caching.MIN_SIZE_CACHEABLE = 3;
+transit.caching.MAX_CACHE_ENTRIES  = 94;
+transit.caching.BASE_CHAR_IDX      = 33;
 
-function isCacheable(string, asMapKey) {
-    if(string.length > MIN_SIZE_CACHEABLE) {
+transit.caching.isCacheable = function(string, asMapKey) {
+    if(string.length > transit.caching.MIN_SIZE_CACHEABLE) {
         if(asMapKey) {
             return true;
         } else {
             var c0 = string[0],
                 c1 = string[1];
-            if(c0 === d.ESC) {
+            if(c0 === transit.delimiters.ESC) {
                 return c1 === ":" || c1 === "$" || c1 === "#";
             } else {
                 return false;
@@ -25,112 +26,92 @@ function isCacheable(string, asMapKey) {
     } else {
         return false;
     }
-}
+};
 
 // =============================================================================
 // WriteCache
 
-function idxToCode(idx) {
-    return d.SUB + String.fromCharCode(idx + BASE_CHAR_IDX);
-}
+transit.caching.idxToCode = function(idx) {
+    return transit.delimiters.SUB + String.fromCharCode(idx + transit.caching.BASE_CHAR_IDX);
+};
 
-var WriteCache = function() {
+transit.caching.WriteCache = function() {
     this.idx = 0;
     this.cache = {};
-}
+};
 
-WriteCache.prototype = {
-    write: function(string, asMapKey) {
-        if(string != null && isCacheable(string, asMapKey)) {
-            var val = this.cache[string];
-            if(val != null) {
-                return val;
-            } else {
-                if(this.idx === MAX_CACHE_ENTRIES) {
-                    this.idx = 0;
-                    this.cache = {};
-                }
-                this.cache[string] = idxToCode(this.idx);
-                this.idx++;
-                return string;
-            }
+transit.caching.WriteCache.prototype.write = function(string, asMapKey) {
+    if(string != null && transit.caching.isCacheable(string, asMapKey)) {
+        var val = this.cache[string];
+        if(val != null) {
+            return val;
         } else {
+            if(this.idx === transit.caching.MAX_CACHE_ENTRIES) {
+                this.idx = 0;
+                this.cache = {};
+            }
+            this.cache[string] = transit.caching.idxToCode(this.idx);
+            this.idx++;
             return string;
         }
-    },
-
-    clear: function() {
-        this.cache = {};
-        this.idx = 0;
+    } else {
+        return string;
     }
 };
 
-function writeCache() {
-    return new WriteCache();
-}
+transit.caching.WriteCache.prototype.clear = function() {
+    this.cache = {};
+    this.idx = 0;
+};
 
 // =============================================================================
 // ReadCache
 
-function isCacheCode(string) {
-    return string[0] === d.SUB;
+transit.caching.isCacheCode = function(string) {
+    return string[0] === transit.delimiters.SUB;
 }
 
-function codeToIdx(code) {
-    return code.charCodeAt(1) - BASE_CHAR_IDX;
+transit.caching.codeToIdx = function(code) {
+    return code.charCodeAt(1) - tranist.caching.BASE_CHAR_IDX;
 }
 
-var ReadCache = function() {
+transit.caching.ReadCache = function() {
     this.idx = 0;
     this.cache = null;
 };
 
-ReadCache.prototype = {
-    guaranteeCache: function() {
-        if(this.cache) return;
-        this.cache = [];
-        for(var i = 0; i < MAX_CACHE_ENTRIES; i++) {
-            this.cache.push(null);
-        }
-    },
+transit.caching.ReadCache.prototype.guaranteeCache = function() {
+    if(this.cache) return;
+    this.cache = [];
+    for(var i = 0; i < transit.caching.MAX_CACHE_ENTRIES; i++) {
+        this.cache.push(null);
+    }
+};
     
-    write: function(string, obj, asMapKey) {
-        this.guaranteeCache();
-        if(this.idx == MAX_CACHE_ENTRIES) {
-            this.idx = 0;
-        }
-        this.cache[this.idx] = [obj, string];
-        this.idx++;
-        return obj;
-    },
-
-    read: function(string, asMapKey) {
-        this.guaranteeCache();
-        var ret = this.cache[codeToIdx(string)];
-        if(asMapKey) {
-            if(ret[0] === ret[1]) {
-                return ret[1];
-            } else {
-                return d.RES+ret[1];
-            }
-        } else {
-            return ret[0];
-        }
-    },
-
-    clear: function() {
+transit.caching.ReadCache.prototype.write = function(string, obj, asMapKey) {
+    this.guaranteeCache();
+    if(this.idx == transit.caching.MAX_CACHE_ENTRIES) {
         this.idx = 0;
+    }
+    this.cache[this.idx] = [obj, string];
+    this.idx++;
+    return obj;
+};
+
+transit.caching.ReadCache.prototype.read = function(string, asMapKey) {
+    this.guaranteeCache();
+    var ret = this.cache[codeToIdx(string)];
+    if(asMapKey) {
+        if(ret[0] === ret[1]) {
+            return ret[1];
+        } else {
+            return transit.delimiters.RES+ret[1];
+        }
+    } else {
+        return ret[0];
     }
 };
 
-function readCache() {
-    return new ReadCache();
-}
-
-module.exports = {
-    isCacheable: isCacheable,
-    isCacheCode: isCacheCode,
-    writeCache: writeCache,
-    readCache: readCache,
-    MAX_CACHE_ENTRIES: MAX_CACHE_ENTRIES
+transit.caching.ReadCache.prototype.clear = function() {
+    this.idx = 0;
 };

@@ -3,9 +3,11 @@
 
 "use strict";
 
-var transitHashCodeProperty = "com$cognitect$transit$hashCode$" + Math.floor(Math.random() * 2147483648).toString(36);
+goog.provide("transit.eq");
 
-function equals(x, y) {
+transit.eq.transitHashCodeProperty = "com$cognitect$transit$hashCode$" + Math.floor(Math.random() * 2147483648).toString(36);
+
+transit.eq.equals = function (x, y) {
     if(x == null) {
         return y == null;
     } else if(x === y) {
@@ -15,7 +17,7 @@ function equals(x, y) {
             if(Array.isArray(y)) {
                 if(x.length === y.length) {
                     for(var i = 0; i < x.length; i++) {
-                        if(!equals(x[i], y[i])) {
+                        if(!transit.eq.equals(x[i], y[i])) {
                             return false;
                         }
                     }
@@ -35,14 +37,14 @@ function equals(x, y) {
             for(var p in x) {
                 if(!x.hasOwnProperty(p)) continue;
                 xklen++;
-                if(p == transitHashCodeProperty) {
+                if(p == transit.eq.transitHashCodeProperty) {
                     if(!y[p]) sub = -1;
                     continue;
                 }
                 if(!y.hasOwnProperty(p)) {
                     return false;
                 } else {
-                    if(!equals(x[p], y[p])) {
+                    if(!transit.eq.equals(x[p], y[p])) {
                         return false;
                     }
                 }
@@ -54,11 +56,11 @@ function equals(x, y) {
     } else {
         return false
     }
-}
+};
 
-function hashCombine(seed, hash) {
+transit.eq.hashCombine = function(seed, hash) {
     return seed ^ (hash + 0x9e3779b9 + (seed << 6) + (seed >> 2));
-}
+};
 
 var stringCodeCache     = {},
     stringCodeCacheSize = 0,
