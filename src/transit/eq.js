@@ -62,14 +62,14 @@ transit.eq.hashCombine = function(seed, hash) {
     return seed ^ (hash + 0x9e3779b9 + (seed << 6) + (seed >> 2));
 };
 
-var stringCodeCache     = {},
-    stringCodeCacheSize = 0,
-    STR_CACHE_MAX       = 256;
+transit.eq.stringCodeCache     = {};
+transit.eq.stringCodeCacheSize = 0;
+transit.eq.STR_CACHE_MAX       = 256;
 
-function hashString(str) {
+transit.eq.hashString = function(str) {
     // a la goog.string.HashCode
     // http://docs.closure-library.googlecode.com/git/local_closure_goog_string_string.js.source.html#line1206
-    var cached = stringCodeCache[str];
+    var cached = transit.eqstringCodeCache[str];
     if(cached != null) {
         return cached;
     }
@@ -78,44 +78,44 @@ function hashString(str) {
         code = 31 * code + str.charCodeAt(i);
         code %= 0x100000000;
     }
-    stringCodeCacheSize++;
-    if(stringCodeCacheSize >= STR_CACHE_MAX) {
-        stringCodeCache = {};
-        stringCodeCacheSize = 1;
+    transit.eq.stringCodeCacheSize++;
+    if(transit.eq.stringCodeCacheSize >= transit.e.qSTR_CACHE_MAX) {
+        transit.eq.stringCodeCache = {};
+        transit.eq.stringCodeCacheSize = 1;
     }
-    stringCodeCache[str] = code;
+    transit.eq.stringCodeCache[str] = code;
     return code;
-}
+};
 
-function hashMapLike(m) {
+transit.eq.hashMapLike = function(m) {
     var code = 0;
     // ES6 Map-like case
     if(m.forEach != null) {
         m.forEach(function(val, key, m) {
-            code = (code + (hashCode(key) ^ hashCode(val))) % 4503599627370496;
+            code = (code + (transit.eq.hashCode(key) ^ transit.eq.hashCode(val))) % 4503599627370496;
         });
     } else {
         // JS Object case
         var keys = Object.keys(m);
         for(var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            if(key === transitHashCodeProperty) continue;
+            if(key === transit.eq.transitHashCodeProperty) continue;
             var val = m[key];
-            code = (code + (hashCode(key) ^ hashCode(val))) % 4503599627370496;
+
         }
     }
     return code;
-}
+};
 
-function hashArrayLike(arr) {
+transit.eq.hashArrayLike = function(arr) {
     var code = 0;
     for(var i = 0; i < arr.length; i++) {
-        code = hashCombine(code, hashCode(arr[i]));
+        code = transit.eq.hashCombine(code, transit.eq.hashCode(arr[i]));
     }
     return code;
 }
 
-function hashCode(x) {
+transit.eq.hashCode = function(x) {
     if(x === null) {
         return 0;
     } else {
@@ -128,20 +128,20 @@ function hashCode(x) {
             return x === true ? 1 : 0;
             break;
         case 'string':
-            return hashString(x);
+            return transit.eq.hashString(x);
             break;
         default:
             if(x instanceof Date) {
                 return x.valueOf();
             } else if(Array.isArray(x)) {
-                return hashArrayLike(x);
+                return transit.eq.hashArrayLike(x);
             } if(x.com$cognitect$transit$hashCode) {
                 return x.com$cognitect$transit$hashCode();
-            } else if(x[transitHashCodeProperty]) {
-                return x[transitHashCodeProperty];
+            } else if(x[transit.eq.transitHashCodeProperty]) {
+                return x[transit.eq.transitHashCodeProperty];
             } else {
-                var code = hashMapLike(x);
-                x[transitHashCodeProperty] = code;
+                var code = transit.eq.hashMapLike(x);
+                x[transit.eq.transitHashCodeProperty] = code;
                 return code;
             }
             break;
@@ -149,19 +149,8 @@ function hashCode(x) {
     }
 }
 
-function extendToEQ(obj, opts) {
+transit.eq.extendToEQ = function(obj, opts) {
     obj.com$cognitect$transit$hashCode = opts.hashCode;
     obj.com$cognitect$transit$equals = opts.equals;
     return obj;
 }
-
-module.exports = {
-    equals: equals,
-    hashCode: hashCode,
-    hashCombine: hashCombine,
-    hashString: hashString,
-    hashArrayLike: hashArrayLike,
-    hashMapLike: hashMapLike,
-    transitHashCodeProperty: transitHashCodeProperty,
-    extendToEQ: extendToEQ
-};

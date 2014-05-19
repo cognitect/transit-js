@@ -3,11 +3,13 @@
 
 "use strict";
 
-var t                       = require("./types.js"),
-    ctorGuid                = 0,
-    transitCtorGuidProperty = "com$cognitect$transit$ctor$guid";
+goog.provide("transit.handlers");
+goog.require("transit.types");
 
-function typeTag(ctor) {
+transit.handlers.ctorGuid         = 0,
+transit.handlers.ctorGuidProperty = "com$cognitect$transit$ctor$guid";
+
+transit.handlers.typeTag = function(ctor) {
     if(ctor == null) {
         return "null";
     } else if(ctor === String) {
@@ -21,31 +23,31 @@ function typeTag(ctor) {
     } else if(ctor === Object) {
         return "map";
     } else {
-        var tag = ctor[transitCtorGuidProperty];
+        var tag = ctor[transit.handlers.ctorGuidProperty];
         if(tag == null) {
-            ctor[transitCtorGuidProperty] = tag = ++ctorGuid;
+            ctor[transit.handlers.ctorGuidProperty] = tag = ++transit.handlers.ctorGuid;
         }
         return tag;
     }
-}
+};
 
-function constructor(x) {
+transit.handlers.constructor = function(x) {
     if(x == null) {
         return null;
     } else {
         return x.constructor;
     }
-}
+};
 
-function padZeros(n,m) {
+transit.handlers.padZeros = function(n,m) {
     var s = n.toString();
     for(var i = s.length; i < m; i++) {
         s = "0"+s;
     }
     return s;
-}
+};
 
-function stringableKeys(m) {
+transit.handlers.stringableKeys = function(m) {
     var stringable = false,
     ks = Object.keys(m);
 
@@ -53,9 +55,9 @@ function stringableKeys(m) {
     }
 
     return true;
-}
+};
 
-function defaultHandlers(hs) {
+transit.handlers.defaultHandlers = function(hs) {
     hs.set(
         null,
         {tag: function(v) { return "_"; },
@@ -75,13 +77,13 @@ function defaultHandlers(hs) {
          stringRep: function(v) { return v.toString(); }});
 
     hs.set(
-        t.Integer,
+        transit.types.Integer,
         {tag: function(v) { return "i" },
          rep: function(v) { return v.str; },
          stringRep: function(v) { return v.str; }});
 
     hs.set(
-        t.BigDecimal,
+        transit.types.BigDecimal,
         {tag: function(v) { return "f" },
          rep: function(v) { return v.value; },
          stringRep: function(v) { return v.value; }});
@@ -109,20 +111,20 @@ function defaultHandlers(hs) {
         {tag: function(v) { return "t"; },
          rep: function(v) { return v.valueOf(); },
          stringRep: function(v) {
-             return v.getUTCFullYear()+"-"+padZeros(v.getUTCMonth()+1,2)+"-"+
-                    padZeros(v.getUTCDate(),2)+"T"+padZeros(v.getUTCHours(),2)+":"+
-                    padZeros(v.getUTCMinutes(),2)+":"+padZeros(v.getUTCSeconds(),2)+"."+
-                    padZeros(v.getUTCMilliseconds(),3)+"Z";
+             return v.getUTCFullYear()+"-"+transit.handlers.padZeros(v.getUTCMonth()+1,2)+"-"+
+                    transit.handlers.padZeros(v.getUTCDate(),2)+"T"+transit.handlers.padZeros(v.getUTCHours(),2)+":"+
+                    transit.handlers.padZeros(v.getUTCMinutes(),2)+":"+transit.handlers.padZeros(v.getUTCSeconds(),2)+"."+
+                    transit.handlers.padZeros(v.getUTCMilliseconds(),3)+"Z";
          }});
 
     hs.set(
-        t.Binary,
+        transit.types.Binary,
         {tag: function(v) { return "b"; },
          rep: function(v) { return v.str; },
          stringRep: function(v) { return v.str; }});
 
     hs.set(
-        t.UUID,
+        transit.types.UUID,
         {tag: function(v) { return "u"; },
          rep: function(v) {
              return v.str;
@@ -132,49 +134,49 @@ function defaultHandlers(hs) {
          }});
 
     hs.set(
-        t.URI,
+        transit.types.URI,
         {tag: function(v) { return "r"; },
          rep: function(v) { return v.uri; },
          stringRep: function(v) { return v.uri; }});
 
     hs.set(
-        t.Keyword,
+        transit.types.Keyword,
         {tag: function(v) { return ":"; },
          rep: function(v) { return v.name; },
          stringRep: function(v) { return this.rep(v); }});
 
     hs.set(
-        t.Symbol,
+        transit.types.Symbol,
         {tag: function(v) { return "$"; },
          rep: function(v) { return v.name; },
          stringRep: function(v) { return this.rep(v); }});
 
     hs.set(
-        t.Quote,
+        transit.types.Quote,
         {tag: function(v) { return "'"; },
          rep: function(v) { return v.obj; },
          stringRep: function(v) { return null; }});
 
     hs.set(
-        t.TaggedValue,
+        transit.types.TaggedValue,
         {tag: function(v) { return v.tag; },
          rep: function(v) { return v.rep; },
          stringRep: function(v) { return null; }});
 
     hs.set(
-        t.TransitSet,
+        transit.types.TransitSet,
         {tag: function(v) { return "set"; },
          rep: function(v) {
              var arr = [];
              v.forEach(function(key, set) {
                  arr.push(key);
              });
-             return t.taggedValue("array", arr);
+             return transit.types.taggedValue("array", arr);
          },
          stringRep: function(v) { return null; }});
 
     hs.set(
-        t.TransitMap,
+        transit.types.TransitMap,
         {tag: function(v) { return "cmap"; },
          rep: function(v) {
              var arr = [];
@@ -182,39 +184,31 @@ function defaultHandlers(hs) {
                  arr.push(key);
                  arr.push(val);
              });
-             return t.taggedValue("array", arr);
+             return transit.types.taggedValue("array", arr);
          },
          stringRep: function(v) { return null; }});
 
     hs.set(
-        t.List,
+        transit.types.List,
         {tag: function(v) { return "list"; },
-         rep: function(v) { return t.taggedValue("array", v.arr); },
+         rep: function(v) { return transit.types.taggedValue("array", v.arr); },
          stringRep: function(v) { return null; }});
 
     return hs;
-}
+};
 
-function Handlers() {
+/**
+ * @constructor
+ */
+transit.handlers.Handlers = function() {
     this.handlers = {};
-}
+    transit.handlers.defaultHandlers(this);
+};
 
-Handlers.prototype.get = function(ctor) {
+transit.handlers.Handlers.prototype.get = function(ctor) {
     return this.handlers[typeTag(ctor)];
-}
+};
 
-Handlers.prototype.set = function(ctor, handler) {
+transit.handlers.Handlers.prototype.set = function(ctor, handler) {
     this.handlers[typeTag(ctor)] = handler;
-}
-
-function handlers(hs) {
-    var ret = new Handlers();
-    defaultHandlers(ret);
-    return ret;
-}
-
-module.exports = {
-    typeTag: typeTag,
-    constructor: constructor,
-    handlers: handlers
 };

@@ -3,109 +3,125 @@
   
 "use strict";
 
-var eq = require("./eq");
+goog.provide("transit.types");
+goog.require("transit.eq");
 
-function nullValue() {
+transit.types.nullValue = function() {
     return null;
-}
+};
 
-function boolValue(s) {
+transit.types.boolValue = function(s)
     return s === "t";
-}
+};
 
-function Integer(str) {
+/**
+ * @constructor
+ */
+transit.types.Integer = function(str) {
     this.str = str;
-}
+};
 
-function intValue(s) {
-    return new Integer(s);
-}
+transit.types.intValue = function(s) {
+    return new transit.types.Integer(s);
+};
 
-function floatValue(s) {
+transit.type.floatValue = function(s) {
     return parseFloat(s);
-}
+};
 
-function BigDecimal(s) {
+/**
+ * @constructor
+ */
+transit.types.BigDecimal = function(s) {
     this.value = s;
 }
 
-function bigDecimalValue(s) {
-    return new BigDecimal(s);
+transit.types.bigDecimalValue = function(s) {
+    return new transit.types.BigDecimal(s);
 }
 
-function charValue(s) {
+transit.types.charValue = function(s) {
     return s;
 }
 
-function Keyword(name) {
+/**
+ * @constructor
+ */
+transit.types.Keyword = function(name) {
     this.name = name;
     this.hashCode = -1;
-}
+};
 
-Keyword.prototype.com$cognitect$transit$equals = function(other) {
+transit.types.Keyword.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof Keyword) && this.name == other.name;
 };
 
-Keyword.prototype.com$cognitect$transit$hashCode = function() {
+transit.types.Keyword.prototype.com$cognitect$transit$hashCode = function() {
     if(this.hashCode !== -1) {
         return this.hashCode;
     } else {
-        this.hashCode = eq.hashCode(this.name);
+        this.hashCode = transit.eq.hashCode(this.name);
         return this.hashCode;
     }
 }
 
-function keyword(s) {
+transit.types.keyword(s) {
     return new Keyword(s);
 }
 
-function Symbol(name) {
+/**
+ * @constructor
+ */
+transit.types.Symbol = function(name) {
     this.name = name;
     this.hashCode = -1;
-}
+};
 
-Symbol.prototype.com$cognitect$transit$equals = function(other) {
-    return (other instanceof Symbol) && this.name == other.name;
-}
+transit.types.Symbol.prototype.com$cognitect$transit$equals = function(other) {
+    return (other instanceof transit.types.Symbol) && this.name == other.name;
+};
 
-Symbol.prototype.com$cognitect$transit$hashCode = function() {
+transit.types.Symbol.prototype.com$cognitect$transit$hashCode = function() {
     if(this.hashCode !== -1) {
         return this.hashCode;
     } else {
-        this.hashCode = eq.hashCode(this.name);
+        this.hashCode = transit.eq.hashCode(this.name);
         return this.hashCode;
     }
-}
+};
 
-function symbol(s) {
-    return new Symbol(s);
-}
+transit.types.symbol = function(s) {
+    return new transit.types.Symbol(s);
+};
 
-function UUID(str) {
+/**
+ * @constructor
+ */
+transit.types.UUID = function(str) {
     this.str = str;
     this.hashCode = -1;
-}
+};
 
-UUID.prototype.com$cognitect$transit$equals = function(other) {
+transit.types.UUID.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof UUID) && this.str == other.str;
 };
 
-UUID.prototype.com$cognitecat$transit$hashCode = function() {
+transit.types.UUID.prototype.com$cognitecat$transit$hashCode = function() {
     if(this.hashCode !== -1) {
         return this.hashCode;
     } else {
-        this.hashCode = eq.hashCode(this.str);
+        this.hashCode = transit.eq.hashCode(this.str);
         return this.hashCode;
     }
 };
 
-function uuid(s) {
-    return new UUID(s);
-}
+transit.types.uuid = function(s) {
+    return new transit.types.UUID(s);
+};
 
-function date(s) {
+transit.types.date = function(s) {
     return new Date(s);
-}
+};
 
 Date.prototype.com$cognitect$transit$equals = function(other) {
     if(other instanceof Date) {
@@ -113,68 +129,77 @@ Date.prototype.com$cognitect$transit$equals = function(other) {
     } else {
         return false;
     }
-}
+};
 
 Date.prototype.com$cognitect$transit$hashCode = function() {
     return this.valueOf();
-}
+};
 
-function Binary(str) {
+/**
+ * @constructor
+ */
+transit.types.Binary = function(str) {
     this.str = str;
-}
+};
 
-function binary(str) {
-    return new Binary(str);
-}
+transit.types.binary = function(str) {
+    return new transit.types.Binary(str);
+};
 
-function URI(uri) {
+/**
+ * @constructor
+ */
+transit.types.URI = function(uri) {
     this.uri = uri;
+};
+
+transit.types.uri = function(s) {
+    return new transit.types.URI(s);
 }
 
-function uri(s) {
-    return new URI(s);
-}
-
-function ints(xs) {
+transit.types.ints = function(xs) {
     return xs;
-}
+};
 
-function longs(xs) {
+transit.types.longs = function(xs) {
     return xs;
-}
+};
 
-function floats(xs) {
+transit.types.floats = function(xs) {
     return xs;
-}
+};
 
-function doubles(xs) {
+transit.types.doubles = function(xs) {
     return xs;
-}
+};
 
-function bools(xs) {
+transit.types.bools = function(xs) {
     return xs;
-}  
+};
 
-function TransitMap(keys, map, size) {
+/**
+ * @constructor
+ */
+transit.types.TransitMap = function(keys, map, size) {
     this.map = map;
     this.keys = keys;
     this.size = size;
     this.hashCode = -1;
-}
+};
 
-TransitMap.prototype.clear = function() {
+transit.types.TransitMap.prototype.clear = function() {
     throw new Error("Unsupported operation: clear");
 };
 
-TransitMap.prototype['delete'] = function() {
+transit.types.TransitMap.prototype['delete'] = function() {
     throw new Error("Unsupported operation: delete");
 };
 
-TransitMap.prototype.entries = function() {
+transit.types.TransitMap.prototype.entries = function() {
     throw new Error("Unsupported operation: entries");
 };
 
-TransitMap.prototype.forEach = function(callback) {
+transit.types.TransitMap.prototype.forEach = function(callback) {
     for(var i = 0; i < this.keys.length; i++) {
         var vals = this.map[this.keys[i]];
         for(var j = 0; j < vals.length; j+=2) {
@@ -183,12 +208,12 @@ TransitMap.prototype.forEach = function(callback) {
     }
 };
 
-TransitMap.prototype.get = function(k) {
-  var code = eq.hashCode(k),
+transit.types.TransitMap.prototype.get = function(k) {
+  var code = transit.eq.hashCode(k),
       vals = this.map[code];
     if(vals != null) {
         for(var i = 0; i < vals.length; i+=2) {
-            if(eq.equals(k,vals[i])) {
+            if(transit.eq.equals(k,vals[i])) {
                 return vals[i+1];
             }
         }
@@ -197,12 +222,12 @@ TransitMap.prototype.get = function(k) {
     } 
 };
 
-TransitMap.prototype.has = function(k) {
-    var code = eq.hashCode(k),
+transit.types.TransitMap.prototype.has = function(k) {
+    var code = transit.eq.hashCode(k),
         vals = this.map[code];
     if(vals != null) {
         for(var i = 0; i < vals.length; i+=2) {
-            if(eq.equals(k,vals[i])) {
+            if(transit.eq.equals(k,vals[i])) {
                 return true;
             }
         }
@@ -212,31 +237,31 @@ TransitMap.prototype.has = function(k) {
     }
 };
 
-TransitMap.prototype.keys = function() {
+transit.types.TransitMap.prototype.keys = function() {
     throw new Error("Unsupported operation: keys");
 };
   
-TransitMap.prototype.set = function(k, v) {
+transit.types.TransitMap.prototype.set = function(k, v) {
     throw new Error("Unsupported operation: set");
 };
 
-TransitMap.prototype.values = function() {
+transit.types.TransitMap.prototype.values = function() {
     throw new Error("Unsupported operation: value");
 };
   
-TransitMap.prototype.com$cognitect$transit$hashCode = function() {
+transit.types.TransitMap.prototype.com$cognitect$transit$hashCode = function() {
     if(this.hashCode != -1) return this.hashCode;
-    this.hashCode = eq.hashMapLike(this);
+    this.hashCode = transit.eq.hashMapLike(this);
     return this.hashCode;
 };
 
-TransitMap.prototype.com$cognitect$transit$equals = function(other) {
+transit.types.TransitMap.prototype.com$cognitect$transit$equals = function(other) {
     if((other instanceof TransitMap) &&
        (this.size === other.size)) {
         for(var code in this.map) {
             var vals = this.map[code];
             for(var j = 0; j < vals.length; j+=2) {
-                if(!eq.equals(vals[j+1], other.get(vals[j]))) {
+                if(!transit.eq.equals(vals[j+1], other.get(vals[j]))) {
                     return false;
                 }
             }
@@ -247,12 +272,12 @@ TransitMap.prototype.com$cognitect$transit$equals = function(other) {
     }
 };
 
-function transitMap(arr) {
+transit.type.transitMap = function(arr) {
     var map  = {},
         keys = [],
         size = 0;
     for(var i = 0; i < arr.length; i+=2) {
-        var code = eq.hashCode(arr[i]),
+        var code = transit.eq.hashCode(arr[i]),
             vals = map[code];
         if(vals == null) {
             keys.push(code);
@@ -261,7 +286,7 @@ function transitMap(arr) {
         } else {
             var newEntry = true;
             for(var j = 0; j < vals.length; j+= 2) {
-                if(eq.equals(vals[j], arr[i])) {
+                if(transit.eq.equals(vals[j], arr[i])) {
                     vals[j+1] = arr[i+1];
                     newEntry = false;
                     break;
@@ -274,73 +299,76 @@ function transitMap(arr) {
             }
         }
     }
-    return new TransitMap(keys, map, size);
+    return new transit.types.TransitMap(keys, map, size);
 }
 
-function cmap(xs) {
+transit.types.cmap = function(xs) {
     return transitMap(xs);
-}
+};
 
-function TransitSet(map) {
+/**
+ * @constructor
+ */
+transit.types.TransitSet = function(map) {
     this.map = map;
     this.size = map.size;
-}
+};
 
-TransitSet.prototype.add = function(value) {
+transit.types.TransitSet.prototype.add = function(value) {
     throw new Error("Unsupported operation: add");
 };
 
-TransitSet.prototype.clear = function() {
+transit.types.TransitSet.prototype.clear = function() {
     throw new Error("Unsupported operation: clear");
 };
 
-TransitSet.prototype['delete'] = function(value) {
+transit.types.TransitSet.prototype['delete'] = function(value) {
     throw new Error("Unsupported operation: delete");
 };
 
-TransitSet.prototype.entries = function() {
+transit.types.TransitSet.prototype.entries = function() {
     throw new Error("Unsupported operation: entries");
 };
 
-TransitSet.prototype.forEach = function(iterator, thisArg) {
+transit.types.TransitSet.prototype.forEach = function(iterator, thisArg) {
     var self = this;
     this.map.forEach(function(v, k, m) {
         iterator(k, self);
     });
 };
 
-TransitSet.prototype.has = function(value) {
+transit.types.TransitSet.prototype.has = function(value) {
     return this.map.has(value);
 };
 
-TransitSet.prototype.keys = function() {
+transit.types.TransitSet.prototype.keys = function() {
     throw new Error("Unsupported operation: keys");
 };
 
-TransitSet.prototype.values = function() {
+transit.types.TransitSet.prototype.values = function() {
     throw new Error("Unsupported operation: valuesa");
 };
 
-TransitSet.prototype.com$cognitect$transit$equals = function(other) {
+transit.types.TransitSet.prototype.com$cognitect$transit$equals = function(other) {
     if(other instanceof TransitSet) {
         if(this.size === other.size) {
-            return eq.equals(this.map, other.map);
+            return transit.eq.equals(this.map, other.map);
         }
     } else {
         return false;
     }
 };
 
-TransitSet.prototype.com$cognitect$transit$hashCode = function(other) {
-    return eq.hashCode(this.map);
+transit.types.TransitSet.prototype.com$cognitect$transit$hashCode = function(other) {
+    return transit.eq.hashCode(this.map);
 };
 
-function transitSet(arr) {
+transit.types.transitSet = function(arr) {
     var map  = {},
         keys = [],
         size = 0;
     for(var i = 0; i < arr.length; i++) {
-        var code = eq.hashCode(arr[i]),
+        var code = transit.eq.hashCode(arr[i]),
             vals = map[code];
         if(vals == null) {
             keys.push(code);
@@ -349,7 +377,7 @@ function transitSet(arr) {
         } else {
             var newEntry = true;
             for(var j = 0; j < vals.length; j+= 2) {
-                if(eq.equals(vals[j], arr[i])) {
+                if(transit.eq.equals(vals[j], arr[i])) {
                     newEntry = false;
                     break;
                 }
@@ -361,40 +389,52 @@ function transitSet(arr) {
             }
         }
     }
-    return new TransitSet(new TransitMap(keys, map, size));
+    return new transit.types.TransitSet(new transit.types.TransitMap(keys, map, size));
 }
 
-function Quote(obj) {
+/**
+ * @constructor
+ */
+transit.types.Quote = function(obj) {
     this.obj = obj;
-}
-
-function quoted(obj) {
-    return new Quote(obj);
-}
-
-function TaggedValue(tag, rep) {
-    this.tag = tag;
-    this.rep = rep;
-}
-
-function taggedValue(tag, rep) {
-    return new TaggedValue(tag, rep);
-}
-
-function LinkedList(head, tail) {
-    this.head = head;
-    this.tail = tail;
-}
-
-function cons(x, tail) {
-    return new LinkedList(x, tail);
 };
 
-function Queue() {
-    this.list = null;
-}
+transit.types.quoted = function(obj) {
+    return new transit.types.Quote(obj);
+};
 
-Queue.prototype.peek = function() {
+/**
+ * @constructor
+ */
+transit.types.TaggedValue = function(tag, rep) {
+    this.tag = tag;
+    this.rep = rep;
+};
+
+transit.types.taggedValue = function(tag, rep) {
+    return new transit.type.TaggedValue(tag, rep);
+};
+
+/**
+ * @constructor
+ */
+transit.types.LinkedList = function(head, tail) {
+    this.head = head;
+    this.tail = tail;
+};
+
+transit.types.cons = function(x, tail) {
+    return new transit.types.LinkedList(x, tail);
+};
+
+/**
+ * @constructor
+ */
+transit.types.Queue = function() {
+    this.list = null;
+};
+
+transit.types.Queue.prototype.peek = function() {
     if(this.list) {
         return this.list.head;
     } else {
@@ -402,11 +442,11 @@ Queue.prototype.peek = function() {
     }
 };
 
-Queue.prototype.push = function(x) {
+transit.types.Queue.prototype.push = function(x) {
     this.list = cons(x, this.list);
 };
 
-Queue.prototype.pop = function(x) {
+transit.types.Queue.prototype.pop = function(x) {
     if(this.list) {
         var ret = this.list.head;
         this.list = this.list.tail;
@@ -416,54 +456,17 @@ Queue.prototype.pop = function(x) {
     }
 };
 
-function queue() {
-    return new Queue();
-}
+transit.types.queue = function() {
+    return new transit.types.Queue();
+};
 
-function List(arr) {
+/**
+ * @constructor
+ */
+transit.types.List = function(arr) {
     this.arr = arr;
-}
+};
 
-function list(xs) {
-    return new List(xs);
-}
-
-module.exports = {
-    nullValue: nullValue,
-    boolValue: boolValue,
-    Integer: Integer,
-    intValue: intValue,
-    floatValue: floatValue,
-    BigDecimal: BigDecimal,
-    bigDecimalValue: bigDecimalValue,
-    charValue: charValue,
-    keyword: keyword,
-    Keyword: Keyword,
-    symbol: symbol,
-    Symbol: Symbol,
-    uuid: uuid,
-    UUID: UUID,
-    map: transitMap,
-    TransitMap: TransitMap,
-    set: transitSet,
-    TransitSet: TransitSet,
-    cmap: cmap,
-    date: date,
-    Binary: Binary,
-    binary: binary,
-    URI: URI,
-    uri: uri,
-    List: List,
-    list: list,
-    ints: ints,
-    longs: longs,
-    floats: floats,
-    doubles: doubles,
-    bools: bools,
-    taggedValue: taggedValue,
-    TaggedValue: TaggedValue,
-    quoted: quoted,
-    Quote: Quote,
-    queue: queue,
-    Queue: Queue
+transit.types.list = function(xs) {
+    return new transit.types.List(xs);
 };

@@ -3,27 +3,22 @@
 
 "use strict";
 
-function StringBuilder() {
+goog.provide("transit.stringbuilder");
+
+/**
+ * @constructor
+ */
+transit.stringbuilder.StringBuilder = function() {
     this.buffer = "";
-}
-
-StringBuilder.prototype = {
-    write: function(data) {
-        this.buffer += data;
-    },
-
-    flush: function() {
-        var ret = this.buffer
-        this.buffer = "";
-        return ret;
-    }
 };
 
-function stringBuilder() {
-    return new StringBuilder();
-}
-
-module.exports = {
-    StringBuilder: StringBuilder,
-    stringBuilder: stringBuilder
+transit.stringbuilder.StringBuilder.prototype.write = function(data) {
+    this.buffer += data;
 };
+
+transit.stringbuilder.StringBuilder.prototype.flush = function() {
+    var ret = this.buffer
+    this.buffer = "";
+    return ret;
+};
+

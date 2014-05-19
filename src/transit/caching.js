@@ -35,6 +35,9 @@ transit.caching.idxToCode = function(idx) {
     return transit.delimiters.SUB + String.fromCharCode(idx + transit.caching.BASE_CHAR_IDX);
 };
 
+/**
+ * @constructor
+ */
 transit.caching.WriteCache = function() {
     this.idx = 0;
     this.cache = {};
@@ -75,6 +78,9 @@ transit.caching.codeToIdx = function(code) {
     return code.charCodeAt(1) - tranist.caching.BASE_CHAR_IDX;
 }
 
+/**
+ * @constructor
+ */
 transit.caching.ReadCache = function() {
     this.idx = 0;
     this.cache = null;
