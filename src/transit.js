@@ -22,7 +22,7 @@ transit.reader = function(type, opts) {
     if(type === "json" || type == null) {
         type = "json";
         var unmarshaller = new transit.impl.reader.JSONUnmarshaller();
-        return new transit.impl.reader.Reader(unmarshaller, options);
+        return new transit.impl.reader.Reader(unmarshaller, opts);
     } else {
         throw new Error("Cannot create reader of type " + type);
     }
