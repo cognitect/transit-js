@@ -101,7 +101,7 @@ transit.eq.hashMapLike = function(m) {
             var key = keys[i];
             if(key === transit.eq.transitHashCodeProperty) continue;
             var val = m[key];
-
+            code = (code + (transit.eq.hashCode(key) ^ transit.eq.hashCode(val))) % 4503599627370496;
         }
     }
     return code;
