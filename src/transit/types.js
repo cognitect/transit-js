@@ -190,6 +190,7 @@ transit.types.TransitMap = function(keys, map, size) {
 transit.types.TransitMap.prototype.clear = function() {
     throw new Error("Unsupported operation: clear");
 };
+transit.types.TransitMap.prototype["clear"] = transit.types.TransitMap.prototype.clear;
 
 transit.types.TransitMap.prototype['delete'] = function() {
     throw new Error("Unsupported operation: delete");
@@ -198,6 +199,7 @@ transit.types.TransitMap.prototype['delete'] = function() {
 transit.types.TransitMap.prototype.entries = function() {
     throw new Error("Unsupported operation: entries");
 };
+transit.types.TransitMap.prototype["entries"] = transit.types.TransitMap.prototype.entries;
 
 transit.types.TransitMap.prototype.forEach = function(callback) {
     for(var i = 0; i < this.keys.length; i++) {
@@ -207,6 +209,7 @@ transit.types.TransitMap.prototype.forEach = function(callback) {
         }
     }
 };
+transit.types.TransitMap.prototype["forEach"] = transit.types.TransitMap.prototype.forEach;
 
 transit.types.TransitMap.prototype.get = function(k) {
   var code = transit.eq.hashCode(k),
@@ -221,6 +224,7 @@ transit.types.TransitMap.prototype.get = function(k) {
         return null;
     } 
 };
+transit.types.TransitMap.prototype["get"] = transit.types.TransitMap.prototype.get;
 
 transit.types.TransitMap.prototype.has = function(k) {
     var code = transit.eq.hashCode(k),
@@ -236,18 +240,22 @@ transit.types.TransitMap.prototype.has = function(k) {
         return false;
     }
 };
+transit.types.TransitMap.prototype["has"] = transit.types.TransitMap.prototype.has;
 
 transit.types.TransitMap.prototype.keys = function() {
     throw new Error("Unsupported operation: keys");
 };
+transit.types.TransitMap.prototype["keys"] = transit.types.TransitMap.prototype.keys;
   
 transit.types.TransitMap.prototype.set = function(k, v) {
     throw new Error("Unsupported operation: set");
 };
+transit.types.TransitMap.prototype["set"] = transit.types.TransitMap.prototype.set;
 
 transit.types.TransitMap.prototype.values = function() {
     throw new Error("Unsupported operation: value");
 };
+transit.types.TransitMap.prototype["values"] = transit.types.TransitMap.prototype.values;
   
 transit.types.TransitMap.prototype.com$cognitect$transit$hashCode = function() {
     if(this.hashCode != -1) return this.hashCode;
@@ -317,10 +325,12 @@ transit.types.TransitSet = function(map) {
 transit.types.TransitSet.prototype.add = function(value) {
     throw new Error("Unsupported operation: add");
 };
+transit.types.TransitSet.prototype["add"] = transit.types.TransitSet.prototype.add;
 
 transit.types.TransitSet.prototype.clear = function() {
     throw new Error("Unsupported operation: clear");
 };
+transit.types.TransitSet.prototype["clear"] = transit.types.TransitSet.prototype.clear;
 
 transit.types.TransitSet.prototype['delete'] = function(value) {
     throw new Error("Unsupported operation: delete");
@@ -329,6 +339,7 @@ transit.types.TransitSet.prototype['delete'] = function(value) {
 transit.types.TransitSet.prototype.entries = function() {
     throw new Error("Unsupported operation: entries");
 };
+transit.types.TransitSet.prototype["entries"] = transit.types.TransitSet.prototype.entries;
 
 transit.types.TransitSet.prototype.forEach = function(iterator, thisArg) {
     var self = this;
@@ -336,18 +347,22 @@ transit.types.TransitSet.prototype.forEach = function(iterator, thisArg) {
         iterator(k, self);
     });
 };
+transit.types.TransitSet.prototype["forEach"] = transit.types.TransitSet.prototype.forEach;
 
 transit.types.TransitSet.prototype.has = function(value) {
     return this.map.has(value);
 };
+transit.types.TransitSet.prototype["has"] = transit.types.TransitSet.prototype.has;
 
 transit.types.TransitSet.prototype.keys = function() {
     throw new Error("Unsupported operation: keys");
 };
+transit.types.TransitSet.prototype["keys"] = transit.types.TransitSet.prototype.keys;
 
 transit.types.TransitSet.prototype.values = function() {
     throw new Error("Unsupported operation: valuesa");
 };
+transit.types.TransitSet.prototype["values"] = transit.types.TransitSet.prototype.values;
 
 transit.types.TransitSet.prototype.com$cognitect$transit$equals = function(other) {
     if(other instanceof transit.types.TransitSet) {
