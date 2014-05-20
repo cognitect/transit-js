@@ -4,7 +4,7 @@
 "use strict";
 
 goog.provide("transit");
-goog.require("transit.reader"),
+goog.require("transit.reader");
 goog.require("transit.writer");
 
 /**
@@ -43,4 +43,4 @@ transit.writer = function(type, opts) {
         err.data = {type: type};
         throw err;
     }
-}
+};

@@ -25,7 +25,7 @@ transit.types.intValue = function(s) {
     return new transit.types.Integer(s);
 };
 
-transit.type.floatValue = function(s) {
+transit.types.floatValue = function(s) {
     return parseFloat(s);
 };
 
@@ -272,7 +272,7 @@ transit.types.TransitMap.prototype.com$cognitect$transit$equals = function(other
     }
 };
 
-transit.type.transitMap = function(arr) {
+transit.types.transitMap = function(arr) {
     var map  = {},
         keys = [],
         size = 0;
