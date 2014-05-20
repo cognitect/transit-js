@@ -53,7 +53,7 @@ transit.types.Keyword = function(name) {
 };
 
 transit.types.Keyword.prototype.com$cognitect$transit$equals = function(other) {
-    return (other instanceof Keyword) && this.name == other.name;
+    return (other instanceof transit.types.Keyword) && this.name == other.name;
 };
 
 transit.types.Keyword.prototype.com$cognitect$transit$hashCode = function() {
@@ -66,7 +66,7 @@ transit.types.Keyword.prototype.com$cognitect$transit$hashCode = function() {
 };
 
 transit.types.keyword = function(s) {
-    return new Keyword(s);
+    return new transit.types.Keyword(s);
 };
 
 /**
