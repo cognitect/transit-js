@@ -75,7 +75,7 @@ transit.caching.isCacheCode = function(string) {
 }
 
 transit.caching.codeToIdx = function(code) {
-    return code.charCodeAt(1) - tranist.caching.BASE_CHAR_IDX;
+    return code.charCodeAt(1) - transit.caching.BASE_CHAR_IDX;
 }
 
 /**
@@ -106,7 +106,7 @@ transit.caching.ReadCache.prototype.write = function(string, obj, asMapKey) {
 
 transit.caching.ReadCache.prototype.read = function(string, asMapKey) {
     this.guaranteeCache();
-    var ret = this.cache[codeToIdx(string)];
+    var ret = this.cache[transit.caching.codeToIdx(string)];
     if(asMapKey) {
         if(ret[0] === ret[1]) {
             return ret[1];

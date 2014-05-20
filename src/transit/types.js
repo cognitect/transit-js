@@ -272,7 +272,7 @@ transit.types.TransitMap.prototype.com$cognitect$transit$equals = function(other
     }
 };
 
-transit.types.transitMap = function(arr) {
+transit.types.map = function(arr) {
     var map  = {},
         keys = [],
         size = 0;
@@ -303,7 +303,7 @@ transit.types.transitMap = function(arr) {
 };
 
 transit.types.cmap = function(xs) {
-    return transitMap(xs);
+    return transit.types.map(xs);
 };
 
 /**
@@ -363,7 +363,7 @@ transit.types.TransitSet.prototype.com$cognitect$transit$hashCode = function(oth
     return transit.eq.hashCode(this.map);
 };
 
-transit.types.transitSet = function(arr) {
+transit.types.set = function(arr) {
     var map  = {},
         keys = [],
         size = 0;
@@ -412,7 +412,7 @@ transit.types.TaggedValue = function(tag, rep) {
 };
 
 transit.types.taggedValue = function(tag, rep) {
-    return new transit.type.TaggedValue(tag, rep);
+    return new transit.types.TaggedValue(tag, rep);
 };
 
 /**

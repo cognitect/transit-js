@@ -28,8 +28,8 @@ transit.impl.writer.escape = function(string) {
  * @constructor
  */
 transit.impl.writer.JSONMarshaller = function(options) {
-    this.buffer = (options && options.buffer) || sb.stringBuilder();
-    this.handlers = transit.handlers.handlers();
+    this.buffer = (options && options.buffer) || (new transit.stringbuilder.StringBuilder());
+    this.handlers = new transit.handlers.Handlers();
     this._prefersStrings = options ? options.prefersString || false : true;
 };
 
@@ -43,7 +43,7 @@ transit.impl.writer.JSONMarshaller.prototype.registerHandler = function(ctor, ha
 
 transit.impl.writer.JSONMarshaller.prototype.emitNil = function(asMapKey, cache) {
     if(asMapKey) {
-        return this.emitString(d.ESC, "_", "", asMapKey, cache);
+        return this.emitString(transit.delimiters.ESC, "_", "", asMapKey, cache);
     } else {
         return null;
     }
@@ -56,15 +56,15 @@ transit.impl.writer.JSONMarshaller.prototype.emitString = function(prefix, tag, 
 transit.impl.writer.JSONMarshaller.prototype.emitBoolean = function(b, asMapKey, cache) {
     if(asMapKey) {
         var s = b.toString();
-        return this.emitString(d.ESC, "?", s[0], asMapKey, cache);
+        return this.emitString(transit.delimiters.ESC, "?", s[0], asMapKey, cache);
     } else {
         return b;
     }
 };
 
 transit.impl.writer.JSONMarshaller.prototype.emitInteger = function(i, asMapKey, cache) {
-    if(asMapKey || (typeof i === "string") || (i instanceof t.Integer)) {
-        return this.emitString(d.ESC, "i", i.toString(), asMapKey, cache);
+    if(asMapKey || (typeof i === "string") || (i instanceof transit.types.Integer)) {
+        return this.emitString(transit.delimiters.ESC, "i", i.toString(), asMapKey, cache);
     } else {
         return i;
     }
@@ -72,19 +72,19 @@ transit.impl.writer.JSONMarshaller.prototype.emitInteger = function(i, asMapKey,
 
 transit.impl.writer.JSONMarshaller.prototype.emitDouble = function(d, asMapKey, cache) {
     if(asMapKey) {
-        return this.emitString(d.ESC, "d", d, asMapKey, cache);
+        return this.emitString(transit.delimiters.ESC, "d", d, asMapKey, cache);
     } else {
         return d;
     }
 };
 
 transit.impl.writer.JSONMarshaller.prototype.emitBinary = function(b, asMapKey, cache) {
-    return this.emitString(d.ESC, "b", b, asMapKey, cache);
+    return this.emitString(transit.delimiters.ESC, "b", b, asMapKey, cache);
 };
 
 transit.impl.writer.JSONMarshaller.prototype.emitQuoted = function(obj, cache) {
     var ret = {},
-        k   = this.emitString(d.ESC_TAG, "'", "", true, cache);
+        k   = this.emitString(transit.delimiters.ESC_TAG, "'", "", true, cache);
     ret[k] = transit.impl.writer.marshal(this, obj, false, cache);
     return ret;
 };
@@ -190,7 +190,7 @@ transit.impl.writer.emitMap = function(em, obj, skip, cache) {
 
 transit.impl.writer.emitTaggedMap = function(em, tag, rep, skip, cache) {
     var ret = {};
-    ret[em.emitString(d.ESC_TAG, tag, "", true, cache)] = marshal(em, rep, false, cache);
+    ret[em.emitString(transit.delimiters.ESC_TAG, tag, "", true, cache)] = transit.impl.writer.marshal(em, rep, false, cache);
     return ret;
 };
 
@@ -198,11 +198,11 @@ transit.impl.writer.emitEncoded = function(em, h, tag, obj, asMapKey, cache) {
     if(tag.length === 1) {
         var rep = h.rep(obj);
         if(typeof rep === "string") {
-            return em.emitString(d.ESC, tag, rep, asMapKey, cache);
+            return em.emitString(transit.delimiters.ESC, tag, rep, asMapKey, cache);
         } else if((asMapKey === true) || em.prefersStrings()) {
             rep = h.stringRep(obj);
             if(typeof rep === "string") {
-                return em.emitString(d.ESC, tag, rep, asMapKey, cache);
+                return em.emitString(transit.delimiters.ESC, tag, rep, asMapKey, cache);
             } else {
                 var err = new Error("Cannot be encoded as string");
                 err.data = {tag: tag, rep: rep, obj: obj};
@@ -231,7 +231,7 @@ transit.impl.writer.marshal = function(em, obj, asMapKey, cache) {
             return em.emitNil(asMapKey, cache);
             break;
         case "s":
-            return em.emitString("", "", escape(rep), asMapKey, cache);
+            return em.emitString("", "", transit.impl.writer.escape(rep), asMapKey, cache);
             break;
         case "?":
             return em.emitBoolean(rep, asMapKey, cache);
@@ -249,13 +249,13 @@ transit.impl.writer.marshal = function(em, obj, asMapKey, cache) {
             return em.emitQuoted(rep, cache);
             break;
         case "array":
-            return emitArray(em, rep, asMapKey, cache);
+            return transit.impl.writer.emitArray(em, rep, asMapKey, cache);
             break;
         case "map":
-            return emitMap(em, rep, asMapKey, cache);
+            return transit.impl.writer.emitMap(em, rep, asMapKey, cache);
             break;
         default:
-            return emitEncoded(em, h, tag, obj, asMapKey, cache);
+            return transit.impl.writer.emitEncoded(em, h, tag, obj, asMapKey, cache);
             break;
         }
     } else {
@@ -270,7 +270,7 @@ transit.impl.writer.maybeQuoted = function(em, obj) {
 
     if(h != null) {
         if(h.tag(obj).length === 1) {
-            return t.quoted(obj);
+            return transit.types.quoted(obj);
         } else {
             return obj;
         }

@@ -206,9 +206,9 @@ transit.handlers.Handlers = function() {
 };
 
 transit.handlers.Handlers.prototype.get = function(ctor) {
-    return this.handlers[typeTag(ctor)];
+    return this.handlers[transit.handlers.typeTag(ctor)];
 };
 
 transit.handlers.Handlers.prototype.set = function(ctor, handler) {
-    this.handlers[typeTag(ctor)] = handler;
+    this.handlers[transit.handlers.typeTag(ctor)] = handler;
 };

@@ -69,7 +69,7 @@ transit.eq.STR_CACHE_MAX       = 256;
 transit.eq.hashString = function(str) {
     // a la goog.string.HashCode
     // http://docs.closure-library.googlecode.com/git/local_closure_goog_string_string.js.source.html#line1206
-    var cached = transit.eqstringCodeCache[str];
+    var cached = transit.eq.stringCodeCache[str];
     if(cached != null) {
         return cached;
     }
@@ -79,7 +79,7 @@ transit.eq.hashString = function(str) {
         code %= 0x100000000;
     }
     transit.eq.stringCodeCacheSize++;
-    if(transit.eq.stringCodeCacheSize >= transit.e.qSTR_CACHE_MAX) {
+    if(transit.eq.stringCodeCacheSize >= transit.eq.STR_CACHE_MAX) {
         transit.eq.stringCodeCache = {};
         transit.eq.stringCodeCacheSize = 1;
     }
