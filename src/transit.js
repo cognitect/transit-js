@@ -50,7 +50,7 @@ transit.writer = function(type, opts) {
 
 if(NODE_TARGET) {
     module.exports = {
-        reader: reader,
-        writer: writer
+        reader: transit.reader,
+        writer: transit.writer
     };
 }

@@ -13,7 +13,7 @@ goog.require("transit.decoder");
  */
 transit.reader.JSONUnmarshaller = function() {
     this.decoder = new transit.decoder.Decoder();
-}
+};
 
 /**
  * @param {string} str a JSON string
@@ -34,7 +34,7 @@ transit.reader.Reader = function(unmarshaller, options) {
     this.unmarshaller = unmarshaller;
     this.options = options || {};
     this.cache = this.options.cache ? this.options.cache : new transit.caching.ReadCache();
-}
+};
 
 /**
  * @param {string} str a string to be read
@@ -44,4 +44,4 @@ transit.reader.Reader.prototype.read = function(str) {
     var ret = this.unmarshaller.unmarshal(str, this.cache)
     this.cache.clear();
     return ret;
-}
+};
