@@ -103,7 +103,7 @@ transit.types.UUID = function(str) {
 };
 
 transit.types.UUID.prototype.com$cognitect$transit$equals = function(other) {
-    return (other instanceof UUID) && this.str == other.str;
+    return (other instanceof transit.types.UUID) && this.str == other.str;
 };
 
 transit.types.UUID.prototype.com$cognitecat$transit$hashCode = function() {
