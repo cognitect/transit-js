@@ -2,7 +2,7 @@
 
 process.stdin.setEncoding("utf8");
 
-var transit   = require("../src/transit.js"),
+var transit   = require("../target/transit.js"),
     transport = process.argv[2] || "json",
     r         = transit.reader(transport),
     w         = transit.writer(transport);
