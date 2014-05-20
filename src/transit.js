@@ -16,13 +16,13 @@ var NODE_TARGET = false;
  * @param {string|null} type type of reader to construct.
  *     only "json" supported.
  * @param {Object|null} opts reader options
- * @return {transit.reader.Reader}
+ * @return {transit.impl.reader.Reader}
  */
 transit.reader = function(type, opts) {
     if(type === "json" || type == null) {
         type = "json";
-        var unmarshaller = new transit.reader.JSONUnmarshaller();
-        return new transit.reader.Reader(unmarshaller, options);
+        var unmarshaller = new transit.impl.reader.JSONUnmarshaller();
+        return new transit.impl.reader.Reader(unmarshaller, options);
     } else {
         throw new Error("Cannot create reader of type " + type);
     }
@@ -34,13 +34,13 @@ transit.reader = function(type, opts) {
  * @param {string|null} type type of writer to construct.
  *     only "json" supported.
  * @param {Object|null} opts writer options
- * @return {tranist.writer.Writer}
+ * @return {transit.impl.writer.Writer}
  */
 transit.writer = function(type, opts) {
     if(type === "json" || type == null) {
         type = "json";
-        var marshaller = new transit.writer.JSONMarshaller(opts);
-        return new transit.writer.Writer(marshaller, opts);
+        var marshaller = new transit.impl.writer.JSONMarshaller(opts);
+        return new transit.impl.writer.Writer(marshaller, opts);
     } else {
         var err = new Error("Type must be \"json\"");
         err.data = {type: type};
