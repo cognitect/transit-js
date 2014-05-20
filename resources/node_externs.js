@@ -1,4 +1,4 @@
-module = {};
+var module = {};
 module.exports = {};
 module.exports.reader  = function() {};
 module.exports.writer  = function() {};
