@@ -350,7 +350,7 @@ transit.types.TransitSet.prototype.values = function() {
 };
 
 transit.types.TransitSet.prototype.com$cognitect$transit$equals = function(other) {
-    if(other instanceof TransitSet) {
+    if(other instanceof transit.types.TransitSet) {
         if(this.size === other.size) {
             return transit.eq.equals(this.map, other.map);
         }
