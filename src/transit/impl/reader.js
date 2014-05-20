@@ -45,3 +45,5 @@ transit.impl.reader.Reader.prototype.read = function(str) {
     this.cache.clear();
     return ret;
 };
+transit.impl.reader.Reader.prototype["read"] = transit.impl.reader.Reader.prototype.read;
+

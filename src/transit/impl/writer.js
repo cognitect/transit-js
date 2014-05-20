@@ -299,7 +299,9 @@ transit.impl.writer.Writer.prototype.write = function(obj) {
     this.cache.clear();
     return ret;
 };
+transit.impl.writer.Writer.prototype["write"] = transit.impl.writer.Writer.prototype.write;
 
 transit.impl.writer.Writer.prototype.register = function(type, handler) {
     this.marshaller.registerHandler(type, handler);
 };
+transit.impl.writer.Writer.prototype["register"] = transit.impl.writer.Writer.prototype.register;
