@@ -256,7 +256,7 @@ transit.types.TransitMap.prototype.com$cognitect$transit$hashCode = function() {
 };
 
 transit.types.TransitMap.prototype.com$cognitect$transit$equals = function(other) {
-    if((other instanceof TransitMap) &&
+    if((other instanceof transit.types.TransitMap) &&
        (this.size === other.size)) {
         for(var code in this.map) {
             var vals = this.map[code];

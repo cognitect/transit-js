@@ -50,6 +50,7 @@ transit.writer = function(type, opts) {
 };
 transit["writer"] = transit.writer;
 
+transit["date"]    = transit.types.date;
 transit["long"]    = transit.types.intValue;
 transit["uuid"]    = transit.types.uuid;
 transit["bigdec"]  = transit.types.bigDecimalValue;
@@ -69,6 +70,7 @@ if(NODE_TARGET) {
     module.exports = {
         reader:  transit.reader,
         writer:  transit.writer,
+        date:    transit.types.date,
         "long":  transit.types.intValue,
         uuid:    transit.types.uuid,
         bigdec:  transit.types.bigDecimalValue,
