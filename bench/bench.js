@@ -3,12 +3,7 @@
 
 "use strict";
 
-var eq      = require("../src/transit/eq.js"),
-    t       = require("../src/transit/types.js"),
-    wr      = require("../src/transit/writer.js"),
-    sb      = require("../src/transit/stringbuilder.js"),
-    transit = require("../src/transit.js"),
-    caching = require("../src/transit/caching.js");
+var transit = require("../target/transit.js");
 
 function time(f, iters) {
     iters = iters || 1;
@@ -20,91 +15,91 @@ function time(f, iters) {
     }
 }
 
-console.log("1e6 iters, eq.hashCode(\"foo\")");
+console.log("1e6 iters, transit.hash(\"foo\")");
 time(function() {
     for(var i = 0; i < 1000000; i++) {
-        eq.hashCode("foo");
+        transit.hash("foo");
     }
 });
 
-console.log("1e6 iters, eq.hashCode([1,2,3])");
+console.log("1e6 iters, transit.hash([1,2,3])");
 var arr = [1,2,3];
 time(function() {
     for(var i = 0; i < 1000000; i++) {
-        eq.hashCode(arr);
+        transit.hash(arr);
     }
 });
 
-console.log("1e6 iters, eq.equals(\"foo\", \"foo\")");
+console.log("1e6 iters, transit.equals(\"foo\", \"foo\")");
 time(function() {
     for(var i = 0; i < 1000000; i++) {
-        eq.equals("foo", "foo");
+        transit.equals("foo", "foo");
     }
 });
 
-console.log("1e6 iters, eq.equals(\"foo\", \"bar\")");
+console.log("1e6 iters, transit.equals(\"foo\", \"bar\")");
 time(function() {
     for(var i = 0; i < 1000000; i++) {
-        eq.equals("foo", "bar");
+        transit.equals("foo", "bar");
     }
 });
 
-console.log("1e6 iters, eq.equals([1,2,3], [1,2,3])");
+console.log("1e6 iters, transit.equals([1,2,3], [1,2,3])");
 time(function() {
     var arr0 = [1,2,3],
         arr1 = [1,2,3];
     for(var i = 0; i < 1000000; i++) {
-        eq.equals(arr0, arr1);
+        transit.equals(arr0, arr1);
     }
 });
 
-console.log("1e6 iters, eq.equals([1,2,3], [3,2,3])");
+console.log("1e6 iters, transit.equals([1,2,3], [3,2,3])");
 time(function() {
     var arr0 = [1,2,3],
         arr1 = [3,2,3];
     for(var i = 0; i < 1000000; i++) {
-        eq.equals(arr0, arr1);
+        transit.equals(arr0, arr1);
     }
 });
 
-console.log("1e6 iters, eq.equals(new Keyword(\"foo\"), new Keyword(\"foo\"))");
+console.log("1e6 iters, transit.equals(transit.keyword(\"foo\"), transit.keyword(\"foo\"))");
 time(function() {
-    var k0 = t.Keyword("foo"),
-        k1 = t.Keyword("foo");
+    var k0 = transit.keyword("foo"),
+        k1 = transit.keyword("foo");
     for(var i = 0; i < 1000000; i++) {
-        eq.equals(k0, k1);
+        transit.equals(k0, k1);
     }
 });
 
-console.log("1e6 iters, eq.equals(t.date(1399471321791), t.date(1399471321791))");
+console.log("1e6 iters, transit.equals(transit.date(1399471321791), transit.date(1399471321791))");
 time(function() {
-    var d0 = t.date(1399471321791),
-        d1 = t.date(1399471321791);
+    var d0 = transit.date(1399471321791),
+        d1 = transit.date(1399471321791);
     for(var i = 0; i < 1000000; i++) {
-        eq.equals(d0, d1);
+        transit.equals(d0, d1);
     }
 });
 
-console.log("1e6 iters, eq.equals(new Keyword(\"foo\"), new Keyword(\"bar\"))");
+console.log("1e6 iters, transit.equals(transit.keyword(\"foo\"), transit.keyword(\"bar\"))");
 time(function() {
-    var k0 = t.Keyword("foo"),
-        k1 = t.Keyword("bar");
+    var k0 = transit.keyword("foo"),
+        k1 = transit.keyword("bar");
     for(var i = 0; i < 1000000; i++) {
-        eq.equals(k0, k1);
+        transit.equals(k0, k1);
     }
 });
 
-console.log("1e6 iters, eq.equals({foo: \"bar\"}, {foo: \"bar\"})");
+console.log("1e6 iters, transit.equals({foo: \"bar\"}, {foo: \"bar\"})");
 time(function() {
     var obj0 = {foo: "bar"},
         obj1 = {foo: "bar"};
     for(var i = 0; i < 1000000; i++) {
-        eq.equals(obj0, obj1);
+        transit.equals(obj0, obj1);
     }
 });
 
 console.log("1e6 iters, TransitMap tm0.get(\"foo\")");
-var tm0 = t.map(["foo", "transit map string lookup"]);
+var tm0 = transit.map(["foo", "transit map string lookup"]);
 console.log(tm0.get("foo"));
 time(function() {
     for(var i = 0; i < 1000000; i++) {
@@ -113,7 +108,7 @@ time(function() {
 });
 
 console.log("1e5 iters, TransitMap tm0.get([1,2])");
-var tm1 = t.map([[1,2], "transit map array lookup"]);
+var tm1 = transit.map([[1,2], "transit map array lookup"]);
 console.log(tm1.get([1,2]));
 time(function() {
     var key = [1,2];
@@ -123,55 +118,12 @@ time(function() {
 });
 
 console.log("1e6 iters, Complex TransitSet \"bar\"");
-var ts = t.set(["foo",1,"bar",[1,2]])
+var ts = transit.set(["foo",1,"bar",[1,2]])
 console.log(ts.has("bar"));
 time(function() {
     var key = "bar";
     for(var i = 0; i < 1000000; i++) {
         ts.has(key);
-    }
-});
-
-
-console.log("1e5 iters, marshal {foo:\"bar\"}");
-var em = new wr.JSONMarshaller(),
-    c  = caching.writeCache(),
-    m  = {foo:"bar"};
-console.log(wr.marshalTop(em, m, c));
-time(function() {
-    for(var i = 0; i < 100000; i++) {
-        wr.marshalTop(em, m, c);
-    }
-});
-
-console.log("1e4 iters, marshal {foo:new Date(Date.UTC(1985,3,12,23,20,50,52))}");
-var d = new Date(Date.UTC(1985,3,12,23,20,50,52));
-m = {foo:d};
-console.log(wr.marshalTop(em, m, c));
-time(function() {
-    for(var i = 0; i < 10000; i++) {
-        wr.marshalTop(em, m, c);
-    }
-});
-
-console.log("1e5 iters, marshal {foo:new Date(Date.UTC(1985,3,12,23,20,50,52))}, (prefersStrings false)");
-em = new wr.JSONMarshaller({prefersStrings: false}),
-c  = caching.writeCache(),
-d  = new Date(Date.UTC(1985,3,12,23,20,50,52)),
-m  = {foo:d};
-console.log(wr.marshalTop(em, m, c));
-time(function() {
-    for(var i = 0; i < 100000; i++) {
-        wr.marshalTop(em, m, c);
-    }
-});
-
-console.log("1e5 iters, marshal [1,2,3]");
-arr = [1,2,3];
-console.log(wr.marshalTop(em, arr, c));
-time(function() {
-    for(var i = 0; i < 100000; i++) {
-        wr.marshalTop(em, arr, c);
     }
 });
 
@@ -223,7 +175,7 @@ time(function() {
 });
 
 console.log("1e5 iters, JSON.stringify, map two keyword/number value pairs");
-m = {foo:1,bar:2};
+var m = {foo:1,bar:2};
 console.log(JSON.stringify(m));
 time(function() {
     for(var i = 0; i < 100000; i++) {
@@ -253,7 +205,7 @@ console.log("1 iter, transit write large JS object with 100000 kv pairs, complex
 largeMap = {},
 writer = transit.writer("json");
 for(var i = 0; i < 100000; i++) {
-    largeMap["~:foo"+i] = [t.keyword("bar"+i),i];
+    largeMap["~:foo"+i] = [transit.keyword("bar"+i),i];
 }
 time(function() {
     writer.write(largeMap);
