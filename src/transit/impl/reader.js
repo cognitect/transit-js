@@ -3,7 +3,7 @@
 
 "use strict";
 
-goog.provide("transit.reader");
+goog.provide("transit.impl.reader");
 goog.require("transit.caching");
 goog.require("transit.decoder");
 

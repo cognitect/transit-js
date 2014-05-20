@@ -3,7 +3,7 @@
 
 "use strict";
 
-goog.provide("transit.writer");
+goog.provide("transit.impl.writer");
 goog.require("transit.handlers");
 goog.require("transit.types");
 goog.require("transit.delimiters");

@@ -4,8 +4,8 @@
 "use strict";
 
 goog.provide("transit");
-goog.require("transit.reader");
-goog.require("transit.writer");
+goog.require("transit.impl.reader");
+goog.require("transit.impl.writer");
 
 /** @define {boolean} */
 var NODE_TARGET = false;
