@@ -7,6 +7,9 @@ goog.provide("transit");
 goog.require("transit.reader");
 goog.require("transit.writer");
 
+/** @define {boolean} */
+var NODE_TARGET = false;
+
 /**
  * Create a transit reader instance.
  * @export
@@ -44,3 +47,10 @@ transit.writer = function(type, opts) {
         throw err;
     }
 };
+
+if(NODE_TARGET) {
+    module.exports = {
+        reader: reader,
+        writer: writer
+    };
+}
