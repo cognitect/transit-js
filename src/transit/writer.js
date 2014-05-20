@@ -49,11 +49,11 @@ transit.writer.JSONMarshaller.prototype.emitNil = function(asMapKey, cache) {
     }
 };
 
-transit.writer.emitString = function(prefix, tag, s, asMapKey, cache) {
+transit.writer.JSONMarshaller.prototype.emitString = function(prefix, tag, s, asMapKey, cache) {
     return cache.write(prefix+tag+s, asMapKey);
 };
 
-transit.writer.emitBoolean = function(b, asMapKey, cache) {
+transit.writer.JSONMarshaller.prototype.emitBoolean = function(b, asMapKey, cache) {
     if(asMapKey) {
         var s = b.toString();
         return this.emitString(d.ESC, "?", s[0], asMapKey, cache);
@@ -62,7 +62,7 @@ transit.writer.emitBoolean = function(b, asMapKey, cache) {
     }
 };
 
-transit.writer.emitInteger = function(i, asMapKey, cache) {
+transit.writer.JSONMarshaller.prototype.emitInteger = function(i, asMapKey, cache) {
     if(asMapKey || (typeof i === "string") || (i instanceof t.Integer)) {
         return this.emitString(d.ESC, "i", i.toString(), asMapKey, cache);
     } else {
@@ -70,7 +70,7 @@ transit.writer.emitInteger = function(i, asMapKey, cache) {
     }
 };
 
-transit.writer.emitDouble = function(d, asMapKey, cache) {
+transit.writer.JSONMarshaller.prototype.emitDouble = function(d, asMapKey, cache) {
     if(asMapKey) {
         return this.emitString(d.ESC, "d", d, asMapKey, cache);
     } else {
@@ -78,18 +78,18 @@ transit.writer.emitDouble = function(d, asMapKey, cache) {
     }
 };
 
-transit.writer.emitBinary = function(b, asMapKey, cache) {
+transit.writer.JSONMarshaller.prototype.emitBinary = function(b, asMapKey, cache) {
     return this.emitString(d.ESC, "b", b, asMapKey, cache);
 };
 
-transit.writer.emitQuoted = function(obj, cache) {
+transit.writer.JSONMarshaller.prototype.emitQuoted = function(obj, cache) {
     var ret = {},
         k   = this.emitString(d.ESC_TAG, "'", "", true, cache);
     ret[k] = transit.writer.marshal(this, obj, false, cache);
     return ret;
 };
 
-transit.writer.prefersStrings = function() {
+transit.writer.JSONMarshaller.prototype.prefersStrings = function() {
     return this._prefersStrings;
 };
 
