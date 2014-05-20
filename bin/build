@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd `dirname $0`/..
+
+java -jar $CLOSURE_COMPILER_HOME/compiler.jar --js $CLOSURE_HOME/closure/goog/base.js --js src/transit/delimiters.js --js src/transit/delimiters.js --js src/transit/eq.js --js src/transit/types.js --js src/transit/caching.js --js src/transit/decoder.js --js src/transit/reader.js --js src/transit/handlers.js --js src/transit/stringbuilder.js --js src/transit/writer.js --js src/transit.js > transit.js

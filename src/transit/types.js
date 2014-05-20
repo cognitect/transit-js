@@ -10,7 +10,7 @@ transit.types.nullValue = function() {
     return null;
 };
 
-transit.types.boolValue = function(s)
+transit.types.boolValue = function(s) {
     return s === "t";
 };
 
@@ -34,15 +34,15 @@ transit.type.floatValue = function(s) {
  */
 transit.types.BigDecimal = function(s) {
     this.value = s;
-}
+};
 
 transit.types.bigDecimalValue = function(s) {
     return new transit.types.BigDecimal(s);
-}
+};
 
 transit.types.charValue = function(s) {
     return s;
-}
+};
 
 /**
  * @constructor
@@ -63,11 +63,11 @@ transit.types.Keyword.prototype.com$cognitect$transit$hashCode = function() {
         this.hashCode = transit.eq.hashCode(this.name);
         return this.hashCode;
     }
-}
+};
 
-transit.types.keyword(s) {
+transit.types.keyword = function(s) {
     return new Keyword(s);
-}
+};
 
 /**
  * @constructor
@@ -300,7 +300,7 @@ transit.type.transitMap = function(arr) {
         }
     }
     return new transit.types.TransitMap(keys, map, size);
-}
+};
 
 transit.types.cmap = function(xs) {
     return transitMap(xs);
@@ -390,7 +390,7 @@ transit.types.transitSet = function(arr) {
         }
     }
     return new transit.types.TransitSet(new transit.types.TransitMap(keys, map, size));
-}
+};
 
 /**
  * @constructor
