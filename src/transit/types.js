@@ -430,39 +430,6 @@ transit.types.cons = function(x, tail) {
 /**
  * @constructor
  */
-transit.types.Queue = function() {
-    this.list = null;
-};
-
-transit.types.Queue.prototype.peek = function() {
-    if(this.list) {
-        return this.list.head;
-    } else {
-        return null;
-    }
-};
-
-transit.types.Queue.prototype.push = function(x) {
-    this.list = cons(x, this.list);
-};
-
-transit.types.Queue.prototype.pop = function(x) {
-    if(this.list) {
-        var ret = this.list.head;
-        this.list = this.list.tail;
-        return ret;
-    } else {
-        return null;
-    }
-};
-
-transit.types.queue = function() {
-    return new transit.types.Queue();
-};
-
-/**
- * @constructor
- */
 transit.types.List = function(arr) {
     this.arr = arr;
 };
