@@ -1,0 +1,17 @@
+module = {};
+module.exports = {};
+module.exports.reader  = function() {};
+module.exports.writer  = function() {};
+module.exports.uuid    = function() {};
+module.exports.bigdec  = function() {};
+module.exports.keyword = function() {};
+module.exports.symbol  = function() {};
+module.exports.binary  = function() {};
+module.exports.uri     = function() {};
+module.exports.map     = function() {};
+module.exports.set     = function() {};
+module.exports.list    = function() {};
+module.exports.quoted  = function() {};
+module.exports.tagged  = function() {};
+module.exports.hash    = function() {};
+module.exports.equals  = function() {};
