@@ -1,7 +1,11 @@
 #!/bin/sh
 
+set -e
+
 cd src
 
 jar cf transit.jar transit
 
-mv transit.jar ../target
+mkdir -p ../target
+
+mv transit.jar ../target/
