@@ -148,13 +148,13 @@ handlers.defaultHandlers = function(hs) {
         types.Keyword,
         {tag: function(v) { return ":"; },
          rep: function(v) { return v.name; },
-         stringRep: function(v) { return this.rep(v); }});
+         stringRep: function(v, h) { return h.rep(v); }});
 
     hs.set(
         types.Symbol,
         {tag: function(v) { return "$"; },
          rep: function(v) { return v.name; },
-         stringRep: function(v) { return this.rep(v); }});
+         stringRep: function(v, h) { return h.rep(v); }});
 
     hs.set(
         types.Quote,
