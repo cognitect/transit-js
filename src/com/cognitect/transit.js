@@ -12,6 +12,9 @@ goog.require("com.cognitect.transit.eq");
 /** @define {boolean} */
 var NODE_TARGET = false;
 
+/** @define {boolean} */
+var BROWSER_TARGET = false;
+
 goog.scope(function() {
 
 var transit = com.cognitect.transit,
@@ -36,7 +39,6 @@ transit.reader = function(type, opts) {
         throw new Error("Cannot create reader of type " + type);
     }
 };
-goog.exportSymbol("transit.reader", transit.reader);
 
 /**
  * Create a transit writer instance.
@@ -56,30 +58,51 @@ transit.writer = function(type, opts) {
         throw err;
     }
 };
-goog.exportSymbol("transit.writer",  transit.writer);
 
-goog.exportSymbol("transit.date",    types.date);
-goog.exportSymbol("transit.long",    types.intValue);
-goog.exportSymbol("transit.uuid",    types.uuid);
-goog.exportSymbol("transit.bigdec",  types.bigDecimalValue);
-goog.exportSymbol("transit.keyword", types.keyword);
-goog.exportSymbol("transit.symbol",  types.symbol);
-goog.exportSymbol("transit.binary",  types.binary);
-goog.exportSymbol("transit.uri",     types.uri);
-goog.exportSymbol("transit.map",     types.map);
-goog.exportSymbol("transit.set",     types.set);
-goog.exportSymbol("transit.list",    types.list);
-goog.exportSymbol("transit.quoted",  types.quoted);
-goog.exportSymbol("transit.tagged",  types.tagged);
-goog.exportSymbol("transit.hash",    eq.hashCode);
-goog.exportSymbol("transit.equals",  eq.equals);
+transit.reader =   transit.reader;
+transit.writer =   transit.writer;
+transit.date =     types.date;
+transit.integer =  types.intValue;
+transit.uuid =     types.uuid;
+transit.bigdec =   types.bigDecimalValue;
+transit.keyword =  types.keyword;
+transit.symbol =   types.symbol;
+transit.binary =   types.binary;
+transit.uri =      types.uri;
+transit.map =      types.map;
+transit.set =      types.set;
+transit.list =     types.list;
+transit.quoted =   types.quoted;
+transit.tagged =   types.tagged;
+transit.hash =     eq.hashCode;
+transit.equals =   eq.equals;
+
+if(BROWSER_TARGET) {
+    goog.exportSymbol("transit.reader",  transit.reader);
+    goog.exportSymbol("transit.writer",  transit.writer);
+    goog.exportSymbol("transit.date",    types.date);
+    goog.exportSymbol("transit.integer", types.intValue);
+    goog.exportSymbol("transit.uuid",    types.uuid);
+    goog.exportSymbol("transit.bigdec",  types.bigDecimalValue);
+    goog.exportSymbol("transit.keyword", types.keyword);
+    goog.exportSymbol("transit.symbol",  types.symbol);
+    goog.exportSymbol("transit.binary",  types.binary);
+    goog.exportSymbol("transit.uri",     types.uri);
+    goog.exportSymbol("transit.map",     types.map);
+    goog.exportSymbol("transit.set",     types.set);
+    goog.exportSymbol("transit.list",    types.list);
+    goog.exportSymbol("transit.quoted",  types.quoted);
+    goog.exportSymbol("transit.tagged",  types.tagged);
+    goog.exportSymbol("transit.hash",    eq.hashCode);
+    goog.exportSymbol("transit.equals",  eq.equals);
+}
 
 if(NODE_TARGET) {
     module.exports = {
         reader:  transit.reader,
         writer:  transit.writer,
         date:    types.date,
-        "long":  types.intValue,
+        integer: types.intValue,
         uuid:    types.uuid,
         bigdec:  types.bigDecimalValue,
         keyword: types.keyword,
