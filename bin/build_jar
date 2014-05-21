@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd src
+
+jar cf transit.jar transit
+
+mv transit.jar ../target
