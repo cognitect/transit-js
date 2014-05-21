@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+echo "Cleaning..."
+rm -rf ./target
+
+echo "Calculating version..."
+prefix=`cat VERSION_PREFIX`
+suffix=`build/revision`
+version=$prefix.$suffix
+echo $version
+
+target_name=transit.jar
+
+echo "Packaging..."
+mvn versions:set -DnewVersion=${version}
+mvn install:install-file -Dfile=./target/transit.jar -DpomFile=pom.xml
+mvn versions:revert
+
+echo "Package done!"
