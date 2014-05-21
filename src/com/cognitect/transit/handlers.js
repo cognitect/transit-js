@@ -3,13 +3,18 @@
 
 "use strict";
 
-goog.provide("transit.handlers");
-goog.require("transit.types");
+goog.provide("com.cognitect.transit.handlers");
+goog.require("com.cognitect.transit.types");
 
-transit.handlers.ctorGuid         = 0,
-transit.handlers.ctorGuidProperty = "com$cognitect$transit$ctor$guid";
+goog.scope(function() {
 
-transit.handlers.typeTag = function(ctor) {
+var handlers = com.cognitect.transit.handlers,
+    types    = com.cognitect.transit.types;
+
+handlers.ctorGuid         = 0,
+handlers.ctorGuidProperty = "com$cognitect$transit$ctor$guid";
+
+handlers.typeTag = function(ctor) {
     if(ctor == null) {
         return "null";
     } else if(ctor === String) {
@@ -23,15 +28,15 @@ transit.handlers.typeTag = function(ctor) {
     } else if(ctor === Object) {
         return "map";
     } else {
-        var tag = ctor[transit.handlers.ctorGuidProperty];
+        var tag = ctor[handlers.ctorGuidProperty];
         if(tag == null) {
-            ctor[transit.handlers.ctorGuidProperty] = tag = ++transit.handlers.ctorGuid;
+            ctor[handlers.ctorGuidProperty] = tag = ++handlers.ctorGuid;
         }
         return tag;
     }
 };
 
-transit.handlers.constructor = function(x) {
+handlers.constructor = function(x) {
     if(x == null) {
         return null;
     } else {
@@ -39,7 +44,7 @@ transit.handlers.constructor = function(x) {
     }
 };
 
-transit.handlers.padZeros = function(n,m) {
+handlers.padZeros = function(n,m) {
     var s = n.toString();
     for(var i = s.length; i < m; i++) {
         s = "0"+s;
@@ -47,7 +52,7 @@ transit.handlers.padZeros = function(n,m) {
     return s;
 };
 
-transit.handlers.stringableKeys = function(m) {
+handlers.stringableKeys = function(m) {
     var stringable = false,
     ks = Object.keys(m);
 
@@ -57,7 +62,7 @@ transit.handlers.stringableKeys = function(m) {
     return true;
 };
 
-transit.handlers.defaultHandlers = function(hs) {
+handlers.defaultHandlers = function(hs) {
     hs.set(
         null,
         {tag: function(v) { return "_"; },
@@ -77,13 +82,13 @@ transit.handlers.defaultHandlers = function(hs) {
          stringRep: function(v) { return v.toString(); }});
 
     hs.set(
-        transit.types.Integer,
+        types.Integer,
         {tag: function(v) { return "i" },
          rep: function(v) { return v.str; },
          stringRep: function(v) { return v.str; }});
 
     hs.set(
-        transit.types.BigDecimal,
+        types.BigDecimal,
         {tag: function(v) { return "f" },
          rep: function(v) { return v.value; },
          stringRep: function(v) { return v.value; }});
@@ -111,20 +116,20 @@ transit.handlers.defaultHandlers = function(hs) {
         {tag: function(v) { return "t"; },
          rep: function(v) { return v.valueOf(); },
          stringRep: function(v) {
-             return v.getUTCFullYear()+"-"+transit.handlers.padZeros(v.getUTCMonth()+1,2)+"-"+
-                    transit.handlers.padZeros(v.getUTCDate(),2)+"T"+transit.handlers.padZeros(v.getUTCHours(),2)+":"+
-                    transit.handlers.padZeros(v.getUTCMinutes(),2)+":"+transit.handlers.padZeros(v.getUTCSeconds(),2)+"."+
-                    transit.handlers.padZeros(v.getUTCMilliseconds(),3)+"Z";
+             return v.getUTCFullYear()+"-"+handlers.padZeros(v.getUTCMonth()+1,2)+"-"+
+                    handlers.padZeros(v.getUTCDate(),2)+"T"+handlers.padZeros(v.getUTCHours(),2)+":"+
+                    handlers.padZeros(v.getUTCMinutes(),2)+":"+handlers.padZeros(v.getUTCSeconds(),2)+"."+
+                    handlers.padZeros(v.getUTCMilliseconds(),3)+"Z";
          }});
 
     hs.set(
-        transit.types.Binary,
+        types.Binary,
         {tag: function(v) { return "b"; },
          rep: function(v) { return v.str; },
          stringRep: function(v) { return v.str; }});
 
     hs.set(
-        transit.types.UUID,
+        types.UUID,
         {tag: function(v) { return "u"; },
          rep: function(v) {
              return v.str;
@@ -134,49 +139,49 @@ transit.handlers.defaultHandlers = function(hs) {
          }});
 
     hs.set(
-        transit.types.URI,
+        types.URI,
         {tag: function(v) { return "r"; },
          rep: function(v) { return v.uri; },
          stringRep: function(v) { return v.uri; }});
 
     hs.set(
-        transit.types.Keyword,
+        types.Keyword,
         {tag: function(v) { return ":"; },
          rep: function(v) { return v.name; },
          stringRep: function(v) { return this.rep(v); }});
 
     hs.set(
-        transit.types.Symbol,
+        types.Symbol,
         {tag: function(v) { return "$"; },
          rep: function(v) { return v.name; },
          stringRep: function(v) { return this.rep(v); }});
 
     hs.set(
-        transit.types.Quote,
+        types.Quote,
         {tag: function(v) { return "'"; },
          rep: function(v) { return v.obj; },
          stringRep: function(v) { return null; }});
 
     hs.set(
-        transit.types.TaggedValue,
+        types.TaggedValue,
         {tag: function(v) { return v.tag; },
          rep: function(v) { return v.rep; },
          stringRep: function(v) { return null; }});
 
     hs.set(
-        transit.types.TransitSet,
+        types.TransitSet,
         {tag: function(v) { return "set"; },
          rep: function(v) {
              var arr = [];
              v.forEach(function(key, set) {
                  arr.push(key);
              });
-             return transit.types.taggedValue("array", arr);
+             return types.taggedValue("array", arr);
          },
          stringRep: function(v) { return null; }});
 
     hs.set(
-        transit.types.TransitMap,
+        types.TransitMap,
         {tag: function(v) { return "cmap"; },
          rep: function(v) {
              var arr = [];
@@ -184,14 +189,14 @@ transit.handlers.defaultHandlers = function(hs) {
                  arr.push(key);
                  arr.push(val);
              });
-             return transit.types.taggedValue("array", arr);
+             return types.taggedValue("array", arr);
          },
          stringRep: function(v) { return null; }});
 
     hs.set(
-        transit.types.List,
+        types.List,
         {tag: function(v) { return "list"; },
-         rep: function(v) { return transit.types.taggedValue("array", v.arr); },
+         rep: function(v) { return types.taggedValue("array", v.arr); },
          stringRep: function(v) { return null; }});
 
     return hs;
@@ -200,15 +205,17 @@ transit.handlers.defaultHandlers = function(hs) {
 /**
  * @constructor
  */
-transit.handlers.Handlers = function() {
+handlers.Handlers = function() {
     this.handlers = {};
-    transit.handlers.defaultHandlers(this);
+    handlers.defaultHandlers(this);
 };
 
-transit.handlers.Handlers.prototype.get = function(ctor) {
-    return this.handlers[transit.handlers.typeTag(ctor)];
+handlers.Handlers.prototype.get = function(ctor) {
+    return this.handlers[handlers.typeTag(ctor)];
 };
 
-transit.handlers.Handlers.prototype.set = function(ctor, handler) {
-    this.handlers[transit.handlers.typeTag(ctor)] = handler;
+handlers.Handlers.prototype.set = function(ctor, handler) {
+    this.handlers[handlers.typeTag(ctor)] = handler;
 };
+
+});    

@@ -4,7 +4,7 @@ set -e
 
 cd src
 
-jar cf transit.jar transit
+jar cf transit.jar com
 
 mkdir -p ../target
 
