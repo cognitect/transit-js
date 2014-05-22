@@ -33,7 +33,7 @@ decoder.Decoder = function(options) {
     }
     this.defaultStringDecoder = this.options.defaultStringDecoder || this.defaults.defaultStringDecoder;
     this.defaultMapBuilder = this.options.defaultMapBuilder || this.defaults.defaultMapBuilder;
-    this.prefersStrings = this.options.prefersStrings || this.defaults.prefersStrings;
+    this.prefersStrings = this.options.prefersStrings != null ? this.options.prefersStrings : this.defaults.prefersStrings;
 };
 
 
@@ -133,7 +133,7 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey) {
             ret = this.defaultMapBuilder.add(ret, key, this.decode(hash[strKey], cache, false));
         }
         if(this.defaultMapBuilder.finalize != null) {
-            return this.defaultMapBuilder.finalize(ret);            
+            return this.defaultMapBuilder.finalize(ret);
         } else {
             return ret;
         }
