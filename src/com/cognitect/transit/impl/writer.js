@@ -199,8 +199,8 @@ writer.emitArray = function(em, iterable, skip, cache) {
 };
 
 writer.emitMap = function(em, obj, skip, cache) {
-    if(this.mapIterator != null) {
-        var iter = this.mapIterator(obj),
+    if(em.mapIterator != null) {
+        var iter = em.mapIterator(obj),
             ret  = {};
         while(iter.hasNext()) {
             var kv = iter.next();
