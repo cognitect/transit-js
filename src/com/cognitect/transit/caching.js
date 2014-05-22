@@ -109,10 +109,10 @@ caching.ReadCache.prototype.write = function(obj, mapKey, asMapKey) {
     return obj;
 };
 
-caching.ReadCache.prototype.read = function(string, asMapKey) {
+caching.ReadCache.prototype.read = function(string, asMapKey, prefersStrings) {
     this.guaranteeCache();
     var ret = this.cache[caching.codeToIdx(string)];
-    if(asMapKey) {
+    if(asMapKey && prefersStrings) {
         return ret[1];
     } else {
         return ret[0];
@@ -121,6 +121,7 @@ caching.ReadCache.prototype.read = function(string, asMapKey) {
 
 caching.ReadCache.prototype.clear = function() {
     this.idx = 0;
+    
 };
 
 });    

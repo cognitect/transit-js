@@ -107,10 +107,10 @@ decoder.Decoder.prototype.decodeString = function(string, cache, asMapKey, tagVa
     if(caching.isCacheable(string, asMapKey)) {
         var val    = this.parseString(string, cache, asMapKey),
             mapKey = this.parseString(string, cache, true);
-        cache.write(val, mapKey);
+        cache.write(val, mapKey, asMapKey);
         return val;
     } else if(caching.isCacheCode(string)) {
-        return cache.read(string, asMapKey);
+        return cache.read(string, asMapKey, this.prefersStrings);
     } else {
         return this.parseString(string, cache, asMapKey);
     }
@@ -135,7 +135,7 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
         var ret = this.defaultMapBuilder.init();
         for(var i = 0; i < ks.length; i++) {
             var strKey = ks[i],
-                key    = this.decode(strKey, cache, this.prefersStrings);
+                key    = this.decode(strKey, cache, true);
             ret = this.defaultMapBuilder.add(ret, key, this.decode(hash[strKey], cache, false, false));
         }
         if(this.defaultMapBuilder.finalize != null) {
@@ -175,7 +175,7 @@ decoder.Decoder.prototype.parseString = function(string, cache, asMapKey) {
             return string;
         } else {
             var decoder = this.decoders[c];
-            if(asMapKey == true || decoder == null) {
+            if((asMapKey == true && this.prefersStrings) || decoder == null) {
                 return this.defaultStringDecoder(string);
             } else {
                 return decoder(string.substring(2));
