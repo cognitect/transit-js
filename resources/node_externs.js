@@ -4,6 +4,7 @@ module.exports.reader  = function() {};
 module.exports.writer  = function() {};
 module.exports.date    = function() {};
 module.exports.uuid    = function() {};
+module.exports.integer = function() {};
 module.exports.bigdec  = function() {};
 module.exports.keyword = function() {};
 module.exports.symbol  = function() {};

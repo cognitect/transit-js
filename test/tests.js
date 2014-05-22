@@ -188,8 +188,8 @@ exports.testWriteTransitTypes = function(test) {
     
     test.equal(writer.write(["foo"]), "[\"foo\"]");
     test.equal(writer.write([1]), "[1]");
-    test.equal(writer.write([transit["long"]("9007199254740993")]), "[\"~i9007199254740993\"]");
-    test.equal(writer.write([transit["long"]("-9007199254740993")]), "[\"~i-9007199254740993\"]");
+    test.equal(writer.write([transit.integer("9007199254740993")]), "[\"~i9007199254740993\"]");
+    test.equal(writer.write([transit.integer("-9007199254740993")]), "[\"~i-9007199254740993\"]");
     test.equal(writer.write([1.5]), "[1.5]");
     test.equal(writer.write([true]), "[true]");
     test.equal(writer.write([false]), "[false]");
