@@ -41,8 +41,10 @@ writer.JSONMarshaller = function(opts) {
     this.opts = opts || {};
     this.buffer = this.opts.buffer || (new sb.StringBuilder());
     this._prefersStrings = this.opts.prefersStrings != null ? this.opts.prefersStrings : true;
-    this.handlers = new handlers.Handlers();
 
+    this.mapIterator = this.opts.mapIterator || null;
+
+    this.handlers = new handlers.Handlers();
     if(this.opts.handlers) {
        for(var i = 0; i < this.opts.handlers.length; i+=2) {
            this.handlers.set(this.opts.handlers[i], this.opts.handlers[i+1]);
@@ -197,12 +199,22 @@ writer.emitArray = function(em, iterable, skip, cache) {
 };
 
 writer.emitMap = function(em, obj, skip, cache) {
-    var ret = {},
-        ks  = Object.keys(obj);
-    for(var i = 0; i < ks.length; i++) {
-        ret[writer.marshal(em, ks[i], true, cache)] = writer.marshal(em, obj[ks[i]], false, cache);
+    if(this.mapIterator != null) {
+        var iter = this.mapIterator(obj),
+            ret  = {};
+        while(iter.hasNext()) {
+            var kv = iter.next();
+            ret[writer.marshal(em, kv[0], true, cache)] = writer.marshal(em, kv[1], false, cache);
+        }
+        return ret;
+    } else {
+        var ret = {},
+            ks  = Object.keys(obj);
+        for(var i = 0; i < ks.length; i++) {
+            ret[writer.marshal(em, ks[i], true, cache)] = writer.marshal(em, obj[ks[i]], false, cache);
+        }
+        return ret;
     }
-    return ret;
 };
 
 writer.emitTaggedMap = function(em, tag, rep, skip, cache) {
