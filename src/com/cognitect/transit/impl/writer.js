@@ -199,7 +199,14 @@ writer.emitArray = function(em, iterable, skip, cache) {
 };
 
 writer.emitMap = function(em, obj, skip, cache) {
-    if(em.mapIterator != null) {
+    if(obj.constructor === Object) {
+        var ret = {},
+            ks  = Object.keys(obj);
+        for(var i = 0; i < ks.length; i++) {
+            ret[writer.marshal(em, ks[i], true, cache)] = writer.marshal(em, obj[ks[i]], false, cache);
+        }
+        return ret;
+    } else if(em.mapIterator != null) {
         var iter = em.mapIterator(obj),
             ret  = {};
         while(iter.hasNext()) {
@@ -208,12 +215,9 @@ writer.emitMap = function(em, obj, skip, cache) {
         }
         return ret;
     } else {
-        var ret = {},
-            ks  = Object.keys(obj);
-        for(var i = 0; i < ks.length; i++) {
-            ret[writer.marshal(em, ks[i], true, cache)] = writer.marshal(em, obj[ks[i]], false, cache);
-        }
-        return ret;
+        var err = new Error("Not supported");
+        err.data = {obj: obj, type: handlers.constructor(obj).name};
+        throw err;
     }
 };
 
