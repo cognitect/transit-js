@@ -37,10 +37,17 @@ writer.escape = function(string) {
 /**
  * @constructor
  */
-writer.JSONMarshaller = function(options) {
-    this.buffer = (options && options.buffer) || (new sb.StringBuilder());
+writer.JSONMarshaller = function(opts) {
+    this.opts = opts || {};
+    this.buffer = this.opts.buffer || (new sb.StringBuilder());
+    this._prefersStrings = this.opts.prefersStrings != null ? this.opts.prefersStrings : true;
     this.handlers = new handlers.Handlers();
-    this._prefersStrings = options ? options.prefersString || false : true;
+
+    if(this.opts.handlers) {
+       for(var i = 0; i < this.opts.handlers.length; i+=2) {
+           this.handlers.set(this.opts.handlers[i], this.opts.handlers[i+1]);
+       }
+    }
 };
 
 writer.JSONMarshaller.prototype.handler = function(obj) {
