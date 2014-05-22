@@ -265,6 +265,23 @@ exports.testCustomDecoder = function(test) {
     test.done();
 };
 
+exports.testCustomHandler = function(test) {
+    var Point = function(x, y) {
+        this.x = x;
+        this.y = y;
+    };
+
+    var writer = transit.writer("json", {
+        handlers: [Point, {tag: function(v) { return "point"; },
+                           rep: function(v) { return transit.tagged("array", [v.x, v.y]); },
+                           stringRep: function(v) { return null; }}]
+    });
+
+    test.equal(writer.write(new Point(1.5,2.5)), "{\"~#point\":[1.5,2.5]}");
+
+    test.done();
+};
+
 // =============================================================================
 // Verify Test Cases
 // =============================================================================
