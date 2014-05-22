@@ -259,7 +259,6 @@ time(function() {
 });
 
 console.log("100 iters, transit read seattle file");
-reader = transit.reader("json");
 time(function() {
     for(var i = 0; i < 100; i++) {
         reader.read(json);
