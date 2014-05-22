@@ -33,7 +33,7 @@ var transit = com.cognitect.transit,
 transit.reader = function(type, opts) {
     if(type === "json" || type == null) {
         type = "json";
-        var unmarshaller = new reader.JSONUnmarshaller();
+        var unmarshaller = new reader.JSONUnmarshaller(opts);
         return new reader.Reader(unmarshaller, opts);
     } else {
         throw new Error("Cannot create reader of type " + type);

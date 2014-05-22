@@ -17,8 +17,8 @@ var reader  = com.cognitect.transit.impl.reader,
  * A JSON unmarshaller
  * @constructor
  */
-reader.JSONUnmarshaller = function() {
-    this.decoder = new decoder.Decoder();
+reader.JSONUnmarshaller = function(opts) {
+    this.decoder = new decoder.Decoder(opts);
 };
 
 /**
