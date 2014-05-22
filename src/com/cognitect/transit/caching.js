@@ -99,12 +99,12 @@ caching.ReadCache.prototype.guaranteeCache = function() {
     }
 };
     
-caching.ReadCache.prototype.write = function(string, obj, asMapKey) {
+caching.ReadCache.prototype.write = function(obj, mapKey, asMapKey) {
     this.guaranteeCache();
     if(this.idx == caching.MAX_CACHE_ENTRIES) {
         this.idx = 0;
     }
-    this.cache[this.idx] = [obj, string];
+    this.cache[this.idx] = [obj, mapKey];
     this.idx++;
     return obj;
 };
@@ -113,11 +113,7 @@ caching.ReadCache.prototype.read = function(string, asMapKey) {
     this.guaranteeCache();
     var ret = this.cache[caching.codeToIdx(string)];
     if(asMapKey) {
-        if(ret[0] === ret[1]) {
-            return ret[1];
-        } else {
-            return d.RES+ret[1];
-        }
+        return ret[1];
     } else {
         return ret[0];
     }

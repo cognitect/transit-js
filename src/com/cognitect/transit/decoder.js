@@ -31,6 +31,7 @@ decoder.Decoder = function(options) {
     for(var decoder in this.options.decoders) {
         this.decoders[decoder] = this.options.decoders[decoder];
     }
+    this.defaultStringDecoder = this.options.defaultStringDecoder || this.defaults.defaultStringDecoder;
 };
 
 
@@ -60,6 +61,9 @@ decoder.Decoder.prototype.defaults = {
         "bools": function(v) { return types.bools(v); },
         "cmap": function(v) { return types.cmap(v); }
     },
+    defaultStringDecoder: function(v) {
+        return d.RES+v;
+    }
     prefersStrings: true
 };
 
@@ -89,8 +93,9 @@ decoder.Decoder.prototype.decode = function(node, cache, asMapKey) {
 
 decoder.Decoder.prototype.decodeString = function(string, cache, asMapKey) {
     if(caching.isCacheable(string, asMapKey)) {
-        var val = this.parseString(string, cache, asMapKey);
-        cache.write(string, val, asMapKey);
+        var val    = this.parseString(string, cache, asMapKey),
+            mapKey = this.parseString(string, cache, true);
+        cache.write(val, mapKey);
         return val;
     } else if(caching.isCacheCode(string)) {
         return cache.read(string, asMapKey);
@@ -143,7 +148,7 @@ decoder.Decoder.prototype.parseString = function(string, cache, asMapKey) {
         } else {
             var decoder = this.decoders[c];
             if(asMapKey == true || decoder == null) {
-                return d.RES+string;
+                return this.defaultStringDecoder(string);
             } else {
                 return decoder(string.substring(2));
             }
