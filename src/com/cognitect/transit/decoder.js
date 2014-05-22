@@ -148,17 +148,21 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
 
 decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue) {
     if(tagValue) {
-        var res = [];
+        var ret = [];
         for(var i = 0; i < node.length; i++) {
-            res.push(this.decode(node[i], cache, asMapKey, false));
+            ret.push(this.decode(node[i], cache, asMapKey, false));
         }
-        return res;
+        return ret;
     } else {
-        var res = this.defaultArrayBuilder.init();
+        var ret = this.defaultArrayBuilder.init();
         for(var i = 0; i < node.length; i++) {
-            res = this.defaultArrayBuilder.add(res, this.decode(node[i], cache, asMapKey, false));
+            ret = this.defaultArrayBuilder.add(ret, this.decode(node[i], cache, asMapKey, false));
         }
-        return res;
+        if(this.defaultArrayBuilder.finalize) {
+            return this.defaultMapBuilder.finalize(ret);
+        } else {
+            return ret;
+        }
     }
 };
 
