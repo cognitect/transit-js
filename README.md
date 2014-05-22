@@ -1,18 +1,26 @@
 # transit-js
 
-## Usage
+## Dependencies
 
-Install the project dependencies with the following command from the
-repo directory:
+Install the project's Node development dependencies with the following
+command from the repo directory:
 
 ```
 npm install
 ```
 
-To run the tests:
+Install the Google Closure compiler.jar in a convenient location and
+set the $CLOSURE_COMPILER_HOME shell environment variable. Checkout
+the Google Closure Library and set the $CLOSURE_HOME environment
+variable.
+
+## Running the tests
+
+Assuming all dependencies have been installed and
+$CLOSURE_COMPILER_HOME and $CLOSURE_HOME have been set:
 
 ```
-grunt nodeunit
+bin/test
 ```
 
 ## Build
@@ -22,14 +30,27 @@ grunt nodeunit
 The build version is automatically incremented.  To determine the
 current build version:
 
-    build/version
+```
+build/revision
+```
 
-### Package
+### Build for Node.js
 
-Packaging builds the npm artifacts in `target/package` and installs
-it into the local npm repository.  To package:
+```
+bin/build_release_node
+```
 
-    build/package
+### Build for Browser
+
+```
+bin/build_release_browser
+```
+
+### Build JAR for ClojureScript
+
+```
+build/package
+```
 
 ### Deploy
 
