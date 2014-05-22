@@ -32,6 +32,7 @@ decoder.Decoder = function(options) {
         this.decoders[decoder] = this.options.decoders[decoder];
     }
     this.defaultStringDecoder = this.options.defaultStringDecoder || this.defaults.defaultStringDecoder;
+    this.defaultMapBuilder = this.options.defaultMapBuilder || this.defaults.defaultMapBuilder;
 };
 
 
@@ -63,7 +64,11 @@ decoder.Decoder.prototype.defaults = {
     },
     defaultStringDecoder: function(v) {
         return d.RES+v;
-    }
+    },
+    defaultMapBuilder: {
+        init: function() { return {}; },
+        add: function(m, k, v) { m[k] = v; return m; }
+    },
     prefersStrings: true
 };
 
@@ -120,11 +125,11 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey) {
             return types.taggedValue(tagKey.substring(2), this.decode(val, cache, false));
         }
     } else {
-        var ret = {};
+        var ret = this.defaultMapBuilder.init();
         for(var i = 0; i < ks.length; i++) {
             var key  = ks[i],
                 skey = this.decode(key, cache, true);
-            ret[skey] = this.decode(hash[key], cache, false);
+            ret = this.defaultMapBuilder.add(ret, skey, this.decode(hash[key], cache, false));
         }
         return ret;
     }
