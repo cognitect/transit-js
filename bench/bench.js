@@ -248,3 +248,21 @@ console.log(largeTransitMap["`~:foo0"]);
 time(function() {
     reader.read(largeMap);
 });
+
+console.log("100 iters, JSON.parse seattle file");
+var fs = require("fs");
+json = fs.readFileSync("../transit/seattle-data0.raw.tjs", "utf-8");
+time(function() {
+    for(var i = 0; i < 100; i++) {
+        JSON.parse(json);
+    }
+});
+
+console.log("100 iters, transit read seattle file");
+reader = transit.reader("json");
+time(function() {
+    for(var i = 0; i < 100; i++) {
+        reader.read(json);
+    }
+});
+
