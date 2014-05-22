@@ -246,6 +246,25 @@ exports.testWriteEdgeCases = function(test) {
     test.done();
 };
 
+exports.testCustomDecoder = function(test) {
+    var MyInt = function(integer) {
+        this.integer = integer;
+    };
+
+    var opts   = {
+            decoders: {
+                "i": function(v) { return new MyInt(v); }
+            }
+        },
+        reader = transit.reader("json", opts);
+
+    var x = reader.read("\"~i1\"");
+    test.equal(x.integer, "1");
+    test.ok(x instanceof MyInt);
+
+    test.done();
+};
+
 // =============================================================================
 // Verify Test Cases
 // =============================================================================
