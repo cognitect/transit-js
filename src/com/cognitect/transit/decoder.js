@@ -33,6 +33,7 @@ decoder.Decoder = function(options) {
     }
     this.defaultStringDecoder = this.options.defaultStringDecoder || this.defaults.defaultStringDecoder;
     this.defaultMapBuilder = this.options.defaultMapBuilder || this.defaults.defaultMapBuilder;
+    this.defaultArrayBuilder = this.options.defaultArrayBuilder || this.defaults.defaultArrayBuilder;
     this.prefersStrings = this.options.prefersStrings != null ? this.options.prefersStrings : this.defaults.prefersStrings;
 };
 
@@ -68,14 +69,19 @@ decoder.Decoder.prototype.defaults = {
     },
     defaultMapBuilder: {
         init: function() { return {}; },
-        add: function(m, k, v) { m[k] = v; return m; }
+        add:  function(m, k, v) { m[k] = v; return m; }
+    },
+    defaultArrayBuilder: {
+        init: function() { return []; },
+        add:  function(a, v) { a.push(v); return a; }
     },
     prefersStrings: true
 };
 
-decoder.Decoder.prototype.decode = function(node, cache, asMapKey) {
+decoder.Decoder.prototype.decode = function(node, cache, asMapKey, tagValue) {
     cache = cache || new caching.ReadCache();
     asMapKey = asMapKey || false;
+    tagValue = tagValue || false;
 
     if(node == null) return null;
 
@@ -83,13 +89,13 @@ decoder.Decoder.prototype.decode = function(node, cache, asMapKey) {
 
     switch(t) {
     case "string":
-        return this.decodeString(node, cache, asMapKey);
+        return this.decodeString(node, cache, asMapKey, tagValue);
         break;
     case "object":
         if(Array.isArray(node)) {
-            return this.decodeArray(node, cache);
+            return this.decodeArray(node, cache, false, tagValue);
         } else {
-            return this.decodeHash(node, cache, asMapKey);
+            return this.decodeHash(node, cache, asMapKey, tagValue);
         }
         break;
     }
@@ -97,7 +103,7 @@ decoder.Decoder.prototype.decode = function(node, cache, asMapKey) {
     return node;
 };
 
-decoder.Decoder.prototype.decodeString = function(string, cache, asMapKey) {
+decoder.Decoder.prototype.decodeString = function(string, cache, asMapKey, tagValue) {
     if(caching.isCacheable(string, asMapKey)) {
         var val    = this.parseString(string, cache, asMapKey),
             mapKey = this.parseString(string, cache, true);
@@ -110,10 +116,10 @@ decoder.Decoder.prototype.decodeString = function(string, cache, asMapKey) {
     }
 };
 
-decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey) {
+decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue) {
     var ks     = Object.keys(hash),
         key    = ks[0],
-        tagKey = ks.length == 1 ? this.decode(key, cache, false) : null;
+        tagKey = ks.length == 1 ? this.decode(key, cache, false, false) : null;
 
     if((tagKey != null) &&
        (tagKey[0] === d.ESC) &&
@@ -121,16 +127,16 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey) {
         var val     = hash[key],
             decoder = this.decoders[tagKey.substring(2)];
         if(decoder != null) {
-            return decoder(this.decode(val, cache, false));
+            return decoder(this.decode(val, cache, false, true));
         } else {
-            return types.taggedValue(tagKey.substring(2), this.decode(val, cache, false));
+            return types.taggedValue(tagKey.substring(2), this.decode(val, cache, false, false));
         }
     } else {
         var ret = this.defaultMapBuilder.init();
         for(var i = 0; i < ks.length; i++) {
             var strKey = ks[i],
                 key    = this.decode(strKey, cache, this.prefersStrings);
-            ret = this.defaultMapBuilder.add(ret, key, this.decode(hash[strKey], cache, false));
+            ret = this.defaultMapBuilder.add(ret, key, this.decode(hash[strKey], cache, false, false));
         }
         if(this.defaultMapBuilder.finalize != null) {
             return this.defaultMapBuilder.finalize(ret);
@@ -140,13 +146,21 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey) {
     }
 };
 
-decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey) {
-    var res = [];
-    for(var i = 0; i < node.length; i++) {
-        res.push(this.decode(node[i], cache, asMapKey));
+decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue) {
+    if(tagValue) {
+        var res = [];
+        for(var i = 0; i < node.length; i++) {
+            res.push(this.decode(node[i], cache, asMapKey, false));
+        }
+        return res;
+    } else {
+        var res = this.defaultArrayBuilder.init();
+        for(var i = 0; i < node.length; i++) {
+            res = this.defaultArrayBuilder.add(res, this.decode(node[i], cache, asMapKey, false));
+        }
+        return res;
     }
-    return res;
-},
+};
 
 decoder.Decoder.prototype.parseString = function(string, cache, asMapKey) {
     if(string[0] === d.ESC) {
