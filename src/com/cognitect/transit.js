@@ -73,7 +73,7 @@ transit.map =      types.map;
 transit.set =      types.set;
 transit.list =     types.list;
 transit.quoted =   types.quoted;
-transit.tagged =   types.tagged;
+transit.tagged =   types.taggedValue;
 transit.hash =     eq.hashCode;
 transit.equals =   eq.equals;
 
@@ -92,7 +92,7 @@ if(BROWSER_TARGET) {
     goog.exportSymbol("transit.set",     types.set);
     goog.exportSymbol("transit.list",    types.list);
     goog.exportSymbol("transit.quoted",  types.quoted);
-    goog.exportSymbol("transit.tagged",  types.tagged);
+    goog.exportSymbol("transit.tagged",  types.taggedValue);
     goog.exportSymbol("transit.hash",    eq.hashCode);
     goog.exportSymbol("transit.equals",  eq.equals);
 }
