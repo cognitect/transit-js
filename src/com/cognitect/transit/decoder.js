@@ -131,7 +131,11 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey) {
                 skey = this.decode(key, cache, true);
             ret = this.defaultMapBuilder.add(ret, skey, this.decode(hash[key], cache, false));
         }
-        return ret;
+        if(this.defaultMapBuilder.finalize != null) {
+            return this.defaultMapBuilder.finalize(ret);            
+        } else {
+            return ret;
+        }
     }
 };
 
