@@ -39,7 +39,7 @@ reader.JSONUnmarshaller.prototype.unmarshal = function(str, cache) {
 reader.Reader = function(unmarshaller, options) {
     this.unmarshaller = unmarshaller;
     this.options = options || {};
-    this.cache = this.options.cache ? this.options.cache : new caching.ReadCache();
+    this.cache = this.options["cache"] ? this.options["cache"] : new caching.ReadCache();
 };
 
 /**

@@ -28,13 +28,13 @@ decoder.Decoder = function(options) {
     for(var decoder in this.defaults.decoders) {
         this.decoders[decoder] = this.defaults.decoders[decoder];
     }
-    for(var decoder in this.options.decoders) {
-        this.decoders[decoder] = this.options.decoders[decoder];
+    for(var decoder in this.options["decoders"]) {
+        this.decoders[decoder] = this.options["decoders"][decoder];
     }
-    this.defaultStringDecoder = this.options.defaultStringDecoder || this.defaults.defaultStringDecoder;
-    this.defaultMapBuilder = this.options.defaultMapBuilder || this.defaults.defaultMapBuilder;
-    this.defaultArrayBuilder = this.options.defaultArrayBuilder || this.defaults.defaultArrayBuilder;
-    this.prefersStrings = this.options.prefersStrings != null ? this.options.prefersStrings : this.defaults.prefersStrings;
+    this.defaultStringDecoder = this.options["defaultStringDecoder"] || this.defaults.defaultStringDecoder;
+    this.defaultMapBuilder = this.options["defaultMapBuilder"] || this.defaults.defaultMapBuilder;
+    this.defaultArrayBuilder = this.options["defaultArrayBuilder"] || this.defaults.defaultArrayBuilder;
+    this.prefersStrings = this.options["prefersStrings"] != null ? this.options["prefersStrings"] : this.defaults.prefersStrings;
 };
 
 

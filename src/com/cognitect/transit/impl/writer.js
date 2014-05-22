@@ -40,15 +40,15 @@ writer.escape = function(string) {
 writer.JSONMarshaller = function(opts) {
     this.opts = opts || {};
     this.buffer = this.opts.buffer || (new sb.StringBuilder());
-    this._prefersStrings = this.opts.prefersStrings != null ? this.opts.prefersStrings : true;
+    this._prefersStrings = this.opts["prefersStrings"] != null ? this.opts["prefersStrings"] : true;
 
-    this.mapIterator = this.opts.mapIterator || null;
+    this.mapIterator = this.opts["mapIterator"] || null;
 
     this.handlers = new handlers.Handlers();
-    if(this.opts.handlers) {
-       for(var i = 0; i < this.opts.handlers.length; i+=2) {
-           this.handlers.set(this.opts.handlers[i], this.opts.handlers[i+1]);
-       }
+    if(this.opts["handlers"]) {
+        for(var i = 0; i < this.opts["handlers"].length; i+=2) {
+            this.handlers.set(this.opts["handlers"][i], this.opts["handlers"][i+1]);
+        }
     }
 };
 
@@ -324,7 +324,7 @@ writer.marshalTop = function(em, obj, cache) {
 writer.Writer = function(marshaller, options) {
     this.marshaller = marshaller;
     this.options = options || {};
-    this.cache = this.options.cache ? this.options.cache : new caching.WriteCache();
+    this.cache = this.options["cache"] ? this.options["cache"] : new caching.WriteCache();
 };
 
 writer.Writer.prototype.write = function(obj) {
