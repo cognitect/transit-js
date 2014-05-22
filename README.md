@@ -14,6 +14,8 @@ set the $CLOSURE_COMPILER_HOME shell environment variable. Checkout
 the Google Closure Library and set the $CLOSURE_HOME environment
 variable.
 
+In order to build transit-js for ClojureScript, Maven must be installed.
+
 ## Running the tests
 
 Assuming all dependencies have been installed and
@@ -47,6 +49,9 @@ bin/build_release_browser
 ```
 
 ### Build JAR for ClojureScript
+
+The following will install a JAR suitable for use from ClojureScript
+into your local Maven repository.
 
 ```
 build/package
