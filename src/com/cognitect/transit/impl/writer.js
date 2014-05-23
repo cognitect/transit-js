@@ -42,7 +42,7 @@ writer.JSONMarshaller = function(opts) {
     this.buffer = this.opts.buffer || (new sb.StringBuilder());
     this.prefersStrings = this.opts["prefersStrings"] != null ? this.opts["prefersStrings"] : true;
 
-    this.mapIterator = this.opts["mapIterator"] || null;
+    this.objectBuilder = this.opts["objectBuilder"] || null;
 
     this.handlers = new handlers.Handlers();
     if(this.opts["handlers"]) {
@@ -202,14 +202,9 @@ writer.emitMap = function(em, obj, skip, cache) {
             ret[writer.marshal(em, ks[i], true, cache)] = writer.marshal(em, obj[ks[i]], false, cache);
         }
         return ret;
-    } else if(em.mapIterator != null) {
-        var iter = em.mapIterator(obj),
-            ret  = {};
-        while(iter.hasNext()) {
-            var kv = iter.next();
-            ret[writer.marshal(em, kv[0], true, cache)] = writer.marshal(em, kv[1], false, cache);
-        }
-        return ret;
+    } else if(em.objectBuilder != null) {
+        return em.objectBuilder(obj, function(k) { return writer.marshal(em, k, true, cache);  },
+                                     function(v) { return writer.marshal(em, v, false, cache); });
     } else {
         var err = new Error("Not supported");
         err.data = {obj: obj, type: handlers.constructor(obj).name};
