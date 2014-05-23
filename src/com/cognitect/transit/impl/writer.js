@@ -229,7 +229,7 @@ writer.emitEncoded = function(em, h, tag, rep, obj, asMapKey, cache) {
             return em.emitString(d.ESC, tag, rep, asMapKey, cache);
         } else if(asMapKey || em.prefersStrings) {
             rep = h.stringRep(obj, h);
-            if(typeof rep === "string") {
+            if(rep !== null) {
                 return em.emitString(d.ESC, tag, rep, asMapKey, cache);
             } else {
                 var err = new Error("Cannot be encoded as string");
