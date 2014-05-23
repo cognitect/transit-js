@@ -63,7 +63,7 @@ caching.WriteCache = function() {
 };
 
 caching.WriteCache.prototype.write = function(string, asMapKey) {
-    if(string != null && caching.isCacheable(string, asMapKey)) {
+    if(caching.isCacheable(string, asMapKey)) {
         var val = this.cache[string];
         if(val != null) {
             return val;
