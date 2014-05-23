@@ -21,13 +21,19 @@ caching.MIN_SIZE_CACHEABLE = 3;
  * @const
  * @type {number}
  */
-
 caching.MAX_CACHE_ENTRIES  = 94;
+
 /**
  * @const
  * @type {number}
  */
 caching.BASE_CHAR_IDX      = 33;
+
+/**
+ * @const
+ * @type {number}
+ */
+caching.MAX_CACHE_SIZE     = 4096;
 
 caching.isCacheable = function(string, asMapKey) {
     if(string.length > caching.MIN_SIZE_CACHEABLE) {
@@ -59,22 +65,32 @@ caching.idxToCode = function(idx) {
  */
 caching.WriteCache = function() {
     this.idx = 0;
+    this.gen = 0;
+    this.cacheSize = 0;
     this.cache = {};
 };
 
 caching.WriteCache.prototype.write = function(string, asMapKey) {
     if(caching.isCacheable(string, asMapKey)) {
-        var val = this.cache[string];
-        if(val != null) {
-            return val;
-        } else {
-            if(this.idx === caching.MAX_CACHE_ENTRIES) {
-                this.idx = 0;
-                this.cache = {};
-            }
-            this.cache[string] = caching.idxToCode(this.idx);
+        if(this.cacheSize === caching.MAX_CACHE_SIZE) {
+            this.clear();
+            this.gen = 0;
+            this.cache = {};
+        } else if(this.idx === caching.MAX_CACHE_ENTRIES) {
+            this.clear();
+        }
+        var entry = this.cache[string];
+        if(entry == null) {
+            this.cache[string] = [caching.idxToCode(this.idx), this.gen];
             this.idx++;
             return string;
+        } else if(entry[1] != this.gen) {
+            entry[1] = this.gen;
+            entry[0] = caching.idxToCode(this.idx);
+            this.idx++;
+            return string;
+        } else {
+            return entry[0];
         }
     } else {
         return string;
@@ -82,8 +98,8 @@ caching.WriteCache.prototype.write = function(string, asMapKey) {
 };
 
 caching.WriteCache.prototype.clear = function() {
-    this.cache = {};
     this.idx = 0;
+    this.gen++;
 };
 
 // =============================================================================
