@@ -9,7 +9,11 @@ goog.scope(function() {
 
 var eq = com.cognitect.transit.eq;
 
-eq.transitHashCodeProperty = "com$cognitect$transit$hashCode$" + Math.floor(Math.random() * 2147483648).toString(36);
+/**
+ * @const
+ * @type {string}
+ */
+eq.transitHashCodeProperty = "$com$cognitect$transit$hashCode$";
 
 eq.equals = function (x, y) {
     if(x == null) {
@@ -68,6 +72,11 @@ eq.hashCombine = function(seed, hash) {
 
 eq.stringCodeCache     = {};
 eq.stringCodeCacheSize = 0;
+
+/**
+ * @const
+ * @type {number}
+ */
 eq.STR_CACHE_MAX       = 256;
 
 eq.hashString = function(str) {

@@ -11,8 +11,22 @@ goog.scope(function() {
 var caching = com.cognitect.transit.caching,
     d       = com.cognitect.transit.delimiters;
 
+/**
+ * @const
+ * @type {number}
+ */
 caching.MIN_SIZE_CACHEABLE = 3;
+
+/**
+ * @const
+ * @type {number}
+ */
+
 caching.MAX_CACHE_ENTRIES  = 94;
+/**
+ * @const
+ * @type {number}
+ */
 caching.BASE_CHAR_IDX      = 33;
 
 caching.isCacheable = function(string, asMapKey) {

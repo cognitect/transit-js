@@ -11,7 +11,12 @@ goog.scope(function() {
 var handlers = com.cognitect.transit.handlers,
     types    = com.cognitect.transit.types;
 
-handlers.ctorGuid         = 0,
+handlers.ctorGuid         = 0;
+
+/**
+ * @const
+ * @type {string}
+ */
 handlers.ctorGuidProperty = "com$cognitect$transit$ctor$guid";
 
 handlers.typeTag = function(ctor) {
