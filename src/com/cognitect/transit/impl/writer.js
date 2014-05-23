@@ -40,7 +40,7 @@ writer.escape = function(string) {
 writer.JSONMarshaller = function(opts) {
     this.opts = opts || {};
     this.buffer = this.opts.buffer || (new sb.StringBuilder());
-    this._prefersStrings = this.opts["prefersStrings"] != null ? this.opts["prefersStrings"] : true;
+    this.prefersStrings = this.opts["prefersStrings"] != null ? this.opts["prefersStrings"] : true;
 
     this.mapIterator = this.opts["mapIterator"] || null;
 
@@ -106,10 +106,6 @@ writer.JSONMarshaller.prototype.emitQuoted = function(obj, cache) {
         k   = this.emitString(d.ESC_TAG, "'", "", true, cache);
     ret[k] = writer.marshal(this, obj, false, cache);
     return ret;
-};
-
-writer.JSONMarshaller.prototype.prefersStrings = function() {
-    return this._prefersStrings;
 };
 
 writer.emitInts = function(em, src, cache) {
@@ -227,12 +223,11 @@ writer.emitTaggedMap = function(em, tag, rep, skip, cache) {
     return ret;
 };
 
-writer.emitEncoded = function(em, h, tag, obj, asMapKey, cache) {
+writer.emitEncoded = function(em, h, tag, rep, obj, asMapKey, cache) {
     if(tag.length === 1) {
-        var rep = h.rep(obj);
         if(typeof rep === "string") {
             return em.emitString(d.ESC, tag, rep, asMapKey, cache);
-        } else if((asMapKey === true) || em.prefersStrings()) {
+        } else if(asMapKey || em.prefersStrings) {
             rep = h.stringRep(obj, h);
             if(typeof rep === "string") {
                 return em.emitString(d.ESC, tag, rep, asMapKey, cache);
@@ -244,12 +239,12 @@ writer.emitEncoded = function(em, h, tag, obj, asMapKey, cache) {
         } else {
             return writer.emitTaggedMap(em, tag, rep, asMapKey, cache);
         }
-    } else if (asMapKey === true) {
+    } else if (asMapKey) {
         var err = new Error("Cannot be used as map key");
         err.data = {tag: tag, rep: rep, obj: obj};
         throw err;
     } else {
-        return writer.emitTaggedMap(em, tag, h.rep(obj), asMapKey, cache);
+        return writer.emitTaggedMap(em, tag, rep, asMapKey, cache);
     }
 }
 
@@ -288,7 +283,7 @@ writer.marshal = function(em, obj, asMapKey, cache) {
             return writer.emitMap(em, rep, asMapKey, cache);
             break;
         default:
-            return writer.emitEncoded(em, h, tag, obj, asMapKey, cache);
+            return writer.emitEncoded(em, h, tag, rep, obj, asMapKey, cache);
             break;
         }
     } else {
