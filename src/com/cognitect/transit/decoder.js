@@ -79,10 +79,6 @@ decoder.Decoder.prototype.defaults = {
 };
 
 decoder.Decoder.prototype.decode = function(node, cache, asMapKey, tagValue) {
-    cache = cache || new caching.ReadCache();
-    asMapKey = asMapKey || false;
-    tagValue = tagValue || false;
-
     if(node == null) return null;
 
     var t = typeof node;
