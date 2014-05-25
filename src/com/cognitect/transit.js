@@ -60,21 +60,19 @@ transit.writer = function(type, opts) {
 };
 
 transit.makeHandler = function(obj) {
-    var Handler = function(){},
-        ret     = new Handler();
-    ret.prototype.tag = obj["tag"];
-    ret.prototype.rep = obj["rep"];
-    ret.prototype.stringRep = obj["stringRep"];
-    return ret;
+    var Handler = function(){};
+    Handler.prototype.tag = obj["tag"];
+    Handler.prototype.rep = obj["rep"];
+    Handler.prototype.stringRep = obj["stringRep"];
+    return new Handler();
 };
 
 transit.makeBuilder = function(obj) {
-    var Builder = function(){},
-        ret     = new Builder();
-    ret.prototype.init = obj["init"];
-    ret.prototype.add = obj["add"];
-    ret.prototype.finalize = obj["finalize"];
-    return ret;
+    var Builder = function(){};
+    Builder.prototype.init = obj["init"];
+    Builder.prototype.add = obj["add"];
+    Builder.prototype.finalize = obj["finalize"];
+    return new Builder();
 };
 
 transit.date =     types.date;
