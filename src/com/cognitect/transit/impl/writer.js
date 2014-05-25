@@ -69,7 +69,12 @@ writer.JSONMarshaller.prototype.emitNil = function(asMapKey, cache) {
 };
 
 writer.JSONMarshaller.prototype.emitString = function(prefix, tag, s, asMapKey, cache) {
-    return cache.write(prefix+tag+s, asMapKey);
+    var string = prefix+tag+s;
+    if(cache != null) {
+        return cache.write(string, asMapKey);
+    } else {
+        return string;
+    }
 };
 
 writer.JSONMarshaller.prototype.emitBoolean = function(b, asMapKey, cache) {
@@ -314,12 +319,18 @@ writer.marshalTop = function(em, obj, cache) {
 writer.Writer = function(marshaller, options) {
     this.marshaller = marshaller;
     this.options = options || {};
-    this.cache = this.options["cache"] ? this.options["cache"] : new caching.WriteCache();
+    if(this.options["cache"] === false) {
+        this.cache = null;
+    } else {
+        this.cache = this.options["cache"] ? this.options["cache"] : new caching.WriteCache();
+    }
 };
 
 writer.Writer.prototype.write = function(obj) {
     var ret = writer.marshalTop(this.marshaller, obj, this.cache)
-    this.cache.clear();
+    if(this.cache != null) {
+        this.cache.clear();
+    }
     return ret;
 };
 writer.Writer.prototype["write"] = writer.Writer.prototype.write;

@@ -337,3 +337,9 @@ exports.testVerifyRoundtripLong = function(test) {
     test.done();
 };
 
+exports.testDisableWriteCaching = function(test) {
+    var writer = transit.writer("json", {cache: false});
+    test.equal(writer.write([transit.keyword("foo"), transit.keyword("foo")]), "[\"~:foo\",\"~:foo\"]");
+    test.done();
+};
+
