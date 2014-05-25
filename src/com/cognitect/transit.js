@@ -59,8 +59,24 @@ transit.writer = function(type, opts) {
     }
 };
 
-transit.reader =   transit.reader;
-transit.writer =   transit.writer;
+transit.makeHandler = function(obj) {
+    var Handler = function(){},
+        ret     = new Handler();
+    ret.prototype.tag = obj["tag"];
+    ret.prototype.rep = obj["rep"];
+    ret.prototype.stringRep = obj["stringRep"];
+    return ret;
+};
+
+transit.makeBuilder = function(obj) {
+    var Builder = function(){},
+        ret     = new Builder();
+    ret.prototype.init = obj["init"];
+    ret.prototype.add = obj["add"];
+    ret.prototype.finalize = obj["finalize"];
+    return ret;
+};
+
 transit.date =     types.date;
 transit.integer =  types.intValue;
 transit.uuid =     types.uuid;
@@ -80,6 +96,8 @@ transit.equals =   eq.equals;
 if(BROWSER_TARGET) {
     goog.exportSymbol("transit.reader",  transit.reader);
     goog.exportSymbol("transit.writer",  transit.writer);
+    goog.exportSymbol("transit.makeBuilder", transit.makeBuilder);
+    goog.exportSymbol("transit.makeHandler", transit.makeHandler);
     goog.exportSymbol("transit.date",    types.date);
     goog.exportSymbol("transit.integer", types.intValue);
     goog.exportSymbol("transit.uuid",    types.uuid);
@@ -101,6 +119,8 @@ if(NODE_TARGET) {
     module.exports = {
         reader:  transit.reader,
         writer:  transit.writer,
+        makeBuilder:  transit.makeBuilder,
+        makeHandler:  transit.makeHandler,
         date:    types.date,
         integer: types.intValue,
         uuid:    types.uuid,
