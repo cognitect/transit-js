@@ -201,12 +201,22 @@ writer.emitArray = function(em, iterable, skip, cache) {
 
 writer.emitMap = function(em, obj, skip, cache) {
     if(obj.constructor === Object) {
-        var ret = {},
-            ks  = Object.keys(obj);
-        for(var i = 0; i < ks.length; i++) {
-            ret[writer.marshal(em, ks[i], true, cache)] = writer.marshal(em, obj[ks[i]], false, cache);
+        if(em.humanMode) {
+            var ret = {},
+                ks  = Object.keys(obj);
+            for(var i = 0; i < ks.length; i++) {
+                ret[writer.marshal(em, ks[i], true, cache)] = writer.marshal(em, obj[ks[i]], false, cache);
+            }
+            return ret;
+        } else {
+            var ret = ["^ "],
+                ks  = Object.keys(obj);
+            for(var i = 0; i < ks.length; i++) {
+                ret.push(writer.marshal(em, ks[i], true, cache));
+                ret.push(writer.marshal(em, obj[ks[i]], false, cache));
+            }
+            return ret;
         }
-        return ret;
     } else if(em.objectBuilder != null) {
         return em.objectBuilder(obj, function(k) { return writer.marshal(em, k, true, cache);  },
                                      function(v) { return writer.marshal(em, v, false, cache); });
