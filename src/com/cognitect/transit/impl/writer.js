@@ -50,6 +50,8 @@ writer.JSONMarshaller = function(opts) {
             this.handlers.set(this.opts["handlers"][i], this.opts["handlers"][i+1]);
         }
     }
+
+    this.humanMode = false;
 };
 
 writer.JSONMarshaller.prototype.handler = function(obj) {
