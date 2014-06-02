@@ -160,7 +160,7 @@ exports.testTransitSetBasic = function(test) {
 
 exports.testWrite = function(test) {
     var writer = transit.writer("json");
-    test.equal(writer.write({foo:"bar"}), "{\"foo\":\"bar\"}");
+    test.equal(writer.write({foo:"bar"}), "[\"^ \",\"foo\",\"bar\"]");
     test.done();
 };
 
@@ -239,9 +239,9 @@ exports.testWriteEdgeCases = function(test) {
     test.equal(writer.write([[1,2]]), "[[1,2]]");
     test.equal(writer.write([[1,2],[3,4]]), "[[1,2],[3,4]]");
     test.equal(writer.write([[[1,2]]]), "[[[1,2]]]");
-    test.equal(writer.write([{foo:[1,2]}]), "[{\"foo\":[1,2]}]");
-    test.equal(writer.write([{foo:[1,2,{}]}]), "[{\"foo\":[1,2,{}]}]");
-    test.equal(writer.write({foo:{bar:1,noz:3},baz:{woz:2,goz:4}}), "{\"foo\":{\"bar\":1,\"noz\":3},\"baz\":{\"woz\":2,\"goz\":4}}");
+    test.equal(writer.write([{foo:[1,2]}]), "[[\"^ \",\"foo\",[1,2]]]");
+    //test.equal(writer.write([{foo:[1,2,{}]}]), "[[\"^ \",\"foo\",[1,2,{}]}]"); // NOTE: how should empty maps gets written? - David
+    test.equal(writer.write({foo:{bar:1,noz:3},baz:{woz:2,goz:4}}), "[\"^ \",\"foo\",[\"^ \",\"bar\",1,\"noz\",3],\"baz\",[\"^ \",\"woz\",2,\"goz\",4]]");
 
     test.done();
 };
@@ -316,15 +316,15 @@ function roundtrip(s) {
 }
 
 exports.testVerifyRoundTripCachedKeys = function(test) {
-    test.equal(roundtrip("[\"~:foo\",\"~:bar\",{\"^\\\"\":[1,2]}]"), "[\"~:foo\",\"~:bar\",{\"^\\\"\":[1,2]}]");
+    test.equal(roundtrip("[\"~:foo\",\"~:bar\",[\"^ \",\"^\\\"\",[1,2]]]"), "[\"~:foo\",\"~:bar\",[\"^ \",\"^\\\"\",[1,2]]]");
     test.done();
 };
 
 exports.testVerifyJSONCornerCases = function(test) {
     test.equal(roundtrip("{\"~#point\":[1,2]}"), "{\"~#point\":[1,2]}");
-    test.equal(roundtrip("{\"foo\":\"~xfoo\"}"), "{\"foo\":\"~xfoo\"}");
-    test.equal(roundtrip("{\"~/t\":null}"), "{\"~/t\":null}");
-    test.equal(roundtrip("{\"~/f\":null}"), "{\"~/f\":null}");
+    test.equal(roundtrip("[\"^ \",\"foo\",\"~xfoo\"]"), "[\"^ \",\"foo\",\"~xfoo\"]");
+    test.equal(roundtrip("[\"^ \",\"~/t\",null]"), "[\"^ \",\"~/t\",null]");
+    test.equal(roundtrip("[\"^ \",\"~/f\",null]"), "[\"^ \",\"~/f\",null]");
     test.equal(roundtrip("{\"~#'\":\"~f-1.1E-1\"}"), "{\"~#\'\":\"~f-1.1E-1\"}");
     test.equal(roundtrip("{\"~#'\":\"~f-1.10E-1\"}"), "{\"~#\'\":\"~f-1.10E-1\"}");
     test.equal(roundtrip(
@@ -340,8 +340,8 @@ exports.testVerifyRoundtripCmap = function(test) {
 };
 
 exports.testVerifyRoundtripMapCachedStrings = function(test) {
-    test.equal(roundtrip("[{\"aaaa\":1,\"bbbb\":2},{\"^!\":3,\"^\\\"\":4},{\"^!\":5,\"^\\\"\":6}]"),
-                         "[{\"aaaa\":1,\"bbbb\":2},{\"^!\":3,\"^\\\"\":4},{\"^!\":5,\"^\\\"\":6}]");
+    test.equal(roundtrip('[["^ ","aaaa",1,"bbbb",2],["^ ","^!",3,"^\\"",4],["^ ","^!",5,"^\\"",6]]'),
+                         '[["^ ","aaaa",1,"bbbb",2],["^ ","^!",3,"^\\"",4],["^ ","^!",5,"^\\"",6]]');
     test.done();
 };
 
