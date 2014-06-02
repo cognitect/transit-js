@@ -297,6 +297,14 @@ exports.testVerifyArrayHash = function(test) {
     test.done();
 };
 
+exports.testVerifyArrayHashWithCaching = function(test) {
+    var reader = transit.reader("json");
+
+    test.ok(transit.equals(reader.read("[\"^ \", \"~:foo\", \"^!\"]"), {"`~:foo": transit.keyword("foo")}));
+
+    test.done();
+};
+
 // =============================================================================
 // Verify Test Cases
 // =============================================================================
