@@ -105,10 +105,14 @@ decoder.Decoder.prototype.decode = function(node, cache, asMapKey, tagValue) {
 
 decoder.Decoder.prototype.decodeString = function(string, cache, asMapKey, tagValue) {
     if(caching.isCacheable(string, asMapKey)) {
-        var val    = this.parseString(string, cache, asMapKey),
+        var val    = this.parseString(string, cache, false),
             mapKey = this.parseString(string, cache, true);
         cache.write(val, mapKey, asMapKey);
-        return val;
+        if(asMapKey) {
+            return mapKey;
+        } else {
+            return val;
+        }
     } else if(caching.isCacheCode(string)) {
         return cache.read(string, asMapKey, this.prefersStrings);
     } else {
