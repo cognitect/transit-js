@@ -4,22 +4,37 @@ var json = [{"~:district/region":"~:region/e","~:db/id":{"~:part":"~:db.part/use
     seattlem = JSON.stringify(jsonm),
     r = transit.reader("json");
 
+function log(s) {
+    if(typeof console != "undefined") {
+        console.log(s);
+    } else {
+        print(s+"\n");
+    }
+}
+
 function time(f, iters) {
     iters = iters || 1;
     for(var i = 0; i < iters; i++) {
         var s = new Date();
         f();
-        if(typeof console != "undefined") {
-            console.log("Elapsed "+((new Date()).valueOf()-s.valueOf())+"ms");
-            console.log("----------");
-        } else {
-            print("Elapsed "+((new Date()).valueOf()-s.valueOf())+"ms");
-            print("----------");
-        }
+        log("Elapsed "+((new Date()).valueOf()-s.valueOf())+"ms");
+        log("----------");
     }
 }
 
-for(var j = 0; j < 10; j++) {
+log("JSON parse seattle");
+
+for(var j = 0; j < 5; j++) {
+time(function() {
+    for(var i = 0; i < 100; i++) {
+        JSON.parse(seattle);
+    }
+});
+}
+
+log("Read seattle JSON-H");
+
+for(var j = 0; j < 5; j++) {
 time(function() {
     for(var i = 0; i < 100; i++) {
         r.read(seattle);
@@ -27,7 +42,9 @@ time(function() {
 });
 }
 
-for(var j = 0; j < 10; j++) {
+log("Read seattle JSON-M");
+
+for(var j = 0; j < 5; j++) {
 time(function() {
     for(var i = 0; i < 100; i++) {
         r.read(seattlem);
