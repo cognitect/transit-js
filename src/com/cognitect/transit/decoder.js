@@ -89,7 +89,11 @@ decoder.Decoder.prototype.decode = function(node, cache, asMapKey, tagValue) {
         break;
     case "object":
         if(Array.isArray(node)) {
-            return this.decodeArray(node, cache, false, tagValue);
+            if(node.length > 1 && node[0] === "^ ") {
+                return this.decodeArrayHash(node, cache, asMapKey, tagValue);
+            } else {
+                return this.decodeArray(node, cache, false, tagValue);
+            }
         } else {
             return this.decodeHash(node, cache, asMapKey, tagValue);
         }
@@ -140,6 +144,14 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
             return ret;
         }
     }
+};
+
+decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagValue) {
+    var ret = {};
+    for(var i = 1; i < node.length; i +=2) {
+        ret[this.decode(node[i], cache, true, false)] = this.decode(node[i+1], cache, false, false)
+    }
+    return ret;
 };
 
 decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue) {
