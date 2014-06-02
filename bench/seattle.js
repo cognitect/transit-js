@@ -8,7 +8,7 @@ function log(s) {
     if(typeof console != "undefined") {
         console.log(s);
     } else {
-        print(s+"\n");
+        print(s);
     }
 }
 
