@@ -28,7 +28,7 @@ log("JSON parse seattle");
 var rjsonStr = JSON.stringify(rjson);
 for(var j = 0; j < 5; j++) {
 time(function() {
-    for(var i = 0; i < 1000; i++) {
+    for(var i = 0; i < 100; i++) {
         JSON.parse(rjsonStr);
     }
 });
@@ -38,7 +38,7 @@ log("Read seattle JSON-H");
 
 for(var j = 0; j < 5; j++) {
 time(function() {
-    for(var i = 0; i < 1000; i++) {
+    for(var i = 0; i < 100; i++) {
         r.read(seattle);
     }
 });
@@ -48,7 +48,7 @@ log("Read seattle JSON-M");
 
 for(var j = 0; j < 5; j++) {
 time(function() {
-    for(var i = 0; i < 1000; i++) {
+    for(var i = 0; i < 100; i++) {
         r.read(seattlem);
     }
 });
@@ -58,7 +58,7 @@ log("JSON stringify seattle JSON");
 
 for(var j = 0; j < 5; j++) {
 time(function() {
-    for(var i = 0; i < 1000; i++) {
+    for(var i = 0; i < 100; i++) {
         JSON.stringify(rjson);
     }
 });
@@ -69,7 +69,7 @@ log("transit write seattle JSONM");
 var seattleJSONM = r.read(seattlem);
 for(var j = 0; j < 5; j++) {
 time(function() {
-    for(var i = 0; i < 1000; i++) {
+    for(var i = 0; i < 100; i++) {
         w.write(seattleJSONM);
     }
 });
