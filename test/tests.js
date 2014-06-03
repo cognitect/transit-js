@@ -195,7 +195,7 @@ exports.testWriteTransitTypes = function(test) {
     test.equal(writer.write([false]), "[false]");
     test.equal(writer.write([transit.keyword("foo")]), "[\"~:foo\"]");
     test.equal(writer.write([transit.symbol("foo")]), "[\"~$foo\"]");
-    test.equal(writer.write([transit.date(482196050052)]), "[\"~t1985-04-12T23:20:50.052Z\"]");
+    test.equal(writer.write([transit.date(482196050052)]), "[\"~t482196050052\"]");
     test.equal(writer.write([transit.keyword("foo"),transit.symbol("bar")]), "[\"~:foo\",\"~$bar\"]");
     test.equal(writer.write([transit.symbol("foo"),transit.keyword("bar")]), "[\"~$foo\",\"~:bar\"]");
     test.equal(writer.write([transit.uri("http://foo.com/")]), "[\"~rhttp://foo.com/\"]");

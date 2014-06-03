@@ -137,7 +137,8 @@ MapHandler.prototype.stringRep = function(v) { return null; };
 var DateHandler = function(){};
 DateHandler.prototype.tag = function(v) { return "t"; };
 DateHandler.prototype.rep = function(v) { return v.valueOf(); };
-DateHandler.prototype.stringRep = function(v) {
+DateHandler.prototype.stringRep = function(v) { return v.valueOf().toString(); };
+DateHandler.prototype.humanStringRep = function(v) {
     return v.getUTCFullYear()+"-"+handlers.padZeros(v.getUTCMonth()+1,2)+"-"+
            handlers.padZeros(v.getUTCDate(),2)+"T"+handlers.padZeros(v.getUTCHours(),2)+":"+
            handlers.padZeros(v.getUTCMinutes(),2)+":"+handlers.padZeros(v.getUTCSeconds(),2)+"."+
