@@ -164,6 +164,12 @@ exports.testWrite = function(test) {
     test.done();
 };
 
+exports.testWriteHumanMode = function(test) {
+    var writer = transit.writer("jsonh");
+    test.equal(writer.write({foo:"bar"}), "{\"foo\":\"bar\"}");
+    test.done();
+};
+
 exports.testRead = function(test) {
     var reader = transit.reader("json");
     test.deepEqual(reader.read("{\"foo\":\"bar\"}"), {foo:"bar"});

@@ -48,7 +48,11 @@ transit.reader = function(type, opts) {
  * @return {transit.impl.writer.Writer}
  */
 transit.writer = function(type, opts) {
-    if(type === "json" || type == null) {
+    if(type === "json" || type === "jsonh" || type == null) {
+        if(type === "jsonh") {
+            if(opts == null) opts = {};
+            opts["humanMode"] = true;
+        }
         type = "json";
         var marshaller = new writer.JSONMarshaller(opts);
         return new writer.Writer(marshaller, opts);

@@ -51,7 +51,7 @@ writer.JSONMarshaller = function(opts) {
         }
     }
 
-    this.humanMode = false;
+    this.humanMode = (this.opts && this.opts["humanMode"]) || false;
 };
 
 writer.JSONMarshaller.prototype.handler = function(obj) {
