@@ -161,12 +161,14 @@ exports.testTransitSetBasic = function(test) {
 exports.testWrite = function(test) {
     var writer = transit.writer("json");
     test.equal(writer.write({foo:"bar"}), "[\"^ \",\"foo\",\"bar\"]");
+    test.equal(writer.write([{foobar:"foobar"},{foobar:"foobar"}]), "[[\"^ \",\"foobar\",\"foobar\"],[\"^ \",\"^!\",\"foobar\"]]");
     test.done();
 };
 
 exports.testWriteHumanMode = function(test) {
     var writer = transit.writer("jsonh");
     test.equal(writer.write({foo:"bar"}), "{\"foo\":\"bar\"}");
+    test.equal(writer.write([{foobar:"foobar"},{foobar:"foobar"}]), "[{\"foobar\":\"foobar\"},{\"foobar\":\"foobar\"}]");
     test.done();
 };
 

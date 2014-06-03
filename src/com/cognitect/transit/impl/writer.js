@@ -72,7 +72,7 @@ writer.JSONMarshaller.prototype.emitNil = function(asMapKey, cache) {
 
 writer.JSONMarshaller.prototype.emitString = function(prefix, tag, s, asMapKey, cache) {
     var string = prefix+tag+s;
-    if(cache != null) {
+    if(cache) {
         return cache.write(string, asMapKey);
     } else {
         return string;
@@ -207,7 +207,7 @@ writer.emitMap = function(em, obj, skip, cache) {
             var ret = {},
                 ks  = Object.keys(obj);
             for(var i = 0; i < ks.length; i++) {
-                ret[writer.marshal(em, ks[i], true, cache)] = writer.marshal(em, obj[ks[i]], false, cache);
+                ret[writer.marshal(em, ks[i], true, false)] = writer.marshal(em, obj[ks[i]], false, cache);
             }
             return ret;
         } else {
