@@ -146,7 +146,16 @@ time(function() {
     }
 });
 
-console.log("1e5 iters, JSON read transit map with two keyword/number value parirs");
+console.log("1e5 iters, top level JSON-M read, map with two keyword/string value pairs");
+json = "[\"^ \", \"~:foo\", \"bar\", \"~:baz\", \"woz\"]";
+console.log(reader.read(json));
+time(function() {
+    for(var i = 0; i < 100000; i++) {
+        reader.read(json);
+    }
+});
+
+console.log("1e5 iters, JSON read transit map with two keyword/number value pairs");
 json = "{\"~:foo\":1,\"~:bar\":2}";
 console.log(JSON.parse(json));
 time(function() {
