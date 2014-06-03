@@ -240,7 +240,11 @@ writer.emitEncoded = function(em, h, tag, rep, obj, asMapKey, cache) {
         if(typeof rep === "string") {
             return em.emitString(d.ESC, tag, rep, asMapKey, cache);
         } else if(asMapKey || em.prefersStrings) {
-            rep = h.stringRep(obj, h);
+            if(em.humanMode) {
+                rep = h.humanStringRep(obj, h);
+            } else {
+                rep = h.stringRep(obj, h);
+            }
             if(rep !== null) {
                 return em.emitString(d.ESC, tag, rep, asMapKey, cache);
             } else {
