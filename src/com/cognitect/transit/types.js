@@ -26,6 +26,10 @@ types.Integer = function(str) {
     this.str = str;
 };
 
+types.Integer.prototype.toString = function() {
+    return "[Integer: "+this.str+"]"
+};
+
 types.intValue = function(s) {
     return new types.Integer(s);
 };
@@ -39,6 +43,10 @@ types.floatValue = function(s) {
  */
 types.BigDecimal = function(s) {
     this.value = s;
+};
+
+types.BigDecimal.prototype.toString = function() {
+    return "[BigDecimal: "+this.value+"]";
 };
 
 types.bigDecimalValue = function(s) {
@@ -55,6 +63,10 @@ types.charValue = function(s) {
 types.Keyword = function(name) {
     this.name = name;
     this.hashCode = -1;
+};
+
+types.Keyword.prototype.toString = function() {
+    return "[Keyword: "+this.name+"]";
 };
 
 types.Keyword.prototype.com$cognitect$transit$equals = function(other) {
@@ -82,6 +94,10 @@ types.Symbol = function(name) {
     this.hashCode = -1;
 };
 
+types.Symbol.prototype.toString = function() {
+    return "[Symbol: "+this.name+"]";
+};
+
 types.Symbol.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof types.Symbol) && this.name == other.name;
 };
@@ -105,6 +121,10 @@ types.symbol = function(s) {
 types.UUID = function(str) {
     this.str = str;
     this.hashCode = -1;
+};
+
+types.UUID.prototype.toString = function() {
+    return "[object UUID: "+this.str+"]";
 };
 
 types.UUID.prototype.com$cognitect$transit$equals = function(other) {
@@ -158,6 +178,10 @@ types.URI = function(uri) {
     this.uri = uri;
 };
 
+types.URI.prototype.toString = function() {
+    return "[URI: "+this.uri+"]";
+};
+
 types.uri = function(s) {
     return new types.URI(s);
 }
@@ -190,6 +214,10 @@ types.TransitMap = function(keys, map, size) {
     this.keys = keys;
     this.size = size;
     this.hashCode = -1;
+};
+
+types.TransitMap.prototype.toString = function() {
+    return "[TransitMap]";
 };
 
 types.TransitMap.prototype.clear = function() {
@@ -327,6 +355,10 @@ types.TransitSet = function(map) {
     this.size = map.size;
 };
 
+types.TransitSet.prototype.toString = function() {
+    return "[TransitSet]";
+};
+
 types.TransitSet.prototype.add = function(value) {
     throw new Error("Unsupported operation: add");
 };
@@ -419,6 +451,10 @@ types.Quote = function(obj) {
     this.obj = obj;
 };
 
+types.Quote.prototype.toString = function() {
+    return "[Quoted]";
+};
+
 types.quoted = function(obj) {
     return new types.Quote(obj);
 };
@@ -431,6 +467,10 @@ types.TaggedValue = function(tag, rep) {
     this.rep = rep;
 };
 
+types.TaggedValue.prototype.toString = function() {
+    return "[TaggedValue: " + tag + ", " + rep + "]";
+};
+
 types.taggedValue = function(tag, rep) {
     return new types.TaggedValue(tag, rep);
 };
@@ -441,6 +481,10 @@ types.taggedValue = function(tag, rep) {
 types.LinkedList = function(head, tail) {
     this.head = head;
     this.tail = tail;
+};
+
+types.LinkedList.prototype.toString = function() {
+    return "[LinkedList]";
 };
 
 types.cons = function(x, tail) {
