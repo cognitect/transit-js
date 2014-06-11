@@ -307,7 +307,7 @@ exports.testToKey = function(test) {
 
     test.equal(w.toKey(transit.integer("1")), "`~i1");
     test.equal(w.toKey("foo"), "foo");
-    test.equal(w.toKey(true), "~?t");
+    test.equal(w.toKey(true), "`~?t");
 
     test.done();
 };
