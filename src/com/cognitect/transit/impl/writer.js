@@ -332,8 +332,9 @@ writer.marshalTop = function(em, obj, asMapKey, cache) {
 /**
  * @constructor
  */
-writer.Writer = function(marshaller, options) {
+writer.Writer = function(marshaller, decoder, options) {
     this.marshaller = marshaller;
+    this.decoder = decoder;
     this.options = options || {};
     if(this.options["cache"] === false) {
         this.cache = null;
@@ -360,8 +361,11 @@ writer.Writer.prototype.write = function(obj, opts) {
 writer.Writer.prototype["write"] = writer.Writer.prototype.write;
 
 writer.Writer.prototype.toKey = function(obj) {
-    return d.RES+this.write(obj, {marshalTop: false, asMapKey: true})
-}
+    return this.decoder.decode(
+        this.write(obj, {marshalTop: false, asMapKey: true}),
+        false, true, false
+    )
+};
 writer.Writer.prototype["toKey"] = writer.Writer.prototype.toKey;
 
 writer.Writer.prototype.register = function(type, handler) {

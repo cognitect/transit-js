@@ -8,6 +8,7 @@ goog.require("com.cognitect.transit.impl.reader");
 goog.require("com.cognitect.transit.impl.writer");
 goog.require("com.cognitect.transit.types");
 goog.require("com.cognitect.transit.eq");
+goog.require("com.cognitect.transit.decoder");
 
 /** @define {boolean} */
 var NODE_TARGET = false;
@@ -21,7 +22,8 @@ var transit = com.cognitect.transit,
     reader  = com.cognitect.transit.impl.reader,
     writer  = com.cognitect.transit.impl.writer,
     types   = com.cognitect.transit.types,
-    eq      = com.cognitect.transit.eq;
+    eq      = com.cognitect.transit.eq,
+    decoder = com.cognitect.transit.decoder;
 
 /**
  * Create a transit reader instance.
@@ -54,8 +56,9 @@ transit.writer = function(type, opts) {
             opts["humanMode"] = true;
         }
         type = "json";
-        var marshaller = new writer.JSONMarshaller(opts);
-        return new writer.Writer(marshaller, opts);
+        var marshaller = new writer.JSONMarshaller(opts),
+            dec        = new decoder.Decoder();
+        return new writer.Writer(marshaller, dec, opts);
     } else {
         var err = new Error("Type must be \"json\"");
         err.data = {type: type};
