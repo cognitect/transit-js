@@ -293,6 +293,15 @@ exports.testCustomHandler = function(test) {
     test.done();
 };
 
+exports.testWriteOptions = function(test) {
+    var w = transit.writer("json");
+
+    test.equal(w.write(transit.keyword("foo")), "{\"~#\'\":\"~:foo\"}");
+    test.equal(w.write(transit.keyword("foo"), {marshalTop:false}), "~:foo");
+
+    test.done();
+};
+
 // =============================================================================
 // JSON-M
 // =============================================================================

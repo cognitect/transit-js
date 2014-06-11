@@ -325,8 +325,8 @@ writer.maybeQuoted = function(em, obj) {
     }
 };
 
-writer.marshalTop = function(em, obj, cache) {
-    return JSON.stringify(writer.marshal(em, writer.maybeQuoted(em, obj), false, cache));
+writer.marshalTop = function(em, obj, asMapKey, cache) {
+    return JSON.stringify(writer.marshal(em, writer.maybeQuoted(em, obj), asMapKey, cache));
 };
 
 /**
@@ -342,8 +342,16 @@ writer.Writer = function(marshaller, options) {
     }
 };
 
-writer.Writer.prototype.write = function(obj) {
-    var ret = writer.marshalTop(this.marshaller, obj, this.cache)
+writer.Writer.prototype.write = function(obj, opts) {
+    var ret      = null,
+        ropts    = opts || {};
+        asMapKey = ropts["asMapKey"] || false;
+
+    if(ropts["marshalTop"] === false) {
+        ret = writer.marshal(this.marshaller, obj, asMapKey, this.cache)
+    } else {
+        ret = writer.marshalTop(this.marshaller, obj, asMapKey, this.cache)
+    }
     if(this.cache != null) {
         this.cache.clear();
     }
