@@ -374,6 +374,15 @@ exports.testVerifyRoundtripLong = function(test) {
     test.done();
 };
 
+exports.testRoundtripLongKey = function(test) {
+    var r = transit.reader("json");
+
+    test.deepEqual(r.read("\{\"~i1\":\"foo\"}"), {"`~i1":"foo"});
+
+    test.done();
+};
+
+
 exports.testDisableWriteCaching = function(test) {
     var writer = transit.writer("json", {cache: false});
     test.equal(writer.write([transit.keyword("foo"), transit.keyword("foo")]), "[\"~:foo\",\"~:foo\"]");
