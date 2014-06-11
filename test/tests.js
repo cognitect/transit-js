@@ -302,6 +302,14 @@ exports.testWriteOptions = function(test) {
     test.done();
 };
 
+exports.testToKey = function(test) {
+    var w = transit.writer("json");
+
+    test.equal(w.toKey(transit.integer("1")), "`~i1");
+
+    test.done();
+};
+
 // =============================================================================
 // JSON-M
 // =============================================================================
