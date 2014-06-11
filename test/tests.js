@@ -296,8 +296,8 @@ exports.testCustomHandler = function(test) {
 exports.testWriteOptions = function(test) {
     var w = transit.writer("json");
 
-    test.equal(w.write(transit.keyword("foo")), "{\"~#\'\":\"~:foo\"}");
     test.equal(w.write(transit.keyword("foo"), {marshalTop:false}), "~:foo");
+    test.equal(w.write(transit.integer("1"), {marshalTop:false}), "~i1");
 
     test.done();
 };
