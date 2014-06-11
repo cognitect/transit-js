@@ -107,7 +107,9 @@ decoder.Decoder.prototype.decodeString = function(string, cache, asMapKey, tagVa
     if(caching.isCacheable(string, asMapKey)) {
         var val    = this.parseString(string, cache, false),
             mapKey = this.parseString(string, cache, true);
-        cache.write(val, mapKey, asMapKey);
+        if(cache) {
+            cache.write(val, mapKey, asMapKey);
+        }
         if(asMapKey) {
             return mapKey;
         } else {
