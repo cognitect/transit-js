@@ -229,7 +229,7 @@ types.UUIDfromString = function uuidFromString(s) {
 };
 
 types.uuid = function(s) {
-    return new types.UUID(s);
+    return types.UUIDfromString(s);
 };
 
 types.date = function(s) {

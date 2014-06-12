@@ -158,8 +158,8 @@ BinaryHandler.prototype.stringRep = function(v) { return v.str; };
  */
 var UUIDHandler = function(){};
 UUIDHandler.prototype.tag = function(v) { return "u"; };
-UUIDHandler.prototype.rep = function(v) { return v.str; };
-UUIDHandler.prototype.stringRep = function(v) { return v.str; };
+UUIDHandler.prototype.rep = function(v) { return v.toString(); };
+UUIDHandler.prototype.stringRep = function(v) { return v.toString(); };
 
 /**
  * @constructor
