@@ -15,6 +15,13 @@ function time(f, iters) {
     }
 }
 
+console.log("1e6 iters, transit.uuid");
+time(function() {
+    for(var i = 0; i < 1000000; i++) {
+        transit.uuid("531a379e-31bb-4ce1-8690-158dceb64be6");
+    }
+});
+
 console.log("1e6 iters, transit.hash(\"foo\")");
 time(function() {
     for(var i = 0; i < 1000000; i++) {
