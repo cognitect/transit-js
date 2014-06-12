@@ -181,14 +181,15 @@ types.UUID.prototype.toString = function(s) {
 };
 
 types.UUID.prototype.com$cognitect$transit$equals = function(other) {
-    return (other instanceof types.UUID) && this.str == other.str;
+    return (other instanceof types.UUID) && this.high.equals(other.high) && this.low.equals(other.low);
 };
 
 types.UUID.prototype.com$cognitecat$transit$hashCode = function() {
     if(this.hashCode !== -1) {
         return this.hashCode;
     } else {
-        this.hashCode = eq.hashCode(this.str);
+        // TODO: follow http://hg.openjdk.java.net/jdk6/jdk6/jdk/file/2d585507a41b/src/share/classes/java/util/UUID.java
+        this.hashCode = eq.hashCode(this.toString());
         return this.hashCode;
     }
 };
