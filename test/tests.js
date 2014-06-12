@@ -159,9 +159,8 @@ exports.testTransitSetBasic = function(test) {
 // =============================================================================
 
 exports.testUUIDfromString = function(test) {
-    var l = transit.UUIDfromString("531a379e-31bb-4ce1-8690-158dceb64be6");
-
-    console.log(l);
+    test.equal(transit.UUIDfromString("531a379e-31bb-4ce1-8690-158dceb64be6").toString(),
+               "531a379e-31bb-4ce1-8690-158dceb64be6");
 
     test.done();
 };

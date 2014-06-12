@@ -219,7 +219,7 @@ types.UUIDfromString = function uuidFromString(s) {
         hi32 |= (parseInt(s.substring(i,i+2),16) << off);
     }
 
-    for(lo32=0, i=16, off=24; i < 24; i+=2, off-=8) {
+    for(lo32=0, i=24, off=24; i < 32; i+=2, off-=8) {
         lo32 |= (parseInt(s.substring(i,i+2),16) << off);
     }
 
