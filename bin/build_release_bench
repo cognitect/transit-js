@@ -8,6 +8,7 @@ mkdir -p target
 
 java -jar $CLOSURE_COMPILER_HOME/compiler.jar -O ADVANCED --output_wrapper ";(function(){%output%})();" --generate_exports -D BROWSER_TARGET=true \
 --js $CLOSURE_HOME/closure/goog/base.js \
+--js $CLOSURE_HOME/closure/goog/math/long.js \
 --js src/com/cognitect/transit/delimiters.js \
 --js src/com/cognitect/transit/eq.js \
 --js src/com/cognitect/transit/types.js \

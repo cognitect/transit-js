@@ -5,11 +5,13 @@
 
 goog.provide("com.cognitect.transit.types");
 goog.require("com.cognitect.transit.eq");
+goog.require("goog.math.Long");
 
 goog.scope(function() {
 
 var types = com.cognitect.transit.types,
-    eq    = com.cognitect.transit.eq;
+    eq    = com.cognitect.transit.eq,
+    Long  = goog.math.Long;
 
 types.nullValue = function() {
     return null;
