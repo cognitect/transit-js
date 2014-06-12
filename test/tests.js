@@ -302,6 +302,14 @@ exports.testWriteOptions = function(test) {
     test.done();
 };
 
+exports.testDecoder = function(test) {
+    var d = transit.decoder();
+
+    test.equal(d.decode("1"), 1);
+
+    test.done();
+};
+
 /*
 exports.testToKey = function(test) {
     var w = transit.writer("json");
