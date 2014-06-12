@@ -302,6 +302,7 @@ exports.testWriteOptions = function(test) {
     test.done();
 };
 
+/*
 exports.testToKey = function(test) {
     var w = transit.writer("json");
 
@@ -311,6 +312,7 @@ exports.testToKey = function(test) {
 
     test.done();
 };
+*/
 
 // =============================================================================
 // JSON-M

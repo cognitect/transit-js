@@ -3,14 +3,14 @@
 
 "use strict";
 
-goog.provide("com.cognitect.transit.decoder");
+goog.provide("com.cognitect.transit.impl.decoder");
 goog.require("com.cognitect.transit.delimiters");
 goog.require("com.cognitect.transit.caching");
 goog.require("com.cognitect.transit.types");
 
 goog.scope(function() {
 
-var decoder = com.cognitect.transit.decoder,
+var decoder = com.cognitect.transit.impl.decoder,
     d       = com.cognitect.transit.delimiters,
     caching = com.cognitect.transit.caching,
     types   = com.cognitect.transit.types;
@@ -198,6 +198,10 @@ decoder.Decoder.prototype.parseString = function(string, cache, asMapKey) {
     } else {
         return string;
     }
+};
+
+decoder.decoder = function(options) {
+    return new decoder.Decoder(options);
 };
 
 });

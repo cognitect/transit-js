@@ -19,3 +19,4 @@ module.exports.quoted  = function() {};
 module.exports.tagged  = function() {};
 module.exports.hash    = function() {};
 module.exports.equals  = function() {};
+module.exports.decoder = function() {};

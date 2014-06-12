@@ -4,14 +4,14 @@
 "use strict";
 
 goog.provide("com.cognitect.transit.impl.reader");
+goog.require("com.cognitect.transit.impl.decoder");
 goog.require("com.cognitect.transit.caching");
-goog.require("com.cognitect.transit.decoder");
 
 goog.scope(function() {
 
 var reader  = com.cognitect.transit.impl.reader,
-    caching = com.cognitect.transit.caching,
-    decoder = com.cognitect.transit.decoder;
+    decoder = com.cognitect.transit.impl.decoder,
+    caching = com.cognitect.transit.caching;
 
 /**
  * A JSON unmarshaller

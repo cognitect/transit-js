@@ -8,7 +8,7 @@ goog.require("com.cognitect.transit.impl.reader");
 goog.require("com.cognitect.transit.impl.writer");
 goog.require("com.cognitect.transit.types");
 goog.require("com.cognitect.transit.eq");
-goog.require("com.cognitect.transit.decoder");
+goog.require("com.cognitect.transit.impl.decoder");
 
 /** @define {boolean} */
 var NODE_TARGET = false;
@@ -21,9 +21,9 @@ goog.scope(function() {
 var transit = com.cognitect.transit,
     reader  = com.cognitect.transit.impl.reader,
     writer  = com.cognitect.transit.impl.writer,
+    decoder = com.cognitect.transit.impl.decoder,
     types   = com.cognitect.transit.types,
-    eq      = com.cognitect.transit.eq,
-    decoder = com.cognitect.transit.decoder;
+    eq      = com.cognitect.transit.eq;
 
 /**
  * Create a transit reader instance.
@@ -56,9 +56,8 @@ transit.writer = function(type, opts) {
             opts["humanMode"] = true;
         }
         type = "json";
-        var marshaller = new writer.JSONMarshaller(opts),
-            dec        = new decoder.Decoder();
-        return new writer.Writer(marshaller, dec, opts);
+        var marshaller = new writer.JSONMarshaller(opts);
+        return new writer.Writer(marshaller, opts);
     } else {
         var err = new Error("Type must be \"json\"");
         err.data = {type: type};
@@ -97,6 +96,7 @@ transit.quoted =   types.quoted;
 transit.tagged =   types.taggedValue;
 transit.hash =     eq.hashCode;
 transit.equals =   eq.equals;
+transit.decoder =  decoder.decoder;
 
 if(BROWSER_TARGET) {
     goog.exportSymbol("transit.reader",  transit.reader);
@@ -118,6 +118,7 @@ if(BROWSER_TARGET) {
     goog.exportSymbol("transit.tagged",  types.taggedValue);
     goog.exportSymbol("transit.hash",    eq.hashCode);
     goog.exportSymbol("transit.equals",  eq.equals);
+    goog.exportSymbol("transit.decoder", decoder.decoder)
 }
 
 if(NODE_TARGET) {
@@ -140,7 +141,8 @@ if(NODE_TARGET) {
         quoted:  types.quoted,
         tagged:  types.taggedValue,
         hash:    eq.hashCode,
-        equals:  eq.equals
+        equals:  eq.equals,
+        decoder: decoder.decoder
     };
 }
 
