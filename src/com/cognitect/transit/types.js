@@ -117,16 +117,46 @@ types.symbol = function(s) {
     return new types.Symbol(s);
 };
 
+types._byteToHex = null;
+types._hexToByte = null;
+
+types.byteToHex = function(s) {
+    if(types._byteToHex == null) {
+        for(var i = 0; i < 256; i++) {
+            types._byteToHex[i] = (i + 0x100).toString(16).substr(1);
+        }
+    }
+    return types._byteToHex[s];
+};
+
+types.hexToByte = function(s) {
+    if(types._hexToByte[s]) {
+        for(var i = 0; i < 256; i++) {
+            types._hexToByte[types._byteToHex[i]] = i;
+        }
+    }
+    return types._hexToByte[s];
+};
+
 /**
  * @constructor
  */
-types.UUID = function(str) {
-    this.str = str;
+types.UUID = function(high, low) {
+    this.high = high;
+    this.low = low;
     this.hashCode = -1;
 };
 
-types.UUID.prototype.toString = function() {
-    return "[object UUID: "+this.str+"]";
+types.UUID.prototype.getLeastSignificantBits = function() {
+    return this.low;
+};
+
+types.UUID.prototype.getLeastSignificantBits = function() {
+    return this.high;
+};
+    
+types.UUID.prototype.toString = function(s) {
+    
 };
 
 types.UUID.prototype.com$cognitect$transit$equals = function(other) {
@@ -140,6 +170,41 @@ types.UUID.prototype.com$cognitecat$transit$hashCode = function() {
         this.hashCode = eq.hashCode(this.str);
         return this.hashCode;
     }
+};
+
+types.randomUUID = function() {
+};
+
+types.UUIDfromString = function uuidFromString(s) {
+    var s    = s.replace(/-/g, ""),
+        hi64 = null,
+        lo64 = null,
+        hi32 = 0,
+        lo32 = 0,
+        off  = 24,
+        i    = 0;
+
+    for(hi32=0, i=0, off= 24; i < 8; i+=2, off-=8) {
+        hi32 |= (parseInt(s.substring(i,i+2),16) << off);
+    }
+
+    for(lo32=0, i=8, off=24; i < 16; i+=2, off-=8) {
+        lo32 |= (parseInt(s.substring(i,i+2),16) << off);
+    }
+
+    hi64 = Long.fromBits(low32, hi32);
+
+    for(hi32=0, i=16, off=24; i < 24; i+=2, off-=8) {
+        hi32 |= (parseInt(s.substring(i,i+2),16) << off);
+    }
+
+    for(lo32=0, i=16, off=24; i < 24; i+=2, off-=8) {
+        lo32 |= (parseInt(s.substring(i,i+2),16) << off);
+    }
+
+    lo64 = Long.fromBits(low32, hi32);
+
+    return new UUID(hi64, low64);
 };
 
 types.uuid = function(s) {

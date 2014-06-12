@@ -20,3 +20,5 @@ module.exports.tagged  = function() {};
 module.exports.hash    = function() {};
 module.exports.equals  = function() {};
 module.exports.decoder = function() {};
+module.exports.UUIDfromString = function() {};
+module.exports.randomUUID = function() {};

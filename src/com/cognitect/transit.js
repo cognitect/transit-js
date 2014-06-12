@@ -97,6 +97,8 @@ transit.tagged =   types.taggedValue;
 transit.hash =     eq.hashCode;
 transit.equals =   eq.equals;
 transit.decoder =  decoder.decoder;
+transit.UUIDfromString = types.UUIDfromString;
+transit.randomUUID = types.randomUUID;
 
 if(BROWSER_TARGET) {
     goog.exportSymbol("transit.reader",  transit.reader);
@@ -118,7 +120,9 @@ if(BROWSER_TARGET) {
     goog.exportSymbol("transit.tagged",  types.taggedValue);
     goog.exportSymbol("transit.hash",    eq.hashCode);
     goog.exportSymbol("transit.equals",  eq.equals);
-    goog.exportSymbol("transit.decoder", decoder.decoder)
+    goog.exportSymbol("transit.decoder", decoder.decoder);
+    goog.exportSymbol("transit.UUIDfromString", types.UUIDfromString);
+    goog.exportSymbol("transit.randomUUID", types.randomUUID);
 }
 
 if(NODE_TARGET) {
@@ -142,7 +146,9 @@ if(NODE_TARGET) {
         tagged:  types.taggedValue,
         hash:    eq.hashCode,
         equals:  eq.equals,
-        decoder: decoder.decoder
+        decoder: decoder.decoder,
+        UUIDfromString: types.UUIDfromString,
+        randomUUID: types.randomUUID
     };
 }
 
