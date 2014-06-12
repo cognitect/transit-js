@@ -138,10 +138,15 @@ types.hexToByte = function(s) {
     return types._hexToByte[s];
 };
 
-types.hexFor = function(aLong, idx) {
-    var shift = (7-idx)*8,
-        mask  = Long.fromInt(0xff).shiftLeft(shift);
-    return aLong.and(mask).shiftRightUnsigned(shift).toString(16);
+types.hexFor = function(aLong, sidx, eidx) {
+    var ret   = "",
+        eidx  = eidx || (sidx+1);
+
+    for(var i=sidx, shift=(7-i)*8, mask=Long.fromInt(0xff).shiftLeft(shift); i < eidx; i++, shift-=8, mask=mask.shiftRightUnsigned(8)) {
+        ret += aLong.and(mask).shiftRightUnsigned(shift).toString(16);
+    }
+
+    return ret;
 };
 
 /**
@@ -162,7 +167,17 @@ types.UUID.prototype.getLeastSignificantBits = function() {
 };
     
 types.UUID.prototype.toString = function(s) {
-    
+    var s    = "",
+        hi64 = this.high,
+        lo64 = this.low;
+
+    s += types.hexFor(hi64, 0, 4) + "-";
+    s += types.hexFor(hi64, 4, 6) + "-";
+    s += types.hexFor(hi64, 6, 8) + "-";
+    s += types.hexFor(lo64, 0, 2) + "-";
+    s += types.hexFor(lo64, 2, 8);
+
+    return s;
 };
 
 types.UUID.prototype.com$cognitect$transit$equals = function(other) {
