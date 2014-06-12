@@ -138,6 +138,12 @@ types.hexToByte = function(s) {
     return types._hexToByte[s];
 };
 
+types.hexFor = function(aLong, idx) {
+    var shift = (7-idx)*8,
+        mask  = Long.fromInt(0xff).shiftLeft(shift);
+    return aLong.and(mask).shiftRightUnsigned(shift).toString(16);
+};
+
 /**
  * @constructor
  */
