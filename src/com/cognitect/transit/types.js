@@ -192,7 +192,7 @@ types.UUIDfromString = function uuidFromString(s) {
         lo32 |= (parseInt(s.substring(i,i+2),16) << off);
     }
 
-    hi64 = Long.fromBits(low32, hi32);
+    hi64 = Long.fromBits(lo32, hi32);
 
     for(hi32=0, i=16, off=24; i < 24; i+=2, off-=8) {
         hi32 |= (parseInt(s.substring(i,i+2),16) << off);
@@ -202,9 +202,9 @@ types.UUIDfromString = function uuidFromString(s) {
         lo32 |= (parseInt(s.substring(i,i+2),16) << off);
     }
 
-    lo64 = Long.fromBits(low32, hi32);
+    lo64 = Long.fromBits(lo32, hi32);
 
-    return new UUID(hi64, low64);
+    return new types.UUID(hi64, lo64);
 };
 
 types.uuid = function(s) {
