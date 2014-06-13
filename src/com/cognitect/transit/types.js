@@ -117,27 +117,6 @@ types.symbol = function(s) {
     return new types.Symbol(s);
 };
 
-types._byteToHex = null;
-types._hexToByte = null;
-
-types.byteToHex = function(s) {
-    if(types._byteToHex == null) {
-        for(var i = 0; i < 256; i++) {
-            types._byteToHex[i] = (i + 0x100).toString(16).substr(1);
-        }
-    }
-    return types._byteToHex[s];
-};
-
-types.hexToByte = function(s) {
-    if(types._hexToByte[s]) {
-        for(var i = 0; i < 256; i++) {
-            types._hexToByte[types._byteToHex[i]] = i;
-        }
-    }
-    return types._hexToByte[s];
-};
-
 types.hexFor = function(aLong, sidx, eidx) {
     var ret   = "",
         eidx  = eidx || (sidx+1);
