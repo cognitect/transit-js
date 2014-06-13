@@ -177,7 +177,7 @@ exports.testWrite = function(test) {
 };
 
 exports.testWriteHumanMode = function(test) {
-    var writer = transit.writer("jsonh");
+    var writer = transit.writer("json_human");
     test.equal(writer.write({foo:"bar"}), "{\"foo\":\"bar\"}");
     test.equal(writer.write([{foobar:"foobar"},{foobar:"foobar"}]), "[{\"foobar\":\"foobar\"},{\"foobar\":\"foobar\"}]");
     test.done();
