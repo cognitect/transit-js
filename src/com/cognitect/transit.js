@@ -33,7 +33,7 @@ var transit = com.cognitect.transit,
  * @return {transit.impl.reader.Reader}
  */
 transit.reader = function(type, opts) {
-    if(type === "json" || type == null) {
+    if(type === "json" || type === "json-verbose" || type == null) {
         type = "json";
         var unmarshaller = new reader.JSONUnmarshaller(opts);
         return new reader.Reader(unmarshaller, opts);
