@@ -102,6 +102,7 @@ decoder.Decoder.prototype.decode = function(node, cache, asMapKey, tagValue) {
 
     return node;
 };
+decoder.Decoder.prototype["decode"] = decoder.Decoder.prototype.decode;
 
 decoder.Decoder.prototype.decodeString = function(string, cache, asMapKey, tagValue) {
     if(caching.isCacheable(string, asMapKey)) {
