@@ -141,7 +141,7 @@ types.UUID.prototype.getLeastSignificantBits = function() {
     return this.low;
 };
 
-types.UUID.prototype.getLeastSignificantBits = function() {
+types.UUID.prototype.getMostSignificantBits = function() {
     return this.high;
 };
     
