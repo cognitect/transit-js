@@ -50,8 +50,8 @@ transit.reader = function(type, opts) {
  * @return {transit.impl.writer.Writer}
  */
 transit.writer = function(type, opts) {
-    if(type === "json" || type === "jsonh" || type == null) {
-        if(type === "jsonh") {
+    if(type === "json" || type === "json_human" || type == null) {
+        if(type === "json_human") {
             if(opts == null) opts = {};
             opts["humanMode"] = true;
         }
