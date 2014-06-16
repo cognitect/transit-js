@@ -13,6 +13,8 @@ exports.testEquality = function(test) {
 
     test.ok(transit.equals(1, 1));
     test.ok(!transit.equals(1, 2));
+    test.ok(transit.equals(transit.integer("1"), transit.integer("1")));
+    test.ok(!transit.equals(transit.integer("1"), transit.integer("2")));
     test.ok(transit.equals("foo", "foo"));
     test.ok(!transit.equals("foo", "bar"));
     test.ok(transit.equals([], []));
