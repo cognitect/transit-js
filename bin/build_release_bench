@@ -18,5 +18,5 @@ java -jar $CLOSURE_COMPILER_HOME/compiler.jar -O ADVANCED --output_wrapper ";(fu
 --js src/com/cognitect/transit/handlers.js \
 --js src/com/cognitect/transit/stringbuilder.js \
 --js src/com/cognitect/transit/impl/writer.js \
---js src/com/cognitect/transit.js > target/transit.js \
+--js src/com/cognitect/transit.js > target/transit.js
 cat target/transit.js bench/seattle.js > target/transit.bench.js
