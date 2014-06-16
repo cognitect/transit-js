@@ -275,6 +275,9 @@ types.bools = function(xs) {
 };
 
 /**
+ * TransitMap
+ *   API follows ES6 maps modulo ES5 Iterables/Iteration
+ *   http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
  * @constructor
  */
 types.TransitMap = function(keys, map, size) {
