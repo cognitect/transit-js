@@ -292,7 +292,10 @@ types.TransitMap.prototype.toString = function() {
 };
 
 types.TransitMap.prototype.clear = function() {
-    throw new Error("Unsupported operation: clear");
+    this.map = {};
+    this.keys = [];
+    this.size = 0;
+    this.hashCode = -1;
 };
 types.TransitMap.prototype["clear"] = types.TransitMap.prototype.clear;
 
@@ -352,7 +355,27 @@ types.TransitMap.prototype.keys = function() {
 types.TransitMap.prototype["keys"] = types.TransitMap.prototype.keys;
   
 types.TransitMap.prototype.set = function(k, v) {
-    throw new Error("Unsupported operation: set");
+    var code = eq.hashCode(k),
+        vals = this.map[code];
+    if(vals == null) {
+        this.keys(code);
+        this.map[code] = [arr[i], arr[i+1]];
+        this.size++;
+    } else {
+        var newEntry = true;
+        for(var i = 0; i < vals.length; i+=2) {
+            if(eq.equals(v, vals[i])) {
+                newEntry = false;
+                vals[i] = v;
+                break;
+            }
+        }
+        if(newEntry) {
+            vals.push(arr[i]);
+            vals.push(arr[i+1]);
+            this.size++;
+        }
+    }
 };
 types.TransitMap.prototype["set"] = types.TransitMap.prototype.set;
 
@@ -385,6 +408,8 @@ types.TransitMap.prototype.com$cognitect$transit$equals = function(other) {
 };
 
 types.map = function(arr) {
+    arr = arr || [];
+
     var map  = {},
         keys = [],
         size = 0;

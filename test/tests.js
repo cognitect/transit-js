@@ -121,9 +121,14 @@ exports.testTransitMapBasic = function(test) {
     test.ok(transit.equals(m6,m7));
     test.ok(transit.equals(m7,m8))
 
-    return test.done();
+    test.done();
 };
 
+exports.testTransitMapItermediate = function(test) {
+    var m = transit.map();
+
+    test.done();
+};
 
 // =============================================================================
 // TransitSet
