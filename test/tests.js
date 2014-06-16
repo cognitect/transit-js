@@ -127,6 +127,18 @@ exports.testTransitMapBasic = function(test) {
 exports.testTransitMapItermediate = function(test) {
     var m = transit.map();
 
+    m.set(transit.keyword("foo"), "bar");
+
+    test.ok(m.has(transit.keyword("foo")), "bar");
+    test.equal(m.get(transit.keyword("foo")), "bar");
+    test.equal(m.size, 1);
+
+    m.clear();
+
+    test.equal(m.has(transit.keyword("foo")), false);
+    test.equal(m.get(transit.keyword("foo")), null);
+    test.equal(m.size, 0);
+
     test.done();
 };
 

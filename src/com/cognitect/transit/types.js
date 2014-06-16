@@ -358,8 +358,8 @@ types.TransitMap.prototype.set = function(k, v) {
     var code = eq.hashCode(k),
         vals = this.map[code];
     if(vals == null) {
-        this.keys(code);
-        this.map[code] = [arr[i], arr[i+1]];
+        this.keys.push(code);
+        this.map[code] = [k, v];
         this.size++;
     } else {
         var newEntry = true;
