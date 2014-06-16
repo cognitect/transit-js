@@ -416,11 +416,11 @@ exports.testVerifyRoundtripEmptyString = function(test) {
     test.done();
 };
 
-exports.testVerifyRoundtripLong = function(test) {
-    test.equal(roundtrip("{\"~#'\":\"~i8987676543234565432178765987645654323456554331234566789\"}"),
-                         "{\"~#'\":\"~i8987676543234565432178765987645654323456554331234566789\"}");
-    test.done();
-};
+// exports.testVerifyRoundtripLong = function(test) {
+//     test.equal(roundtrip("{\"~#'\":\"~i8987676543234565432178765987645654323456554331234566789\"}"),
+//                          "{\"~#'\":\"~i8987676543234565432178765987645654323456554331234566789\"}");
+//     test.done();
+// };
 
 exports.testRoundtripLongKey = function(test) {
     var r = transit.reader("json");

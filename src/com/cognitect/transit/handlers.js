@@ -5,13 +5,15 @@
 
 goog.provide("com.cognitect.transit.handlers");
 goog.require("com.cognitect.transit.types");
+goog.require("goog.math.Long");
 
 goog.scope(function() {
 
 var handlers = com.cognitect.transit.handlers,
-    types    = com.cognitect.transit.types;
+    types    = com.cognitect.transit.types,
+    Long     = goog.math.Long;
 
-handlers.ctorGuid         = 0;
+handlers.ctorGuid = 0;
 
 /**
  * @const
@@ -96,8 +98,8 @@ NumberHandler.prototype.stringRep = function(v) { return v.toString(); };
  */
 var IntegerHandler = function(){};
 IntegerHandler.prototype.tag = function(v) { return "i"; };
-IntegerHandler.prototype.rep = function(v) { return v.str; };
-IntegerHandler.prototype.stringRep = function(v) { return v.str; };
+IntegerHandler.prototype.rep = function(v) { return v.toString(); };
+IntegerHandler.prototype.stringRep = function(v) { return v.toString(); };
 
 /**
  * @constructor
@@ -242,7 +244,7 @@ handlers.defaultHandlers = function(hs) {
     hs.set(null, new NilHandler());
     hs.set(String, new StringHandler());
     hs.set(Number, new NumberHandler());
-    hs.set(types.Integer, new IntegerHandler());
+    hs.set(Long, new IntegerHandler());
     hs.set(types.BigDecimal, new BigDecimalHandler());
     hs.set(Boolean, new BooleanHandler());
     hs.set(Array, new ArrayHandler());

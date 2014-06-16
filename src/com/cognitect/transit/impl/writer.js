@@ -9,6 +9,7 @@ goog.require("com.cognitect.transit.handlers");
 goog.require("com.cognitect.transit.types");
 goog.require("com.cognitect.transit.delimiters");
 goog.require("com.cognitect.transit.stringbuilder");
+goog.require("goog.math.Long");
 
 goog.scope(function() {
 
@@ -17,7 +18,8 @@ var writer   = com.cognitect.transit.impl.writer,
     handlers = com.cognitect.transit.handlers,
     types    = com.cognitect.transit.types,
     d        = com.cognitect.transit.delimiters,
-    sb       = com.cognitect.transit.stringbuilder;
+    sb       = com.cognitect.transit.stringbuilder,
+    Long     = goog.math.Long;
 
 writer.escape = function(string) {
     if(string.length > 0) {
@@ -89,7 +91,7 @@ writer.JSONMarshaller.prototype.emitBoolean = function(b, asMapKey, cache) {
 };
 
 writer.JSONMarshaller.prototype.emitInteger = function(i, asMapKey, cache) {
-    if(asMapKey || (typeof i === "string") || (i instanceof types.Integer)) {
+    if(asMapKey || (typeof i === "string") || (i instanceof Long)) {
         return this.emitString(d.ESC, "i", i.toString(), asMapKey, cache);
     } else {
         return i;

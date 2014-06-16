@@ -21,19 +21,16 @@ types.boolValue = function(s) {
     return s === "t";
 };
 
-/**
- * @constructor
- */
-types.Integer = function(str) {
-    this.str = str;
-};
-
-types.Integer.prototype.toString = function() {
-    return "[Integer: "+this.str+"]"
-};
-
 types.intValue = function(s) {
-    return new types.Integer(s);
+    return Long.fromString(s, 10);
+};
+
+Long.prototype.com$cognitect$transit$equals = function(other) {
+    return (other instanceof Long) && this.equals(other);
+};
+
+Long.prototype.com$cognitect$transit$hashCode = function() {
+    return this.toInt();
 };
 
 types.floatValue = function(s) {
