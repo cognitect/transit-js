@@ -78,6 +78,18 @@ exports.testHashCode = function(test) {
 };
 
 // =============================================================================
+// Numbers
+// =============================================================================
+
+exports.testIntegers = function(test) {
+    test.equal(typeof transit.integer("9007199254740992"), "number");
+    test.equal(typeof transit.integer("9007199254740993"), "object");
+    test.equal(typeof transit.integer("-9007199254740992"), "number");
+    test.equal(typeof transit.integer("-9007199254740993"), "object");
+    test.done();
+};
+
+// =============================================================================
 // TransitMap
 // =============================================================================
 
@@ -327,7 +339,7 @@ exports.testWriteOptions = function(test) {
     var w = transit.writer("json");
 
     test.equal(w.write(transit.keyword("foo"), {marshalTop:false}), "~:foo");
-    test.equal(w.write(transit.integer("1"), {marshalTop:false}), "~i1");
+    test.equal(w.write(transit.integer("1"), {marshalTop:false}), "1");
 
     test.done();
 };

@@ -21,8 +21,17 @@ types.boolValue = function(s) {
     return s === "t";
 };
 
+types.MAX_INT = Long.fromString("9007199254740992");
+types.MIN_INT = Long.fromString("-9007199254740992");
+
 types.intValue = function(s) {
-    return Long.fromString(s, 10);
+    var n = Long.fromString(s, 10);
+    if(n.greaterThan(types.MAX_INT) ||
+       n.lessThan(types.MIN_INT)) {
+        return n;
+    } else {
+        return n.toNumber();
+    }
 };
 
 Long.prototype.com$cognitect$transit$equals = function(other) {
