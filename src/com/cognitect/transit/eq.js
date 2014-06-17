@@ -163,8 +163,8 @@ eq.hashCode = function(x) {
 }
 
 eq.extendToEQ = function(obj, opts) {
-    obj.com$cognitect$transit$hashCode = opts.hashCode;
-    obj.com$cognitect$transit$equals = opts.equals;
+    obj.com$cognitect$transit$hashCode = opts["hashCode"];
+    obj.com$cognitect$transit$equals = opts["equals"];
     return obj;
 }
 
