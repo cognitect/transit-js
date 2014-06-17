@@ -204,20 +204,33 @@ writer.emitArray = function(em, iterable, skip, cache) {
 };
 
 writer.emitMap = function(em, obj, skip, cache) {
-    if(obj.constructor === Object) {
+    if((obj.constructor === Object) || (obj.forEach != null)) {
         if(em.verbose) {
-            var ret = {},
-                ks  = Object.keys(obj);
-            for(var i = 0; i < ks.length; i++) {
-                ret[writer.marshal(em, ks[i], true, false)] = writer.marshal(em, obj[ks[i]], false, cache);
+            var ret = {};
+            if(obj.forEach != null) {
+                obj.forEach(function(v, k) {
+                    ret[writer.marshal(em, k, true, false)] = writer.marshal(em, v, false, cache);
+                });
+            } else {
+                var ks  = Object.keys(obj);
+                for(var i = 0; i < ks.length; i++) {
+                    ret[writer.marshal(em, ks[i], true, false)] = writer.marshal(em, obj[ks[i]], false, cache);
+                }
             }
             return ret;
         } else {
-            var ret = ["^ "],
-                ks  = Object.keys(obj);
-            for(var i = 0; i < ks.length; i++) {
-                ret.push(writer.marshal(em, ks[i], true, cache));
-                ret.push(writer.marshal(em, obj[ks[i]], false, cache));
+            var ret = ["^ "];
+            if(obj.forEach != null) {
+                obj.forEach(function(v, k) {
+                    ret.push(writer.marshal(em, k, true, cache));
+                    ret.push(writer.marshal(em, v, false, cache));
+                });
+            } else {
+                var ks  = Object.keys(obj);
+                for(var i = 0; i < ks.length; i++) {
+                    ret.push(writer.marshal(em, ks[i], true, cache));
+                    ret.push(writer.marshal(em, obj[ks[i]], false, cache));
+                }
             }
             return ret;
         }

@@ -107,18 +107,13 @@ decoder.Decoder.prototype["decode"] = decoder.Decoder.prototype.decode;
 
 decoder.Decoder.prototype.decodeString = function(string, cache, asMapKey, tagValue) {
     if(caching.isCacheable(string, asMapKey)) {
-        var val    = this.parseString(string, cache, false),
-            mapKey = this.parseString(string, cache, true);
+        var val = this.parseString(string, cache, false);
         if(cache) {
-            cache.write(val, mapKey, asMapKey);
+            cache.write(val, asMapKey);
         }
-        if(asMapKey) {
-            return mapKey;
-        } else {
-            return val;
-        }
+        return val;
     } else if(caching.isCacheCode(string)) {
-        return cache.read(string, asMapKey, this.prefersStrings);
+        return cache.read(string, asMapKey);
     } else {
         return this.parseString(string, cache, asMapKey);
     }
@@ -155,11 +150,42 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
 };
 
 decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagValue) {
-    var ret = {};
+    var stringKeys = true;
+
+    // collect keys
     for(var i = 1; i < node.length; i +=2) {
-        ret[this.decode(node[i], cache, true, false)] = this.decode(node[i+1], cache, false, false)
+        var x = node[i];
+        if(typeof x !== "string") {
+            stringKeys = false;
+            break;
+        } else {
+            var c0 = x[0],
+                c1 = x[1];
+            if(c0 === d.ESC && this.decoders[c1] != null) {
+                stringKeys = false;
+                break;
+            } else if(c0 === d.SUB && ((typeof cache.read(x)) !== "string"))  {
+                stringKeys = false;
+                break;
+            } else {
+                continue;
+            }
+        }
     }
-    return ret;
+
+    if(stringKeys === false) {
+        var ret = types.map();
+        for(var i = 1; i < node.length; i+=2) {
+            ret.set(this.decode(node[i], cache, true, false), this.decode(node[i+1], cache, false, false));
+        }
+        return ret;
+    } else {
+        var ret = {};
+        for(var i = 1; i < node.length; i+=2) {
+            ret[this.decode(node[i], cache, true, false)] = this.decode(node[i+1], cache, false, false);
+        }
+        return ret;
+    }
 };
 
 decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue) {

@@ -233,15 +233,8 @@ TransitSetHandler.prototype.stringRep = function(v, h) { return null; };
  * @constructor
  */
 var TransitMapHandler = function(){};
-TransitMapHandler.prototype.tag = function(v) { return "cmap"; };
-TransitMapHandler.prototype.rep = function(v) {
-    var arr = [];
-    v.forEach(function(val, key, map) {
-        arr.push(key);
-        arr.push(val);
-    });
-    return types.taggedValue("array", arr);
-};
+TransitMapHandler.prototype.tag = function(v) { return "map"; };
+TransitMapHandler.prototype.rep = function(v) { return v; };
 TransitMapHandler.prototype.stringRep = function(v, h) { return null; };
 
 /**

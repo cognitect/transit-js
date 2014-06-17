@@ -129,29 +129,23 @@ caching.ReadCache.prototype.guaranteeCache = function() {
     }
 };
     
-caching.ReadCache.prototype.write = function(obj, mapKey, asMapKey) {
+caching.ReadCache.prototype.write = function(obj, asMapKey) {
     this.guaranteeCache();
     if(this.idx == caching.MAX_CACHE_ENTRIES) {
         this.idx = 0;
     }
-    this.cache[this.idx] = [obj, mapKey];
+    this.cache[this.idx] = obj;
     this.idx++;
     return obj;
 };
 
-caching.ReadCache.prototype.read = function(string, asMapKey, prefersStrings) {
+caching.ReadCache.prototype.read = function(string, asMapKey) {
     this.guaranteeCache();
-    var ret = this.cache[caching.codeToIdx(string)];
-    if(asMapKey && prefersStrings) {
-        return ret[1];
-    } else {
-        return ret[0];
-    }
+    return this.cache[caching.codeToIdx(string)];
 };
 
 caching.ReadCache.prototype.clear = function() {
     this.idx = 0;
-    
 };
 
 });    
