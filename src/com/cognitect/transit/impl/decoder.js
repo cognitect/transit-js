@@ -156,7 +156,7 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
         var stringKeys = true;
 
         for(var i = 0; i < ks.length; i++) {
-            if(!this.isStringKey(ks[i])) {
+            if(!this.isStringKey(ks[i], cache)) {
                 stringKeys = false;
                 break;
             }
