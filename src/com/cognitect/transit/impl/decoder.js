@@ -206,7 +206,7 @@ decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue
             ret = this.defaultArrayBuilder.add(ret, this.decode(node[i], cache, asMapKey, false));
         }
         if(this.defaultArrayBuilder.finalize) {
-            return this.defaultMapBuilder.finalize(ret);
+            return this.defaultArrayBuilder.finalize(ret);
         } else {
             return ret;
         }
