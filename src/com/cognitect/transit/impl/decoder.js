@@ -68,10 +68,12 @@ decoder.Decoder.prototype.defaults = {
     defaultStringDecoder: function(v) {
         return d.RES+v;
     },
+    /* not public, ground type */
     defaultMapBuilder: {
         init: function() { return {}; },
         add:  function(m, k, v) { m[k] = v; return m; }
     },
+    /* not public, ground type */
     defaultArrayBuilder: {
         init: function() { return []; },
         add:  function(a, v) { a.push(v); return a; }
