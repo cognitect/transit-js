@@ -119,6 +119,22 @@ decoder.Decoder.prototype.decodeString = function(string, cache, asMapKey, tagVa
     }
 };
 
+decoder.Decoder.prototype.isStringKey = function(node, cache) {
+    if(typeof node !== "string") {
+        return false;
+    } else {
+        var c0 = node[0],
+            c1 = node[1];
+        if(c0 === d.ESC && this.decoders[c1] != null) {
+            return false;
+        } else if(c0 === d.SUB && ((typeof cache.read(node)) !== "string"))  {
+            return false;
+        } else {
+            return true;
+        }
+    }
+};
+
 decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue) {
     var ks     = Object.keys(hash),
         key    = ks[0],
@@ -154,22 +170,9 @@ decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagV
 
     // collect keys
     for(var i = 1; i < node.length; i +=2) {
-        var x = node[i];
-        if(typeof x !== "string") {
+        if(!this.isStringKey(node[i], cache)) {
             stringKeys = false;
             break;
-        } else {
-            var c0 = x[0],
-                c1 = x[1];
-            if(c0 === d.ESC && this.decoders[c1] != null) {
-                stringKeys = false;
-                break;
-            } else if(c0 === d.SUB && ((typeof cache.read(x)) !== "string"))  {
-                stringKeys = false;
-                break;
-            } else {
-                continue;
-            }
         }
     }
 
