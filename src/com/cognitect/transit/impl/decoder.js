@@ -53,7 +53,8 @@ decoder.Decoder.prototype.defaults = {
 
         // tagged
         "'": function(v) { return v; },
-        "t": function(v) { return types.date(v); },
+        "m": function(v) { return types.date(v); },
+        "t": function(v) { return types.verboseDate(v); },
         "u": function(v) { return types.uuid(v); },
         "set": function(v) { return types.set(v); },
         "list": function(v) { return types.list(v); },

@@ -53,7 +53,7 @@ writer.JSONMarshaller = function(opts) {
         }
     }
 
-    this.humanMode = (this.opts && this.opts["humanMode"]) || false;
+    this.verbose = (this.opts && this.opts["verbose"]) || false;
 };
 
 writer.JSONMarshaller.prototype.handler = function(obj) {
@@ -205,7 +205,7 @@ writer.emitArray = function(em, iterable, skip, cache) {
 
 writer.emitMap = function(em, obj, skip, cache) {
     if(obj.constructor === Object) {
-        if(em.humanMode) {
+        if(em.verbose) {
             var ret = {},
                 ks  = Object.keys(obj);
             for(var i = 0; i < ks.length; i++) {
@@ -242,8 +242,10 @@ writer.emitEncoded = function(em, h, tag, rep, obj, asMapKey, cache) {
         if(typeof rep === "string") {
             return em.emitString(d.ESC, tag, rep, asMapKey, cache);
         } else if(asMapKey || em.prefersStrings) {
-            if(em.humanMode) {
-                rep = h.humanStringRep(obj, h);
+            var vh = em.verbose && h.getVerboseHandler();
+            if(vh) {
+                tag = vh.tag(obj);
+                rep = vh.stringRep(obj, vh);
             } else {
                 rep = h.stringRep(obj, h);
             }

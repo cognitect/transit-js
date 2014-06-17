@@ -207,10 +207,11 @@ exports.testWrite = function(test) {
     test.done();
 };
 
-exports.testWriteHumanMode = function(test) {
+exports.testWriteVerboseMode = function(test) {
     var writer = transit.writer("json-verbose");
     test.equal(writer.write({foo:"bar"}), "{\"foo\":\"bar\"}");
     test.equal(writer.write([{foobar:"foobar"},{foobar:"foobar"}]), "[{\"foobar\":\"foobar\"},{\"foobar\":\"foobar\"}]");
+    test.equal(writer.write(transit.date(1399471321791)), "{\"~#\'\":\"~t2014-05-07T14:02:01.791Z\"}");
     test.done();
 };
 
@@ -245,7 +246,7 @@ exports.testWriteTransitTypes = function(test) {
     test.equal(writer.write([false]), "[false]");
     test.equal(writer.write([transit.keyword("foo")]), "[\"~:foo\"]");
     test.equal(writer.write([transit.symbol("foo")]), "[\"~$foo\"]");
-    test.equal(writer.write([transit.date(482196050052)]), "[\"~t482196050052\"]");
+    test.equal(writer.write([transit.date(482196050052)]), "[\"~m482196050052\"]");
     test.equal(writer.write([transit.keyword("foo"),transit.symbol("bar")]), "[\"~:foo\",\"~$bar\"]");
     test.equal(writer.write([transit.symbol("foo"),transit.keyword("bar")]), "[\"~$foo\",\"~:bar\"]");
     test.equal(writer.write([transit.uri("http://foo.com/")]), "[\"~rhttp://foo.com/\"]");

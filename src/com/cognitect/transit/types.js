@@ -219,6 +219,11 @@ types.uuid = function(s) {
 };
 
 types.date = function(s) {
+    s = typeof s === "number" ? s : parseInt(s, 10);
+    return new Date(s);
+};
+
+types.verboseDate = function(s) {
     return new Date(s);
 };
 

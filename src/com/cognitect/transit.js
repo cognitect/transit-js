@@ -53,7 +53,7 @@ transit.writer = function(type, opts) {
     if(type === "json" || type === "json-verbose" || type == null) {
         if(type === "json-verbose") {
             if(opts == null) opts = {};
-            opts["humanMode"] = true;
+            opts["verbose"] = true;
         }
         type = "json";
         var marshaller = new writer.JSONMarshaller(opts);
