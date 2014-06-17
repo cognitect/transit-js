@@ -31,10 +31,11 @@ decoder.Decoder = function(options) {
     for(var decoder in this.options["decoders"]) {
         this.decoders[decoder] = this.options["decoders"][decoder];
     }
-    this.defaultStringDecoder = this.options["defaultStringDecoder"] || this.defaults.defaultStringDecoder;
-    this.defaultMapBuilder = this.options["defaultMapBuilder"] || this.defaults.defaultMapBuilder;
-    this.defaultArrayBuilder = this.options["defaultArrayBuilder"] || this.defaults.defaultArrayBuilder;
     this.prefersStrings = this.options["prefersStrings"] != null ? this.options["prefersStrings"] : this.defaults.prefersStrings;
+    this.defaultStringDecoder = this.options["defaultStringDecoder"] || this.defaults.defaultStringDecoder;
+    /* NOT PUBLIC */
+    this.mapBuilder = this.options["mapBuilder"];
+    this.arrayBuilder = this.options["arrayBuilder"];
 };
 
 
@@ -67,16 +68,6 @@ decoder.Decoder.prototype.defaults = {
     },
     defaultStringDecoder: function(v) {
         return d.RES+v;
-    },
-    /* not public, ground type */
-    defaultMapBuilder: {
-        init: function() { return {}; },
-        add:  function(m, k, v) { m[k] = v; return m; }
-    },
-    /* not public, ground type */
-    defaultArrayBuilder: {
-        init: function() { return []; },
-        add:  function(a, v) { a.push(v); return a; }
     },
     prefersStrings: true
 };
@@ -152,6 +143,15 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
         } else {
             return types.taggedValue(tagKey.substring(2), this.decode(val, cache, false, false));
         }
+    } else if(this.mapBuilder) {
+        var ret = this.mapBuilder.init();
+
+        for(var i = 0; i < ks.length; i++) {
+            ret = this.mapBuilder.add(ret, this.decode(strKey, cache, true, false),
+                                           this.decode(hash[strKey], cache, false, false));
+        }
+        
+        return this.mapBuilder.finalize(ret);
     } else {
         var stringKeys = true;
 
@@ -181,28 +181,37 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
 };
 
 decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagValue) {
-    var stringKeys = true;
-
-    // collect keys
-    for(var i = 1; i < node.length; i +=2) {
-        if(!this.isStringKey(node[i], cache)) {
-            stringKeys = false;
-            break;
-        }
-    }
-
-    if(stringKeys === false) {
-        var ret = types.map();
+    if(this.mapBuilder) {
+        var ret = this.mapBuilder.init();
         for(var i = 1; i < node.length; i+=2) {
-            ret.set(this.decode(node[i], cache, true, false), this.decode(node[i+1], cache, false, false));
+            ret = this.mapBuilder.add(ret, this.decode(node[i], cache, true, false),
+                                           this.decode(node[i+1], cache, false, false))
         }
-        return ret;
+        return this.mapBuilder.finalize(ret);
     } else {
-        var ret = {};
-        for(var i = 1; i < node.length; i+=2) {
-            ret[this.decode(node[i], cache, true, false)] = this.decode(node[i+1], cache, false, false);
+        var stringKeys = true;
+
+        // collect keys
+        for(var i = 1; i < node.length; i +=2) {
+            if(!this.isStringKey(node[i], cache)) {
+                stringKeys = false;
+                break;
+            }
         }
-        return ret;
+
+        if(stringKeys === false) {
+            var ret = types.map();
+            for(var i = 1; i < node.length; i+=2) {
+                ret.set(this.decode(node[i], cache, true, false), this.decode(node[i+1], cache, false, false));
+            }
+            return ret;
+        } else {
+            var ret = {};
+            for(var i = 1; i < node.length; i+=2) {
+                ret[this.decode(node[i], cache, true, false)] = this.decode(node[i+1], cache, false, false);
+            }
+            return ret;
+        }
     }
 };
 
@@ -213,16 +222,18 @@ decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue
             ret.push(this.decode(node[i], cache, asMapKey, false));
         }
         return ret;
-    } else {
-        var ret = this.defaultArrayBuilder.init();
+    } else if(this.arrayBuilder) {
+        var ret = this.arrayBuilder.init();
         for(var i = 0; i < node.length; i++) {
-            ret = this.defaultArrayBuilder.add(ret, this.decode(node[i], cache, asMapKey, false));
+            ret = this.arrayBuilder.add(ret, this.decode(node[i], cache, asMapKey, false));
         }
-        if(this.defaultArrayBuilder.finalize) {
-            return this.defaultArrayBuilder.finalize(ret);
-        } else {
-            return ret;
+        return this.arrayBuilder.finalize(ret);
+    } else {
+        var ret = []
+        for(var i = 0; i < node.length; i++) {
+            ret.push(this.decode(node[i], cache, asMapKey, false));
         }
+        return ret;
     }
 };
 
