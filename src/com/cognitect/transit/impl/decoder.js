@@ -153,15 +153,28 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
             return types.taggedValue(tagKey.substring(2), this.decode(val, cache, false, false));
         }
     } else {
-        var ret = this.defaultMapBuilder.init();
+        var stringKeys = true;
+
         for(var i = 0; i < ks.length; i++) {
-            var strKey = ks[i],
-                key    = this.decode(strKey, cache, true);
-            ret = this.defaultMapBuilder.add(ret, key, this.decode(hash[strKey], cache, false, false));
+            if(!this.isStringKey(ks[i])) {
+                stringKeys = false;
+                break;
+            }
         }
-        if(this.defaultMapBuilder.finalize != null) {
-            return this.defaultMapBuilder.finalize(ret);
+
+        if(stringKeys) {
+            var ret = {};
+            for(var i = 0; i < ks.length; i++) {
+                var strKey = ks[i];
+                ret[this.decode(strKey, cache, true, false)] = this.decode(hash[strKey], cache, false, false);
+            }
+            return ret;
         } else {
+            var ret = types.map();
+            for(var i = 0; i < ks.length; i++) {
+                var strKey = ks[i];
+                ret.set(this.decode(strKey, cache, true, false), this.decode(hash[strKey], cache, false, false));
+            }
             return ret;
         }
     }
@@ -222,7 +235,7 @@ decoder.Decoder.prototype.parseString = function(string, cache, asMapKey) {
             return string;
         } else {
             var decoder = this.decoders[c];
-            if((asMapKey == true && this.prefersStrings) || decoder == null) {
+            if(decoder == null) {
                 return this.defaultStringDecoder(string);
             } else {
                 return decoder(string.substring(2));

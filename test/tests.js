@@ -452,7 +452,7 @@ exports.testVerifyRoundtripEmptyString = function(test) {
 exports.testRoundtripLongKey = function(test) {
     var r = transit.reader("json");
 
-    test.deepEqual(r.read("\{\"~i1\":\"foo\"}"), {"`~i1":"foo"});
+    test.deepEqual(r.read("\{\"~i1\":\"foo\"}"), transit.map([1, "foo"]));
 
     test.done();
 };
