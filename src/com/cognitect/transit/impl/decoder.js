@@ -147,6 +147,7 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
         var ret = this.mapBuilder.init();
 
         for(var i = 0; i < ks.length; i++) {
+            var strKey = ks[i];
             ret = this.mapBuilder.add(ret, this.decode(strKey, cache, true, false),
                                            this.decode(hash[strKey], cache, false, false));
         }
