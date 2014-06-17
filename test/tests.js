@@ -143,7 +143,7 @@ exports.testTransitMapBasic = function(test) {
     test.done();
 };
 
-exports.testTransitMapItermediate = function(test) {
+exports.testTransitMapIntermediate = function(test) {
     var m = transit.map();
 
     m.set(transit.keyword("foo"), "bar");
@@ -157,6 +157,15 @@ exports.testTransitMapItermediate = function(test) {
     test.equal(m.has(transit.keyword("foo")), false);
     test.equal(m.get(transit.keyword("foo")), null);
     test.equal(m.size, 0);
+
+    test.done();
+};
+
+exports.testTransitMapVerbose = function(test) {
+    var r = transit.reader("json"),
+        s = "{\"~:foo\":\"bar\"}";
+
+    test.ok(transit.equals(r.read(s), transit.map([transit.keyword("foo"), "bar"])));
 
     test.done();
 };
