@@ -466,10 +466,18 @@ exports.testRoundtripLongKey = function(test) {
     test.done();
 };
 
-
 exports.testDisableWriteCaching = function(test) {
     var writer = transit.writer("json", {cache: false});
     test.equal(writer.write([transit.keyword("foo"), transit.keyword("foo")]), "[\"~:foo\",\"~:foo\"]");
     test.done();
 };
 
+exports.testRoundTripVerboseDates = function(test) {
+    var r = transit.reader("json"),
+        w = transit.writer("json-verbose");
+
+    test.equal(w.write(r.read("[\"~t1776-07-04T12:00:00.000Z\",\"~t1970-01-01T00:00:00.000Z\",\"~t2000-01-01T12:00:00.000Z\",\"~t2014-04-07T22:17:17.000Z\"]")),
+                              "[\"~t1776-07-04T12:00:00.000Z\",\"~t1970-01-01T00:00:00.000Z\",\"~t2000-01-01T12:00:00.000Z\",\"~t2014-04-07T22:17:17.000Z\"]");
+    
+    test.done();
+};
