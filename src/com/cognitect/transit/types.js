@@ -42,6 +42,10 @@ Long.prototype.com$cognitect$transit$hashCode = function() {
     return this.toInt();
 };
 
+types.isInteger = function(x) {
+    return x instanceof Long;
+};
+
 types.floatValue = function(s) {
     return parseFloat(s);
 };
@@ -59,6 +63,10 @@ types.BigDecimal.prototype.toString = function() {
 
 types.bigDecimalValue = function(s) {
     return new types.BigDecimal(s);
+};
+
+types.isBigDecimal = function(x) {
+    return x instanceof types.BigDecimal;
 };
 
 types.charValue = function(s) {
@@ -94,6 +102,10 @@ types.keyword = function(s) {
     return new types.Keyword(s);
 };
 
+types.isKeyword = function(x) {
+    return x instanceof types.Keyword;
+};
+
 /**
  * @constructor
  */
@@ -121,6 +133,10 @@ types.Symbol.prototype.com$cognitect$transit$hashCode = function() {
 
 types.symbol = function(s) {
     return new types.Symbol(s);
+};
+
+types.isSymbol = function(x) {
+    return x instanceof types.Symbol;
 };
 
 types.hexFor = function(aLong, sidx, eidx) {
@@ -218,6 +234,10 @@ types.uuid = function(s) {
     return types.UUIDfromString(s);
 };
 
+types.isUUID = function(x) {
+    return x instanceof types.UUID;
+};
+
 types.date = function(s) {
     s = typeof s === "number" ? s : parseInt(s, 10);
     return new Date(s);
@@ -250,6 +270,10 @@ types.binary = function(str) {
     return new types.Binary(str);
 };
 
+types.isBinary = function(x) {
+    return x instanceof types.Binary;
+}
+
 /**
  * @constructor
  */
@@ -263,7 +287,11 @@ types.URI.prototype.toString = function() {
 
 types.uri = function(s) {
     return new types.URI(s);
-}
+};
+
+types.isURI = function(x) {
+    return x instanceof types.URI;
+};
 
 types.ints = function(xs) {
     return xs;
@@ -450,6 +478,10 @@ types.map = function(arr) {
     return new types.TransitMap(keys, map, size);
 };
 
+types.isMap = function(x) {
+    return x instanceof types.TransitMap;
+};
+
 types.cmap = function(xs) {
     return types.map(xs);
 };
@@ -551,6 +583,10 @@ types.set = function(arr) {
     return new types.TransitSet(new types.TransitMap(keys, map, size));
 };
 
+types.isSet = function(x) {
+    return x instanceof types.TransitSet;
+};
+
 /**
  * @constructor
  */
@@ -564,6 +600,10 @@ types.Quote.prototype.toString = function() {
 
 types.quoted = function(obj) {
     return new types.Quote(obj);
+};
+
+types.isQuoted = function(x) {
+    return x instanceof types.Quoted;
 };
 
 /**
@@ -582,20 +622,8 @@ types.taggedValue = function(tag, rep) {
     return new types.TaggedValue(tag, rep);
 };
 
-/**
- * @constructor
- */
-types.LinkedList = function(head, tail) {
-    this.head = head;
-    this.tail = tail;
-};
-
-types.LinkedList.prototype.toString = function() {
-    return "[LinkedList]";
-};
-
-types.cons = function(x, tail) {
-    return new types.LinkedList(x, tail);
+types.isTaggedValue = function(x) {
+    return x instanceof types.TaggedValue;
 };
 
 /**
@@ -607,6 +635,10 @@ types.List = function(arr) {
 
 types.list = function(xs) {
     return new types.List(xs);
+};
+
+types.isList = function(x) {
+    return x instanceof types.List;
 };
 
 });
