@@ -66,9 +66,6 @@ decoder.Decoder.prototype.defaults = {
         "bools": function(v) { return types.bools(v); }/*,
         "cmap": function(v) { return types.cmap(v); }*/
     },
-    defaultStringDecoder: function(v) {
-        return d.RES+v;
-    },
     prefersStrings: true
 };
 
@@ -118,8 +115,12 @@ decoder.Decoder.prototype.isStringKey = function(node, cache) {
     } else {
         var c0 = node[0],
             c1 = node[1];
-        if(c0 === d.ESC && this.decoders[c1] != null) {
-            return false;
+        if(c0 === d.ESC) {
+            if(this.decoders[c1] != null) {
+                return false;
+            } else {
+                return (c1 === d.ESC || c1 === d.SUB || c1 === d.RES);
+            }
         } else if(c0 === d.SUB && ((typeof cache.read(node)) !== "string"))  {
             return false;
         } else {
@@ -230,7 +231,7 @@ decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue
         }
         return this.arrayBuilder.finalize(ret);
     } else {
-        var ret = []
+        var ret = [];
         for(var i = 0; i < node.length; i++) {
             ret.push(this.decode(node[i], cache, asMapKey, false));
         }
@@ -248,7 +249,7 @@ decoder.Decoder.prototype.parseString = function(string, cache, asMapKey) {
         } else {
             var decoder = this.decoders[c];
             if(decoder == null) {
-                return this.defaultStringDecoder(string);
+                return types.taggedValue(c, string.substring(2));
             } else {
                 return decoder(string.substring(2));
             }
