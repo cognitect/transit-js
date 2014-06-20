@@ -482,9 +482,11 @@ types.isMap = function(x) {
     return x instanceof types.TransitMap;
 };
 
+/*
 types.cmap = function(xs) {
     return types.map(xs);
 };
+*/
 
 /**
  * @constructor
