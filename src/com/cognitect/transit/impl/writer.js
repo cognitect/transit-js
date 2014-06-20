@@ -376,16 +376,6 @@ writer.Writer.prototype.write = function(obj, opts) {
 };
 writer.Writer.prototype["write"] = writer.Writer.prototype.write;
 
-/*
-writer.Writer.prototype.toKey = function(obj) {
-    return this.decoder.decode(
-        this.write(obj, {marshalTop: false, asMapKey: true}),
-        false, true, false
-    );
-};
-writer.Writer.prototype["toKey"] = writer.Writer.prototype.toKey;
-*/
-
 writer.Writer.prototype.register = function(type, handler) {
     this.marshaller.registerHandler(type, handler);
 };
