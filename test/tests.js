@@ -458,12 +458,10 @@ exports.testVerifyJSONCornerCases = function(test) {
     test.done();
 };
 
-/*
 exports.testVerifyRoundtripCmap = function(test) {
-    test.equal(roundtrip("{\"\":[[2,2],\"two\",[1,1],\"one\"]}"), "{\"~#cmap\":[[2,2],\"two\",[1,1],\"one\"]}");
+    test.equal(roundtrip("{\"~#cmap\":[[1,1],\"one\"]}"), "{\"~#cmap\":[[1,1],\"one\"]}");
     test.done();
 };
-*/
 
 exports.testVerifyRoundtripMapCachedStrings = function(test) {
     test.equal(roundtrip('[["^ ","aaaa",1,"bbbb",2],["^ ","^!",3,"^\\"",4],["^ ","^!",5,"^\\"",6]]'),

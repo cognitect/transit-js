@@ -63,8 +63,8 @@ decoder.Decoder.prototype.defaults = {
         "longs": function(v) { return types.longs(v); },
         "floats": function(v) { return types.floats(v); },
         "doubles": function(v) { return types.doubles(v); },
-        "bools": function(v) { return types.bools(v); }/*,
-        "cmap": function(v) { return types.cmap(v); }*/
+        "bools": function(v) { return types.bools(v); },
+        "cmap": function(v) { return types.map(v); }
     },
     prefersStrings: true
 };
