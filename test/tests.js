@@ -412,6 +412,24 @@ exports.testVerifyArrayHashWithCaching = function(test) {
     test.done();
 };
 
+exports.testStringableKeys = function(test) {
+    var em  = transit.writer("json").marshaller(),
+        m0 = transit.map(["foo", 1, "bar", 2]);
+
+    test.ok(transit.stringableKeys(em, m0));
+
+    var m1 = transit.map([transit.keyword("foo"), 1,
+                          transit.keyword("bar"), 2]);
+
+    test.ok(transit.stringableKeys(em, m1));
+
+    var m2 = transit.map([["foo"], 1, ["bar"], 2]);
+
+    test.ok(!transit.stringableKeys(em, m2));
+    
+    test.done();
+};
+
 // =============================================================================
 // Verify Test Cases
 // =============================================================================

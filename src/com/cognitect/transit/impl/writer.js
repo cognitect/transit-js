@@ -203,6 +203,24 @@ writer.emitArray = function(em, iterable, skip, cache) {
     }
 };
 
+writer.stringableKeys = function(em, obj) {
+    var stringableKeys = true,
+        ks             = obj.keys();
+
+    for(var i = 0; i < ks.length; i++) {
+        var k = ks[i];
+        if(typeof k !== "string") {
+            var h = em.handler(k);
+            if(h && (h.tag(k).length !== 1)) {
+                stringableKeys = false;
+                break;
+            }
+        }
+    }
+
+    return stringableKeys;
+};
+
 writer.emitMap = function(em, obj, skip, cache) {
     if((obj.constructor === Object) || (obj.forEach != null)) {
         if(em.verbose) {

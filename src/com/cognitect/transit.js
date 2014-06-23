@@ -112,6 +112,7 @@ transit.extendToEQ =     eq.extendToEQ;
 transit.decoder =        decoder.decoder;
 transit.UUIDfromString = types.UUIDfromString;
 transit.randomUUID =     types.randomUUID;
+transit.stringableKeys = writer.stringableKeys;
 
 if(BROWSER_TARGET) {
     goog.exportSymbol("transit.reader",         transit.reader);
@@ -149,6 +150,7 @@ if(BROWSER_TARGET) {
     goog.exportSymbol("transit.decoder",        decoder.decoder);
     goog.exportSymbol("transit.UUIDfromString", types.UUIDfromString);
     goog.exportSymbol("transit.randomUUID",     types.randomUUID);
+    goog.exportSymbol("transit.stringableKeys", writer.stringableKeys);
 }
 
 if(NODE_TARGET) {
@@ -187,7 +189,8 @@ if(NODE_TARGET) {
         extendToEQ:     eq.extendToEQ,
         decoder:        decoder.decoder,
         UUIDfromString: types.UUIDfromString,
-        randomUUID:     types.randomUUID
+        randomUUID:     types.randomUUID,
+        stringableKeys: writer.stringableKeys
     };
 }
 
