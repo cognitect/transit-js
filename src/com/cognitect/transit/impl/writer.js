@@ -350,7 +350,7 @@ writer.marshalTop = function(em, obj, asMapKey, cache) {
  * @constructor
  */
 writer.Writer = function(marshaller, options) {
-    this.marshaller = marshaller;
+    this._marshaller = marshaller;
     this.options = options || {};
     if(this.options["cache"] === false) {
         this.cache = null;
@@ -359,15 +359,20 @@ writer.Writer = function(marshaller, options) {
     }
 };
 
+writer.Writer.prototype.marshaller = function() {
+    return this._marshaller;
+};
+writer.Writer.prototype["marshaller"] = writer.Writer.prototype.marshaller;
+
 writer.Writer.prototype.write = function(obj, opts) {
     var ret      = null,
         ropts    = opts || {};
         asMapKey = ropts["asMapKey"] || false;
 
     if(ropts["marshalTop"] === false) {
-        ret = writer.marshal(this.marshaller, obj, asMapKey, this.cache)
+        ret = writer.marshal(this._marshaller, obj, asMapKey, this.cache)
     } else {
-        ret = writer.marshalTop(this.marshaller, obj, asMapKey, this.cache)
+        ret = writer.marshalTop(this._marshaller, obj, asMapKey, this.cache)
     }
     if(this.cache != null) {
         this.cache.clear();
@@ -377,7 +382,7 @@ writer.Writer.prototype.write = function(obj, opts) {
 writer.Writer.prototype["write"] = writer.Writer.prototype.write;
 
 writer.Writer.prototype.register = function(type, handler) {
-    this.marshaller.registerHandler(type, handler);
+    this._marshaller.registerHandler(type, handler);
 };
 writer.Writer.prototype["register"] = writer.Writer.prototype.register;
 
