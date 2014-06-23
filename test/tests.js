@@ -40,7 +40,12 @@ exports.testEquality = function(test) {
         o2  = {foo: "bar", baz: "woz"},
         hc2 = transit.hash(o2);
 
-    //test.ok(transit.equals(o1, o2));
+    test.ok(!transit.equals(null, 1));
+    test.ok(!transit.equals(1, null));
+    test.ok(!transit.equals(null, []));
+    test.ok(!transit.equals([], null));
+    test.ok(!transit.equals(null, {}));
+    test.ok(!transit.equals({}, null));
 
     test.done();
 };

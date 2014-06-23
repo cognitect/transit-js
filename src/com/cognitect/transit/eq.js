@@ -129,7 +129,7 @@ eq.hashArrayLike = function(arr) {
 }
 
 eq.hashCode = function(x) {
-    if(x === null) {
+    if(x == null) {
         return 0;
     } else {
         var t = typeof x;
