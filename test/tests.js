@@ -378,6 +378,17 @@ exports.testDecoder = function(test) {
     test.done();
 };
 
+exports.testWriteCMap = function(test) {
+    var w0 = transit.writer("json"),
+        m  = transit.map([[1,2], "foo"]),
+        w1 = transit.writer("json-verbose");
+
+    test.equal(w0.write(m), "{\"~#cmap\":[[1,2],\"foo\"]}");
+    test.equal(w1.write(m), "{\"~#cmap\":[[1,2],\"foo\"]}");
+
+    test.done();
+};
+
 // =============================================================================
 // JSON-M
 // =============================================================================

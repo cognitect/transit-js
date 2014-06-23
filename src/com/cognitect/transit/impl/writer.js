@@ -227,33 +227,55 @@ writer.stringableKeys = function(em, obj) {
 writer.emitMap = function(em, obj, skip, cache) {
     if((obj.constructor === Object) || (obj.forEach != null)) {
         if(em.verbose) {
-            var ret = {};
             if(obj.forEach != null) {
-                obj.forEach(function(v, k) {
-                    ret[writer.marshal(em, k, true, false)] = writer.marshal(em, v, false, cache);
-                });
+                if(writer.stringableKeys(em, obj)) {
+                    var ret = {};
+                    obj.forEach(function(v, k) {
+                        ret[writer.marshal(em, k, true, false)] = writer.marshal(em, v, false, cache);
+                    });
+                    return ret;
+                } else {
+                    var rep = [];
+                    obj.forEach(function(v, k) {
+                        rep.push(writer.marshal(em, k, true, false));
+                        rep.push(writer.marshal(em, v, false, cache));
+                    });
+                    return {"~#cmap": rep};
+                }
             } else {
-                var ks  = Object.keys(obj);
+                var ret = {},
+                    ks  = Object.keys(obj);
                 for(var i = 0; i < ks.length; i++) {
                     ret[writer.marshal(em, ks[i], true, false)] = writer.marshal(em, obj[ks[i]], false, cache);
                 }
+                return ret;
             }
-            return ret;
         } else {
-            var ret = ["^ "];
             if(obj.forEach != null) {
-                obj.forEach(function(v, k) {
-                    ret.push(writer.marshal(em, k, true, cache));
-                    ret.push(writer.marshal(em, v, false, cache));
-                });
+                if(writer.stringableKeys(em, obj)) {
+                    var ret = ["^ "];
+                    obj.forEach(function(v, k) {
+                        ret.push(writer.marshal(em, k, true, cache));
+                        ret.push(writer.marshal(em, v, false, cache));
+                    });
+                    return ret;
+                } else {
+                    var rep = [];
+                    obj.forEach(function(v, k) {
+                        rep.push(writer.marshal(em, k, true, cache));
+                        rep.push(writer.marshal(em, v, false, cache));
+                    });
+                    return {"~#cmap": rep};
+                }
             } else {
-                var ks  = Object.keys(obj);
+                var ret = ["^ "],
+                    ks  = Object.keys(obj);
                 for(var i = 0; i < ks.length; i++) {
                     ret.push(writer.marshal(em, ks[i], true, cache));
                     ret.push(writer.marshal(em, obj[ks[i]], false, cache));
                 }
+                return ret;
             }
-            return ret;
         }
     } else if(em.objectBuilder != null) {
         return em.objectBuilder(obj, function(k) { return writer.marshal(em, k, true, cache);  },
