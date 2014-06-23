@@ -388,12 +388,13 @@ writer.Writer.prototype["marshaller"] = writer.Writer.prototype.marshaller;
 writer.Writer.prototype.write = function(obj, opts) {
     var ret      = null,
         ropts    = opts || {};
-        asMapKey = ropts["asMapKey"] || false;
+        asMapKey = ropts["asMapKey"] || false,
+        cache    = this._marshaller.verbose ? false : this.cache;
 
     if(ropts["marshalTop"] === false) {
-        ret = writer.marshal(this._marshaller, obj, asMapKey, this.cache)
+        ret = writer.marshal(this._marshaller, obj, asMapKey, cache)
     } else {
-        ret = writer.marshalTop(this._marshaller, obj, asMapKey, this.cache)
+        ret = writer.marshalTop(this._marshaller, obj, asMapKey, cache)
     }
     if(this.cache != null) {
         this.cache.clear();
