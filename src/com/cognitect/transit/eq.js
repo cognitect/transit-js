@@ -38,7 +38,7 @@ eq.equals = function (x, y) {
             }
         } else if(x.com$cognitect$transit$equals) {
             return x.com$cognitect$transit$equals(y);      
-        } else if(typeof y === "object") {
+        } else if((y != null) && (typeof y === "object")) {
             var sub   = 0,
                 xklen = 0,
                 yklen = Object.keys(y).length;
