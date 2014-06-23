@@ -321,7 +321,7 @@ types.bools = function(xs) {
  */
 types.TransitMap = function(keys, map, size) {
     this.map = map;
-    this.keys = keys;
+    this._keys = keys;
     this.size = size;
     this.hashCode = -1;
 };
@@ -332,7 +332,7 @@ types.TransitMap.prototype.toString = function() {
 
 types.TransitMap.prototype.clear = function() {
     this.map = {};
-    this.keys = [];
+    this._keys = [];
     this.size = 0;
     this.hashCode = -1;
 };
@@ -348,8 +348,8 @@ types.TransitMap.prototype.entries = function() {
 types.TransitMap.prototype["entries"] = types.TransitMap.prototype.entries;
 
 types.TransitMap.prototype.forEach = function(callback) {
-    for(var i = 0; i < this.keys.length; i++) {
-        var vals = this.map[this.keys[i]];
+    for(var i = 0; i < this._keys.length; i++) {
+        var vals = this.map[this._keys[i]];
         for(var j = 0; j < vals.length; j+=2) {
             callback(vals[j+1], vals[j], this);
         }
@@ -389,7 +389,16 @@ types.TransitMap.prototype.has = function(k) {
 types.TransitMap.prototype["has"] = types.TransitMap.prototype.has;
 
 types.TransitMap.prototype.keys = function() {
-    throw new Error("Unsupported operation: keys");
+    var ks = [];
+
+    for(var i = 0; i < this._keys.length; i++) {
+        var bucket = this.map[this._keys[i]];
+        for(var j = 0; j < bucket.length; j+=2) {
+            ks.push(bucket[j]);
+        }
+    }
+
+    return ks;
 };
 types.TransitMap.prototype["keys"] = types.TransitMap.prototype.keys;
   
@@ -397,7 +406,7 @@ types.TransitMap.prototype.set = function(k, v) {
     var code = eq.hashCode(k),
         vals = this.map[code];
     if(vals == null) {
-        this.keys.push(code);
+        this._keys.push(code);
         this.map[code] = [k, v];
         this.size++;
     } else {
