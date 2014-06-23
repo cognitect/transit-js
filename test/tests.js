@@ -475,9 +475,9 @@ exports.testVerifyRoundtripEmptyString = function(test) {
     test.done();
 };
 
-// exports.testVerifyRoundtripLong = function(test) {
-//     test.equal(roundtrip("{\"~#'\":\"~i8987676543234565432178765987645654323456554331234566789\"}"),
-//                          "{\"~#'\":\"~i8987676543234565432178765987645654323456554331234566789\"}");
+// exports.testVerifyRoundtripBigInteger = function(test) {
+//     test.equal(roundtrip("{\"~#'\":\"~n8987676543234565432178765987645654323456554331234566789\"}"),
+//                          "{\"~#'\":\"~n8987676543234565432178765987645654323456554331234566789\"}");
 //     test.done();
 // };
 
