@@ -1,0 +1,26 @@
+{
+  "name": "transit-js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/cognitect/transit-js",
+  "description": "Transit for JavaScript",
+  "main": "target/transit.js",
+  "keywords": [
+    "json",
+    "msgpack",
+    "edn",
+    "serialization"
+  ],
+  "authors": [
+    "Cognitect",
+    "Inc."
+  ],
+  "license": "EPL",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
