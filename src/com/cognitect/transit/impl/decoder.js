@@ -45,6 +45,7 @@ decoder.Decoder.prototype.defaults = {
         "?": function(v) { return types.boolValue(v); },
         "b": function(v) { return types.binary(v); },
         "i": function(v) { return types.intValue(v); },
+        "n": function(v) { return types.bigInteger(v); },
         "d": function(v) { return types.floatValue(v); },
         "f": function(v) { return types.bigDecimalValue(v); },
         "c": function(v) { return types.charValue(v); },

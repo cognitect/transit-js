@@ -504,3 +504,8 @@ exports.testRoundTripVerboseDates = function(test) {
     
     test.done();
 };
+
+exports.testRoundTripBigInteger = function(test) {
+    test.equal(roundtrip("[\"~n1\"]"), "[\"~n1\"]");
+    test.done();
+};

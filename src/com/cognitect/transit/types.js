@@ -53,6 +53,29 @@ types.floatValue = function(s) {
 /**
  * @constructor
  */
+types.BigInteger = function(s) {
+    this.value = s;
+};
+
+types.BigInteger.prototype.toString = function() {
+    return "[BigInteger: "+this.value+"]";
+};
+
+types.BigInteger.prototype.com$cognitect$transit$equals = function(other) {
+    return (other instanceof types.BigInteger) && (this.value === other.value);
+};
+    
+types.BigInteger.prototype.com$cognitect$transit$hashCode = function() {
+    return eq.hashCode(this.value);
+};
+
+types.bigInteger = function(s) {
+    return new types.BigInteger(s);
+};
+
+/**
+ * @constructor
+ */
 types.BigDecimal = function(s) {
     this.value = s;
 };

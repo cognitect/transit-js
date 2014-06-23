@@ -104,6 +104,14 @@ IntegerHandler.prototype.stringRep = function(v) { return v.toString(); };
 /**
  * @constructor
  */
+var BigIntegerHandler = function(){};
+BigIntegerHandler.prototype.tag = function(v) { return "n"; };
+BigIntegerHandler.prototype.rep = function(v) { return v.value; };
+BigIntegerHandler.prototype.stringRep = function(v) { return v.value; };
+
+/**
+ * @constructor
+ */
 var BigDecimalHandler = function(){};
 BigDecimalHandler.prototype.tag = function(v) { return "f"; };
 BigDecimalHandler.prototype.rep = function(v) { return v.value; };
@@ -250,6 +258,7 @@ handlers.defaultHandlers = function(hs) {
     hs.set(String, new StringHandler());
     hs.set(Number, new NumberHandler());
     hs.set(Long, new IntegerHandler());
+    hs.set(types.BigInteger, new BigIntegerHandler());
     hs.set(types.BigDecimal, new BigDecimalHandler());
     hs.set(Boolean, new BooleanHandler());
     hs.set(Array, new ArrayHandler());
