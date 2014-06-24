@@ -404,7 +404,7 @@ types.TransitMap.prototype.clear = function() {
 types.TransitMap.prototype["clear"] = types.TransitMap.prototype.clear;
 
 types.TransitMap.prototype.getKeys = function() {
-    if(this._keys) {
+    if(this._keys != null) {
         return this._keys;
     } else {
         return Object.keys(this.map);
@@ -413,16 +413,16 @@ types.TransitMap.prototype.getKeys = function() {
 
 types.TransitMap.prototype['delete'] = function(k) {
     this._keys = null;
-    var code   = transit.hash(k),
+    var code   = eq.hashCode(k),
         bucket = this.map[code];
 
     for(var i = 0; i < bucket.length; i+=2) {
-        if(transit.equal(k, bucket[i])) {
-            var newBucket = bucket.splice(i,2);
-            this.map[code] = newBucket;
-            if(newBucket.length === 0) {
+        if(eq.equals(k, bucket[i])) {
+            bucket.splice(i,2);
+            if(bucket.length === 0) {
                 delete this.map[code];
             }
+            this.size--;
             break;
         }
     }

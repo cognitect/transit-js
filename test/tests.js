@@ -238,6 +238,18 @@ exports.testTransitMapEntries = function(test) {
     test.done();
 };
 
+exports.testTransitMapDelete = function(test) {
+    var m0   = transit.map(["foo", 1, "bar", 2, "baz", 3]);
+
+    m0.delete("foo");
+
+    test.equal(m0.size, 2);
+    test.equal(m0.has("foo"), false);
+    test.deepEqual(m0.keySet().sort(), ["bar","baz"].sort());
+
+    test.done();
+};
+
 // =============================================================================
 // TransitSet
 // =============================================================================
