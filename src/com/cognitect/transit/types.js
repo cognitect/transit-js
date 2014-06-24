@@ -356,9 +356,9 @@ types.TransitMapIterator.prototype.next = function() {
         }
 
         var value = null;
-        if(this.type == "keys") {
+        if(this.type === "keys") {
             value = this.bucket[this.bucketIdx];
-        } else if(this.type == "value") {
+        } else if(this.type === "values") {
             value = this.bucket[this.bucketIdx+1];
         } else {
             value = [this.bucket[this.bucketIdx], this.bucket[this.bucketIdx+1]];
