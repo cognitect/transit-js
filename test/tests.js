@@ -223,6 +223,21 @@ exports.testTransitMapValues = function(test) {
     test.done();
 };
 
+exports.testTransitMapEntries = function(test) {
+    var m0   = transit.map(["foo", 1, "bar", 2, "baz", 3]),
+        iter = m0.entries(),
+        kvs  = [];
+
+    kvs.push(iter.next().value);
+    kvs.push(iter.next().value);
+    kvs.push(iter.next().value);
+
+    test.ok(iter.next().done);
+    test.deepEqual(kvs.sort(), [["foo", 1],["bar",2],["baz",3]].sort());
+
+    test.done();
+};
+
 // =============================================================================
 // TransitSet
 // =============================================================================
