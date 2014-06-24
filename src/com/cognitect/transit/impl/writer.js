@@ -214,7 +214,7 @@ writer.isStringableKey = function(em, k) {
 
 writer.stringableKeys = function(em, obj) {
     var stringableKeys = true,
-        ks             = obj.keys();
+        ks             = obj.keySet();
     for(var i = 0; i < ks.length; i++) {
         stringableKeys = writer.isStringableKey(em, ks[i]);
         if(!stringableKeys) {

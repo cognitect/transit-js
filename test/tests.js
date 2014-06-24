@@ -188,7 +188,7 @@ exports.testTransitMapVerbose = function(test) {
 exports.testTransitMapKeys = function(test) {
     var m0 = transit.map(["foo", 1, "bar", 2, "baz", 3]);
 
-    test.deepEqual(m0.keys().sort(), ["foo", "bar", "baz"].sort());
+    test.deepEqual(m0.keySet().sort(), ["foo", "bar", "baz"].sort());
 
     test.done();
 };
