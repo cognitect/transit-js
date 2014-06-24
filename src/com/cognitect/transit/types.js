@@ -105,7 +105,7 @@ types.Keyword = function(name) {
 };
 
 types.Keyword.prototype.toString = function() {
-    return "[Keyword: "+this.name+"]";
+    return ":"+this.name;
 };
 
 types.Keyword.prototype.com$cognitect$transit$equals = function(other) {
