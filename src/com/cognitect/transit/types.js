@@ -622,16 +622,18 @@ types.TransitSet.prototype.add = function(value) {
 types.TransitSet.prototype["add"] = types.TransitSet.prototype.add;
 
 types.TransitSet.prototype.clear = function() {
-    throw new Error("Unsupported operation: clear");
+    this.map = new types.TransitMap();
+    this.size = 0;
 };
 types.TransitSet.prototype["clear"] = types.TransitSet.prototype.clear;
 
 types.TransitSet.prototype['delete'] = function(value) {
-    throw new Error("Unsupported operation: delete");
+    this.map["delete"](value);
+    this.size = this.map.size;
 };
 
 types.TransitSet.prototype.entries = function() {
-    throw new Error("Unsupported operation: entries");
+    return this.map.entries();
 };
 types.TransitSet.prototype["entries"] = types.TransitSet.prototype.entries;
 
@@ -649,12 +651,12 @@ types.TransitSet.prototype.has = function(value) {
 types.TransitSet.prototype["has"] = types.TransitSet.prototype.has;
 
 types.TransitSet.prototype.keys = function() {
-    throw new Error("Unsupported operation: keys");
+    return this.map.keys();
 };
 types.TransitSet.prototype["keys"] = types.TransitSet.prototype.keys;
 
 types.TransitSet.prototype.values = function() {
-    throw new Error("Unsupported operation: valuesa");
+    return this.map.values();
 };
 types.TransitSet.prototype["values"] = types.TransitSet.prototype.values;
 
@@ -681,7 +683,7 @@ types.set = function(arr) {
             vals = map[code];
         if(vals == null) {
             keys.push(code);
-            map[code] = [arr[i], true];
+            map[code] = [arr[i], arr[i]];
             size++
         } else {
             var newEntry = true;
@@ -693,7 +695,7 @@ types.set = function(arr) {
             }
             if(newEntry) {
                 vals.push(arr[i]);
-                vals.push(true);
+                vals.push(arr[i]);
                 size++;
             }
         }

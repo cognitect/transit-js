@@ -279,6 +279,55 @@ exports.testTransitSetBasic = function(test) {
     test.done();
 };
 
+exports.testTransitSetKeys = function(test) {
+    var s0   = transit.set(["foo", "bar", "baz"]),
+        iter = s0.keys(),
+        ks   = [];
+    
+    ks.push(iter.next().value);
+    ks.push(iter.next().value);
+    ks.push(iter.next().value);
+
+    test.ok(iter.next().done);
+    test.deepEqual(ks.sort(), ["foo", "bar", "baz"].sort());
+
+    test.done();
+};
+
+exports.testTransitSetValues = function(test) {
+    var s0   = transit.set(["foo", "bar", "baz"]),
+        iter = s0.values(),
+        vs   = [];
+    
+    vs.push(iter.next().value);
+    vs.push(iter.next().value);
+    vs.push(iter.next().value);
+
+    test.ok(iter.next().done);
+    test.deepEqual(vs.sort(), ["foo", "bar", "baz"].sort());
+
+    test.done();
+};
+
+exports.testTransitSetEntries = function(test) {
+    var s0   = transit.set(["foo", "bar", "baz"]),
+        iter = s0.entries(),
+        kvs  = [];
+
+    kvs.push(iter.next().value);
+    kvs.push(iter.next().value);
+    kvs.push(iter.next().value);
+
+    test.ok(iter.next().done);
+    test.deepEqual(kvs.sort(), [["foo","foo"],["bar","bar"],["baz","baz"]].sort());
+
+    test.done();
+};
+
+exports.testTransitSetDelete = function(test) {
+    test.done();
+};
+
 // =============================================================================
 // UUID
 // =============================================================================
