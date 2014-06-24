@@ -336,11 +336,11 @@ types.bools = function(xs) {
     return xs;
 };
 
-
 /**
  * @constructor
  */
-types.TransitMapKeyIterator = function(map) {
+types.TransitMapIterator = function(map, type) {
+    this.type = type || "keys";
     this.map = map;
     this.idx = 0;
     this.keys = this.map.getKeys();
@@ -348,11 +348,20 @@ types.TransitMapKeyIterator = function(map) {
     this.bucketIdx = 0;
 };
 
-types.TransitMapKeyIterator.prototype.next = function() {
+types.TransitMapIterator.prototype.next = function() {
     if(this.idx < this.map.size()) {
         if(!this.bucket || !(this.bucketIdx < this.bucket.length)) {
             this.bucket = this.map.map[this.keys[this.idx]];
             this.bucketIdx = 0;
+        }
+
+        var value = null;
+        if(this.type == "keys") {
+            value = this.bucket[this.bucketIdx];
+        } else if(this.type == "value") {
+            value = this.bucket[this.bucketIdx+1];
+        } else {
+            value = [this.bucket[this.bucketIdx], this.bucket[this.bucketIdx+1]];
         }
 
         var ret = {
@@ -420,7 +429,7 @@ types.TransitMap.prototype['delete'] = function(k) {
 };
 
 types.TransitMap.prototype.entries = function() {
-    throw new Error("Unsupported operation: entries");
+    return new types.TransitMapIterator(this, "entries");
 };
 types.TransitMap.prototype["entries"] = types.TransitMap.prototype.entries;
 
@@ -467,7 +476,7 @@ types.TransitMap.prototype.has = function(k) {
 types.TransitMap.prototype["has"] = types.TransitMap.prototype.has;
 
 types.TransitMap.prototype.keys = function() {
-    return new types.TransitMapKeyIterator(this);
+    return new types.TransitMapIterator(this, "keys");
 };
 types.TransitMap.prototype["keys"] = types.TransitMap.prototype.keys;
 
@@ -514,7 +523,7 @@ types.TransitMap.prototype.set = function(k, v) {
 types.TransitMap.prototype["set"] = types.TransitMap.prototype.set;
 
 types.TransitMap.prototype.values = function() {
-    throw new Error("Unsupported operation: value");
+    return new types.TransitMapIterator(this, "values");
 };
 types.TransitMap.prototype["values"] = types.TransitMap.prototype.values;
   
