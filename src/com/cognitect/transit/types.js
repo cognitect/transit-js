@@ -340,17 +340,17 @@ types.bools = function(xs) {
  * @constructor
  */
 types.TransitMapIterator = function(map, type) {
-    this.type = type || "keys";
     this.map = map;
-    this.idx = 0;
+    this.type = type || "keys";
     this.keys = this.map.getKeys();
+    this.idx = 0;
     this.bucket = null;
     this.bucketIdx = 0;
 };
 
 types.TransitMapIterator.prototype.next = function() {
-    if(this.idx < this.map.size()) {
-        if(!this.bucket || !(this.bucketIdx < this.bucket.length)) {
+    if(this.idx < this.map.size) {
+        if((this.bucket == null) || !(this.bucketIdx < this.bucket.length)) {
             this.bucket = this.map.map[this.keys[this.idx]];
             this.bucketIdx = 0;
         }
@@ -365,12 +365,12 @@ types.TransitMapIterator.prototype.next = function() {
         }
 
         var ret = {
-            "value": this.bucket[this.bucketIdx],
+            "value": value,
             "done": false
         };
 
         this.idx++;
-        this.bucketIdx++;
+        this.bucketIdx+=2;
 
         return ret;
     } else {

@@ -185,7 +185,7 @@ exports.testTransitMapVerbose = function(test) {
     test.done();
 };
 
-exports.testTransitMapKeys = function(test) {
+exports.testTransitMapKeySet = function(test) {
     var m0 = transit.map(["foo", 1, "bar", 2, "baz", 3]);
 
     test.deepEqual(m0.keySet().sort(), ["foo", "bar", "baz"].sort());
@@ -193,7 +193,20 @@ exports.testTransitMapKeys = function(test) {
     test.done();
 };
 
+exports.testTransitMapKeys = function(test) {
+    var m0   = transit.map(["foo", 1, "bar", 2, "baz", 3]),
+        iter = m0.keys(),
+        ks   = [];
 
+    ks.push(iter.next().value);
+    ks.push(iter.next().value);
+    ks.push(iter.next().value);
+
+    test.ok(iter.next().done);
+    test.deepEqual(ks.sort(), ["foo", "bar", "baz"].sort());
+
+    test.done();
+};
 
 // =============================================================================
 // TransitSet
