@@ -336,6 +336,19 @@ types.bools = function(xs) {
     return xs;
 };
 
+
+/**
+ * @constructor
+ */
+types.TransitMapKeyIterator = function(map) {
+    this.map = map;
+    this.keys = map.getKeys();
+};
+
+types.TransitMapKeyIterator.prototype.next = function() {
+    
+};
+
 /**
  * TransitMap
  *   API follows ES6 maps modulo ES5 Iterables/Iteration
@@ -434,17 +447,23 @@ types.TransitMap.prototype.has = function(k) {
 types.TransitMap.prototype["has"] = types.TransitMap.prototype.has;
 
 types.TransitMap.prototype.keys = function() {
-    var ks = [];
-    for(var i = 0; i < this._keys.length; i++) {
-        var bucket = this.map[this._keys[i]];
+    return new types.TransitMapKeyIterator(this);
+};
+types.TransitMap.prototype["keys"] = types.TransitMap.prototype.keys;
+
+types.TransitMap.prototype.keySet = function() {
+    var keys = this.getKeys(),
+        ret  = [];
+    for(var i = 0; i < keys.length; i++) {
+        var bucket = this.map[keys[i]];
         for(var j = 0; j < bucket.length; j+=2) {
-            ks.push(bucket[j]);
+            ret.push(bucket[j]);
         }
     }
 
-    return ks;
+    return ret;
 };
-types.TransitMap.prototype["keys"] = types.TransitMap.prototype.keys;
+types.TransitMap.prototype["keySet"] = types.TransitMap.prototype.keySet;
   
 types.TransitMap.prototype.set = function(k, v) {
     var code = eq.hashCode(k),
