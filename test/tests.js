@@ -325,6 +325,14 @@ exports.testTransitSetEntries = function(test) {
 };
 
 exports.testTransitSetDelete = function(test) {
+    var s0 = transit.set(["foo", "bar", "baz"]);
+    
+    s0.delete("bar");
+
+    test.equal(s0.size, 2);
+    test.ok(!s0.has("bar"));
+    test.deepEqual(s0.keySet().sort(), ["foo", "baz"].sort());
+
     test.done();
 };
 

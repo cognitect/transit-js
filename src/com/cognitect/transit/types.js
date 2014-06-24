@@ -655,6 +655,11 @@ types.TransitSet.prototype.keys = function() {
 };
 types.TransitSet.prototype["keys"] = types.TransitSet.prototype.keys;
 
+types.TransitSet.prototype.keySet = function() {
+    return this.map.keySet();
+};
+types.TransitSet.prototype["keySet"] = types.TransitSet.prototype.keySet;
+
 types.TransitSet.prototype.values = function() {
     return this.map.values();
 };
