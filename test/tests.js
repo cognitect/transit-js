@@ -47,6 +47,16 @@ exports.testEquality = function(test) {
     test.ok(!transit.equals(null, {}));
     test.ok(!transit.equals({}, null));
 
+    test.ok(!transit.equals(undefined, 1));
+    test.ok(!transit.equals(1, undefined));
+    test.ok(!transit.equals(undefined, []));
+    test.ok(!transit.equals([], undefined));
+    test.ok(!transit.equals(undefined, {}));
+    test.ok(!transit.equals({}, undefined));
+
+    test.equal(transit.hash(null), 0);
+    test.equal(transit.hash(undefined), 0);
+
     test.done();
 };
 
