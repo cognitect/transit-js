@@ -337,11 +337,29 @@ types.bools = function(xs) {
 };
 
 /**
+ * @const
+ * @type {number}
+ */
+types.KEYS = 0;
+
+/**
+ * @const
+ * @type {number}
+ */
+types.VALUES = 1;
+
+/**
+ * @const
+ * @type {number}
+ */
+types.ENTRIES = 2;
+
+/**
  * @constructor
  */
 types.TransitMapIterator = function(map, type) {
     this.map = map;
-    this.type = type || "keys";
+    this.type = type || types.KEYS;
     this.keys = this.map.getKeys();
     this.idx = 0;
     this.bucket = null;
@@ -356,9 +374,9 @@ types.TransitMapIterator.prototype.next = function() {
         }
 
         var value = null;
-        if(this.type === "keys") {
+        if(this.type === types.KEYS) {
             value = this.bucket[this.bucketIdx];
-        } else if(this.type === "values") {
+        } else if(this.type === types.VALUES) {
             value = this.bucket[this.bucketIdx+1];
         } else {
             value = [this.bucket[this.bucketIdx], this.bucket[this.bucketIdx+1]];
@@ -429,7 +447,7 @@ types.TransitMap.prototype['delete'] = function(k) {
 };
 
 types.TransitMap.prototype.entries = function() {
-    return new types.TransitMapIterator(this, "entries");
+    return new types.TransitMapIterator(this, types.ENTRIES);
 };
 types.TransitMap.prototype["entries"] = types.TransitMap.prototype.entries;
 
@@ -476,7 +494,7 @@ types.TransitMap.prototype.has = function(k) {
 types.TransitMap.prototype["has"] = types.TransitMap.prototype.has;
 
 types.TransitMap.prototype.keys = function() {
-    return new types.TransitMapIterator(this, "keys");
+    return new types.TransitMapIterator(this, types.KEYS);
 };
 types.TransitMap.prototype["keys"] = types.TransitMap.prototype.keys;
 
@@ -523,7 +541,7 @@ types.TransitMap.prototype.set = function(k, v) {
 types.TransitMap.prototype["set"] = types.TransitMap.prototype.set;
 
 types.TransitMap.prototype.values = function() {
-    return new types.TransitMapIterator(this, "values");
+    return new types.TransitMapIterator(this, types.VALUES);
 };
 types.TransitMap.prototype["values"] = types.TransitMap.prototype.values;
   
