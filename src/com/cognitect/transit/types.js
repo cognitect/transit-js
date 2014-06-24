@@ -343,9 +343,9 @@ types.bools = function(xs) {
  * @constructor
  */
 types.TransitMap = function(keys, map, size) {
-    this.map = map;
-    this._keys = keys;
-    this.size = size;
+    this.map = map || {};
+    this._keys = keys || [];
+    this.size = size || 0;
     this.hashCode = -1;
 };
 
@@ -361,8 +361,29 @@ types.TransitMap.prototype.clear = function() {
 };
 types.TransitMap.prototype["clear"] = types.TransitMap.prototype.clear;
 
-types.TransitMap.prototype['delete'] = function() {
-    throw new Error("Unsupported operation: delete");
+types.TransitMap.prototype.getKeys = function() {
+    if(this._keys) {
+        return this._keys;
+    } else {
+        return Object.keys(this.map);
+    }
+};
+
+types.TransitMap.prototype['delete'] = function(k) {
+    this._keys = null;
+    var code   = transit.hash(k),
+        bucket = this.map[code];
+
+    for(var i = 0; i < bucket.length; i+=2) {
+        if(transit.equal(k, bucket[i])) {
+            var newBucket = bucket.splice(i,2);
+            this.map[code] = newBucket;
+            if(newBucket.length === 0) {
+                delete this.map[code];
+            }
+            break;
+        }
+    }
 };
 
 types.TransitMap.prototype.entries = function() {
@@ -371,22 +392,23 @@ types.TransitMap.prototype.entries = function() {
 types.TransitMap.prototype["entries"] = types.TransitMap.prototype.entries;
 
 types.TransitMap.prototype.forEach = function(callback) {
-    for(var i = 0; i < this._keys.length; i++) {
-        var vals = this.map[this._keys[i]];
-        for(var j = 0; j < vals.length; j+=2) {
-            callback(vals[j+1], vals[j], this);
+    var ks = this.getKeys();
+    for(var i = 0; i < ks.length; i++) {
+        var bucket = this.map[ks[i]];
+        for(var j = 0; j < bucket.length; j+=2) {
+            callback(bucket[j+1], bucket[j], this);
         }
     }
 };
 types.TransitMap.prototype["forEach"] = types.TransitMap.prototype.forEach;
 
 types.TransitMap.prototype.get = function(k) {
-  var code = eq.hashCode(k),
-      vals = this.map[code];
-    if(vals != null) {
-        for(var i = 0; i < vals.length; i+=2) {
-            if(eq.equals(k,vals[i])) {
-                return vals[i+1];
+  var code   = eq.hashCode(k),
+      bucket = this.map[code];
+    if(bucket != null) {
+        for(var i = 0; i < bucket.length; i+=2) {
+            if(eq.equals(k,bucket[i])) {
+                return bucket[i+1];
             }
         }
     } else {
@@ -396,11 +418,11 @@ types.TransitMap.prototype.get = function(k) {
 types.TransitMap.prototype["get"] = types.TransitMap.prototype.get;
 
 types.TransitMap.prototype.has = function(k) {
-    var code = eq.hashCode(k),
-        vals = this.map[code];
-    if(vals != null) {
-        for(var i = 0; i < vals.length; i+=2) {
-            if(eq.equals(k,vals[i])) {
+    var code   = eq.hashCode(k),
+        bucket = this.map[code];
+    if(bucket != null) {
+        for(var i = 0; i < bucket.length; i+=2) {
+            if(eq.equals(k, bucket[i])) {
                 return true;
             }
         }
@@ -413,7 +435,6 @@ types.TransitMap.prototype["has"] = types.TransitMap.prototype.has;
 
 types.TransitMap.prototype.keys = function() {
     var ks = [];
-
     for(var i = 0; i < this._keys.length; i++) {
         var bucket = this.map[this._keys[i]];
         for(var j = 0; j < bucket.length; j+=2) {
@@ -427,23 +448,25 @@ types.TransitMap.prototype["keys"] = types.TransitMap.prototype.keys;
   
 types.TransitMap.prototype.set = function(k, v) {
     var code = eq.hashCode(k),
-        vals = this.map[code];
-    if(vals == null) {
-        this._keys.push(code);
+        bucket = this.map[code];
+    if(bucket == null) {
+        if(this._keys) {
+            this._keys.push(code);
+        }
         this.map[code] = [k, v];
         this.size++;
     } else {
         var newEntry = true;
-        for(var i = 0; i < vals.length; i+=2) {
-            if(eq.equals(v, vals[i])) {
+        for(var i = 0; i < bucket.length; i+=2) {
+            if(eq.equals(v, bucket[i])) {
                 newEntry = false;
-                vals[i] = v;
+                bucket[i] = v;
                 break;
             }
         }
         if(newEntry) {
-            vals.push(arr[i]);
-            vals.push(arr[i+1]);
+            bucket.push(arr[i]);
+            bucket.push(arr[i+1]);
             this.size++;
         }
     }
@@ -465,9 +488,9 @@ types.TransitMap.prototype.com$cognitect$transit$equals = function(other) {
     if((other instanceof types.TransitMap) &&
        (this.size === other.size)) {
         for(var code in this.map) {
-            var vals = this.map[code];
-            for(var j = 0; j < vals.length; j+=2) {
-                if(!eq.equals(vals[j+1], other.get(vals[j]))) {
+            var bucket = this.map[code];
+            for(var j = 0; j < bucket.length; j+=2) {
+                if(!eq.equals(bucket[j+1], other.get(bucket[j]))) {
                     return false;
                 }
             }
@@ -486,23 +509,23 @@ types.map = function(arr) {
         size = 0;
     for(var i = 0; i < arr.length; i+=2) {
         var code = eq.hashCode(arr[i]),
-            vals = map[code];
-        if(vals == null) {
+            bucket = map[code];
+        if(bucket == null) {
             keys.push(code);
             map[code] = [arr[i], arr[i+1]];
             size++;
         } else {
             var newEntry = true;
-            for(var j = 0; j < vals.length; j+= 2) {
-                if(eq.equals(vals[j], arr[i])) {
-                    vals[j+1] = arr[i+1];
+            for(var j = 0; j < bucket.length; j+= 2) {
+                if(eq.equals(bucket[j], arr[i])) {
+                    bucket[j+1] = arr[i+1];
                     newEntry = false;
                     break;
                 }
             }
             if(newEntry) {
-                vals.push(arr[i]);
-                vals.push(arr[i+1]);
+                bucket.push(arr[i]);
+                bucket.push(arr[i+1]);
                 size++;
             }
         }
@@ -513,12 +536,6 @@ types.map = function(arr) {
 types.isMap = function(x) {
     return x instanceof types.TransitMap;
 };
-
-/*
-types.cmap = function(xs) {
-    return types.map(xs);
-};
-*/
 
 /**
  * @constructor
