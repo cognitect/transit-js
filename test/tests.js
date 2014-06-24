@@ -239,7 +239,7 @@ exports.testTransitMapEntries = function(test) {
 };
 
 exports.testTransitMapDelete = function(test) {
-    var m0   = transit.map(["foo", 1, "bar", 2, "baz", 3]);
+    var m0 = transit.map(["foo", 1, "bar", 2, "baz", 3]);
 
     m0.delete("foo");
 
