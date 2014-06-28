@@ -1,8 +1,6 @@
 // Copyright (c) Cognitect, Inc.
 // All rights reserved.
 
-"use strict";
-
 goog.provide("com.cognitect.transit.handlers");
 goog.require("com.cognitect.transit.util");
 goog.require("com.cognitect.transit.types");

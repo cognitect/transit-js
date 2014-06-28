@@ -1,8 +1,6 @@
 // Copyright (c) Cognitect, Inc.
 // All rights reserved.
 
-"use strict";
-
 goog.provide("com.cognitect.transit.caching");
 goog.require("com.cognitect.transit.delimiters");
 
