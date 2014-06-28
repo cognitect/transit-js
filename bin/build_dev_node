@@ -10,6 +10,7 @@ java -jar $CLOSURE_COMPILER_HOME/compiler.jar -O SIMPLE --formatting PRETTY_PRIN
 --externs=resources/node_externs.js \
 --js $CLOSURE_HOME/closure/goog/base.js \
 --js $CLOSURE_HOME/closure/goog/math/long.js \
+--js src/com/cognitect/transit/util.js \
 --js src/com/cognitect/transit/delimiters.js \
 --js src/com/cognitect/transit/eq.js \
 --js src/com/cognitect/transit/types.js \
