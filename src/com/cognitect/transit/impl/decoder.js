@@ -11,8 +11,8 @@ goog.require("com.cognitect.transit.types");
 
 goog.scope(function() {
 
-var util    = com.cognitect.transit.util,
-    decoder = com.cognitect.transit.impl.decoder,
+var decoder = com.cognitect.transit.impl.decoder,
+    util    = com.cognitect.transit.util,
     d       = com.cognitect.transit.delimiters,
     caching = com.cognitect.transit.caching,
     types   = com.cognitect.transit.types;
@@ -133,7 +133,7 @@ decoder.Decoder.prototype.isStringKey = function(node, cache) {
 };
 
 decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue) {
-    var ks     = Object.keys(hash),
+    var ks     = util.objectKeys(hash),
         key    = ks[0],
         tagKey = ks.length == 1 ? this.decode(key, cache, false, false) : null;
 

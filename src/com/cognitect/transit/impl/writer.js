@@ -14,8 +14,8 @@ goog.require("goog.math.Long");
 
 goog.scope(function() {
 
-var util     = com.cognitect.transit.util,
-    writer   = com.cognitect.transit.impl.writer,
+var writer   = com.cognitect.transit.impl.writer,
+    util     = com.cognitect.transit.util,
     caching  = com.cognitect.transit.caching,
     handlers = com.cognitect.transit.handlers,
     types    = com.cognitect.transit.types,
@@ -246,7 +246,7 @@ writer.emitMap = function(em, obj, skip, cache) {
                 }
             } else {
                 var ret = {},
-                    ks  = Object.keys(obj);
+                    ks  = util.objectKeys(obj);
                 for(var i = 0; i < ks.length; i++) {
                     ret[writer.marshal(em, ks[i], true, false)] = writer.marshal(em, obj[ks[i]], false, cache);
                 }
@@ -271,7 +271,7 @@ writer.emitMap = function(em, obj, skip, cache) {
                 }
             } else {
                 var ret = ["^ "],
-                    ks  = Object.keys(obj);
+                    ks  = util.objectKeys(obj);
                 for(var i = 0; i < ks.length; i++) {
                     ret.push(writer.marshal(em, ks[i], true, cache));
                     ret.push(writer.marshal(em, obj[ks[i]], false, cache));

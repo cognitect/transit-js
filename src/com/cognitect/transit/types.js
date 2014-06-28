@@ -4,12 +4,14 @@
 "use strict";
 
 goog.provide("com.cognitect.transit.types");
+goog.require("com.cognitect.transit.util");
 goog.require("com.cognitect.transit.eq");
 goog.require("goog.math.Long");
 
 goog.scope(function() {
 
 var types = com.cognitect.transit.types,
+    util  = com.cognitect.transit.util,
     eq    = com.cognitect.transit.eq,
     Long  = goog.math.Long;
 
@@ -425,7 +427,7 @@ types.TransitMap.prototype.getKeys = function() {
     if(this._keys != null) {
         return this._keys;
     } else {
-        return Object.keys(this.map);
+        return util.objectKeys(this.map);
     }
 };
 

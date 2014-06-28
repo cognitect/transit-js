@@ -43,7 +43,7 @@ eq.equals = function (x, y) {
         } else if((y != null) && (typeof y === "object")) {
             var sub   = 0,
                 xklen = 0,
-                yklen = Object.keys(y).length;
+                yklen = util.objectKeys(y).length;
             for(var p in x) {
                 if(!x.hasOwnProperty(p)) continue;
                 xklen++;
@@ -111,7 +111,7 @@ eq.hashMapLike = function(m) {
         });
     } else {
         // JS Object case
-        var keys = Object.keys(m);
+        var keys = util.objectKeys(m);
         for(var i = 0; i < keys.length; i++) {
             var key = keys[i];
             if(key === eq.transitHashCodeProperty) continue;

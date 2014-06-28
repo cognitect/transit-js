@@ -4,12 +4,14 @@
 "use strict";
 
 goog.provide("com.cognitect.transit.handlers");
+goog.require("com.cognitect.transit.util");
 goog.require("com.cognitect.transit.types");
 goog.require("goog.math.Long");
 
 goog.scope(function() {
 
 var handlers = com.cognitect.transit.handlers,
+    util     = com.cognitect.transit.util,
     types    = com.cognitect.transit.types,
     Long     = goog.math.Long;
 
@@ -61,7 +63,7 @@ handlers.padZeros = function(n,m) {
 
 handlers.stringableKeys = function(m) {
     var stringable = false,
-    ks = Object.keys(m);
+    ks = util.objectKeys(m);
 
     for(var i = 0; i < ks.length; i++) {
     }
