@@ -4,6 +4,7 @@
 "use strict";
 
 goog.provide("com.cognitect.transit.impl.writer");
+goog.require("com.cognitect.transit.util");
 goog.require("com.cognitect.transit.caching");
 goog.require("com.cognitect.transit.handlers");
 goog.require("com.cognitect.transit.types");
@@ -13,7 +14,8 @@ goog.require("goog.math.Long");
 
 goog.scope(function() {
 
-var writer   = com.cognitect.transit.impl.writer,
+var util     = com.cognitect.transit.util,
+    writer   = com.cognitect.transit.impl.writer,
     caching  = com.cognitect.transit.caching,
     handlers = com.cognitect.transit.handlers,
     types    = com.cognitect.transit.types,
@@ -175,7 +177,7 @@ writer.emitBooleans = function(em, src, cache) {
 
 writer.emitObjects = function(em, iterable, cache) {
     var ret = [];
-    if(Array.isArray(iterable)) {
+    if(util.isArray(iterable)) {
         for(var i = 0; i < iterable.length; i++) {
             ret.push(writer.marshal(em, iterable[i], false, cache));
         }

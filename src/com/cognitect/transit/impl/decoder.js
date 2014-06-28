@@ -4,13 +4,15 @@
 "use strict";
 
 goog.provide("com.cognitect.transit.impl.decoder");
+goog.require("com.cognitect.transit.util");
 goog.require("com.cognitect.transit.delimiters");
 goog.require("com.cognitect.transit.caching");
 goog.require("com.cognitect.transit.types");
 
 goog.scope(function() {
 
-var decoder = com.cognitect.transit.impl.decoder,
+var util    = com.cognitect.transit.util,
+    decoder = com.cognitect.transit.impl.decoder,
     d       = com.cognitect.transit.delimiters,
     caching = com.cognitect.transit.caching,
     types   = com.cognitect.transit.types;
@@ -80,7 +82,7 @@ decoder.Decoder.prototype.decode = function(node, cache, asMapKey, tagValue) {
         return this.decodeString(node, cache, asMapKey, tagValue);
         break;
     case "object":
-        if(Array.isArray(node)) {
+        if(util.isArray(node)) {
             if(node.length > 1 && node[0] === "^ ") {
                 return this.decodeArrayHash(node, cache, asMapKey, tagValue);
             } else {

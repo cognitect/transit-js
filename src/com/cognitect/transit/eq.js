@@ -4,10 +4,12 @@
 "use strict";
 
 goog.provide("com.cognitect.transit.eq");
+goog.require("com.cognitect.transit.util");
 
 goog.scope(function() {
 
-var eq = com.cognitect.transit.eq;
+var eq   = com.cognitect.transit.eq,
+    util = com.cognitect.transit.util;
 
 /**
  * @const
@@ -21,8 +23,8 @@ eq.equals = function (x, y) {
     } else if(x === y) {
         return true;
     } else if(typeof x === "object") {
-        if(Array.isArray(x)) {
-            if(Array.isArray(y)) {
+        if(util.isArray(x)) {
+            if(util.isArray(y)) {
                 if(x.length === y.length) {
                     for(var i = 0; i < x.length; i++) {
                         if(!eq.equals(x[i], y[i])) {
@@ -146,7 +148,7 @@ eq.hashCode = function(x) {
         default:
             if(x instanceof Date) {
                 return x.valueOf();
-            } else if(Array.isArray(x)) {
+            } else if(util.isArray(x)) {
                 return eq.hashArrayLike(x);
             } if(x.com$cognitect$transit$hashCode) {
                 return x.com$cognitect$transit$hashCode();
