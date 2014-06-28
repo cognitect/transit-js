@@ -188,19 +188,7 @@ writer.emitObjects = function(em, iterable, cache) {
 };
 
 writer.emitArray = function(em, iterable, skip, cache) {
-    if(iterable instanceof Int8Array) {
-        return writer.emitChars(em, iterable, cache);
-    } else if(iterable instanceof Int16Array) {
-        return writer.emitShorts(em, iterable, cache);
-    } else if(iterable instanceof Int32Array) {
-        return writer.emitInts(em, iterable, cache);
-    } else if(iterable instanceof Float32Array) {
-        return writer.emitFloats(em, iterable, cache);
-    } else if(iterable instanceof Float64Array) {
-        return writer.emitDoubles(em, iterable, cache);
-    } else {
-        return writer.emitObjects(em, iterable, cache);
-    }
+    return writer.emitObjects(em, iterable, cache);
 };
 
 writer.isStringableKey = function(em, k) {
