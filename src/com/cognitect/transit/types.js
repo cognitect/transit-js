@@ -766,4 +766,20 @@ types.isList = function(x) {
     return x instanceof types.List;
 };
 
+/**
+ * @constructor
+ */
+types.Link = function(rep) {
+    this.rep = rep;
+};
+
+types.link = function(rep) {
+    return new types.Link(rep);
+};
+
+types.isLink = function(x) {
+    return x instanceof types.Link;
+};
+
 });
+

@@ -106,6 +106,8 @@ transit.quoted =         types.quoted;
 transit.isQuoted =       types.isQuoted;
 transit.tagged =         types.taggedValue;
 transit.isTaggedValue =  types.isTaggedValue;
+transit.link =           types.link;
+transit.isLink =         types.isLink;
 transit.hash =           eq.hashCode;
 transit.equals =         eq.equals;
 transit.extendToEQ =     eq.extendToEQ;
@@ -144,6 +146,8 @@ if(BROWSER_TARGET) {
     goog.exportSymbol("transit.isQuoted",       types.isQuoted);
     goog.exportSymbol("transit.tagged",         types.taggedValue);
     goog.exportSymbol("transit.isTaggedValue",  types.idTaggedValue);
+    goog.exportSymbol("transit.link",           types.link);
+    goog.exportSymbol("transit.isLink",         types.isLink);
     goog.exportSymbol("transit.hash",           eq.hashCode);
     goog.exportSymbol("transit.equals",         eq.equals);
     goog.exportSymbol("transit.extendToEQ",     eq.extendToEQ);
@@ -184,6 +188,8 @@ if(NODE_TARGET) {
         isQuoted:       types.isQuoted,
         tagged:         types.taggedValue,
         isTaggedValue:  types.isTaggedValue,
+        link:           types.link,
+        isLink:         types.isLink,
         hash:           eq.hashCode,
         equals:         eq.equals,
         extendToEQ:     eq.extendToEQ,

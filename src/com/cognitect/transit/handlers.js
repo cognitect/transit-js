@@ -253,6 +253,14 @@ handlers.ListHandler.prototype.tag = function(v) { return "list"; };
 handlers.ListHandler.prototype.rep = function(v) { return types.taggedValue("array", v.arr); };
 handlers.ListHandler.prototype.stringRep = function(b) { return null; };
     
+/**
+ * @constructor
+ */
+handlers.LinkHandler = function(){};
+handlers.LinkHandler.prototype.tag = function(v) { return "link"; };
+handlers.LinkHandler.prototype.rep = function(v) { return types.taggedValue("map", v.rep); };
+handlers.LinkHandler.prototype.stringRep = function(b) { return null; };
+
 handlers.defaultHandlers = function(hs) {
     hs.set(null, new handlers.NilHandler());
     hs.set(String, new handlers.StringHandler());

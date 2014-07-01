@@ -519,6 +519,24 @@ exports.testWriteCMap = function(test) {
 };
 
 // =============================================================================
+// Links
+// =============================================================================
+
+exports.testLink = function(test) {
+    var w = transit.writer(),
+        r = transit.reader(),
+        l = r.read("{\"~#link\":{\"href\":\"~rhttp://foo.com\",\"rel\":\"a-rel\",\"name\":\"a-name\",\"render\":\"image\",\"prompt\":\"a-prompt\"}}");
+
+    test.ok(transit.isURI(l.rep.href));
+    test.equal(l.rep.rel, "a-rel");
+    test.equal(l.rep.name, "a-name");
+    test.equal(l.rep.render, "image");
+    test.equal(l.rep.prompt, "a-prompt");
+
+    test.done();
+};
+
+// =============================================================================
 // JSON-M
 // =============================================================================
 
