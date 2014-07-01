@@ -19,8 +19,9 @@ dependencies can be fetched with:
 bin/deps
 ```
 
-In order to build transit-js for ClojureScript, Maven must be
-installed.
+In order to build transit-js for
+[ClojureScript](http://github.com/clojure/clojurescript),
+[Maven](http://maven.apache.org) must be installed.
 
 ## Running the tests
 
