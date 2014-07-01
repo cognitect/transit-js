@@ -664,3 +664,8 @@ exports.testRoundtripUUIDCornerCase = function(test) {
                          "{\"~#'\":\"~u2f9e540c-0591-eff5-4e77-267b2cb3951f\"}");
     test.done();
 };
+
+exports.testMapCornerCase = function(test) {
+    test.equal(roundtrip("[\"^ \"]"), "[\"^ \"]");
+    test.done();
+};

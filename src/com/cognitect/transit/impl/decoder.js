@@ -100,7 +100,7 @@ decoder.Decoder.prototype.decode = function(node, cache, asMapKey, tagValue) {
         break;
     case "object":
         if(util.isArray(node)) {
-            if(node.length > 1 && node[0] === "^ ") {
+            if(node[0] === "^ ") {
                 return this.decodeArrayHash(node, cache, asMapKey, tagValue);
             } else {
                 return this.decodeArray(node, cache, false, tagValue);
