@@ -451,6 +451,7 @@ exports.testWriteEdgeCases = function(test) {
     test.done();
 };
 
+/*
 exports.testCustomDecoder = function(test) {
     var MyInt = function(integer) {
         this.integer = integer;
@@ -469,6 +470,7 @@ exports.testCustomDecoder = function(test) {
 
     test.done();
 };
+*/
 
 exports.testCustomHandler = function(test) {
     var Point = function(x, y) {

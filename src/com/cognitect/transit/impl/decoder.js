@@ -18,6 +18,22 @@ var decoder = com.cognitect.transit.impl.decoder,
 // =============================================================================
 // Decoder
 
+decoder.isGroundDecoder = function(decoder) {
+    switch(decoder) {
+        case "_":
+        case "s":
+        case "?":
+        case "i":
+        case "d":
+        case "b":
+        case "'":
+        case "array":
+        case "map":
+        return true;
+    }
+    return true;
+};
+
 /**
  * A transit decoder
  * @constructor
@@ -25,11 +41,14 @@ var decoder = com.cognitect.transit.impl.decoder,
 decoder.Decoder = function(options) {
     this.options = options || {};
     this.decoders = {};
-    for(var decoder in this.defaults.decoders) {
-        this.decoders[decoder] = this.defaults.decoders[decoder];
+    for(var d in this.defaults.decoders) {
+        this.decoders[d] = this.defaults.decoders[d];
     }
-    for(var decoder in this.options["decoders"]) {
-        this.decoders[decoder] = this.options["decoders"][decoder];
+    for(var d in this.options["decoders"]) {
+        if(decoder.isGroundDecoder(d)) {
+            throw new Error("Cannot override decoder for ground types");
+        }
+        this.decoders[d] = this.options["decoders"][d];
     }
     this.prefersStrings = this.options["prefersStrings"] != null ? this.options["prefersStrings"] : this.defaults.prefersStrings;
     this.defaultStringDecoder = this.options["defaultStringDecoder"] || this.defaults.defaultStringDecoder;
