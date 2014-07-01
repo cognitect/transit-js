@@ -20,4 +20,4 @@ java -jar $CLOSURE_COMPILER_HOME/compiler.jar -O SIMPLE --formatting PRETTY_PRIN
 --js src/com/cognitect/transit/handlers.js \
 --js src/com/cognitect/transit/stringbuilder.js \
 --js src/com/cognitect/transit/impl/writer.js \
---js src/com/cognitect/transit.js > target/transit.bench.js
+--js src/com/cognitect/transit.js > target/transit.js
