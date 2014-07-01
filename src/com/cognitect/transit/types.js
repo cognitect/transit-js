@@ -167,7 +167,11 @@ types.hexFor = function(aLong, sidx, eidx) {
         eidx  = eidx || (sidx+1);
 
     for(var i=sidx, shift=(7-i)*8, mask=Long.fromInt(0xff).shiftLeft(shift); i < eidx; i++, shift-=8, mask=mask.shiftRightUnsigned(8)) {
-        ret += aLong.and(mask).shiftRightUnsigned(shift).toString(16);
+        var s = aLong.and(mask).shiftRightUnsigned(shift).toString(16);
+        if(s.length == 1) {
+            s = "0" + s;
+        }
+        ret += s;
     }
 
     return ret;

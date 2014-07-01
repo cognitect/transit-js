@@ -644,7 +644,7 @@ exports.testDisableWriteCaching = function(test) {
     test.done();
 };
 
-exports.testRoundTripVerboseDates = function(test) {
+exports.testRoundtripVerboseDates = function(test) {
     var r = transit.reader("json"),
         w = transit.writer("json-verbose");
 
@@ -654,7 +654,13 @@ exports.testRoundTripVerboseDates = function(test) {
     test.done();
 };
 
-exports.testRoundTripBigInteger = function(test) {
+exports.testRoundtripBigInteger = function(test) {
     test.equal(roundtrip("[\"~n1\"]"), "[\"~n1\"]");
+    test.done();
+};
+
+exports.testRoundtripUUIDCornerCase = function(test) {
+    test.equal(roundtrip("{\"~#'\":\"~u2f9e540c-0591-eff5-4e77-267b2cb3951f\"}"),
+                         "{\"~#'\":\"~u2f9e540c-0591-eff5-4e77-267b2cb3951f\"}");
     test.done();
 };
