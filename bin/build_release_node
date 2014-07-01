@@ -6,10 +6,10 @@ cd `dirname $0`/..
 
 mkdir -p target
 
-java -jar $CLOSURE_COMPILER_HOME/compiler.jar -O ADVANCED --generate_exports -D NODE_TARGET=true --externs=resources/node_externs.js \
---js $CLOSURE_HOME/closure/goog/base.js \
---js $CLOSURE_HOME/closure/goog/object/object.js \
---js $CLOSURE_HOME/closure/goog/math/long.js \
+java -jar deps/closure-compiler/compiler.jar -O ADVANCED --generate_exports -D NODE_TARGET=true --externs=resources/node_externs.js \
+--js deps/closure-library/closure/goog/base.js \
+--js deps/closure-library/closure/goog/object/object.js \
+--js deps/closure-library/closure/goog/math/long.js \
 --js src/com/cognitect/transit/util.js \
 --js src/com/cognitect/transit/delimiters.js \
 --js src/com/cognitect/transit/eq.js \

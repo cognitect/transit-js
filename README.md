@@ -9,17 +9,20 @@ command from the repo directory:
 npm install
 ```
 
-Install the Google Closure compiler.jar in a convenient location and
-set the $CLOSURE_COMPILER_HOME shell environment variable. Checkout
-the Google Closure Library and set the $CLOSURE_HOME environment
-variable.
+In order to build transit-js from source you will need the [Google
+Closure Compiler](http://developers.google.com/closure/compiler/) and
+the [Google Closure
+Library](http://developers.google.com/closure/library/). These
+dependencies can be fetched with:
 
-In order to build transit-js for ClojureScript, Maven must be installed.
+```
+bin/deps
+```
+
+In order to build transit-js for ClojureScript, Maven must be
+installed.
 
 ## Running the tests
-
-Assuming all dependencies have been installed and
-$CLOSURE_COMPILER_HOME and $CLOSURE_HOME have been set:
 
 ```
 bin/test
