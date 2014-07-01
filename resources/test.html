@@ -1,19 +1,16 @@
 <html>
     <body>
+        <h2>Tests</h2>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js" type="text/javascript"></script>
         <script src="../target/transit.js" type="text/javascript"></script>
         <script type="text/javascript">
             var r = transit.reader();
-            if(typeof console != "undefined") {
-                console.log(JSON.stringify(r.read("{\"foo\":1}")));
-            }
+            document.write("<pre>"+JSON.stringify(r.read("{\"foo\":1}"))+"</pre>");
             var w = transit.writer(),
                 m = transit.map();
             m.set(new Date(0), 1);
             m.set(new Date(10), 10);
-            if(typeof console != "undefined") {
-                console.log(w.write([m]));
-            }
+            document.write("<pre>"+w.write([m])+"</pre>");
         </script>
     </body>
 </html>
