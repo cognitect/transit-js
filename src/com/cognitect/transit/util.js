@@ -9,7 +9,7 @@ goog.scope(function() {
 var util    = com.cognitect.transit.util,
     gobject = goog.object;
 
-if(typeof Object.keys != undefined) {
+if(typeof Object.keys != "undefined") {
     util.objectKeys = function(obj) {
         return Object.keys(obj);
     };
@@ -19,7 +19,7 @@ if(typeof Object.keys != undefined) {
     };
 }
 
-if(typeof Array.isArray != undefined) {
+if(typeof Array.isArray != "undefined") {
     util.isArray = function(obj) {
         return Array.isArray(obj);
     };

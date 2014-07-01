@@ -1,0 +1,12 @@
+<html>
+    <body>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js" type="text/javascript"></script>
+        <script src="../target/transit.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var r = transit.reader();
+            if(typeof console != undefined) {
+                console.log(JSON.stringify(r.read("{\"foo\":1}")));
+            }
+        </script>
+    </body>
+</html>
