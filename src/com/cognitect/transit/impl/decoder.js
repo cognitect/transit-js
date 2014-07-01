@@ -31,7 +31,7 @@ decoder.isGroundDecoder = function(decoder) {
         case "map":
         return true;
     }
-    return true;
+    return false;
 };
 
 /**
