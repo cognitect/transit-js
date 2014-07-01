@@ -202,16 +202,16 @@ decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagV
             }
         }
 
-        if(stringKeys === false) {
-            var ret = types.map();
-            for(var i = 1; i < node.length; i+=2) {
-                ret.set(this.decode(node[i], cache, true, false), this.decode(node[i+1], cache, false, false));
-            }
-            return ret;
-        } else {
+        if(stringKeys) {
             var ret = {};
             for(var i = 1; i < node.length; i+=2) {
                 ret[this.decode(node[i], cache, true, false)] = this.decode(node[i+1], cache, false, false);
+            }
+            return ret;
+        } else {
+            var ret = types.map();
+            for(var i = 1; i < node.length; i+=2) {
+                ret.set(this.decode(node[i], cache, true, false), this.decode(node[i+1], cache, false, false));
             }
             return ret;
         }
