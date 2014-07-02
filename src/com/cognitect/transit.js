@@ -41,7 +41,7 @@ var reader  = com.cognitect.transit.impl.reader,
  *     value. "decoders" should be an object of tags to handle. The
  *     values are functions that will receive the value of matched
  *     tag.
- * @return {Object} A transit reader.
+ * @return {transit.reader} A transit reader.
  */
 transit.reader = function(type, opts) {
     if(type === "json" || type === "json-verbose" || type == null) {
@@ -59,8 +59,10 @@ transit.reader = function(type, opts) {
  * @param {String|null} type type of writer to construct.
  *     Defaults to "json". For verbose mode supply "json-verbose".
  * @param {Object|null} opts writer options. A JavaScript object to
- *     customize the writer.
- * @return {Object}
+ *     customize the writer. Takes "handlers", a JavaScript array containing
+ *     and even number of entries. Every two entries should be a pair - a
+ *     JavaScript constructor and transit writer handler instance.
+ * @return {transit.writer} A transit writer.
  */
 transit.writer = function(type, opts) {
     if(type === "json" || type === "json-verbose" || type == null) {
@@ -82,7 +84,10 @@ transit.writer = function(type, opts) {
  * Create a transit writer handler.
  * @method transit.makeHandler
  * @param {Object} obj An object containing 3 functions, tag, rep and stringRep.
- * @return {Object}
+ *    "tag" should return a string representing the tag to be written on the wire.
+ *    "rep" should return the representation on the wire. "stringRep" is should return
+ *    the string representation of the value.
+ * @return {transit.handler} A transit write handler.
  */
 transit.makeHandler = function(obj) {
     var Handler = function(){};
@@ -104,6 +109,7 @@ transit.makeBuilder = function(obj) {
  * Create a transit date.
  * @method transit.date
  * @param {Number|String} A number or string representing milliseconds since epoch.
+ * @return {Date} A JavaScript Date.
  */
 transit.date = types.date;
 
@@ -113,14 +119,15 @@ transit.date = types.date;
  * range.
  * @method transit.integer
  * @param {Number} s A string representing an integer in the 64bit range.
+ * @return {transit.integer} A 64bit long.
  */
 transit.integer = types.intValue;
 
 /**
- * Check if an object is a transit 64 bit integer.
+ * Test if an object is a transit 64 bit integer.
  * @method transit.isInteger
  * @params {Object} x Any JavaScript value.
- * @return {Boolean} true if the vlaue is a transit 64bit integer, false otherwise.
+ * @return {Boolean} true if the value is a transit 64bit integer, false otherwise.
  */
 transit.isInteger = types.intValue;
 
@@ -129,25 +136,80 @@ transit.isInteger = types.intValue;
  * can be constructed with transit.integer.
  * @method transit.uuid
  * @param {transit.integer} high The high 64 bits.
- * @param {trnasit.integer} low The low 64 bits.
- * @return {Object} A transit UUID.
+ * @param {transit.integer} low The low 64 bits.
+ * @return {transit.uuid} A transit UUID.
  */
 transit.uuid = types.uuid;
 
 /**
- * Check if an object is a trasnit UUID.
+ * Test if an object is a transit UUID.
  * @method transit.isUUID
  * @param {Object} x Any JavaScript value.
- * @return {Boolean}
+ * @return {Boolean} true if the vlaue is a transit UUID instance, false otherwise.
  */
-transit.isUUID =         types.isUUID;
-transit.bigdec =         types.bigDecimalValue;
-transit.isBigDecimal =   types.isBigDecimal;
-transit.keyword =        types.keyword;
-transit.isKeyword =      types.isKeyword;
+transit.isUUID = types.isUUID;
+
+/**
+ * Create a transit big decimal.
+ * @method transit.bigdec
+ * @param {String} s A string representing an arbitrary precisions decimal value.
+ * @return {transit.bigdec} A transit big decimal.
+ */
+transit.bigdec =  types.bigDecimalValue;
+
+/**
+ * Test if an object is a transit big decimal.
+ * @method transit.isBigDecimal
+ * @param {Object} x Any JavaScript value.
+ * @return {Boolean} true if x is a transit big decimal, false otherwise.
+ */
+transit.isBigDecimal = types.isBigDecimal;
+
+/**
+ * Create transit keyword.
+ * @method transit.keyword
+ * @param {String} name A string.
+ * @return {transit.keyword} A transit keyword.
+ */
+transit.keyword = types.keyword;
+
+/**
+ * Test if an object is a transit keyword.
+ * @method transit.isKeyword
+ * @param {Object} x Any JavaScript value.
+ * @return {Boolean} true if x is a transit keyword, false if otherwise.
+ */
+transit.isKeyword = types.isKeyword;
+
+/**
+ * Create a transit symbol.
+ * @method transit.symbol
+ * @param {s} name A string.
+ * @return {transit.symbol} A transit symbol instance.
+ */
 transit.symbol =         types.symbol;
+
+/**
+ * Test if an object is a transit symbol
+ * @method transit.isSymbol
+ * @param {Object} x Any JavaScript value.
+ * @return {Boolean} true if x is a transit symbol, false if otherwise.
+ */
 transit.isSymbol =       types.isSymbol;
+
+/**
+ * Create transit binary blob.
+ * @method transit.binary
+ * @params {String} s A base64 encoded string.
+ * @return {transit.binary} A transit binary blob instance.
+ */
 transit.binary =         types.binary;
+
+/**
+ * Test if an object is a transit binary blob.
+ * @method transit.isBinary
+ * @param {Object} x Any JavaScript value.
+ */
 transit.isBinary =       types.isBinary;
 transit.uri =            types.uri;
 transit.isURI =          types.isURI;
