@@ -126,7 +126,7 @@ transit.integer = types.intValue;
 /**
  * Test if an object is a transit 64 bit integer.
  * @method transit.isInteger
- * @params {Object} x Any JavaScript value.
+ * @param {Object} x Any JavaScript value.
  * @return {Boolean} true if the value is a transit 64bit integer, false otherwise.
  */
 transit.isInteger = types.intValue;
@@ -200,7 +200,7 @@ transit.isSymbol = types.isSymbol;
 /**
  * Create transit binary blob.
  * @method transit.binary
- * @params {String} s A base64 encoded string.
+ * @param {String} s A base64 encoded string.
  * @return {transit.binary} A transit binary blob instance.
  */
 transit.binary = types.binary;
@@ -223,7 +223,7 @@ transit.uri = types.uri;
 /**
  * Test if an object is a transit URI.
  * @method transit.isURI
- * @params {Object} Any JavaScript value.
+ * @param {Object} Any JavaScript value.
  * @return {Boolean} true if x is a transit symbol, false otherwise.
  */
 transit.isURI = types.isURI;
@@ -232,7 +232,7 @@ transit.isURI = types.isURI;
  * Create a transit hash map. Transit maps satisfy the current version
  *     of the ECMAScript 6 Map specification.
  * @method transit.map
- * @params {Array} xs A JavaScript array of alternating key value pairs.
+ * @param {Array} xs A JavaScript array of alternating key value pairs.
  * @return {transit.map} A transit map.
  */
 transit.map = types.map;
@@ -240,7 +240,7 @@ transit.map = types.map;
 /**
  * Test if an object is a transit map.
  * @method transit.isMap
- * @params {Object} x Any JavaScript value.
+ * @param {Object} x Any JavaScript value.
  * @return {Boolean} true if x is a transit map, false otherwise.
  */
 transit.isMap = types.isMap;
@@ -257,7 +257,7 @@ transit.set = types.set;
 /**
  * Test if an object is a transit set.
  * @method transit.isSet
- * @params {Object} x Any JavaScript value.
+ * @param {Object} x Any JavaScript value.
  * @return {Boolean} true if x is a transit set, false otherwise.
  */
 transit.isSet = types.isSet;
