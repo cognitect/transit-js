@@ -567,6 +567,20 @@ types.TransitMap.prototype.com$cognitect$transit$equals = function(other) {
             }
         }
         return true;
+    } else if(other != null && (typeof other === "object")) {
+        var ks    = Object.keys(other),
+            kslen = ks.length - ((other.hasOwnProperty(eq.transitHashCodeProperty) && 1) || 0); 
+        if(this.size === kslen) {
+            for(var p in other) {
+                if((p !== eq.transitHashCodeProperty) &&
+                   (!eq.equals(other[p], this.get(p)))) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     } else {
         return false;
     }

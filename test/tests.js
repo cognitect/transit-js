@@ -250,6 +250,22 @@ exports.testTransitMapDelete = function(test) {
     test.done();
 };
 
+exports.testTransitMapObjectEquality = function(test) {
+    var o0 = {"foo": 1, "bar": 2},
+        o1 = {"foo": 1, "bar": 2, "baz": 3},
+        o2 = {"foo": 1},
+        m  = transit.map(["foo", 1, "bar", 2]);
+
+    test.ok(transit.equals(o0, m));
+    test.ok(transit.equals(m, o0));
+    test.ok(!transit.equals(o1, m));
+    test.ok(!transit.equals(m, o1));
+    test.ok(!transit.equals(o2, m));
+    test.ok(!transit.equals(m, o2));
+
+    test.done();
+};
+
 // =============================================================================
 // TransitSet
 // =============================================================================

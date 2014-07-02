@@ -37,27 +37,31 @@ eq.equals = function (x, y) {
                 return false;
             }
         } else if(x.com$cognitect$transit$equals) {
-            return x.com$cognitect$transit$equals(y);      
+            return x.com$cognitect$transit$equals(y);
         } else if((y != null) && (typeof y === "object")) {
-            var sub   = 0,
-                xklen = 0,
-                yklen = util.objectKeys(y).length;
-            for(var p in x) {
-                if(!x.hasOwnProperty(p)) continue;
-                xklen++;
-                if(p == eq.transitHashCodeProperty) {
-                    if(!y[p]) sub = -1;
-                    continue;
-                }
-                if(!y.hasOwnProperty(p)) {
-                    return false;
-                } else {
-                    if(!eq.equals(x[p], y[p])) {
+            if(y.com$cognitect$transit$equals) {
+                return y.com$cognitect$transit$equals(x);
+            } else {
+                var sub   = 0,
+                    xklen = 0,
+                    yklen = util.objectKeys(y).length;
+                for(var p in x) {
+                    if(!x.hasOwnProperty(p)) continue;
+                    xklen++;
+                    if(p == eq.transitHashCodeProperty) {
+                        if(!y[p]) sub = -1;
+                        continue;
+                    }
+                    if(!y.hasOwnProperty(p)) {
                         return false;
+                    } else {
+                        if(!eq.equals(x[p], y[p])) {
+                            return false;
+                        }
                     }
                 }
+                return (xklen + sub) === yklen;
             }
-            return (xklen + sub) === yklen;
         } else {
             return false;
         }
