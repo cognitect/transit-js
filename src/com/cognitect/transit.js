@@ -18,8 +18,12 @@ var BROWSER_TARGET = false;
 
 goog.scope(function() {
 
-var transit = com.cognitect.transit,
-    reader  = com.cognitect.transit.impl.reader,
+/**
+ * @class transit
+ */
+var transit = com.cognitect.transit;
+
+var reader  = com.cognitect.transit.impl.reader,
     writer  = com.cognitect.transit.impl.writer,
     decoder = com.cognitect.transit.impl.decoder,
     types   = com.cognitect.transit.types,
@@ -27,10 +31,17 @@ var transit = com.cognitect.transit,
 
 /**
  * Create a transit reader instance.
+ * @method transit.reader
  * @param {string|null} type type of reader to construct.
- *     only "json" supported.
- * @param {Object|null} opts reader options
- * @return {transit.impl.reader.Reader}
+ *     Default to "json". For verbose mode supply "json-verbose".
+ * @param {Object|null} opts reader options. A JavaScript object to
+ *     customize the writer Valid entries include "defaultDecoder",
+ *     and "decoders". "defaultDecoder" should be JavaScript function
+ *     taking two arguments, the first is the tag, the second the
+ *     value. "decoders" should be an object of tags to handle. The
+ *     values are functions that will receive the value of matched
+ *     tag.
+ * @return {Object} A transit reader.
  */
 transit.reader = function(type, opts) {
     if(type === "json" || type === "json-verbose" || type == null) {
@@ -44,10 +55,12 @@ transit.reader = function(type, opts) {
 
 /**
  * Create a transit writer instance.
- * @param {string|null} type type of writer to construct.
- *     only "json" supported.
- * @param {Object|null} opts writer options
- * @return {transit.impl.writer.Writer}
+ * @method transit.writer
+ * @param {String|null} type type of writer to construct.
+ *     Defaults to "json". For verbose mode supply "json-verbose".
+ * @param {Object|null} opts writer options. A JavaScript object to
+ *     customize the writer.
+ * @return {Object}
  */
 transit.writer = function(type, opts) {
     if(type === "json" || type === "json-verbose" || type == null) {
@@ -65,6 +78,12 @@ transit.writer = function(type, opts) {
     }
 };
 
+/**
+ * Create a transit writer handler.
+ * @method transit.makeHandler
+ * @param {Object} obj An object containing 3 functions, tag, rep and stringRep.
+ * @return {Object}
+ */
 transit.makeHandler = function(obj) {
     var Handler = function(){};
     Handler.prototype.tag = obj["tag"];
@@ -81,10 +100,46 @@ transit.makeBuilder = function(obj) {
     return new Builder();
 };
 
-transit.date =           types.date;
-transit.integer =        types.intValue;
-transit.isInteger =      types.intValue;
-transit.uuid =           types.uuid;
+/**
+ * Create a transit date.
+ * @method transit.date
+ * @param {Number|String} A number or string representing milliseconds since epoch.
+ */
+transit.date = types.date;
+
+/**
+ * Create a transit 64bit integer. Will return a JavaScript
+ * number if a string that represents an integer value in the 53bit
+ * range.
+ * @method transit.integer
+ * @param {Number} s A string representing an integer in the 64bit range.
+ */
+transit.integer = types.intValue;
+
+/**
+ * Check if an object is a transit 64 bit integer.
+ * @method transit.isInteger
+ * @params {Object} x Any JavaScript value.
+ * @return {Boolean} true if the vlaue is a transit 64bit integer, false otherwise.
+ */
+transit.isInteger = types.intValue;
+
+/**
+ * Create transit UUID from high and low 64 bits. These integer values
+ * can be constructed with transit.integer.
+ * @method transit.uuid
+ * @param {transit.integer} high The high 64 bits.
+ * @param {trnasit.integer} low The low 64 bits.
+ * @return {Object} A transit UUID.
+ */
+transit.uuid = types.uuid;
+
+/**
+ * Check if an object is a trasnit UUID.
+ * @method transit.isUUID
+ * @param {Object} x Any JavaScript value.
+ * @return {Boolean}
+ */
 transit.isUUID =         types.isUUID;
 transit.bigdec =         types.bigDecimalValue;
 transit.isBigDecimal =   types.isBigDecimal;
