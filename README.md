@@ -7,6 +7,7 @@ command from the repo directory:
 
 ```
 npm install
+npm install grunt-cli
 ```
 
 In order to build transit-js from source you will need the [Google

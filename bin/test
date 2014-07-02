@@ -5,4 +5,4 @@ set -e
 cd `dirname $0`/..
 
 bin/build_dev_node
-grunt nodeunit
+node_modules/.bin/grunt nodeunit
