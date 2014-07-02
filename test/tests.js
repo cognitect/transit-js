@@ -579,6 +579,26 @@ exports.testStringableKeys = function(test) {
 };
 
 // =============================================================================
+// Default decoder
+// =============================================================================
+
+exports.testDefaultDecoder = function(test) {
+    var r = transit.reader("json", {
+        defaultDecoder: function(tag, value) {
+            throw new Error("Oops!");
+        }
+    });
+
+    try {
+        r.read("[\"~z1\"]");
+    } catch(e) {
+        if(e.message === "Oops!") {
+            test.done();
+        }
+    }
+};
+
+// =============================================================================
 // Verify Test Cases
 // =============================================================================
 
