@@ -115,8 +115,8 @@ transit.date = types.date;
 
 /**
  * Create a transit 64bit integer. Will return a JavaScript
- * number if a string that represents an integer value in the 53bit
- * range.
+ *     number if a string that represents an integer value in the 53bit
+ *     range.
  * @method transit.integer
  * @param {Number} s A string representing an integer in the 64bit range.
  * @return {transit.integer} A 64bit long.
@@ -133,7 +133,7 @@ transit.isInteger = types.intValue;
 
 /**
  * Create transit UUID from high and low 64 bits. These integer values
- * can be constructed with transit.integer.
+ *      can be constructed with transit.integer.
  * @method transit.uuid
  * @param {transit.integer} high The high 64 bits.
  * @param {transit.integer} low The low 64 bits.
@@ -230,7 +230,7 @@ transit.isURI = types.isURI;
 
 /**
  * Create a transit hash map. Transit maps satisfy the current version
- * of the ECMAScript 6 Map specification.
+ *     of the ECMAScript 6 Map specification.
  * @method transit.map
  * @params {Array} xs A JavaScript array of alternating key value pairs.
  * @return {transit.map} A transit map.
@@ -243,15 +243,39 @@ transit.map = types.map;
  * @params {Object} x Any JavaScript value.
  * @return {Boolean} true if x is a transit map, false otherwise.
  */
-transit.isMap =          types.isMap;
+transit.isMap = types.isMap;
 
 /**
  * Create a transit set. Transit sets satisfy the current version of the
- * 
+ *     of the ECMAScript 6 Set specification.
+ * @method transit.set
+ * @param {Array} xs A JavaScript array of values.
+ * @return {transit.set} A transit set.
  */
-transit.set =            types.set;
-transit.isSet =          types.isSet;
-transit.list =           types.list;
+transit.set = types.set;
+
+/**
+ * Test if an object is a transit set.
+ * @method transit.isSet
+ * @params {Object} x Any JavaScript value.
+ * @return {Boolean} true if x is a transit set, false otherwise.
+ */
+transit.isSet = types.isSet;
+
+/**
+ * Create a transit list.
+ * @method transit.list
+ * @params {Array} A JavaScript array.
+ * @return {transit.list} A transit list.
+ */
+transit.list = types.list;
+
+/**
+ * Test if an object is a transit list.
+ * @method transit.list
+ * @param {Object} x Any JavaScript value.
+ * @return {Boolean} true if x is a transit list, false otherwise.
+ */
 transit.isList =         types.isList;
 transit.quoted =         types.quoted;
 transit.isQuoted =       types.isQuoted;
@@ -261,7 +285,19 @@ transit.link =           types.link;
 transit.isLink =         types.isLink;
 transit.hash =           eq.hashCode;
 transit.equals =         eq.equals;
-transit.extendToEQ =     eq.extendToEQ;
+
+/**
+ * Extend an object to hashing and equality required by
+ *     transit maps and sets. Only required for custom
+ *     types, JavaScript primitive types and transit
+ *     types are handled.
+ * @method transit.extendToEQ
+ * @param {Object} x A JavaScript object, will be mutated.
+ * @return {Object} x
+ */
+transit.extendToEQ = eq.extendToEQ;
+
+
 transit.decoder =        decoder.decoder;
 transit.UUIDfromString = types.UUIDfromString;
 transit.randomUUID =     types.randomUUID;
