@@ -265,7 +265,7 @@ transit.isSet = types.isSet;
 /**
  * Create a transit list.
  * @method transit.list
- * @params {Array} A JavaScript array.
+ * @param {Array} A JavaScript array.
  * @return {transit.list} A transit list.
  */
 transit.list = types.list;
@@ -276,15 +276,82 @@ transit.list = types.list;
  * @param {Object} x Any JavaScript value.
  * @return {Boolean} true if x is a transit list, false otherwise.
  */
-transit.isList =         types.isList;
-transit.quoted =         types.quoted;
-transit.isQuoted =       types.isQuoted;
-transit.tagged =         types.taggedValue;
+transit.isList = types.isList;
+
+/**
+ * Create a transit quoted value.
+ * @method transit.quoted
+ * @param {Object} x Any JavaScript value.
+ * @return {transit.quoted} A transit quoted value.
+ */
+transit.quoted = types.quoted;
+
+/**
+ * Test if an object is a transit quoted value.
+ * @method transit.isQuoted
+ * @param {Object} x Any JavaScript value.
+ * @return {Boolean} true if x is a transit value, false otherwise.
+ */
+transit.isQuoted = types.isQuoted;
+
+/**
+ * Create a transit tagged value.
+ * @method transit.tagged
+ * @param {String} tag A tag.
+ * @param {Object} value A JavaScrpt array, object, or string.
+ * @return {transit.tagged} A transit tagged value.
+ */
+transit.tagged = types.taggedValue;
+
+/**
+ * Test if an object is a transit tagged value.
+ * @method transit.isTaggedValue
+ * @param {Object} x Any JavaScript value.
+ * @return {Boolean} true if x is a transit value, false otherwise.
+ */
 transit.isTaggedValue =  types.isTaggedValue;
-transit.link =           types.link;
-transit.isLink =         types.isLink;
-transit.hash =           eq.hashCode;
-transit.equals =         eq.equals;
+
+/**
+ * Create a transit link.
+ * @method transit.link
+ * @param {Object} obj A JavaScript object which must contain at a
+ *     minimum the following keys: href, rel. It may optionally include
+ *     name, render, and prompt. href must be a transit.uri, all other
+ *     values are strings, and render must be either "image" or "link".
+ * @return {Object} A transit link.
+ */
+transit.link = types.link;
+
+/**
+ * Test if an object is a transit link.
+ * @method transit.isLInk
+ * @param {Object} x Any JavaScript object.
+ * @return {Boolean} true if x is a transit link, false otherwise.
+ */
+transit.isLink = types.isLink;
+
+/**
+ * Compute the hashCode for any JavaScript object that has been
+ *    extend to transit's equality and hashing protocol. JavaScript
+ *    primitives and transit value are already extended to this protocol.
+ *    Custom types may be extended to the protocol via transit.extenToEQ.
+ * @method transit.hash
+ * @param {Object} x Any JavaScript object that has been extended to
+ *    transit's equality and hashing protocol.
+ * @return {Number} Returns JavaScript number - semantically a 32bit integer.
+ */
+transit.hash = eq.hashCode;
+
+/**
+ * Test whether two JavaScript values are equal. The values to be tested
+ *    should be extended to transit's equality and hasing protocol. JavaScript
+ *    natives and transit value have already been extended to the protocol.
+ *    Custom types may be extended via transit.extendToEQ.
+ * @param {Object} x A JavaScript object
+ * @param {Object} y A JavaScript object
+ * @return {Boolean} true if the x and y are equal, false otherwise.
+ */
+transit.equals = eq.equals;
 
 /**
  * Extend an object to hashing and equality required by
@@ -297,7 +364,7 @@ transit.equals =         eq.equals;
  */
 transit.extendToEQ = eq.extendToEQ;
 
-
+/* The following are undocumented for now */
 transit.decoder =        decoder.decoder;
 transit.UUIDfromString = types.UUIDfromString;
 transit.randomUUID =     types.randomUUID;
