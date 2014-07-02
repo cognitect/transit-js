@@ -21,6 +21,14 @@ In order to build transit-js for
 bin/test
 ```
 
+In order to run the `bin/verify` tests from
+[transit-clj](http://github.com/cognitect/transit-clj), you must first
+build the production Node.js build:
+
+```
+bin/build_release_node
+```
+
 ## Build
 
 ### Version
