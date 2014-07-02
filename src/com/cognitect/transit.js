@@ -343,10 +343,13 @@ transit.isLink = types.isLink;
 transit.hash = eq.hashCode;
 
 /**
- * Test whether two JavaScript values are equal. The values to be tested
- *    should be extended to transit's equality and hasing protocol. JavaScript
- *    natives and transit value have already been extended to the protocol.
- *    Custom types may be extended via transit.extendToEQ.
+ * Test whether two JavaScript objects represent equal values. The
+ *    objects to be tested should be extended to transit's equality
+ *    and hasing protocol. JavaScript natives and transit value have
+ *    already been extended to the protocol, including objects and
+ *    arrays.  Also transit maps and JavaScript objects may be
+ *    compared for equality. Custom types may be extended via
+ *    transit.extendToEQ.
  * @param {Object} x A JavaScript object
  * @param {Object} y A JavaScript object
  * @return {Boolean} true if the x and y are equal, false otherwise.
