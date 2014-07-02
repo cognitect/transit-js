@@ -4,6 +4,8 @@ set -e
 
 cd `dirname $0`/..
 
+npm install
+npm install grunt-cli
 mkdir -p deps/closure-compiler
 cd deps/closure-compiler
 curl -O -s http://dl.google.com/closure-compiler/compiler-latest.zip

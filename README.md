@@ -2,19 +2,10 @@
 
 ## Dependencies
 
-Install the project's Node development dependencies with the following
-command from the repo directory:
-
-```
-npm install
-npm install grunt-cli
-```
-
-In order to build transit-js from source you will need the [Google
-Closure Compiler](http://developers.google.com/closure/compiler/) and
-the [Google Closure
-Library](http://developers.google.com/closure/library/). These
-dependencies can be fetched with:
+Building and testing transit-js requires
+[Node.js](http://nodejs.org). Install the project's additional
+development dependencies with the following command from the repo
+directory:
 
 ```
 bin/deps
