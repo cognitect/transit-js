@@ -52,6 +52,12 @@ bin/build_release_node
 bin/build_release_browser
 ```
 
+### Building the documentaiton
+
+```
+bin/docs
+```
+
 ### Build JAR for ClojureScript
 
 The following will install a JAR suitable for use from ClojureScript

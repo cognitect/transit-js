@@ -14,7 +14,8 @@
     "grunt-contrib-nodeunit": "~0.2.2",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-uglify": "~0.2.7",
-    "yuidocjs": "~0.3.50"
+    "yuidocjs": "~0.3.50",
+    "es6-shim": "~0.13.0"
   },
   "description": "## Usage",
   "main": "Gruntfile.js",
