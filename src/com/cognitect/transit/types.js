@@ -399,6 +399,7 @@ types.TransitMapIterator.prototype.next = function() {
         return {"done": true};
     }
 };
+types.TransitMapIterator.prototype["next"] = types.TransitMapIterator.prototype.next;
 
 /**
  * TransitMap
