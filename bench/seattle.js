@@ -11,7 +11,8 @@ var json = [{"~:district/region":"~:region/e","~:db/id":{"~:part":"~:db.part/use
     ITERS = 100;
 
 
-if(navigator.appName.indexOf("Internet Explorer")!=-1){
+if((typeof navigator != "undefined") &&
+   (navigator.appName.indexOf("Internet Explorer") != -1)) {
     ITERS = 1;
 }
 
@@ -89,7 +90,6 @@ time(function() {
 });
 }
 
-/*
 log("JSON.parse typical");
 var sjsonStr = JSON.stringify(sjson);
 for(var j = 0; j < 5; j++) {
@@ -109,4 +109,4 @@ time(function() {
     }
 });
 }
-*/
+
