@@ -324,7 +324,7 @@ transit.link = types.link;
 
 /**
  * Test if an object is a transit link.
- * @method transit.isLInk
+ * @method transit.isLink
  * @param {Object} x Any JavaScript object.
  * @return {Boolean} true if x is a transit link, false otherwise.
  */
