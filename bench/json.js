@@ -26,6 +26,13 @@ time(function() {
     }
 }, 5);
 
+console.log("JSON.parse transit JSON 100 iters");
+time(function() {
+    for(var i = 0; i < 100; i++) {
+        JSON.parse(tstr);
+    }
+}, 5);
+
 console.log("transit read 100 iters");
 time(function() {
     for(var i = 0; i < 100; i++) {
