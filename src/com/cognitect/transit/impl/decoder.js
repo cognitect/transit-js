@@ -51,7 +51,7 @@ decoder.Decoder = function(options) {
         this.decoders[d] = this.options["decoders"][d];
     }
     this.prefersStrings = this.options["prefersStrings"] != null ? this.options["prefersStrings"] : this.defaults.prefersStrings;
-    this.defaultStringDecoder = this.options["defaultStringDecoder"] || this.defaults.defaultStringDecoder;
+    this.defaultDecoder = this.options["defaultDecoder"] || this.defaults.defaultDecoder;
     /* NOT PUBLIC */
     this.mapBuilder = this.options["mapBuilder"];
     this.arrayBuilder = this.options["arrayBuilder"];
@@ -85,6 +85,9 @@ decoder.Decoder.prototype.defaults = {
         "doubles": function(v) { return types.doubles(v); },
         "bools": function(v) { return types.bools(v); },
         "cmap": function(v) { return types.map(v); }
+    },
+    defaultDecoder: function(c, val) {
+        return types.taggedValue(c, val);
     },
     prefersStrings: true
 };
@@ -268,7 +271,7 @@ decoder.Decoder.prototype.parseString = function(string, cache, asMapKey) {
         } else {
             var decoder = this.decoders[c];
             if(decoder == null) {
-                return types.taggedValue(c, string.substring(2));
+                return this.defaultDecoder(c, string.substring(2));
             } else {
                 return decoder(string.substring(2));
             }
