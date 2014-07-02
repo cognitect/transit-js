@@ -177,7 +177,7 @@ transit.keyword = types.keyword;
  * Test if an object is a transit keyword.
  * @method transit.isKeyword
  * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if x is a transit keyword, false if otherwise.
+ * @return {Boolean} true if x is a transit keyword, false otherwise.
  */
 transit.isKeyword = types.isKeyword;
 
@@ -187,15 +187,15 @@ transit.isKeyword = types.isKeyword;
  * @param {s} name A string.
  * @return {transit.symbol} A transit symbol instance.
  */
-transit.symbol =         types.symbol;
+transit.symbol = types.symbol;
 
 /**
  * Test if an object is a transit symbol
  * @method transit.isSymbol
  * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if x is a transit symbol, false if otherwise.
+ * @return {Boolean} true if x is a transit symbol, false otherwise.
  */
-transit.isSymbol =       types.isSymbol;
+transit.isSymbol = types.isSymbol;
 
 /**
  * Create transit binary blob.
@@ -203,18 +203,52 @@ transit.isSymbol =       types.isSymbol;
  * @params {String} s A base64 encoded string.
  * @return {transit.binary} A transit binary blob instance.
  */
-transit.binary =         types.binary;
+transit.binary = types.binary;
 
 /**
  * Test if an object is a transit binary blob.
  * @method transit.isBinary
  * @param {Object} x Any JavaScript value.
  */
-transit.isBinary =       types.isBinary;
-transit.uri =            types.uri;
-transit.isURI =          types.isURI;
-transit.map =            types.map;
+transit.isBinary = types.isBinary;
+
+/**
+ * Create a transit URI.
+ * @method transit.uri
+ * @param {String} A string representing a valid URI.
+ * @return {transit.uri} A transit URI.
+ */
+transit.uri = types.uri;
+
+/**
+ * Test if an object is a transit URI.
+ * @method transit.isURI
+ * @params {Object} Any JavaScript value.
+ * @return {Boolean} true if x is a transit symbol, false otherwise.
+ */
+transit.isURI = types.isURI;
+
+/**
+ * Create a transit hash map. Transit maps satisfy the current version
+ * of the ECMAScript 6 Map specification.
+ * @method transit.map
+ * @params {Array} xs A JavaScript array of alternating key value pairs.
+ * @return {transit.map} A transit map.
+ */
+transit.map = types.map;
+
+/**
+ * Test if an object is a transit map.
+ * @method transit.isMap
+ * @params {Object} x Any JavaScript value.
+ * @return {Boolean} true if x is a transit map, false otherwise.
+ */
 transit.isMap =          types.isMap;
+
+/**
+ * Create a transit set. Transit sets satisfy the current version of the
+ * 
+ */
 transit.set =            types.set;
 transit.isSet =          types.isSet;
 transit.list =           types.list;
