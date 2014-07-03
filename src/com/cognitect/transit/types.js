@@ -798,14 +798,15 @@ types.map = function(arr, checkDups) {
             for(var i = 0; i < t.length; i+=2) {
                 var seen = false;
                 for(var j = 0; j < arr.length; j+=2) {
-                    if(eq.equals(t[i], arr[j])) {
-                        arr[j] = t[i+1];
+                    if(eq.equals(arr[j], t[i])) {
+                        arr[j+1] = t[i+1];
                         seen = true;
                         break;
                     }
                 }
                 if(!seen) {
-                    arr.push(t[i], t[i+1]);
+                    arr.push(t[i]);
+                    arr.push(t[i+1]);
                 }
             }
         }
