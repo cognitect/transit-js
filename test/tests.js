@@ -384,7 +384,7 @@ exports.testWriteVerboseMode = function(test) {
 
 exports.testRead = function(test) {
     var reader = transit.reader("json");
-    test.deepEqual(reader.read("{\"foo\":\"bar\"}"), {foo:"bar"});
+    test.ok(transit.equals(reader.read("{\"foo\":\"bar\"}"), {foo:"bar"}));
     test.done();
 };
 
@@ -545,11 +545,11 @@ exports.testLink = function(test) {
         r = transit.reader(),
         l = r.read("{\"~#link\":{\"href\":\"~rhttp://foo.com\",\"rel\":\"a-rel\",\"name\":\"a-name\",\"render\":\"image\",\"prompt\":\"a-prompt\"}}");
 
-    test.ok(transit.isURI(l.rep.href));
-    test.equal(l.rep.rel, "a-rel");
-    test.equal(l.rep.name, "a-name");
-    test.equal(l.rep.render, "image");
-    test.equal(l.rep.prompt, "a-prompt");
+    test.ok(transit.isURI(l.rep.get("href")));
+    test.equal(l.rep.get("rel"), "a-rel");
+    test.equal(l.rep.get("name"), "a-name");
+    test.equal(l.rep.get("render"), "image");
+    test.equal(l.rep.get("prompt"), "a-prompt");
 
     test.done();
 };
