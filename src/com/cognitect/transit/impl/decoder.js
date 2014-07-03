@@ -218,24 +218,11 @@ decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagV
 
         // collect keys
         for(var i = 1; i < node.length; i +=2) {
-            stringKeys = stringKeys && this.isStringKey(node[i], cache);
             nodep.push(this.decode(node[i], cache, true, false));
             nodep.push(this.decode(node[i+1], cache, false, false));
         }
 
-        if(stringKeys) {
-            var ret = {};
-            for(var j = 0; j < nodep.length; j+=2) {
-                ret[nodep[j]] = nodep[j+1];
-            }
-            return ret;
-        } else {
-            var ret = types.map();
-            for(var j = 0; j < nodep.length; j+=2) {
-                ret.set(nodep[j], nodep[j+1]);
-            }
-            return ret;
-        }
+        return transit.map(nodep);
     }
 };
 

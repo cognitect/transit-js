@@ -402,6 +402,56 @@ types.TransitMapIterator.prototype.next = function() {
 types.TransitMapIterator.prototype["next"] = types.TransitMapIterator.prototype.next;
 
 /**
+ * TransitArrayMap
+ */
+types.TransitArrayMap = function(entries) {
+    this.entries = entries;
+};
+
+types.TransitArrayMap.prototype.toString = function() {
+    return "[TransitArrayMap]";
+};
+
+types.TransitArrayMap.prototype.clear = function() {
+    this.entries = [];
+};
+
+types.TransitArrayMap.prototype.keys = function() {
+};
+
+types.TransitArrayMap.prototype.keySet = function() {
+    var ret = [];
+    for(var i = 0, j = 0; j < this.entries.length; i++, j+=2) {
+        ret[i] = entries[j];
+    }
+    return ret;
+};
+
+types.TransitArrayMap.prototype.entries = function() {
+};
+
+types.TransitArrayMap.prototype.values = function() {
+};
+
+types.TransitArrayMap.prototype.forEach = function() {
+};
+
+types.TransitArrayMap.prototype.get = function(k) {
+};
+
+types.TransitArrayMap.prototype.has = function(k) {
+};
+
+types.TransitArrayMap.prototype.set = function(k) {
+};
+
+types.TransitMap.prototype.com$cognitect$transit$hashCode = function() {
+};
+
+types.TransitMap.prototype.com$cognitect$transit$equals = function(other) {
+};
+
+/**
  * TransitMap
  *   API follows ES6 maps modulo ES5 Iterables/Iteration
  *   http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
@@ -590,33 +640,37 @@ types.TransitMap.prototype.com$cognitect$transit$equals = function(other) {
 types.map = function(arr) {
     arr = arr || [];
 
-    var map  = {},
-        keys = [],
-        size = 0;
-    for(var i = 0; i < arr.length; i+=2) {
-        var code = eq.hashCode(arr[i]),
-            bucket = map[code];
-        if(bucket == null) {
-            keys.push(code);
-            map[code] = [arr[i], arr[i+1]];
-            size++;
-        } else {
-            var newEntry = true;
-            for(var j = 0; j < bucket.length; j+= 2) {
-                if(eq.equals(bucket[j], arr[i])) {
-                    bucket[j+1] = arr[i+1];
-                    newEntry = false;
-                    break;
+    if(arr.length <= 8) {
+        return new types.TransitArrayMap(arr);
+    } else {
+        var map  = {},
+            keys = [],
+            size = 0;
+        for(var i = 0; i < arr.length; i+=2) {
+            var code = eq.hashCode(arr[i]),
+                bucket = map[code];
+            if(bucket == null) {
+                keys.push(code);
+                map[code] = [arr[i], arr[i+1]];
+                size++;
+            } else {
+                var newEntry = true;
+                for(var j = 0; j < bucket.length; j+= 2) {
+                    if(eq.equals(bucket[j], arr[i])) {
+                        bucket[j+1] = arr[i+1];
+                        newEntry = false;
+                        break;
+                    }
+                }
+                if(newEntry) {
+                    bucket.push(arr[i]);
+                    bucket.push(arr[i+1]);
+                    size++;
                 }
             }
-            if(newEntry) {
-                bucket.push(arr[i]);
-                bucket.push(arr[i+1]);
-                size++;
-            }
         }
+        return new types.TransitMap(keys, map, size);
     }
-    return new types.TransitMap(keys, map, size);
 };
 
 types.isMap = function(x) {
