@@ -787,10 +787,28 @@ types.TransitMap.prototype.com$cognitect$transit$equals = function(other) {
     return types.mapEquals(this, other);
 };
 
-types.map = function(arr) {
+types.map = function(arr, checkDups) {
     arr = arr || [];
+    checkDups = (checkDups == false) ? checkDups : true;
 
     if(arr.length <= 16) {
+        if(checkDups) {
+            var t = arr;
+            arr = [];
+            for(var i = 0; i < t.length; i+=2) {
+                var seen = false;
+                for(var j = 0; j < arr.length; j+=2) {
+                    if(eq.equals(t[i], arr[j])) {
+                        arr[j] = t[i+1];
+                        seen = true;
+                        break;
+                    }
+                }
+                if(!seen) {
+                    arr.push(t[i], t[i+1]);
+                }
+            }
+        }
         return new types.TransitArrayMap(arr);
     } else {
         var map  = {},
