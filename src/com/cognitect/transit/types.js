@@ -449,7 +449,7 @@ types.mapEquals = function(me, you) {
         }
         return true;
     } else if(you != null && (typeof you === "object")) {
-        var ks    = Object.keys(you),
+        var ks    = util.objectKeys(you),
             kslen = ks.length - ((you.hasOwnProperty(eq.transitHashCodeProperty) && 1) || 0); 
         if(me.size === kslen) {
             for(var p in you) {
