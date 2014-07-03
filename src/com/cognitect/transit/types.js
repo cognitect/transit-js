@@ -791,7 +791,7 @@ types.TransitMap.prototype.com$cognitect$transit$equals = function(other) {
 
 types.map = function(arr, checkDups) {
     arr = arr || [];
-    checkDups = (checkDups == false) ? checkDups : true;
+    checkDups = (checkDups === false) ? checkDups : true;
 
     if(arr.length <= 16) {
         if(checkDups) {

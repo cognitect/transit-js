@@ -84,7 +84,7 @@ decoder.Decoder.prototype.defaults = {
         "floats": function(v) { return types.floats(v); },
         "doubles": function(v) { return types.doubles(v); },
         "bools": function(v) { return types.bools(v); },
-        "cmap": function(v) { return types.map(v); }
+        "cmap": function(v) { return types.map(v, false); }
     },
     defaultDecoder: function(c, val) {
         return types.taggedValue(c, val);
@@ -188,7 +188,7 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
             nodep.push(this.decode(hash[strKey], cache, false, false));
         }
 
-        return types.map(nodep);
+        return types.map(nodep, false);
     }
 };
 
@@ -211,7 +211,7 @@ decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagV
             nodep.push(this.decode(node[i+1], cache, false, false));
         }
 
-        return types.map(nodep);
+        return types.map(nodep, false);
     }
 };
 
