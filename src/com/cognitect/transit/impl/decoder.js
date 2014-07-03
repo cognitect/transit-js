@@ -178,12 +178,12 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
         
         return this.mapBuilder.finalize(ret);
     } else {
-        var stringKeys = true,
+        var /*stringKeys = true,*/
             nodep      = [];
 
         for(var i = 0; i < ks.length; i++) {
             var strKey = ks[i];
-            stringKeys = stringKeys && this.isStringKey(strKey, cache);
+            /*stringKeys = stringKeys && this.isStringKey(strKey, cache);*/
             nodep.push(this.decode(strKey, cache, true, false));
             nodep.push(this.decode(hash[strKey], cache, false, false));
         }
@@ -201,12 +201,12 @@ decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagV
         }
         return this.mapBuilder.finalize(ret);
     } else {
-        var stringKeys = true,
+        var /*stringKeys = true,*/
             nodep      = [];
 
         // collect keys
         for(var i = 1; i < node.length; i +=2) {
-            stringKeys = stringKeys && this.isStringKey(node[i], cache);
+            /*stringKeys = stringKeys && this.isStringKey(node[i], cache);*/
             nodep.push(this.decode(node[i], cache, true, false));
             nodep.push(this.decode(node[i+1], cache, false, false));
         }
