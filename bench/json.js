@@ -19,21 +19,21 @@ function time(f, iters) {
     }
 }
 
-console.log("JSON.parse 100 iters");
+console.log("JSON.parse 100 iters", JSON.parse(jstr).length);
 time(function() {
     for(var i = 0; i < 100; i++) {
         JSON.parse(jstr);
     }
 }, 5);
 
-console.log("JSON.parse transit JSON 100 iters");
+console.log("JSON.parse transit JSON 100 iters", JSON.parse(tstr).length);
 time(function() {
     for(var i = 0; i < 100; i++) {
         JSON.parse(tstr);
     }
 }, 5);
 
-console.log("transit read 100 iters");
+console.log("transit read 100 iters", r.read(tstr).length);
 time(function() {
     for(var i = 0; i < 100; i++) {
         r.read(tstr);
