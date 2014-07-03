@@ -4,6 +4,7 @@ process.stdin.setEncoding("utf8");
 
 var fs      = require("fs"),
     fname   = process.argv[2] || "example",
+    iter    = process.argv[3] ? parseInt(process.argv[3], 10) : 100,
     transit = require("../target/transit.js"),
     r       = transit.reader(),
     jstr    = fs.readFileSync("resources/"+fname+".json", "utf-8");
@@ -19,23 +20,23 @@ function time(f, iters) {
     }
 }
 
-console.log("JSON.parse 100 iters", JSON.parse(jstr).length);
+console.log("JSON.parse "+iter+" iters");
 time(function() {
-    for(var i = 0; i < 100; i++) {
+    for(var i = 0; i < iter; i++) {
         JSON.parse(jstr);
     }
 }, 5);
 
-console.log("JSON.parse transit JSON 100 iters", JSON.parse(tstr).length);
+console.log("JSON.parse transit JSON "+iter+" iters");
 time(function() {
-    for(var i = 0; i < 100; i++) {
+    for(var i = 0; i < iter; i++) {
         JSON.parse(tstr);
     }
 }, 5);
 
-console.log("transit read 100 iters", r.read(tstr).length);
+console.log("transit read "+iter+" iters");
 time(function() {
-    for(var i = 0; i < 100; i++) {
+    for(var i = 0; i < iter; i++) {
         r.read(tstr);
     }
 }, 5);
