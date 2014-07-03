@@ -473,7 +473,7 @@ types.mapEquals = function(me, you) {
  * TransitArrayMap
  */
 types.TransitArrayMap = function(entries) {
-    this.entries = entries;
+    this._entries = entries;
     this.backingMap = null;
     this.hashCode = -1;
     this.size = entries.length / 2;
@@ -488,7 +488,7 @@ types.TransitArrayMap.prototype.clear = function() {
         this.backingMap.clear();
         this.size = 0;
     } else {
-        this.entries = [];
+        this._entries = [];
         this.size = 0;
     }
 };
@@ -498,7 +498,7 @@ types.TransitArrayMap.prototype.keys = function() {
     if(this.backingMap) {
         return this.backingMap.keys();
     } else {
-        return new types.TransitArrayMapIterator(this.entries, types.KEYS);
+        return new types.TransitArrayMapIterator(this._entries, types.KEYS);
     }
 };
 types.TransitArrayMap.prototype["keys"] = types.TransitArrayMap.prototype.keys;
@@ -508,8 +508,8 @@ types.TransitArrayMap.prototype.keySet = function() {
         return this.backingMap.keySet();
     } else {
         var ret = [];
-        for(var i = 0, j = 0; j < this.entries.length; i++, j+=2) {
-            ret[i] = this.entries[j];
+        for(var i = 0, j = 0; j < this._entries.length; i++, j+=2) {
+            ret[i] = this._entries[j];
         }
         return ret;
     }
@@ -520,7 +520,7 @@ types.TransitArrayMap.prototype.entries = function() {
     if(this.backingMap) {
         return this.backingMap.entries();
     } else {
-        return new types.TransitArrayMapIterator(this.entries, types.ENTRIES);
+        return new types.TransitArrayMapIterator(this._entries, types.ENTRIES);
     }
 };
 types.TransitArrayMap.prototype["entries"] = types.TransitArrayMap.prototype.entries;
@@ -529,7 +529,7 @@ types.TransitArrayMap.prototype.values = function() {
     if(this.backingMap) {
         return this.backingMap.values();
     } else {
-        return new types.TransitArrayMapIterator(this.entries, types.VALUES);
+        return new types.TransitArrayMapIterator(this._entries, types.VALUES);
     }
 };
 types.TransitArrayMap.prototype["values"] = types.TransitArrayMap.prototype.values;
@@ -538,8 +538,8 @@ types.TransitArrayMap.prototype.forEach = function(f) {
     if(this.backingMap) {
         this.backingMap.forEach(f);
     } else {
-        for(var i = 0; i < this.entries.length; i+=2) {
-            f(this.entries[i+1], this.entries[i]);
+        for(var i = 0; i < this._entries.length; i+=2) {
+            f(this._entries[i+1], this._entries[i]);
         }
     }
 };
@@ -549,9 +549,9 @@ types.TransitArrayMap.prototype.get = function(k) {
     if(this.backingMap) {
         return this.backingMap.get(k);
     } else {
-        for(var i = 0; i < this.entries.length; i+=2) {
-            if(eq.equals(this.entries[i], k)) {
-                return this.entries[i+1];
+        for(var i = 0; i < this._entries.length; i+=2) {
+            if(eq.equals(this._entries[i], k)) {
+                return this._entries[i+1];
             }
         }
         return null;
@@ -563,8 +563,8 @@ types.TransitArrayMap.prototype.has = function(k) {
     if(this.backingMap) {
         return this.backingMap.has(k);
     } else {
-        for(var i = 0; i < this.entries.length; i+=2) {
-            if(eq.equals(this.entries[i], k)) {
+        for(var i = 0; i < this._entries.length; i+=2) {
+            if(eq.equals(this._entries[i], k)) {
                 return true;
             }
         }
@@ -578,20 +578,20 @@ types.TransitArrayMap.prototype.set = function(k, v) {
         this.backingMap.set(k, v);
         this.size = this.backingMap.size;
     } else {
-        for(var i = 0; i < this.entries.length; i+=2) {
-            if(eq.equals(this.entries[i], k)) {
-                this.entries[i+1] = v;
+        for(var i = 0; i < this._entries.length; i+=2) {
+            if(eq.equals(this._entries[i], k)) {
+                this._entries[i+1] = v;
                 return;
             }
         }
 
-        this.entries.push(k);
-        this.entries.push(v);
+        this._entries.push(k);
+        this._entries.push(v);
         this.size++;
 
         if(this.size > 8) {
-            this.backingMap = transit.map(this.entries);
-            this.entries = null;
+            this.backingMap = transit.map(this._entries);
+            this._entries = null;
         }
     }
 };
@@ -602,9 +602,9 @@ types.TransitArrayMap.prototype["delete"] = function(k) {
         this.backingMap["delete"](k);
         this.size = this.backingMap.size;
     } else {
-        for(var i = 0; i < this.entries.length; i+=2) {
-            if(eq.equals(this.entries[i], k)) {
-                this.entries.splice(i, 2);
+        for(var i = 0; i < this._entries.length; i+=2) {
+            if(eq.equals(this._entries[i], k)) {
+                this._entries.splice(i, 2);
                 this.size--;
                 return;
             }
