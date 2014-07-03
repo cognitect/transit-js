@@ -188,7 +188,7 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
             nodep.push(this.decode(hash[strKey], cache, false, false));
         }
 
-        return transit.map(nodep)
+        return types.map(nodep);
     }
 };
 
@@ -211,7 +211,7 @@ decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagV
             nodep.push(this.decode(node[i+1], cache, false, false));
         }
 
-        return transit.map(nodep);
+        return types.map(nodep);
     }
 };
 

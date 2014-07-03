@@ -474,7 +474,7 @@ types.TransitArrayMap = function(entries) {
     this.entries = entries;
     this.backingMap = null;
     this.hashCode = -1;
-    this.size = entries / 2;
+    this.size = entries.length / 2;
 };
 
 types.TransitArrayMap.prototype.toString = function() {
@@ -614,7 +614,7 @@ types.TransitArrayMap.prototype.com$cognitect$transit$hashCode = function() {
     if(this.backingMap) {
         return this.backingMap.com$cognitect$transit$hashCode();
     } else {
-        if(this.hasCode != -1) return this.hashCode;
+        if(this.hashCode != -1) return this.hashCode;
         this.hashCode = eq.hashMapLike(this);
         return this.hashCode;
     }
