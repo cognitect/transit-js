@@ -851,7 +851,8 @@ types.map = function(arr, checkDups) {
 };
 
 types.isMap = function(x) {
-    return x instanceof types.TransitMap;
+    return ((x instanceof types.TransitArrayMap) &&
+            (x instanceof types.TransitMap));
 };
 
 /**
