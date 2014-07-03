@@ -85,3 +85,34 @@ time(function() {
     });
     console.log(s);
 });
+
+var smalles6m = new Map(),
+    ks   = [];
+for(var i = 0; i < 32; i++) {
+    var k = ["foo"+i];
+    smalles6m.set(k, i);
+    ks.push(k);
+}
+
+var smalltm = transit.map();
+for(var i = 0; i < 32; i++) {
+    smalltm.set(["foo"+i], i);
+}
+
+console.log("has 32 entries es6-shim Map, 1000000 iters");
+time(function() {
+    var has = true;
+    for(var i = 0; i < 1000000; i++) {
+        has = has && smalles6m.has(ks[i % 32]);
+    }
+    console.log(has);
+});
+
+console.log("has 32 entries transit map, 1000000 iters");
+time(function() {
+    var has = true;
+    for(var i = 0; i < 1000000; i++) {
+        has = has && smalltm.has(["foo"+(i % 32)]);
+    }
+    console.log(has);
+});

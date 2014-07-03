@@ -473,7 +473,19 @@ types.mapEquals = function(me, you) {
  * @const
  * @type {number}
  */
-types.ARRAY_MAP_THRESHOLD = 8;
+types.SMALL_ARRAY_MAP_THRESHOLD = 8;
+
+/**
+ * @const
+ * @type {number}
+ */
+types.ARRAY_MAP_THRESHOLD = 32;
+
+/**
+ * @const
+ * @type {number}
+ */
+types.ARRAY_MAP_ACCESS_THRESHOLD = 32;
     
 /**
  * @constructor
@@ -483,10 +495,26 @@ types.TransitArrayMap = function(entries) {
     this.backingMap = null;
     this.hashCode = -1;
     this.size = entries.length / 2;
+    this.accesses = 0;
 };
 
 types.TransitArrayMap.prototype.toString = function() {
     return "[TransitArrayMap]";
+};
+
+types.TransitArrayMap.prototype.convert = function() {
+    if(this.backingMap) {
+        throw Error("Invalid operation, already converted");
+    }
+    if(this.size < types.SMALL_ARRAY_MAP_THRESHOLD) return false;
+    this.accesses++;
+    if(this.accesses > types.ARRAY_MAP_ACCESS_THRESHOLD) {
+        this.backingMap = types.map(this._entries, false, true);
+        this._entries = [];
+        return true;
+    } else {
+        return false;
+    }
 };
 
 types.TransitArrayMap.prototype.clear = function() {
@@ -555,12 +583,16 @@ types.TransitArrayMap.prototype.get = function(k) {
     if(this.backingMap) {
         return this.backingMap.get(k);
     } else {
-        for(var i = 0; i < this._entries.length; i+=2) {
-            if(eq.equals(this._entries[i], k)) {
-                return this._entries[i+1];
+        if(this.convert()) {
+            return this.get(k);
+        } else {
+            for(var i = 0; i < this._entries.length; i+=2) {
+                if(eq.equals(this._entries[i], k)) {
+                    return this._entries[i+1];
+                }
             }
+            return null;
         }
-        return null;
     }
 };
 types.TransitArrayMap.prototype["get"] = types.TransitArrayMap.prototype.get;
@@ -569,12 +601,16 @@ types.TransitArrayMap.prototype.has = function(k) {
     if(this.backingMap) {
         return this.backingMap.has(k);
     } else {
-        for(var i = 0; i < this._entries.length; i+=2) {
-            if(eq.equals(this._entries[i], k)) {
-                return true;
+        if(this.convert()) {
+            return this.has(k);
+        } else {
+            for(var i = 0; i < this._entries.length; i+=2) {
+                if(eq.equals(this._entries[i], k)) {
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
     }
 };
 types.TransitArrayMap.prototype["has"] = types.TransitArrayMap.prototype.has;
@@ -596,7 +632,7 @@ types.TransitArrayMap.prototype.set = function(k, v) {
         this.size++;
 
         if(this.size > types.ARRAY_MAP_THRESHOLD) {
-            this.backingMap = types.map(this._entries);
+            this.backingMap = types.map(this._entries, false, true);
             this._entries = null;
         }
     }
@@ -795,11 +831,12 @@ types.TransitMap.prototype.com$cognitect$transit$equals = function(other) {
     return types.mapEquals(this, other);
 };
 
-types.map = function(arr, checkDups) {
+types.map = function(arr, checkDups, hashMap) {
     arr = arr || [];
     checkDups = (checkDups === false) ? checkDups : true;
+    hashMap = (hashMap === true) ? hashMap : false;
 
-    if(arr.length <= (types.ARRAY_MAP_THRESHOLD*2)) {
+    if(!hashMap && (arr.length <= (types.ARRAY_MAP_THRESHOLD*2))) {
         if(checkDups) {
             var t = arr;
             arr = [];
