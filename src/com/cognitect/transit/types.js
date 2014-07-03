@@ -596,7 +596,7 @@ types.TransitArrayMap.prototype.set = function(k, v) {
         this.size++;
 
         if(this.size > types.ARRAY_MAP_THRESHOLD) {
-            this.backingMap = transit.map(this._entries);
+            this.backingMap = types.map(this._entries);
             this._entries = null;
         }
     }
