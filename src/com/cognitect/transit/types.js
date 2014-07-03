@@ -361,23 +361,23 @@ types.ENTRIES = 2;
 /**
  * @constructor
  */
-types.TransitArrayMapIterator = function(map, type) {
-    this.map = map;
+types.TransitArrayMapIterator = function(entries, type) {
+    this.entries = entries;
     this.type = type || types.KEYS;
     this.idx = 0;
 };
 
 types.TransitArrayMapIterator.prototype.next = function(map, type) {
-    if(this.idx < (this.map.size*2)) {
+    if(this.idx < this.entries.length) {
 
         var value = null;
 
         if(this.type === types.KEYS) {
-            value = this.map[this.idx];
+            value = this.entries[this.idx];
         } else if(this.type === types.VALUES) {
-            value = this.map[this.idx+1];
+            value = this.entries[this.idx+1];
         } else {
-            value = [this.map[this.idx], this.map[this.idx+1]];
+            value = [this.entries[this.idx], this.entries[this.idx+1]];
         }
 
         var ret = {
@@ -498,7 +498,7 @@ types.TransitArrayMap.prototype.keys = function() {
     if(this.backingMap) {
         return this.backingMap.keys();
     } else {
-        return types.TransitArrayMapIterator(this, types.KEYS);
+        return new types.TransitArrayMapIterator(this.entries, types.KEYS);
     }
 };
 types.TransitArrayMap.prototype["keys"] = types.TransitArrayMap.prototype.keys;
@@ -520,7 +520,7 @@ types.TransitArrayMap.prototype.entries = function() {
     if(this.backingMap) {
         return this.backingMap.entries();
     } else {
-        return types.TransitArrayMapIterator(this, types.ENTRIES);
+        return new types.TransitArrayMapIterator(this.entries, types.ENTRIES);
     }
 };
 types.TransitArrayMap.prototype["entries"] = types.TransitArrayMap.prototype.entries;
@@ -529,7 +529,7 @@ types.TransitArrayMap.prototype.values = function() {
     if(this.backingMap) {
         return this.backingMap.values();
     } else {
-        return types.TransitArrayMapIterator(this, types.VALUES);
+        return new types.TransitArrayMapIterator(this.entries, types.VALUES);
     }
 };
 types.TransitArrayMap.prototype["values"] = types.TransitArrayMap.prototype.values;
