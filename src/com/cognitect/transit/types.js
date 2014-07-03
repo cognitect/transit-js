@@ -610,7 +610,7 @@ types.TransitArrayMap.prototype["delete"] = function(k) {
     }
 };
 
-types.TransitMap.prototype.com$cognitect$transit$hashCode = function() {
+types.TransitArrayMap.prototype.com$cognitect$transit$hashCode = function() {
     if(this.backingMap) {
         return this.backingMap.com$cognitect$transit$hashCode();
     } else {
@@ -620,7 +620,7 @@ types.TransitMap.prototype.com$cognitect$transit$hashCode = function() {
     }
 };
 
-types.TransitMap.prototype.com$cognitect$transit$equals = function(other) {
+types.TransitArrayMap.prototype.com$cognitect$transit$equals = function(other) {
     if(this.backingMap) {
         return types.mapEquals(this.backingMap, other);
     } else {
