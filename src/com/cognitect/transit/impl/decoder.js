@@ -18,8 +18,8 @@ var decoder = com.cognitect.transit.impl.decoder,
 // =============================================================================
 // Decoder
 
-decoder.isGroundDecoder = function(decoder) {
-    switch(decoder) {
+decoder.isGroundHandler = function(handler) {
+    switch(handler) {
         case "_":
         case "s":
         case "?":
@@ -40,18 +40,18 @@ decoder.isGroundDecoder = function(decoder) {
  */
 decoder.Decoder = function(options) {
     this.options = options || {};
-    this.decoders = {};
-    for(var d in this.defaults.decoders) {
-        this.decoders[d] = this.defaults.decoders[d];
+    this.handlers = {};
+    for(var h in this.defaults.handlers) {
+        this.handlers[h] = this.defaults.handlers[h];
     }
-    for(var d in this.options["decoders"]) {
-        if(decoder.isGroundDecoder(d)) {
-            throw new Error("Cannot override decoder for ground types");
+    for(var h in this.options["handlers"]) {
+        if(decoder.isGroundHandler(h)) {
+            throw new Error("Cannot override handler for ground types");
         }
-        this.decoders[d] = this.options["decoders"][d];
+        this.handlers[h] = this.options["handlers"][h];
     }
     this.prefersStrings = this.options["prefersStrings"] != null ? this.options["prefersStrings"] : this.defaults.prefersStrings;
-    this.defaultDecoder = this.options["defaultDecoder"] || this.defaults.defaultDecoder;
+    this.defaultHandler = this.options["defaultHandler"] || this.defaults.defaultHandler;
     /* NOT PUBLIC */
     this.mapBuilder = this.options["mapBuilder"];
     this.arrayBuilder = this.options["arrayBuilder"];
@@ -59,7 +59,7 @@ decoder.Decoder = function(options) {
 
 
 decoder.Decoder.prototype.defaults = {
-    decoders: {
+    handlers: {
         "_": function(v) { return types.nullValue(); },
         "?": function(v) { return types.boolValue(v); },
         "b": function(v) { return types.binary(v); },
@@ -86,7 +86,7 @@ decoder.Decoder.prototype.defaults = {
         "bools": function(v) { return types.bools(v); },
         "cmap": function(v) { return types.map(v); }
     },
-    defaultDecoder: function(c, val) {
+    defaultHandler: function(c, val) {
         return types.taggedValue(c, val);
     },
     prefersStrings: true
@@ -139,7 +139,7 @@ decoder.Decoder.prototype.isStringKey = function(node, cache) {
         var c0 = node[0],
             c1 = node[1];
         if(c0 === d.ESC) {
-            if(this.decoders[c1] != null) {
+            if(this.handlers[c1] != null) {
                 return false;
             } else {
                 return (c1 === d.ESC || c1 === d.SUB || c1 === d.RES);
@@ -161,9 +161,9 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
        (tagKey[0] === d.ESC) &&
        (tagKey[1] === d.TAG)) {
         var val     = hash[key],
-            decoder = this.decoders[tagKey.substring(2)];
-        if(decoder != null) {
-            return decoder(this.decode(val, cache, false, true));
+            handler = this.handlers[tagKey.substring(2)];
+        if(handler != null) {
+            return handler(this.decode(val, cache, false, true));
         } else {
             return types.taggedValue(tagKey.substring(2), this.decode(val, cache, false, false));
         }
@@ -269,11 +269,11 @@ decoder.Decoder.prototype.parseString = function(string, cache, asMapKey) {
         } else if (c === d.TAG) {
             return string;
         } else {
-            var decoder = this.decoders[c];
-            if(decoder == null) {
-                return this.defaultDecoder(c, string.substring(2));
+            var handler = this.handlers[c];
+            if(handler == null) {
+                return this.defaultHandler(c, string.substring(2));
             } else {
-                return decoder(string.substring(2));
+                return handler(string.substring(2));
             }
         }
     } else {
