@@ -470,7 +470,7 @@ types.mapEquals = function(me, you) {
 };
 
 /**
- * TransitArrayMap
+ * @constructor
  */
 types.TransitArrayMap = function(entries) {
     this._entries = entries;
