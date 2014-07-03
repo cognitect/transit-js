@@ -470,6 +470,12 @@ types.mapEquals = function(me, you) {
 };
 
 /**
+ * @const
+ * @type {number}
+ */
+types.ARRAY_MAP_THRESHOLD = 8;
+    
+/**
  * @constructor
  */
 types.TransitArrayMap = function(entries) {
@@ -589,7 +595,7 @@ types.TransitArrayMap.prototype.set = function(k, v) {
         this._entries.push(v);
         this.size++;
 
-        if(this.size > 8) {
+        if(this.size > types.ARRAY_MAP_THRESHOLD) {
             this.backingMap = transit.map(this._entries);
             this._entries = null;
         }
@@ -793,7 +799,7 @@ types.map = function(arr, checkDups) {
     arr = arr || [];
     checkDups = (checkDups === false) ? checkDups : true;
 
-    if(arr.length <= 16) {
+    if(arr.length <= (types.ARRAY_MAP_THRESHOLD*2)) {
         if(checkDups) {
             var t = arr;
             arr = [];
