@@ -361,6 +361,40 @@ types.ENTRIES = 2;
 /**
  * @constructor
  */
+types.TransitArrayMapIterator = function(map, type) {
+    this.map = map;
+    this.type = type || types.KEYS;
+    this.idx = 0;
+};
+
+types.TransitArrayMapIterator.prototype.next = function(map, type) {
+    if(this.idx < (this.map.size*2)) {
+
+        var value = null;
+
+        if(this.type === types.KEYS) {
+            value = this.map[this.idx];
+        } else if(this.type === types.VALUES) {
+            value = this.map[this.idx+1];
+        } else {
+            value = [this.map[this.idx], this.map[this.idx+1]];
+        }
+
+        var ret = {
+            "value": value,
+            "done": false
+        };
+
+        this.idx+=2;
+
+        return ret;
+    }
+};
+types.TransitArrayMapIterator.prototype["next"] = types.TransitArrayMapIterator.prototype.next;
+
+/**
+ * @constructor
+ */
 types.TransitMapIterator = function(map, type) {
     this.map = map;
     this.type = type || types.KEYS;
@@ -401,11 +435,46 @@ types.TransitMapIterator.prototype.next = function() {
 };
 types.TransitMapIterator.prototype["next"] = types.TransitMapIterator.prototype.next;
 
+types.mapEquals = function(me, you) {
+    if(((you instanceof types.TransitMap) ||
+        (you instanceof types.TransitArrayMap)) &&
+       (me.size === you.size)) {
+        for(var code in me.map) {
+            var bucket = me.map[code];
+            for(var j = 0; j < bucket.length; j+=2) {
+                if(!eq.equals(bucket[j+1], you.get(bucket[j]))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    } else if(you != null && (typeof you === "object")) {
+        var ks    = Object.keys(you),
+            kslen = ks.length - ((you.hasOwnProperty(eq.transitHashCodeProperty) && 1) || 0); 
+        if(me.size === kslen) {
+            for(var p in you) {
+                if((p !== eq.transitHashCodeProperty) &&
+                   (!eq.equals(you[p], me.get(p)))) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+};
+
 /**
  * TransitArrayMap
  */
 types.TransitArrayMap = function(entries) {
     this.entries = entries;
+    this.backingMap = null;
+    this.hashCode = -1;
+    this.size = entries / 2;
 };
 
 types.TransitArrayMap.prototype.toString = function() {
@@ -413,42 +482,141 @@ types.TransitArrayMap.prototype.toString = function() {
 };
 
 types.TransitArrayMap.prototype.clear = function() {
-    this.entries = [];
+    if(this.backingMap) {
+        this.backingMap.clear();
+        this.size = 0;
+    } else {
+        this.entries = [];
+        this.size = 0;
+    }
 };
 
 types.TransitArrayMap.prototype.keys = function() {
+    if(this.backingMap) {
+        return this.backingMap.keys();
+    } else {
+        return TransitArrayMapIterator(this, types.KEYS);
+    }
 };
 
 types.TransitArrayMap.prototype.keySet = function() {
-    var ret = [];
-    for(var i = 0, j = 0; j < this.entries.length; i++, j+=2) {
-        ret[i] = entries[j];
+    if(this.backingMap) {
+        return this.backingMap.keySet();
+    } else {
+        var ret = [];
+        for(var i = 0, j = 0; j < this.entries.length; i++, j+=2) {
+            ret[i] = entries[j];
+        }
+        return ret;
     }
-    return ret;
 };
 
 types.TransitArrayMap.prototype.entries = function() {
+    if(this.backingMap) {
+        return this.backingMap.entries();
+    } else {
+        return TransitArrayMapIterator(this, types.ENTRIES);
+    }
 };
 
 types.TransitArrayMap.prototype.values = function() {
+    if(this.backingMap) {
+        return this.backingMap.values();
+    } else {
+        return TransitArrayMapIterator(this, types.VALUES);
+    }
 };
 
-types.TransitArrayMap.prototype.forEach = function() {
+types.TransitArrayMap.prototype.forEach = function(f) {
+    if(this.backingMap) {
+        this.backingMap.forEach(f);
+    } else {
+        for(var i = 0; i < this.entries.length; i+=2) {
+            f(this.entries[i+1], this.entries[i]);
+        }
+    }
 };
 
 types.TransitArrayMap.prototype.get = function(k) {
+    if(this.backingMap) {
+        return this.backingMap.get(k);
+    } else {
+        for(var i = 0; i < this.entries.length; i+=2) {
+            if(eq.equals(this.entries[i], k)) {
+                return this.entries[i+1];
+            }
+        }
+        return null;
+    }
 };
 
 types.TransitArrayMap.prototype.has = function(k) {
+    if(this.backingMap) {
+        retunr this.backingMap.has(k);
+    } else {
+        for(var i = 0; i < this.entries.length; i+=2) {
+            if(eq.equals(this.entries[i], k)) {
+                return true;
+            }
+        }
+        return false;
+    }
 };
 
-types.TransitArrayMap.prototype.set = function(k) {
+types.TransitArrayMap.prototype.set = function(k, v) {
+    if(this.backingMap) {
+        this.backingMap.set(k, v);
+        this.size = this.backingMap.size;
+    } else {
+        for(var i = 0; i < this.entries.length; i+=2) {
+            if(eq.equals(this.entries[i], k)) {
+                this.entries[i+1] = v;
+                return;
+            }
+        }
+
+        this.entries.push(k);
+        this.entries.push(v);
+        this.size++;
+
+        if(this.size > 8) {
+            this.backingMap = transit.map(this.entries);
+            this.entries = null;
+        }
+    }
+};
+
+types.TransitArrayMap.prototype["delete"] = function(k) {
+    if(this.backingMap) {
+        this.backingMap["delete"](k);
+        this.size = this.backingMap.size;
+    } else {
+        for(var i = 0; i < this.entries.length; i+=2) {
+            if(eq.equals(this.entries[i], k)) {
+                this.entries.splice(i, 2);
+                this.size--;
+                return;
+            }
+        }
+    }
 };
 
 types.TransitMap.prototype.com$cognitect$transit$hashCode = function() {
+    if(this.backingMap) {
+        return this.backingMap.com$cognitect$transit$hashCode();
+    } else {
+        if(this.hasCode != -1) return this.hashCode;
+        this.hashCode = eq.hashMapLike(this);
+        return this.hashCode;
+    }
 };
 
 types.TransitMap.prototype.com$cognitect$transit$equals = function(other) {
+    if(this.backingMap) {
+        return types.mapEquals(this.backingMap, other);
+    } else {
+        return types.mapEquals(this, other);
+    }
 };
 
 /**
@@ -607,40 +775,13 @@ types.TransitMap.prototype.com$cognitect$transit$hashCode = function() {
 };
 
 types.TransitMap.prototype.com$cognitect$transit$equals = function(other) {
-    if((other instanceof types.TransitMap) &&
-       (this.size === other.size)) {
-        for(var code in this.map) {
-            var bucket = this.map[code];
-            for(var j = 0; j < bucket.length; j+=2) {
-                if(!eq.equals(bucket[j+1], other.get(bucket[j]))) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    } else if(other != null && (typeof other === "object")) {
-        var ks    = Object.keys(other),
-            kslen = ks.length - ((other.hasOwnProperty(eq.transitHashCodeProperty) && 1) || 0); 
-        if(this.size === kslen) {
-            for(var p in other) {
-                if((p !== eq.transitHashCodeProperty) &&
-                   (!eq.equals(other[p], this.get(p)))) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            return false;
-        }
-    } else {
-        return false;
-    }
+    return types.mapEquals(this, other);
 };
 
 types.map = function(arr) {
     arr = arr || [];
 
-    if(arr.length <= 8) {
+    if(arr.length <= 16) {
         return new types.TransitArrayMap(arr);
     } else {
         var map  = {},
