@@ -240,6 +240,14 @@ handlers.TransitSetHandler.prototype.stringRep = function(v, h) { return null; }
 /**
  * @constructor
  */
+handlers.TransitArrayMapHandler = function(){};
+handlers.TransitArrayMapHandler.prototype.tag = function(v) { return "map"; };
+handlers.TransitArrayMapHandler.prototype.rep = function(v) { return v; };
+handlers.TransitArrayMapHandler.prototype.stringRep = function(v, h) { return null; };
+
+/**
+ * @constructor
+ */
 handlers.TransitMapHandler = function(){};
 handlers.TransitMapHandler.prototype.tag = function(v) { return "map"; };
 handlers.TransitMapHandler.prototype.rep = function(v) { return v; };
@@ -280,6 +288,7 @@ handlers.defaultHandlers = function(hs) {
     hs.set(types.Quote, new handlers.QuoteHandler());
     hs.set(types.TaggedValue, new handlers.TaggedHandler());
     hs.set(types.TransitSet, new handlers.TransitSetHandler());
+    hs.set(types.TransitArrayMap, new handlers.TransitArrayMapHandler());
     hs.set(types.TransitMap, new handlers.TransitMapHandler());
     hs.set(types.List, new handlers.ListHandler());
     return hs;
