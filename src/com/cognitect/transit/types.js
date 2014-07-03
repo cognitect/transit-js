@@ -388,6 +388,8 @@ types.TransitArrayMapIterator.prototype.next = function(map, type) {
         this.idx+=2;
 
         return ret;
+    } else {
+        return {"value": null, "done": true}
     }
 };
 types.TransitArrayMapIterator.prototype["next"] = types.TransitArrayMapIterator.prototype.next;
@@ -430,7 +432,7 @@ types.TransitMapIterator.prototype.next = function() {
 
         return ret;
     } else {
-        return {"done": true};
+        return {"value": null, "done": true};
     }
 };
 types.TransitMapIterator.prototype["next"] = types.TransitMapIterator.prototype.next;
@@ -496,7 +498,7 @@ types.TransitArrayMap.prototype.keys = function() {
     if(this.backingMap) {
         return this.backingMap.keys();
     } else {
-        return TransitArrayMapIterator(this, types.KEYS);
+        return types.TransitArrayMapIterator(this, types.KEYS);
     }
 };
 types.TransitArrayMap.prototype["keys"] = types.TransitArrayMap.prototype.keys;
@@ -507,7 +509,7 @@ types.TransitArrayMap.prototype.keySet = function() {
     } else {
         var ret = [];
         for(var i = 0, j = 0; j < this.entries.length; i++, j+=2) {
-            ret[i] = entries[j];
+            ret[i] = this.entries[j];
         }
         return ret;
     }
@@ -518,7 +520,7 @@ types.TransitArrayMap.prototype.entries = function() {
     if(this.backingMap) {
         return this.backingMap.entries();
     } else {
-        return TransitArrayMapIterator(this, types.ENTRIES);
+        return types.TransitArrayMapIterator(this, types.ENTRIES);
     }
 };
 types.TransitArrayMap.prototype["entries"] = types.TransitArrayMap.prototype.entries;
@@ -527,7 +529,7 @@ types.TransitArrayMap.prototype.values = function() {
     if(this.backingMap) {
         return this.backingMap.values();
     } else {
-        return TransitArrayMapIterator(this, types.VALUES);
+        return types.TransitArrayMapIterator(this, types.VALUES);
     }
 };
 types.TransitArrayMap.prototype["values"] = types.TransitArrayMap.prototype.values;
