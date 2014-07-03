@@ -35,10 +35,10 @@ var reader  = com.cognitect.transit.impl.reader,
  * @param {string|null} type type of reader to construct.
  *     Default to "json". For verbose mode supply "json-verbose".
  * @param {Object|null} opts reader options. A JavaScript object to
- *     customize the writer Valid entries include "defaultDecoder",
- *     and "decoders". "defaultDecoder" should be JavaScript function
+ *     customize the writer Valid entries include "defaultHandler",
+ *     and "handler". "defaultHandler" should be JavaScript function
  *     taking two arguments, the first is the tag, the second the
- *     value. "decoders" should be an object of tags to handle. The
+ *     value. "handlers" should be an object of tags to handle. The
  *     values are functions that will receive the value of matched
  *     tag.
  * @return {transit.reader} A transit reader.

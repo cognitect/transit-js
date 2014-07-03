@@ -474,7 +474,7 @@ exports.testCustomDecoder = function(test) {
     };
 
     var opts   = {
-            decoders: {
+            handlers: {
                 "i": function(v) { return new MyInt(v); }
             }
         },
@@ -598,9 +598,9 @@ exports.testStringableKeys = function(test) {
 // Default decoder
 // =============================================================================
 
-exports.testDefaultDecoder = function(test) {
+exports.testDefaultHandler = function(test) {
     var r = transit.reader("json", {
-        defaultDecoder: function(tag, value) {
+        defaultHandler: function(tag, value) {
             throw new Error("Oops!");
         }
     });
