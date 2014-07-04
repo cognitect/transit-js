@@ -69,13 +69,15 @@ for(var i = 0; i < 1000000; i++) {
 }
 
 console.log("forEach 1e6 entries es6-shim Map");
-time(function() {
-    var s = 0;
-    es6m.forEach(function(v, k) {
-        s = s + v;
+if(es6m.forEach) {
+    time(function() {
+        var s = 0;
+        es6m.forEach(function(v, k) {
+            s = s + v;
+        });
+        console.log(s);
     });
-    console.log(s);
-});
+}
 
 console.log("forEach 1e6 entries transit map");
 time(function() {
