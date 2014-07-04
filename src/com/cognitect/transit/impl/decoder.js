@@ -214,7 +214,7 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
 
 decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagValue) {
     if(this.mapBuilder) {
-        if((ks.length < (types.SMALL_ARRAY_MAP_THRESHOLD*2)) && this.mapBuilder.fromArray) {
+        if((node.length < ((types.SMALL_ARRAY_MAP_THRESHOLD*2)+1)) && this.mapBuilder.fromArray) {
             var nodep = [];
             for(var i = 1; i < node.length; i+=2) {
                 nodep.push(this.decode(node[i], cache, true, false));
