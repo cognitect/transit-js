@@ -50,7 +50,8 @@ decoder.Decoder = function(options) {
         }
         this.handlers[h] = this.options["handlers"][h];
     }
-    this.prefersStrings = this.options["prefersStrings"] != null ? this.options["prefersStrings"] : this.defaults.prefersStrings;
+    this.preferStrings = this.options["preferStrings"] != null ? this.options["preferStrings"] : this.defaults.preferStrings;
+    this.preferObjects = this.options["preferObjects"] != null ? this.options["preferObjects"] : this.defaults.preferObjects;
     this.defaultHandler = this.options["defaultHandler"] || this.defaults.defaultHandler;
     /* NOT PUBLIC */
     this.mapBuilder = this.options["mapBuilder"];
@@ -89,7 +90,8 @@ decoder.Decoder.prototype.defaults = {
     defaultHandler: function(c, val) {
         return types.taggedValue(c, val);
     },
-    prefersStrings: true
+    preferStrings: true,
+    preferObjects: false
 };
 
 decoder.Decoder.prototype.decode = function(node, cache, asMapKey, tagValue) {
@@ -178,17 +180,27 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
         
         return this.mapBuilder.finalize(ret);
     } else {
-        var /*stringKeys = true,*/
+        var stringKeys = true,
             nodep      = [];
 
         for(var i = 0; i < ks.length; i++) {
             var strKey = ks[i];
-            /*stringKeys = stringKeys && this.isStringKey(strKey, cache);*/
+            if(this.preferObjects) {
+                stringKeys = stringKeys && this.isStringKey(strKey, cache);
+            }
             nodep.push(this.decode(strKey, cache, true, false));
             nodep.push(this.decode(hash[strKey], cache, false, false));
         }
 
-        return types.map(nodep, false);
+        if(this.preferObjects && stringKeys) {
+            var ret = {};
+            for(var j = 0; j < nodep.length; j+=2) {
+                ret[nodep[j]] = nodep[j+1];
+            }
+            return ret;
+        } else {
+            return types.map(nodep, false);
+        }
     }
 };
 
@@ -201,17 +213,27 @@ decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagV
         }
         return this.mapBuilder.finalize(ret);
     } else {
-        var /*stringKeys = true,*/
+        var stringKeys = true,
             nodep      = [];
 
         // collect keys
         for(var i = 1; i < node.length; i +=2) {
-            /*stringKeys = stringKeys && this.isStringKey(node[i], cache);*/
+            if(this.preferObjects) {
+                stringKeys = stringKeys && this.isStringKey(node[i], cache);
+            }
             nodep.push(this.decode(node[i], cache, true, false));
             nodep.push(this.decode(node[i+1], cache, false, false));
         }
 
-        return types.map(nodep, false);
+        if(this.preferObjects && stringKeys) {
+            var ret = {};
+            for(var j = 0; j < nodep.length; j+=2) {
+                ret[nodep[j]] = nodep[j+1];
+            }
+            return ret;
+        } else {
+            return types.map(nodep, false);
+        }
     }
 };
 

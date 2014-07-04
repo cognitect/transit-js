@@ -42,7 +42,7 @@ writer.escape = function(string) {
 writer.JSONMarshaller = function(opts) {
     this.opts = opts || {};
     this.buffer = this.opts.buffer || (new sb.StringBuilder());
-    this.prefersStrings = this.opts["prefersStrings"] != null ? this.opts["prefersStrings"] : true;
+    this.preferStrings = this.opts["preferStrings"] != null ? this.opts["preferStrings"] : true;
 
     this.objectBuilder = this.opts["objectBuilder"] || null;
 
@@ -285,7 +285,7 @@ writer.emitEncoded = function(em, h, tag, rep, obj, asMapKey, cache) {
     if(tag.length === 1) {
         if(typeof rep === "string") {
             return em.emitString(d.ESC, tag, rep, asMapKey, cache);
-        } else if(asMapKey || em.prefersStrings) {
+        } else if(asMapKey || em.preferStrings) {
             var vh = em.verbose && h.getVerboseHandler();
             if(vh) {
                 tag = vh.tag(obj);
