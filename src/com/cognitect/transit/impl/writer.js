@@ -48,9 +48,10 @@ writer.JSONMarshaller = function(opts) {
 
     this.handlers = new handlers.Handlers();
     if(this.opts["handlers"]) {
-        for(var i = 0; i < this.opts["handlers"].length; i+=2) {
-            this.handlers.set(this.opts["handlers"][i], this.opts["handlers"][i+1]);
-        }
+        var self = this;
+        this.opts["handlers"].forEach(function(v, k) {
+            self.handlers.set(k, v);
+        });
     }
 
     this.verbose = (this.opts && this.opts["verbose"]) || false;

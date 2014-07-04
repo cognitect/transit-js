@@ -59,9 +59,9 @@ transit.reader = function(type, opts) {
  * @param {String|null} type type of writer to construct.
  *     Defaults to "json". For verbose mode supply "json-verbose".
  * @param {Object|null} opts writer options. A JavaScript object to
- *     customize the writer. Takes "handlers", a JavaScript array containing
- *     and even number of entries. Every two entries should be a pair - a
- *     JavaScript constructor and transit writer handler instance.
+ *     customize the writer. Takes "handlers", a transit.map of
+ *     JavaScript constructor and transit writer handler instance
+ *     entries.
  * @return {transit.writer} A transit writer.
  */
 transit.writer = function(type, opts) {
