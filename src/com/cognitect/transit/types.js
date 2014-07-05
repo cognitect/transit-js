@@ -887,6 +887,10 @@ types.map = function(arr, checkDups, hashMap) {
     }
 };
 
+types.isArrayMap = function(x) {
+    return (x instanceof types.TransitArrayMap);
+};
+
 types.isMap = function(x) {
     return ((x instanceof types.TransitArrayMap) ||
             (x instanceof types.TransitMap));
