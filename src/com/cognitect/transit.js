@@ -59,9 +59,9 @@ transit.reader = function(type, opts) {
  * @param {String|null} type type of writer to construct.
  *     Defaults to "json". For verbose mode supply "json-verbose".
  * @param {Object|null} opts writer options. A JavaScript object to
- *     customize the writer. Takes "handlers", a JavaScript array containing
- *     and even number of entries. Every two entries should be a pair - a
- *     JavaScript constructor and transit writer handler instance.
+ *     customize the writer. Takes "handlers", a transit.map of
+ *     JavaScript constructor and transit writer handler instance
+ *     entries.
  * @return {transit.writer} A transit writer.
  */
 transit.writer = function(type, opts) {
@@ -82,14 +82,14 @@ transit.writer = function(type, opts) {
 
 /**
  * Create a transit writer handler.
- * @method transit.makeHandler
+ * @method transit.makeWriteHandler
  * @param {Object} obj An object containing 3 functions, tag, rep and stringRep.
  *    "tag" should return a string representing the tag to be written on the wire.
  *    "rep" should return the representation on the wire. "stringRep" is should return
  *    the string representation of the value.
  * @return {transit.handler} A transit write handler.
  */
-transit.makeHandler = function(obj) {
+transit.makeWriteHandler = function(obj) {
     var Handler = function(){};
     Handler.prototype.tag = obj["tag"];
     Handler.prototype.rep = obj["rep"];
@@ -377,7 +377,7 @@ if(BROWSER_TARGET) {
     goog.exportSymbol("transit.reader",         transit.reader);
     goog.exportSymbol("transit.writer",         transit.writer);
     goog.exportSymbol("transit.makeBuilder",    transit.makeBuilder);
-    goog.exportSymbol("transit.makeHandler",    transit.makeHandler);
+    goog.exportSymbol("transit.makeWriteHandler", transit.makeWriteHandler);
     goog.exportSymbol("transit.date",           types.date);
     goog.exportSymbol("transit.integer",        types.intValue);
     goog.exportSymbol("transit.isInteger",      types.isInteger);
@@ -419,7 +419,7 @@ if(NODE_TARGET) {
         reader:         transit.reader,
         writer:         transit.writer,
         makeBuilder:    transit.makeBuilder,
-        makeHandler:    transit.makeHandler,
+        makeWriteHandler: transit.makeWriteHandler,
         date:           types.date,
         integer:        types.intValue,
         isInteger:      types.isInteger,

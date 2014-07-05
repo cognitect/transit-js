@@ -494,14 +494,14 @@ exports.testCustomHandler = function(test) {
         this.y = y;
     };
 
-    var PointHandler = transit.makeHandler({
+    var PointHandler = transit.makeWriteHandler({
             tag: function(v) { return "point"; },
             rep: function(v) { return transit.tagged("array", [v.x, v.y]); },
             stringRep: function(v) { return null; }
         }),
         writer = transit.writer("json", {
-        handlers: [Point, PointHandler]
-    });
+            handlers: transit.map([Point, PointHandler])
+        });
 
     test.equal(writer.write(new Point(1.5,2.5)), "{\"~#point\":[1.5,2.5]}");
 
