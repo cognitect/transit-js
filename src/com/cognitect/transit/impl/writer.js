@@ -55,7 +55,7 @@ writer.JSONMarshaller = function(opts) {
     }
 
     this.unpack = this.opts["unpack"] || function(x) {
-        if(types.isArrayMap(x)) {
+        if(types.isArrayMap(x) && x.backingMap === null) {
             return x._entries;
         } else {
             return false;
