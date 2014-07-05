@@ -4,8 +4,10 @@ process.stdin.setEncoding("utf8");
 
 var fs      = require("fs"),
     fname   = process.argv[2] || "example",
+    iter    = process.argv[3] ? parseInt(process.argv[3], 10) : 100,
     transit = require("../target/transit.js"),
     r       = transit.reader(),
+    w       = transit.writer(),
     jstr    = fs.readFileSync("resources/"+fname+".json", "utf-8");
     tstr    = fs.readFileSync("resources/"+fname+".tjs", "utf-8");
 
@@ -19,23 +21,32 @@ function time(f, iters) {
     }
 }
 
-console.log("JSON.parse 100 iters");
+console.log("JSON.parse "+iter+" iters");
 time(function() {
-    for(var i = 0; i < 100; i++) {
+    for(var i = 0; i < iter; i++) {
         JSON.parse(jstr);
     }
 }, 5);
 
-console.log("JSON.parse transit JSON 100 iters");
+console.log("transit read "+iter+" iters");
 time(function() {
-    for(var i = 0; i < 100; i++) {
-        JSON.parse(tstr);
+    for(var i = 0; i < iter; i++) {
+        r.read(tstr);
     }
 }, 5);
 
-console.log("transit read 100 iters");
+console.log("JSON.stringify "+iter+" iters");
+var dataJSON = JSON.parse(jstr);
 time(function() {
-    for(var i = 0; i < 100; i++) {
-        r.read(tstr);
+    for(var i = 0; i < iter; i++) {
+        JSON.stringify(dataJSON);
+    }
+}, 5);
+
+console.log("transit.write "+iter+" iters");
+var dataTransit = r.read(tstr);
+time(function() {
+    for(var i = 0; i < iter; i++) {
+        w.write(dataTransit);
     }
 }, 5);
