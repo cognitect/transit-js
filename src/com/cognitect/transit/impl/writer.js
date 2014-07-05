@@ -244,11 +244,19 @@ writer.emitMap = function(em, obj, skip, cache) {
                     });
                     return ret;
                 } else {
-                    var rep = [];
-                    obj.forEach(function(v, k) {
-                        rep.push(writer.marshal(em, k, true, false));
-                        rep.push(writer.marshal(em, v, false, cache));
-                    });
+                    var arr = em.unpack(obj),
+                        rep = [];
+                    if(arr) {
+                        for(var i = 0; i < arr.length; i+=2) {
+                            rep.push(writer.marshal(em, arr[i], true, false));
+                            rep.push(writer.marshal(em, arr[i+1], false, cache));
+                        }
+                    } else {
+                        obj.forEach(function(v, k) {
+                            rep.push(writer.marshal(em, k, true, false));
+                            rep.push(writer.marshal(em, v, false, cache));
+                        });
+                    }
                     return {"~#cmap": rep};
                 }
             } else {
@@ -262,18 +270,34 @@ writer.emitMap = function(em, obj, skip, cache) {
         } else {
             if(obj.forEach != null) {
                 if(writer.stringableKeys(em, obj)) {
-                    var ret = ["^ "];
-                    obj.forEach(function(v, k) {
-                        ret.push(writer.marshal(em, k, true, cache));
-                        ret.push(writer.marshal(em, v, false, cache));
-                    });
+                    var arr = em.unpack(obj),
+                        ret = ["^ "];
+                    if(arr) {
+                        for(var i = 0; i < arr.length; i+=2) {
+                            ret.push(writer.marshal(em, arr[i], true, cache));
+                            ret.push(writer.marshal(em, arr[i+1], false, cache));
+                        }
+                    } else {
+                        obj.forEach(function(v, k) {
+                            ret.push(writer.marshal(em, k, true, cache));
+                            ret.push(writer.marshal(em, v, false, cache));
+                        });
+                    }
                     return ret;
                 } else {
-                    var rep = [];
-                    obj.forEach(function(v, k) {
-                        rep.push(writer.marshal(em, k, true, cache));
-                        rep.push(writer.marshal(em, v, false, cache));
-                    });
+                    var arr = em.unpack(obj),
+                        rep = [];
+                    if(arr) {
+                        for(var i = 0; i < arr.length; i+=2) {
+                            rep.push(writer.marshal(em, arr[i], true, cache));
+                            rep.push(writer.marshal(em, arr[i+1], false, cache));
+                        }
+                    } else {
+                        obj.forEach(function(v, k) {
+                            rep.push(writer.marshal(em, k, true, cache));
+                            rep.push(writer.marshal(em, v, false, cache));
+                        });
+                    }
                     return {"~#cmap": rep};
                 }
             } else {
