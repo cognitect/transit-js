@@ -888,7 +888,7 @@ types.map = function(arr, checkDups, hashMap) {
 };
 
 types.isMap = function(x) {
-    return ((x instanceof types.TransitArrayMap) &&
+    return ((x instanceof types.TransitArrayMap) ||
             (x instanceof types.TransitMap));
 };
 

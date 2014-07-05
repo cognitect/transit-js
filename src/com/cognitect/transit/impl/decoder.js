@@ -170,15 +170,23 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
             return types.taggedValue(tagKey.substring(2), this.decode(val, cache, false, false));
         }
     } else if(this.mapBuilder) {
-        var ret = this.mapBuilder.init();
-
-        for(var i = 0; i < ks.length; i++) {
-            var strKey = ks[i];
-            ret = this.mapBuilder.add(ret, this.decode(strKey, cache, true, false),
-                                           this.decode(hash[strKey], cache, false, false));
+        if((ks.length < (types.SMALL_ARRAY_MAP_THRESHOLD*2)) && this.mapBuilder.fromArray) {
+            var nodep = [];
+            for(var i = 0; i < ks.length; i++) {
+                var strKey = ks[i];
+                nodep.push(this.decode(strKey, cache, true, false));
+                nodep.push(this.decode(hash[strKey], cache, false, false));
+            }
+            return this.mapBuilder.fromArray(nodep);
+        } else {
+            var ret = this.mapBuilder.init();
+            for(var i = 0; i < ks.length; i++) {
+                var strKey = ks[i];
+                ret = this.mapBuilder.add(ret, this.decode(strKey, cache, true, false),
+                                               this.decode(hash[strKey], cache, false, false));
+            }
+            return this.mapBuilder.finalize(ret);
         }
-        
-        return this.mapBuilder.finalize(ret);
     } else {
         var stringKeys = true,
             nodep      = [];
@@ -206,12 +214,21 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
 
 decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagValue) {
     if(this.mapBuilder) {
-        var ret = this.mapBuilder.init();
-        for(var i = 1; i < node.length; i+=2) {
-            ret = this.mapBuilder.add(ret, this.decode(node[i], cache, true, false),
-                                           this.decode(node[i+1], cache, false, false))
+        if((node.length < ((types.SMALL_ARRAY_MAP_THRESHOLD*2)+1)) && this.mapBuilder.fromArray) {
+            var nodep = [];
+            for(var i = 1; i < node.length; i+=2) {
+                nodep.push(this.decode(node[i], cache, true, false));
+                nodep.push(this.decode(node[i+1], cache, false, false));
+            }
+            return this.mapBuilder.fromArray(nodep);
+        } else {
+            var ret = this.mapBuilder.init();
+            for(var i = 1; i < node.length; i+=2) {
+                ret = this.mapBuilder.add(ret, this.decode(node[i], cache, true, false),
+                                               this.decode(node[i+1], cache, false, false))
+            }
+            return this.mapBuilder.finalize(ret);
         }
-        return this.mapBuilder.finalize(ret);
     } else {
         var stringKeys = true,
             nodep      = [];
