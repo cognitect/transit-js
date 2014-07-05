@@ -54,6 +54,14 @@ writer.JSONMarshaller = function(opts) {
         });
     }
 
+    this.unpack = this.opts["unpack"] || function(x) {
+        if(types.isArrayMap(x)) {
+            return x._entries;
+        } else {
+            return false;
+        }
+    };
+
     this.verbose = (this.opts && this.opts["verbose"]) || false;
 };
 
@@ -202,15 +210,27 @@ writer.isStringableKey = function(em, k) {
 };
 
 writer.stringableKeys = function(em, obj) {
-    var stringableKeys = true,
-        ks             = obj.keySet();
-    for(var i = 0; i < ks.length; i++) {
-        stringableKeys = writer.isStringableKey(em, ks[i]);
-        if(!stringableKeys) {
-            break;
+    var arr = em.unpack(obj),
+        stringableKeys = true;
+
+    if(arr) {
+        for(var i = 0; i < arr.length; i+=2) {
+            stringableKeys = writer.isStringableKey(em, arr[i]);
+            if(!stringableKeys) {
+                break;
+            }
         }
+        return stringableKeys;
+    } else {
+        var ks = obj.keySet();
+        for(var i = 0; i < ks.length; i++) {
+            stringableKeys = writer.isStringableKey(em, ks[i]);
+            if(!stringableKeys) {
+                break;
+            }
+        }
+        return stringableKeys;
     }
-    return stringableKeys;
 };
 
 writer.emitMap = function(em, obj, skip, cache) {
