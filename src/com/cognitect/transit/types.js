@@ -674,7 +674,8 @@ types.TransitArrayMap.prototype.com$cognitect$transit$equals = function(other) {
 
 /**
  * TransitMap
- *   API follows ES6 maps modulo ES5 Iterables/Iteration
+ *   A hash map. Support arbitrarily complex keys. Lookup is based on the value of the
+ *   the key not identity. Otherwise the API follows the ES6 map interface:
  *   http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
  * @constructor
  */
