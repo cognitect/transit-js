@@ -11,10 +11,10 @@ goog.require("com.cognitect.transit.eq");
 goog.require("com.cognitect.transit.impl.decoder");
 
 /** @define {boolean} */
-var NODE_TARGET = false;
+var TRANSIT_NODE_TARGET = false;
 
 /** @define {boolean} */
-var BROWSER_TARGET = false;
+var TRANSIT_BROWSER_TARGET = false;
 
 goog.scope(function() {
 
@@ -373,7 +373,7 @@ transit.UUIDfromString = types.UUIDfromString;
 transit.randomUUID =     types.randomUUID;
 transit.stringableKeys = writer.stringableKeys;
 
-if(BROWSER_TARGET) {
+if(TRANSIT_BROWSER_TARGET) {
     goog.exportSymbol("transit.reader",         transit.reader);
     goog.exportSymbol("transit.writer",         transit.writer);
     goog.exportSymbol("transit.makeBuilder",    transit.makeBuilder);
@@ -414,7 +414,7 @@ if(BROWSER_TARGET) {
     goog.exportSymbol("transit.stringableKeys", writer.stringableKeys);
 }
 
-if(NODE_TARGET) {
+if(TRANSIT_NODE_TARGET) {
     module.exports = {
         reader:         transit.reader,
         writer:         transit.writer,

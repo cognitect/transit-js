@@ -6,7 +6,7 @@ cd `dirname $0`/..
 
 mkdir -p target
 
-java -jar deps/closure-compiler/compiler.jar -O ADVANCED --output_wrapper ";(function(){%output%})();" --generate_exports -D BROWSER_TARGET=true \
+java -jar deps/closure-compiler/compiler.jar -O ADVANCED --output_wrapper ";(function(){%output%})();" --generate_exports -D TRANSIT_BROWSER_TARGET=true \
 --js deps/closure-library/closure/goog/base.js \
 --js deps/closure-library/closure/goog/object/object.js \
 --js deps/closure-library/closure/goog/math/long.js \
