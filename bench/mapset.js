@@ -1,12 +1,24 @@
 require("es6-shim");
 var transit = require("../target/transit.js");
 
+function sum(a, b) { return a+b; };
+
 function time(f, iters) {
     iters = iters || 1;
+    var avg = [];
     for(var i = 0; i < iters; i++) {
         var s = new Date();
         f();
-        console.log("Elapsed "+((new Date()).valueOf()-s.valueOf())+"ms");
+        var el = (new Date()).valueOf()-s.valueOf();
+        if(iters == 1) {
+            console.log("Elapsed "+el+"ms");
+            console.log("----------");
+        } else {
+            avg.push(el);
+        }
+    }
+    if(iters != 1) {
+        console.log("Average Elapsed "+(avg.reduce(sum)/iters)+"ms");
         console.log("----------");
     }
 }
@@ -118,3 +130,161 @@ time(function() {
     }
     console.log(has);
 });
+
+var o4 = {
+    "foo0": Math.round(Math.random()),
+    "foo1": Math.round(Math.random()),
+    "foo2": Math.round(Math.random()),
+    "foo3": Math.round(Math.random())
+};
+
+var m4 = transit.map(
+    ["foo0", Math.round(Math.random()),
+     "foo1", Math.round(Math.random()),
+     "foo2", Math.round(Math.random()),
+     "foo3", Math.round(Math.random())]
+);
+
+console.log("4 entry object random access, 1000000 iters");
+time(function() {
+    var s = 0;
+    for(var i = 0; i < 1000000; i++) {
+        s += o4["foo"+(i % 4)];
+    }
+}, 10);
+
+console.log("4 entry transit.map random access, 1000000 iters");
+time(function() {
+    var s = 0;
+    for(var i = 0; i < 1000000; i++) {
+        s += m4.get("foo"+(i % 4));
+    }
+}, 10);
+
+var o8 = {
+    "foo0": Math.round(Math.random()),
+    "foo1": Math.round(Math.random()),
+    "foo2": Math.round(Math.random()),
+    "foo3": Math.round(Math.random()),
+    "foo4": Math.round(Math.random()),
+    "foo5": Math.round(Math.random()),
+    "foo6": Math.round(Math.random()),
+    "foo7": Math.round(Math.random())
+};
+
+var m8 = transit.map(
+    ["foo0", Math.round(Math.random()),
+     "foo1", Math.round(Math.random()),
+     "foo2", Math.round(Math.random()),
+     "foo3", Math.round(Math.random()),
+     "foo4", Math.round(Math.random()),
+     "foo5", Math.round(Math.random()),
+     "foo6", Math.round(Math.random()),
+     "foo7", Math.round(Math.random())]
+);
+
+console.log("8 entry object random access, 1000000 iters");
+time(function() {
+    var s = 0;
+    for(var i = 0; i < 1000000; i++) {
+        s += o8["foo"+(i % 8)];
+    }
+}, 10);
+
+console.log("8 entry transit.map random access, 1000000 iters");
+time(function() {
+    var s = 0;
+    for(var i = 0; i < 1000000; i++) {
+        s += m8.get("foo"+(i % 8));
+    }
+}, 10);
+
+var r16 = [];
+for(var i = 0; i < 1000000; i++) {
+    r16.push(Math.floor(Math.random()*16));
+}
+
+var o16 = {};
+for(var i = 0 ; i < 16; i++) {
+    o16["foo"+i] = Math.round(Math.random());
+}
+
+var arr16 = [];
+for(var i = 0; i < 16; i++) {
+    arr16.push("foo"+i, Math.round(Math.random()));
+}
+var m16 = transit.map(arr16, false, false);
+
+console.log("16 entry object random access, 1000000 iters");
+time(function() {
+    var s = 0;
+    for(var i = 0; i < 1000000; i++) {
+        s += o16["foo"+r16[i]];
+    }
+}, 10);
+
+console.log("16 entry transit array map random access, 1000000 iters");
+time(function() {
+    var s = 0;
+    for(var i = 0; i < 1000000; i++) {
+        s += m16.get("foo"+r16[i]);
+    }
+}, 10);
+
+var r32 = [];
+for(var i = 0; i < 1000000; i++) {
+    r32.push(Math.floor(Math.random()*32));
+}
+
+var o32 = {};
+for(var i = 0 ; i < 32; i++) {
+    o32["foo"+i] = Math.round(Math.random());
+}
+
+var arr32 = [];
+for(var i = 0; i < 32; i++) {
+    arr32.push("foo"+i, Math.round(Math.random()));
+}
+var m32 = transit.map(arr32, false, false);
+
+console.log("32 entry object random access, 1000000 iters");
+time(function() {
+    var s = 0;
+    for(var i = 0; i < 1000000; i++) {
+        s += o32["foo"+r32[i]];
+    }
+}, 10);
+
+console.log("32 entry transit array map random access, 1000000 iters");
+time(function() {
+    var s = 0;
+    for(var i = 0; i < 1000000; i++) {
+        s += m32.get("foo"+r32[i]);
+    }
+},10);
+
+var tm16 = transit.map();
+for(var i = 0; i < 16; i++) {
+    tm16.set("foo"+i, Math.round(Math.random()));
+}
+
+var tm32 = transit.map();
+for(var i = 0; i < 32; i++) {
+    tm32.set("foo"+i, Math.round(Math.random()));
+}
+
+console.log("16 entry transit hash map random access, 1000000 iters");
+time(function() {
+    var s = 0;
+    for(var i = 0; i < 1000000; i++) {
+        s += tm16.get("foo"+r16[i]);
+    }
+},10);
+
+console.log("32 entry transit hash map random access, 1000000 iters");
+time(function() {
+    var s = 0;
+    for(var i = 0; i < 1000000; i++) {
+        s += tm32.get("foo"+r32[i]);
+    }
+},10);
