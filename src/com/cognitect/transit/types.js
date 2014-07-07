@@ -36,12 +36,18 @@ types.MAX_INT = Long.fromString("9007199254740992");
 types.MIN_INT = Long.fromString("-9007199254740992");
 
 types.intValue = function(s) {
-    var n = Long.fromString(s, 10);
-    if(n.greaterThan(types.MAX_INT) ||
-       n.lessThan(types.MIN_INT)) {
-        return n;
+    if(typeof s === "number") {
+        return s;
+    } else if(s instanceof Long) {
+        return s;
     } else {
-        return n.toNumber();
+        var n = Long.fromString(s, 10);
+        if(n.greaterThan(types.MAX_INT) ||
+           n.lessThan(types.MIN_INT)) {
+            return n;
+        } else {
+            return n.toNumber();
+        }
     }
 };
 
