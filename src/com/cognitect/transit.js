@@ -125,12 +125,13 @@ transit.makeBuilder = function(obj) {
 transit.date = types.date;
 
 /**
- * Create a transit 64bit integer. Will return a JavaScript
- *     number if a string that represents an integer value in the 53bit
- *     range.
+ * Create an integer. If given a transit integer or a JavaScript
+ *     number will simply return that value. Given a string will
+ *     return a JavaScript number if the string represents an integer
+ *     value in the 53bit range and a transit integer otherwise.
  * @method transit.integer
- * @param {Number} s A string representing an integer in the 64bit range.
- * @return {transit.integer} A 64bit long.
+ * @param {Number|String|integer} s A value representing an integer.
+ * @return {transit.integer} A JavaScript number or transit integer.
  */
 transit.integer = types.intValue;
 
