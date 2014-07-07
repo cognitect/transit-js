@@ -538,8 +538,8 @@ types.TransitMap.prototype.set = function(k, v) {
             }
         }
         if(newEntry) {
-            bucket.push(arr[i]);
-            bucket.push(arr[i+1]);
+            bucket.push(k);
+            bucket.push(v);
             this.size++;
         }
     }
