@@ -367,11 +367,31 @@ transit.equals = eq.equals;
  */
 transit.extendToEQ = eq.extendToEQ;
 
+/**
+ * Convert a transit map instance into a JavaScript Object.
+ * Throws if the map has keys which have no string representation.
+ * @method transit.mapToObject
+ * @param {transit.map} m a transit map
+ * @return {Object} a JavaScript Object
+ */
+transit.mapToObject = function(m) {
+    var ret = {};
+    m.forEach(function(v, k) {
+        if(typeof k !== "string") {
+            throw Error("Cannot convert map with non-string keys");
+        } else {
+            ret[k] = v;
+        }
+    })
+    return ret;
+};
+    
 /* The following are undocumented for now */
 transit.decoder =        decoder.decoder;
 transit.UUIDfromString = types.UUIDfromString;
 transit.randomUUID =     types.randomUUID;
 transit.stringableKeys = writer.stringableKeys;
+
 
 if(TRANSIT_BROWSER_TARGET) {
     goog.exportSymbol("transit.reader",         transit.reader);
@@ -408,6 +428,7 @@ if(TRANSIT_BROWSER_TARGET) {
     goog.exportSymbol("transit.hash",           eq.hashCode);
     goog.exportSymbol("transit.equals",         eq.equals);
     goog.exportSymbol("transit.extendToEQ",     eq.extendToEQ);
+    goog.exportSymbol("transit.mapToObject",    transti.mapToObject);
     goog.exportSymbol("transit.decoder",        decoder.decoder);
     goog.exportSymbol("transit.UUIDfromString", types.UUIDfromString);
     goog.exportSymbol("transit.randomUUID",     types.randomUUID);
@@ -450,6 +471,7 @@ if(TRANSIT_NODE_TARGET) {
         hash:           eq.hashCode,
         equals:         eq.equals,
         extendToEQ:     eq.extendToEQ,
+        mapToObject:    transit.mapToObject,
         decoder:        decoder.decoder,
         UUIDfromString: types.UUIDfromString,
         randomUUID:     types.randomUUID,
