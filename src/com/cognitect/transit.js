@@ -428,7 +428,7 @@ if(TRANSIT_BROWSER_TARGET) {
     goog.exportSymbol("transit.hash",           eq.hashCode);
     goog.exportSymbol("transit.equals",         eq.equals);
     goog.exportSymbol("transit.extendToEQ",     eq.extendToEQ);
-    goog.exportSymbol("transit.mapToObject",    transti.mapToObject);
+    goog.exportSymbol("transit.mapToObject",    transit.mapToObject);
     goog.exportSymbol("transit.decoder",        decoder.decoder);
     goog.exportSymbol("transit.UUIDfromString", types.UUIDfromString);
     goog.exportSymbol("transit.randomUUID",     types.randomUUID);
