@@ -615,13 +615,17 @@ exports.testDefaultHandler = function(test) {
 };
 
 // =============================================================================
-// Prefer Objects
+// mapToObject
 // =============================================================================
 
-exports.testPreferObjects = function(test) {
-    var r = transit.reader("json", {preferObjects: true});
+exports.testMapToObject = function(test) {
+    var m = transit.map([
+        "foo", 1,
+        "bar", 2,
+        "baz", 3
+    ]);
 
-    test.deepEqual(r.read("{\"foo\":1}"), {foo: 1});
+    test.deepEqual(transit.mapToObject(m), {foo:1,bar:2,baz:3});
 
     test.done();
 };
