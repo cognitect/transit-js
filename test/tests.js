@@ -519,6 +519,27 @@ exports.testCustomHandler = function(test) {
     test.done();
 };
 
+exports.testCustomHandlerKeyMap = function(test) {
+    var Point = function(x, y) {
+        this.x = x;
+        this.y = y;
+    };
+
+    var PointHandler = transit.makeWriteHandler({
+            tag: function(v) { return "point"; },
+            rep: function(v) { return transit.tagged("array", [v.x, v.y]); },
+            stringRep: function(v) { return null; }
+        }),
+        w = transit.writer("json", {
+            handlers: transit.map([Point, PointHandler])
+        }),
+        m = transit.map([new Point(1.5,2.5),1]);
+
+    test.equal(w.write(m), "{\"~#cmap\":[{\"~#point\":[1.5,2.5]},1]}");
+
+    test.done();
+};
+
 exports.testWriteOptions = function(test) {
     var w = transit.writer("json");
 
