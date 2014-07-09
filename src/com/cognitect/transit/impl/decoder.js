@@ -148,9 +148,10 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
         key    = ks[0],
         tagKey = ks.length == 1 ? this.decode(key, cache, false, false) : null;
 
-    if((tagKey != null) &&
-       (tagKey[0] === d.ESC) &&
-       (tagKey[1] === d.TAG)) {
+    if(tagKey != null &&
+       (typeof tagKey === "string") &&
+       (tagKey.charAt(0) === d.ESC) &&
+       (tagKey.charAt(1) === d.TAG)) {
         var val     = hash[key],
             handler = this.handlers[tagKey.substring(2)];
         if(handler != null) {
@@ -242,8 +243,8 @@ decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue
 };
 
 decoder.Decoder.prototype.parseString = function(string, cache, asMapKey) {
-    if(string[0] === d.ESC) {
-        var c = string[1];
+    if(string.charAt(0) === d.ESC) {
+        var c = string.charAt(1);
         if(c === d.ESC || c === d.SUB || c === d.RES) {
             return string.substring(1);
         } else if (c === d.TAG) {

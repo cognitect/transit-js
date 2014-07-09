@@ -55,8 +55,8 @@ caching.isCacheable = function(string, asMapKey) {
         if(asMapKey) {
             return true;
         } else {
-            var c0 = string[0],
-                c1 = string[1];
+            var c0 = string.charAt(0),
+                c1 = string.charAt(1);
             if(c0 === d.ESC) {
                 return c1 === ":" || c1 === "$" || c1 === "#";
             } else {
@@ -128,7 +128,7 @@ caching.WriteCache.prototype.clear = function() {
 // ReadCache
 
 caching.isCacheCode = function(string) {
-    return string[0] === d.SUB;
+    return string.charAt(0) === d.SUB;
 };
 
 caching.codeToIdx = function(code) {
