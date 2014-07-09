@@ -359,10 +359,6 @@ writer.emitEncoded = function(em, h, tag, rep, obj, asMapKey, cache) {
         } else {
             return writer.emitTaggedMap(em, tag, rep, asMapKey, cache);
         }
-    } else if (asMapKey) {
-        var err = new Error("Cannot be used as map key");
-        err.data = {tag: tag, rep: rep, obj: obj};
-        throw err;
     } else {
         return writer.emitTaggedMap(em, tag, rep, asMapKey, cache);
     }
