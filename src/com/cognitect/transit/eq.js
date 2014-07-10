@@ -137,8 +137,14 @@ eq.hashMapLike = function(m) {
 
 eq.hashArrayLike = function(arr) {
     var code = 0;
-    for(var i = 0; i < arr.length; i++) {
-        code = eq.hashCombine(code, eq.hashCode(arr[i]));
+    if(util.isArray(arr)) {
+        for(var i = 0; i < arr.length; i++) {
+            code = eq.hashCombine(code, eq.hashCode(arr[i]));
+        }
+    } else if(arr.forEach) {
+        arr.forEach(function(x, i) {
+            code = eq.hashCombine(code, eq.hashCode(x));
+        });
     }
     return code;
 }

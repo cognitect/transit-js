@@ -355,6 +355,26 @@ transit.isLink = types.isLink;
 transit.hash = eq.hashCode;
 
 /**
+ * Compute the hashCode for JavaScript map-like types - either a JavaScript
+ *    object or a JavaScript object that implements ES6 Map forEach.
+ * @method transit.hashMapLike
+ * @param {Object} x A plain JavaScript Object or Object that implements
+ *    ES6 Map forEach.
+ * @return {Number} Returns JavaScript number - semantically a 32bit integer.
+ */
+transit.hashMapLike = eq.hashMapLike;
+
+/**
+ * Compute the hashCode for JavaScript array-like types - either a JavaScript
+ *    array or a JavaScript object that implements Array forEach.
+ * @method transit.hashArrayLike
+ * @param {Object} x A JavaScript Array or Object that implements
+ *    Array forEach.
+ * @return {Number} Returns JavaScript number - semantically a 32bit integer.
+ */
+transit.hashMapLike = eq.hashArrayLike;
+
+/**
  * Test whether two JavaScript objects represent equal values. The
  *    objects to be tested should be extended to transit's equality
  *    and hasing protocol. JavaScript natives and transit value have
@@ -438,6 +458,8 @@ if(TRANSIT_BROWSER_TARGET) {
     goog.exportSymbol("transit.link",           types.link);
     goog.exportSymbol("transit.isLink",         types.isLink);
     goog.exportSymbol("transit.hash",           eq.hashCode);
+    goog.exportSymbol("transit.hashMapLike",    eq.hashMapLike);
+    goog.exportSymbol("transit.hashArrayLike",  eq.hashArrayLike);
     goog.exportSymbol("transit.equals",         eq.equals);
     goog.exportSymbol("transit.extendToEQ",     eq.extendToEQ);
     goog.exportSymbol("transit.mapToObject",    transit.mapToObject);
@@ -481,6 +503,8 @@ if(TRANSIT_NODE_TARGET) {
         link:           types.link,
         isLink:         types.isLink,
         hash:           eq.hashCode,
+        hashArrayLike:  eq.hashArrayLike,
+        hashMapLike:    eq.hashMapLike,
         equals:         eq.equals,
         extendToEQ:     eq.extendToEQ,
         mapToObject:    transit.mapToObject,
