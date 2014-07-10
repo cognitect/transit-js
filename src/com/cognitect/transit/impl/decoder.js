@@ -227,11 +227,20 @@ decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue
         }
         return ret;
     } else if(this.arrayBuilder) {
-        var ret = this.arrayBuilder.init();
-        for(var i = 0; i < node.length; i++) {
-            ret = this.arrayBuilder.add(ret, this.decode(node[i], cache, asMapKey, false));
+        // NOTE: hard coded for ClojureScript for now - David
+        if(node.length <= 32 && this.arrayBuilder.fromArray) {
+            var arr = [];
+            for(var i = 0; i < node.length; i++) {
+                arr.push(this.decode(node[i], cache, asMapKey, false));
+            }
+            return this.arrayBuilder.fromArray(arr);
+        } else {
+            var ret = this.arrayBuilder.init();
+            for(var i = 0; i < node.length; i++) {
+                ret = this.arrayBuilder.add(ret, this.decode(node[i], cache, asMapKey, false));
+            }
+            return this.arrayBuilder.finalize(ret);
         }
-        return this.arrayBuilder.finalize(ret);
     } else {
         var ret = [];
         for(var i = 0; i < node.length; i++) {
