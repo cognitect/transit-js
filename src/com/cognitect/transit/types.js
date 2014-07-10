@@ -51,6 +51,10 @@ types.intValue = function(s) {
     }
 };
 
+Long.prototype.equiv = function(other) {
+    return eq.equals(this, other);
+};
+
 Long.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof Long) && this.equals(other);
 };
@@ -78,6 +82,10 @@ types.BigInteger.prototype.toString = function() {
     return "[BigInteger: "+this.value+"]";
 };
 
+types.BigInteger.prototype.equiv = function(other) {
+    return eq.equals(this, other);
+};
+    
 types.BigInteger.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof types.BigInteger) && (this.value === other.value);
 };
@@ -99,6 +107,18 @@ types.BigDecimal = function(s) {
 
 types.BigDecimal.prototype.toString = function() {
     return "[BigDecimal: "+this.value+"]";
+};
+
+types.BigDecimal.prototype.equiv = function(other) {
+    return eq.equals(this, other);
+};
+
+types.BigDecimal.prototype.com$cognitect$transit$equals = function(other) {
+    return (other instanceof types.BigDecimal) && (this.value === other.value);
+};
+    
+types.BigDecimal.prototype.com$cognitect$transit$hashCode = function() {
+    return eq.hashCode(this.value);
 };
 
 types.bigDecimalValue = function(s) {
@@ -125,17 +145,19 @@ types.Keyword.prototype.toString = function() {
     return ":"+this.name;
 };
 
+types.Keyword.prototype.equiv = function(other) {
+    return eq.equals(this, other);
+};
+
 types.Keyword.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof types.Keyword) && this.name == other.name;
 };
 
 types.Keyword.prototype.com$cognitect$transit$hashCode = function() {
-    if(this.hashCode !== -1) {
-        return this.hashCode;
-    } else {
+    if(this.hashCode === -1) {
         this.hashCode = eq.hashCode(this.name);
-        return this.hashCode;
     }
+    return this.hashCode;
 };
 
 types.keyword = function(s) {
@@ -158,17 +180,19 @@ types.Symbol.prototype.toString = function() {
     return "[Symbol: "+this.name+"]";
 };
 
+types.Symbol.prototype.equiv = function(other) {
+    return eq.equals(this, other);
+};
+
 types.Symbol.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof types.Symbol) && this.name == other.name;
 };
 
 types.Symbol.prototype.com$cognitect$transit$hashCode = function() {
-    if(this.hashCode !== -1) {
-        return this.hashCode;
-    } else {
+    if(this.hashCode === -1) {
         this.hashCode = eq.hashCode(this.name);
-        return this.hashCode;
     }
+    return this.hashCode;
 };
 
 types.symbol = function(s) {
@@ -225,21 +249,20 @@ types.UUID.prototype.toString = function(s) {
     return s;
 };
 
+types.UUID.prototype.equiv = function(other) {
+    return eq.equals(this, other);
+};
+
 types.UUID.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof types.UUID) && this.high.equals(other.high) && this.low.equals(other.low);
 };
 
 types.UUID.prototype.com$cognitecat$transit$hashCode = function() {
-    if(this.hashCode !== -1) {
-        return this.hashCode;
-    } else {
+    if(this.hashCode === -1) {
         // TODO: follow http://hg.openjdk.java.net/jdk6/jdk6/jdk/file/2d585507a41b/src/share/classes/java/util/UUID.java
         this.hashCode = eq.hashCode(this.toString());
-        return this.hashCode;
     }
-};
-
-types.randomUUID = function() {
+    return this.hashCode;
 };
 
 types.UUIDfromString = function uuidFromString(s) {
@@ -308,6 +331,26 @@ Date.prototype.com$cognitect$transit$hashCode = function() {
  */
 types.Binary = function(str) {
     this.str = str;
+    this.hashCode = -1;
+};
+
+types.Binary.prototype.equiv = function(other) {
+    return eq.equals(this, other);
+};
+
+types.Binary.prototype.com$cognitect$transit$equals = function(other) {
+    if(other instanceof types.Binary) {
+        return this.str = other.str;
+    } else {
+        return false;
+    }
+};
+
+types.Binary.prototype.com$cognitect$transit$hashCode = function() {
+    if(this.hashCode === -1) {
+        this.hashCode = eq.hashCode(this.str);
+    }
+    return this.hashCode;
 };
 
 types.binary = function(str) {
@@ -316,17 +359,37 @@ types.binary = function(str) {
 
 types.isBinary = function(x) {
     return x instanceof types.Binary;
-}
+};
 
 /**
  * @constructor
  */
 types.URI = function(uri) {
     this.uri = uri;
+    this.hashCode = -1;
 };
 
 types.URI.prototype.toString = function() {
     return "[URI: "+this.uri+"]";
+};
+
+types.URI.prototype.equiv = function(other) {
+    return eq.equals(this, other);
+};
+
+types.URI.prototype.com$cognitect$transit$equals = function(other) {
+    if(other instanceof types.URI) {
+        return this.uri = other.uri;
+    } else {
+        return false;
+    }
+};
+
+types.URI.prototype.com$cognitect$transit$hashCode = function() {
+    if(this.hashCode === -1) {
+        this.hashCode = eq.hashCode(this.uri);
+    }
+    return this.hashCode;
 };
 
 types.uri = function(s) {
@@ -675,8 +738,9 @@ types.TransitArrayMap.prototype.com$cognitect$transit$hashCode = function() {
     if(this.backingMap) {
         return this.backingMap.com$cognitect$transit$hashCode();
     } else {
-        if(this.hashCode != -1) return this.hashCode;
-        this.hashCode = eq.hashMapLike(this);
+        if(this.hashCode === -1) {
+            this.hashCode = eq.hashMapLike(this);
+        } 
         return this.hashCode;
     }
 };
@@ -840,8 +904,9 @@ types.TransitMap.prototype.values = function() {
 types.TransitMap.prototype["values"] = types.TransitMap.prototype.values;
   
 types.TransitMap.prototype.com$cognitect$transit$hashCode = function() {
-    if(this.hashCode != -1) return this.hashCode;
-    this.hashCode = eq.hashMapLike(this);
+    if(this.hashCode === -1) {
+        this.hashCode = eq.hashMapLike(this);
+    }
     return this.hashCode;
 };
 
@@ -1027,6 +1092,26 @@ types.isSet = function(x) {
  */
 types.Quote = function(obj) {
     this.obj = obj;
+    this.hashCode = -1;
+};
+
+types.Quote.prototype.equiv = function(other) {
+    return eq.equals(this, other);
+};
+
+types.Quote.prototype.com$cognitect$transit$equals = function(other) {
+    if(other instanceof types.Quote) {
+        return eq.equals(this.obj, other.obj);
+    } else {
+        return false;
+    }
+};
+
+types.Quote.prototype.com$cognitect$transit$hashCode = function() {
+    if(this.hashCode === -1) {
+        this.hashCode =  eq.hashCode(this.obj);
+    }
+    return this.hashCode;
 };
 
 types.Quote.prototype.toString = function() {
@@ -1047,10 +1132,30 @@ types.isQuoted = function(x) {
 types.TaggedValue = function(tag, rep) {
     this.tag = tag;
     this.rep = rep;
+    this.hashCode = -1;
 };
 
 types.TaggedValue.prototype.toString = function() {
     return "[TaggedValue: " + tag + ", " + rep + "]";
+};
+
+types.TaggedValue.prototype.equiv = function(other) {
+    return eq.equals(this, other);
+};
+
+types.TaggedValue.prototype.com$cognitect$transit$equals = function(other) {
+    if(other instanceof types.TaggedValue) {
+        return (this.tag === other.tag) && eq.equals(this.rep, other.rep);
+    } else {
+        return false;
+    }
+};
+
+types.TaggedValue.prototype.com$cognitect$transit$hashCode = function() {
+    if(this.hashCode === -1) {
+        this.hashCode = eq.hashCombine(eq.hashCode(this.tag), eq.hashCode(this.rep));
+    }
+    return this.hashCode;
 };
 
 types.taggedValue = function(tag, rep) {
@@ -1068,6 +1173,25 @@ types.List = function(arr) {
     this.arr = arr;
 };
 
+types.List.prototype.equiv = function(other) {
+    return eq.equals(this, other);
+};
+
+types.List.prototype.com$cognitect$transit$equals = function(other) {
+    if(other instanceof types.List) {
+        return eq.equals(this.arr, other.arr);
+    } else {
+        return false;
+    }
+};
+
+types.List.prototype.com$cognitect$transit$hashCode = function() {
+    if(this.hashCode == -1) {
+        this.hashCode = eq.hashCode(this.obj);
+    }
+    return this.hashCode;
+};
+
 types.list = function(xs) {
     return new types.List(xs);
 };
@@ -1081,6 +1205,26 @@ types.isList = function(x) {
  */
 types.Link = function(rep) {
     this.rep = rep;
+    this.hashCode = -1;
+};
+
+types.Link.prototype.equiv = function(other) {
+    return eq.equals(this, other);
+};
+
+types.Link.prototype.com$cognitect$transit$equals = function(other) {
+    if(other instanceof types.Link) {
+        return eq.equals(this.rep, other.rep);
+    } else {
+        return false;
+    }
+};
+
+types.Link.prototype.com$cognitect$transit$hashCode = function() {
+    if(this.hashCode === -1) {
+        this.hashCode = eq.hashCode(this.rep);
+    }
+    return this.hashCode;
 };
 
 types.link = function(rep) {
