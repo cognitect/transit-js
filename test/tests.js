@@ -431,8 +431,8 @@ exports.testWriteTransitTypes = function(test) {
     test.equal(writer.write([transit.keyword("foo"),transit.symbol("bar")]), "[\"~:foo\",\"~$bar\"]");
     test.equal(writer.write([transit.symbol("foo"),transit.keyword("bar")]), "[\"~$foo\",\"~:bar\"]");
     test.equal(writer.write([transit.uri("http://foo.com/")]), "[\"~rhttp://foo.com/\"]");
-    test.equal(writer.write(transit.list([1,2,3])), "{\"~#list\":[1,2,3]}");
-    test.equal(writer.write([transit.list([1,2,3])]), "[{\"~#list\":[1,2,3]}]");
+    test.equal(writer.write(transit.list([1,2,3])), "[\"~#list\",[1,2,3]]");
+    test.equal(writer.write([transit.list([1,2,3])]), "[[\"~#list\",[1,2,3]]]");
     test.equal(writer.write(transit.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~#\'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}");
     test.equal(writer.write([transit.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")]), "[\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]");
     test.equal(writer.write([transit.binary("c3VyZS4=")]), "[\"~bc3VyZS4=\"]");
@@ -444,13 +444,13 @@ exports.testWriteTransitComplexTypes = function(test) {
     var writer = transit.writer("json"),
         s0     = transit.set(["foo","bar","baz"]),
         m0     = transit.map(["foo","bar","baz","woz"]);
-    test.equal(writer.write(s0),"{\"~#set\":[\"foo\",\"bar\",\"baz\"]}");
+    test.equal(writer.write(s0),"[\"~#set\",[\"foo\",\"bar\",\"baz\"]]");
     test.done();
 }; 
 
 exports.testRoundtrip = function(test) {
     var writer = transit.writer("json"),
-        s      = "{\"~#set\":[\"foo\",\"bar\",\"baz\"]}",
+        s      = "[\"~#set\",[\"foo\",\"bar\",\"baz\"]]",
         reader = transit.reader("json");
     test.equal(s, writer.write(reader.read(s)));
     test.done();
@@ -514,7 +514,7 @@ exports.testCustomHandler = function(test) {
             handlers: transit.map([Point, PointHandler])
         });
 
-    test.equal(writer.write(new Point(1.5,2.5)), "{\"~#point\":[1.5,2.5]}");
+    test.equal(writer.write(new Point(1.5,2.5)), "[\"~#point\",[1.5,2.5]]");
 
     test.done();
 };
@@ -535,7 +535,7 @@ exports.testCustomHandlerKeyMap = function(test) {
         }),
         m = transit.map([new Point(1.5,2.5),1]);
 
-    test.equal(w.write(m), "{\"~#cmap\":[{\"~#point\":[1.5,2.5]},1]}");
+    test.equal(w.write(m), "[\"~#cmap\",[[\"~#point\",[1.5,2.5]],1]]");
 
     test.done();
 };
@@ -562,7 +562,7 @@ exports.testWriteCMap = function(test) {
         m  = transit.map([[1,2], "foo"]),
         w1 = transit.writer("json-verbose");
 
-    test.equal(w0.write(m), "{\"~#cmap\":[[1,2],\"foo\"]}");
+    test.equal(w0.write(m), "[\"~#cmap\",[[1,2],\"foo\"]]");
     test.equal(w1.write(m), "{\"~#cmap\":[[1,2],\"foo\"]}");
 
     test.done();
@@ -627,6 +627,23 @@ exports.testStringableKeys = function(test) {
 };
 
 // =============================================================================
+// Array Tagged Value
+// =============================================================================
+
+exports.testReadArrayTaggedValue = function(test) {
+    var r = transit.reader("json"),
+        s = r.read("[\"~#set\",[1,2,3]]");
+
+    test.ok(transit.isSet(s));
+    test.equal(s.size, 3);
+    test.ok(s.has(1));
+    test.ok(s.has(2));
+    test.ok(s.has(3));
+
+    test.done();
+};
+
+// =============================================================================
 // Default decoder
 // =============================================================================
 
@@ -678,21 +695,21 @@ exports.testVerifyRoundTripCachedKeys = function(test) {
 };
 
 exports.testVerifyJSONCornerCases = function(test) {
-    test.equal(roundtrip("{\"~#point\":[1,2]}"), "{\"~#point\":[1,2]}");
+    test.equal(roundtrip("[\"~#point\",[1,2]]"), "[\"~#point\",[1,2]]");
     test.equal(roundtrip("[\"^ \",\"foo\",\"~xfoo\"]"), "[\"^ \",\"foo\",\"~xfoo\"]");
     test.equal(roundtrip("[\"^ \",\"~/t\",null]"), "[\"^ \",\"~/t\",null]");
     test.equal(roundtrip("[\"^ \",\"~/f\",null]"), "[\"^ \",\"~/f\",null]");
     test.equal(roundtrip("{\"~#'\":\"~f-1.1E-1\"}"), "{\"~#\'\":\"~f-1.1E-1\"}");
     test.equal(roundtrip("{\"~#'\":\"~f-1.10E-1\"}"), "{\"~#\'\":\"~f-1.10E-1\"}");
     test.equal(roundtrip(
-                "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}"),
-                "{\"~#set\":[{\"~#ratio\":[\"~i4953778853208128465\",\"~i636801457410081246\"]},{\"^\\\"\":[\"~i-8516423834113052903\",\"~i5889347882583416451\"]}]}");
+                "[\"~#set\",[[\"~#ratio\",[\"~i4953778853208128465\",\"~i636801457410081246\"]],[\"^\\\"\",[\"~i-8516423834113052903\",\"~i5889347882583416451\"]]]]"),
+                "[\"~#set\",[[\"~#ratio\",[\"~i4953778853208128465\",\"~i636801457410081246\"]],[\"^\\\"\",[\"~i-8516423834113052903\",\"~i5889347882583416451\"]]]]");
 
     test.done();
 };
 
 exports.testVerifyRoundtripCmap = function(test) {
-    test.equal(roundtrip("{\"~#cmap\":[[1,1],\"one\"]}"), "{\"~#cmap\":[[1,1],\"one\"]}");
+    test.equal(roundtrip("[\"~#cmap\",[[1,1],\"one\"]]"), "[\"~#cmap\",[[1,1],\"one\"]]");
     test.done();
 };
 

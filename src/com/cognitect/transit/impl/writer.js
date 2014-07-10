@@ -309,7 +309,7 @@ writer.emitMap = function(em, obj, skip, cache) {
                             rep.push(writer.marshal(em, v, false, cache));
                         });
                     }
-                    return {"~#cmap": rep};
+                    return ["~#cmap", rep];
                 }
             } else {
                 var ret = ["^ "],
@@ -332,9 +332,13 @@ writer.emitMap = function(em, obj, skip, cache) {
 };
 
 writer.emitTaggedMap = function(em, tag, rep, skip, cache) {
-    var ret = {};
-    ret[em.emitString(d.ESC_TAG, tag, "", true, cache)] = writer.marshal(em, rep, false, cache);
-    return ret;
+    if(em.verbose) {
+        var ret = {};
+        ret[em.emitString(d.ESC_TAG, tag, "", true, cache)] = writer.marshal(em, rep, false, cache);
+        return ret;
+    } else {
+        return [em.emitString(d.ESC_TAG, tag, "", true, cache), writer.marshal(em, rep, false, cache)];
+    }
 };
 
 writer.emitEncoded = function(em, h, tag, rep, obj, asMapKey, cache) {

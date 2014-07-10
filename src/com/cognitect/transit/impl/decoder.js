@@ -227,27 +227,48 @@ decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue
             ret.push(this.decode(node[i], cache, asMapKey, false));
         }
         return ret;
-    } else if(this.arrayBuilder) {
-        // NOTE: hard coded for ClojureScript for now - David
-        if(node.length <= 32 && this.arrayBuilder.fromArray) {
-            var arr = [];
-            for(var i = 0; i < node.length; i++) {
-                arr.push(this.decode(node[i], cache, asMapKey, false));
-            }
-            return this.arrayBuilder.fromArray(arr);
-        } else {
-            var ret = this.arrayBuilder.init();
-            for(var i = 0; i < node.length; i++) {
-                ret = this.arrayBuilder.add(ret, this.decode(node[i], cache, asMapKey, false));
-            }
-            return this.arrayBuilder.finalize(ret);
-        }
     } else {
-        var ret = [];
-        for(var i = 0; i < node.length; i++) {
-            ret.push(this.decode(node[i], cache, asMapKey, false));
+        // tagged value as 2-array case
+        if((node.length === 2) &&
+           (typeof node[0] === "string")) {
+            var tagKey = this.decode(node[0], cache, false, false);
+            if((tagKey != null) &&
+               (typeof tagKey === "string") &&
+               (tagKey.charAt(0) === d.ESC) &&
+               (tagKey.charAt(1) === d.TAG)) {
+                var val     = node[1],
+                    handler = this.handlers[tagKey.substring(2)];
+                if(handler != null) {
+                    var ret = handler(this.decode(val, cache, false, true));
+                    return ret;
+                } else {
+                    return types.taggedValue(tagKey.substring(2), this.decode(val, cache, false, false))
+                }
+            }
         }
-        return ret;
+
+        if(this.arrayBuilder) {
+            // NOTE: hard coded for ClojureScript for now - David
+            if(node.length <= 32 && this.arrayBuilder.fromArray) {
+                var arr = [];
+                for(var i = 0; i < node.length; i++) {
+                    arr.push(this.decode(node[i], cache, asMapKey, false));
+                }
+                return this.arrayBuilder.fromArray(arr);
+            } else {
+                var ret = this.arrayBuilder.init();
+                for(var i = 0; i < node.length; i++) {
+                    ret = this.arrayBuilder.add(ret, this.decode(node[i], cache, asMapKey, false));
+                }
+                return this.arrayBuilder.finalize(ret);
+            }
+        } else {
+            var ret = [];
+            for(var i = 0; i < node.length; i++) {
+                ret.push(this.decode(node[i], cache, asMapKey, false));
+            }
+            return ret;
+        }
     }
 };
 
