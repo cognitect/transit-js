@@ -34,8 +34,8 @@ var writer   = com.cognitect.transit.impl.writer,
 
 writer.escape = function(string) {
     if(string.length > 0) {
-        var c = string[0];
-        if(c === d.RES && string[1] === d.ESC) {
+        var c = string.charAt(0);
+        if(c === d.RES && string.charAt(1) === d.ESC) {
             return string.substring(1);
         } else if(c === d.ESC || c === d.SUB || c === d.RES) {
             return d.ESC+string;
