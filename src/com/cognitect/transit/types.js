@@ -54,6 +54,7 @@ types.intValue = function(s) {
 Long.prototype.equiv = function(other) {
     return eq.equals(this, other);
 };
+Long.prototype["equiv"] = Long.prototype.equiv;
 
 Long.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof Long) && this.equals(other);
@@ -85,6 +86,7 @@ types.BigInteger.prototype.toString = function() {
 types.BigInteger.prototype.equiv = function(other) {
     return eq.equals(this, other);
 };
+types.BigInteger.prototype["equiv"] = types.BigInteger.prototype.equiv;
     
 types.BigInteger.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof types.BigInteger) && (this.value === other.value);
@@ -112,6 +114,7 @@ types.BigDecimal.prototype.toString = function() {
 types.BigDecimal.prototype.equiv = function(other) {
     return eq.equals(this, other);
 };
+types.BigDecimal.prototype["equiv"] = types.BigDecimal.prototype.equiv;
 
 types.BigDecimal.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof types.BigDecimal) && (this.value === other.value);
@@ -148,6 +151,7 @@ types.Keyword.prototype.toString = function() {
 types.Keyword.prototype.equiv = function(other) {
     return eq.equals(this, other);
 };
+types.Keyword.prototype["equiv"] = types.Keyword.prototype.equiv;
 
 types.Keyword.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof types.Keyword) && this.name == other.name;
@@ -183,6 +187,7 @@ types.Symbol.prototype.toString = function() {
 types.Symbol.prototype.equiv = function(other) {
     return eq.equals(this, other);
 };
+types.Symbol.prototype["equiv"] = types.Symbol.prototype.equiv;
 
 types.Symbol.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof types.Symbol) && this.name == other.name;
@@ -252,6 +257,7 @@ types.UUID.prototype.toString = function(s) {
 types.UUID.prototype.equiv = function(other) {
     return eq.equals(this, other);
 };
+types.UUID.prototype["equiv"] = types.UUID.prototype.equiv;
 
 types.UUID.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof types.UUID) && this.high.equals(other.high) && this.low.equals(other.low);
@@ -337,6 +343,7 @@ types.Binary = function(str) {
 types.Binary.prototype.equiv = function(other) {
     return eq.equals(this, other);
 };
+types.Binary.prototype["equiv"] = types.Binary.prototype.equiv;
 
 types.Binary.prototype.com$cognitect$transit$equals = function(other) {
     if(other instanceof types.Binary) {
@@ -376,6 +383,7 @@ types.URI.prototype.toString = function() {
 types.URI.prototype.equiv = function(other) {
     return eq.equals(this, other);
 };
+types.URI.prototype["equiv"] = types.URI.prototype.equiv;
 
 types.URI.prototype.com$cognitect$transit$equals = function(other) {
     if(other instanceof types.URI) {
@@ -1098,6 +1106,7 @@ types.Quote = function(obj) {
 types.Quote.prototype.equiv = function(other) {
     return eq.equals(this, other);
 };
+types.Quote.prototype["equiv"] = types.Quote.prototype.equiv;
 
 types.Quote.prototype.com$cognitect$transit$equals = function(other) {
     if(other instanceof types.Quote) {
@@ -1142,6 +1151,7 @@ types.TaggedValue.prototype.toString = function() {
 types.TaggedValue.prototype.equiv = function(other) {
     return eq.equals(this, other);
 };
+types.TaggedValue.prototype["equiv"] = types.TaggedValue.prototype.equiv;
 
 types.TaggedValue.prototype.com$cognitect$transit$equals = function(other) {
     if(other instanceof types.TaggedValue) {
@@ -1176,6 +1186,7 @@ types.List = function(arr) {
 types.List.prototype.equiv = function(other) {
     return eq.equals(this, other);
 };
+types.List.prototype["equiv"] = types.List.prototype.equiv;
 
 types.List.prototype.com$cognitect$transit$equals = function(other) {
     if(other instanceof types.List) {
@@ -1211,6 +1222,7 @@ types.Link = function(rep) {
 types.Link.prototype.equiv = function(other) {
     return eq.equals(this, other);
 };
+types.Link.prototype["equiv"] = types.Link.prototype.equiv;
 
 types.Link.prototype.com$cognitect$transit$equals = function(other) {
     if(other instanceof types.Link) {
