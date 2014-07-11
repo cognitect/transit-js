@@ -762,8 +762,6 @@ exports.testMapKeyRatioCase = function(test) {
 };
 
 exports.testRoundTripEscapedString = function(test) {
-    var w = transit.writer("json");
-
     test.equal(roundtrip("{\"~#\'\":\"~\`~hello\"}"),
                          "{\"~#\'\":\"~\`~hello\"}");
 
