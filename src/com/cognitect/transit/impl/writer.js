@@ -256,7 +256,8 @@ writer.emitMap = function(em, obj, skip, cache) {
                     return ret;
                 } else {
                     var arr = em.unpack(obj),
-                        rep = [];
+                        rep = [],
+                        tag = em.emitString(d.ESC_TAG, "cmap", "", true, cache);
                     if(arr) {
                         for(var i = 0; i < arr.length; i+=2) {
                             rep.push(writer.marshal(em, arr[i], true, false));
@@ -268,7 +269,9 @@ writer.emitMap = function(em, obj, skip, cache) {
                             rep.push(writer.marshal(em, v, false, cache));
                         });
                     }
-                    return {"~#cmap": rep};
+                    var ret = {};
+                    ret[tag] = rep;
+                    return ret;
                 }
             } else {
                 var ret = {},
@@ -297,7 +300,8 @@ writer.emitMap = function(em, obj, skip, cache) {
                     return ret;
                 } else {
                     var arr = em.unpack(obj),
-                        rep = [];
+                        rep = [],
+                        tag = em.emitString(d.ESC_TAG, "cmap", "", true, cache);
                     if(arr) {
                         for(var i = 0; i < arr.length; i+=2) {
                             rep.push(writer.marshal(em, arr[i], true, cache));
@@ -309,7 +313,7 @@ writer.emitMap = function(em, obj, skip, cache) {
                             rep.push(writer.marshal(em, v, false, cache));
                         });
                     }
-                    return ["~#cmap", rep];
+                    return [tag, rep];
                 }
             } else {
                 var ret = ["^ "],

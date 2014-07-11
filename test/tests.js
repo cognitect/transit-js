@@ -770,3 +770,12 @@ exports.testMapCornerCase = function(test) {
     test.equal(roundtrip("[\"^ \"]"), "[\"^ \"]");
     test.done();
 };
+
+exports.testMapKeyRatioCase = function(test) {
+    var r = transit.reader("json");
+
+    test.equal(roundtrip("[\"~#cmap\",[[\"~#ratio\",[\"~n1\",\"~n2\"]],[\"^\\\"\",[\"~n2\",\"~n5\"]]]]"),
+                         "[\"~#cmap\",[[\"~#ratio\",[\"~n1\",\"~n2\"]],[\"^\\\"\",[\"~n2\",\"~n5\"]]]]");
+                          
+    test.done();
+};
