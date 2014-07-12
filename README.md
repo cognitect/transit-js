@@ -78,7 +78,15 @@ function testRoundtrip() {
 }
 ```
 
-## Dependencies
+## Contributing 
+
+Please discuss potential problems or enhancements on the [transit-format mailing list](https://groups.google.com/forum/#!forum/transit-format). Issues should be filed using GitHub issues for this project.
+
+Contributing to Cognitect projects requires a signed [Cognitect Contributor Agreement](http://cognitect.com/contributing).
+
+## Development
+
+### Dependencies
 
 Building and testing transit-js requires
 [Node.js](http://nodejs.org). Install the project's additional
@@ -93,7 +101,7 @@ In order to build transit-js for
 [ClojureScript](http://github.com/clojure/clojurescript),
 [Maven](http://maven.apache.org) must be installed.
 
-## Running the tests
+### Running the tests
 
 ```
 bin/test
@@ -107,9 +115,9 @@ build the production Node.js build:
 bin/build_release_node
 ```
 
-## Build
+### Build
 
-### Version
+#### Version
 
 The build version is automatically incremented.  To determine the
 current build version:
@@ -118,25 +126,25 @@ current build version:
 build/revision
 ```
 
-### Build for Node.js
+#### Build for Node.js
 
 ```
 bin/build_release_node
 ```
 
-### Build for Browser
+#### Build for Browser
 
 ```
 bin/build_release_browser
 ```
 
-### Building the documentaiton
+#### Building the documentaiton
 
 ```
 bin/docs
 ```
 
-### Build JAR for ClojureScript
+#### Build JAR for ClojureScript
 
 The following will install a JAR suitable for use from ClojureScript
 into your local Maven repository.
@@ -145,7 +153,7 @@ into your local Maven repository.
 build/package
 ```
 
-### Deploy
+#### Deploy
 
 Deployment requires that the AWS CLI tools be installed (see
 https://aws.amazon.com/cli/).
