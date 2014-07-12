@@ -1,5 +1,83 @@
 # transit-js
 
+Transit is a data format and a set of libraries for conveying values between applications written in different languages. This library provides support for marshalling Transit data to/from JavaScript.
+
+* [Rationale](http://i-should-be-a-link)
+* [API docs](http://cognitect.github.io/transit-java/)
+* [Specification](http://github.com/cognitect/transit-format)
+
+## Releases and Dependency Information
+
+* Latest release: TBD
+* [All Released Versions](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.cognitect%22%20AND%20a%3A%22transit-cljs%22)
+
+### JavaScript
+
+You can include either the development or release build of transit-js in
+your webpage.
+
+### Node.js
+
+transit-js is released to NPM. Add transit-js to your `package.json` dependencies.
+
+### Bower
+
+### Maven
+
+[Maven](http://maven.apache.org/) dependency information:
+
+```xml
+<dependency>
+  <groupId>com.cognitect</groupId>
+  <artifactId>transit-js</artifactId>
+  <version>TBD</version>
+</dependency>
+```
+
+## Usage
+
+From the browser transit-js is available at the top level:
+
+```javascript
+var t = transit;
+
+function roundtrip(x) {
+  var r = t.reader("json"),
+      w = t.writer("json"),
+  return t.read(r, t.write(w, x));
+}
+
+function testRoundtrip() {
+  var arr1 = ["red", "green", "blue"],
+      arr2 = ["apple", "pear", "grape"]
+      data = t.map();
+  data.set(t.integer(1), list1);
+  data.set(t.integer(2), list2);
+  return t.equals(data, roundtrip(data));
+}
+```
+
+From Node.js you must require transit-js:
+
+```javascript
+var t = require("transit");
+
+function roundtrip(x) {
+  var r = t.reader("json"),
+      w = t.writer("json"),
+  return t.read(r, t.write(w, x));
+}
+
+function testRoundtrip() {
+  var arr1 = ["red", "green", "blue"],
+      arr2 = ["apple", "pear", "grape"]
+      data = t.map();
+  data.set(t.integer(1), list1);
+  data.set(t.integer(2), list2);
+  return t.equals(data, roundtrip(data));
+}
+```
+
 ## Dependencies
 
 Building and testing transit-js requires
