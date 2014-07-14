@@ -78,6 +78,39 @@ function testRoundtrip() {
 }
 ```
 
+## Default Type Mapping
+
+Abbreviations:
+* t = transit
+
+|Transit type|Write accepts|Read returns|
+|------------|-------------|------------|
+|null|null|null|
+|string|String|String|
+|boolean|Boolean|Boolean|
+|integer|Number|Number, t.integer|
+|decimal|Number|Number|
+|keyword|t.keyword|t.keyword|
+|symbol|t.symbol|t.symbol|
+|big integer|t.bigInt|t.bigInt|
+|big decimal|t.bigDec|t.bigDec|
+|time|Date|Date|
+|uri|t.URI|t.URI|
+|uuid|t.UUID|t.UUID|
+|char|String|String|
+|array|Array|Array|
+|set|t.set|t.set|
+|map|t.map|t.map|
+|bytes|Array|Array|
+|shorts|Array|Array|
+|ints|Array|Array|
+|longs|Array|Array|
+|floats|Array|Array|
+|doubles|Array|Array|
+|chars|Array|Array|
+|bools|Array|Array|
+|link|t.link|t.link|
+
 ## Contributing 
 
 Please discuss potential problems or enhancements on the [transit-format mailing list](https://groups.google.com/forum/#!forum/transit-format). Issues should be filed using GitHub issues for this project.
