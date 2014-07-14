@@ -680,6 +680,23 @@ exports.testMapToObject = function(test) {
 };
 
 // =============================================================================
+// Tag Edge Case
+// =============================================================================
+
+exports.testTagEdgeCase = function(test) {
+    var r = transit.reader("json"),
+        w = transit.writer("json");
+
+    test.ok(transit.equals(r.read("{\"~~:set\":[1,2,3]}"),
+                           transit.map(["~:set",[1,2,3]])));
+
+    test.ok(transit.equals(r.read("[{\"~~:set\":[1,2,3]},{\"^!\":[1,2,3]}]"),
+                           [transit.map(["~:set",[1,2,3]]),transit.map(["~:set",[1,2,3]])]));
+
+    test.done();
+};
+
+// =============================================================================
 // Verify Test Cases
 // =============================================================================
 

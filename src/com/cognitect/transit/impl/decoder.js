@@ -29,6 +29,21 @@ var decoder = com.cognitect.transit.impl.decoder,
 // =============================================================================
 // Decoder
 
+/**
+ * @constructor
+ */
+decoder.Tag = function(s) {
+    this.str = s;
+};
+
+decoder.tag = function(s) {
+    return new decoder.Tag(s);
+};
+
+decoder.isTag = function(x) {
+    return x && (x instanceof decoder.Tag);
+};
+
 decoder.isGroundHandler = function(handler) {
     switch(handler) {
         case "_":
@@ -144,20 +159,17 @@ decoder.Decoder.prototype.decodeString = function(string, cache, asMapKey, tagVa
 };
 
 decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue) {
-    var ks     = util.objectKeys(hash),
-        key    = ks[0],
-        tagKey = ks.length == 1 ? this.decode(key, cache, false, false) : null;
+    var ks  = util.objectKeys(hash),
+        key = ks[0],
+        tag = ks.length == 1 ? this.decode(key, cache, false, false) : null;
 
-    if(tagKey != null &&
-       (typeof tagKey === "string") &&
-       (tagKey.charAt(0) === d.ESC) &&
-       (tagKey.charAt(1) === d.TAG)) {
+    if(decoder.isTag(tag)) {
         var val     = hash[key],
-            handler = this.handlers[tagKey.substring(2)];
+            handler = this.handlers[tag.str];
         if(handler != null) {
             return handler(this.decode(val, cache, false, true));
         } else {
-            return types.taggedValue(tagKey.substring(2), this.decode(val, cache, false, false));
+            return types.taggedValue(tag.str, this.decode(val, cache, false, false));
         }
     } else if(this.mapBuilder) {
         if((ks.length < (types.SMALL_ARRAY_MAP_THRESHOLD*2)) && this.mapBuilder.fromArray) {
@@ -278,7 +290,7 @@ decoder.Decoder.prototype.parseString = function(string, cache, asMapKey) {
         if(c === d.ESC || c === d.SUB || c === d.RES) {
             return string.substring(1);
         } else if (c === d.TAG) {
-            return string;
+            return decoder.tag(string.substring(2));
         } else {
             var handler = this.handlers[c];
             if(handler == null) {
