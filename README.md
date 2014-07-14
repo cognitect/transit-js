@@ -95,8 +95,8 @@ Abbreviations:
 |big integer|t.bigInt|t.bigInt|
 |big decimal|t.bigDec|t.bigDec|
 |time|Date|Date|
-|uri|t.URI|t.URI|
-|uuid|t.UUID|t.UUID|
+|uri|t.uri|t.uri|
+|uuid|t.uuid|t.uuid|
 |char|String|String|
 |array|Array|Array|
 |set|t.set|t.set|
