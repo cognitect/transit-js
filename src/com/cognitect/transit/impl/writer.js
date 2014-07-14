@@ -135,62 +135,6 @@ writer.JSONMarshaller.prototype.emitQuoted = function(obj, cache) {
     return ret;
 };
 
-writer.emitInts = function(em, src, cache) {
-    var ret = [];
-    for(var i = 0; i < src.length; i++) {
-        ret.push(em.emitInt(em, src[i], false, cache));
-    }
-    return ret;
-};
-
-writer.emitShorts = function(em, src, cache) {
-    var ret = [];
-    for(var i = 0; i < src.length; i++) {
-        ret.push(em.emitShort(em, src[i], false, cache));
-    }
-    return ret;
-};
-
-writer.emitLongs = function(em, src, cache) {
-    var ret = [];
-    for(var i = 0; i < src.length; i++) {
-        ret.push(em.emitInt(em, src[i], false, cache));
-    }
-    return ret;
-};
-
-writer.emitFloats = function(em, src, cache) {
-    var ret = [];
-    for(var i = 0; i < src.length; i++) {
-        ret.push(em.emitFloat(em, src[i], false, cache));
-    }
-    return ret;
-};
-
-writer.emitDouble = function(em, src, cache) {
-    var ret = [];
-    for(var i = 0; i < src.length; i++) {
-        ret.push(em.emitDouble(em, src[i], false, cache));
-    }
-    return ret;
-};
-
-writer.emitChars = function(em, src, cache) {
-    var ret = [];
-    for(var i = 0; i < src.length; i++) {
-        ret.push(writer.marshal(em, src[i], false, cache));
-    }
-    return ret;
-};
-
-writer.emitBooleans = function(em, src, cache) {
-    var ret = [];
-    for(var i = 0; i < src.length; i++) {
-        ret.push(em.emitBoolean(em, src[i], false, cache));
-    }
-    return ret;
-};
-
 writer.emitObjects = function(em, iterable, cache) {
     var ret = [];
     if(util.isArray(iterable)) {
