@@ -30,25 +30,25 @@ caching.MIN_SIZE_CACHEABLE = 3;
  * @const
  * @type {number}
  */
-caching.CACHE_CODE_NUMERALS = 94;
+caching.BASE_CHAR_IDX = 48;
 
 /**
  * @const
  * @type {number}
  */
-caching.MAX_CACHE_ENTRIES  = 8836;
+caching.CACHE_CODE_NUMERALS = 91;
 
 /**
  * @const
  * @type {number}
  */
-caching.BASE_CHAR_IDX      = 33;
+caching.MAX_CACHE_ENTRIES = 44*44;
 
 /**
  * @const
  * @type {number}
  */
-caching.MAX_CACHE_SIZE     = 4096;
+caching.MAX_CACHE_SIZE = 4096;
 
 caching.isCacheable = function(string, asMapKey) {
     if(string.length > caching.MIN_SIZE_CACHEABLE) {

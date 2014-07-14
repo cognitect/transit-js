@@ -381,7 +381,7 @@ exports.testUUIDfromString = function(test) {
 exports.testWrite = function(test) {
     var writer = transit.writer("json");
     test.equal(writer.write({foo:"bar"}), "[\"^ \",\"foo\",\"bar\"]");
-    test.equal(writer.write([{foobar:"foobar"},{foobar:"foobar"}]), "[[\"^ \",\"foobar\",\"foobar\"],[\"^ \",\"^!\",\"foobar\"]]");
+    test.equal(writer.write([{foobar:"foobar"},{foobar:"foobar"}]), "[[\"^ \",\"foobar\",\"foobar\"],[\"^ \",\"^0\",\"foobar\"]]");
     test.done();
 };
 
@@ -713,7 +713,7 @@ function roundtrip(s) {
 }
 
 exports.testVerifyRoundTripCachedKeys = function(test) {
-    test.equal(roundtrip("[\"~:foo\",\"~:bar\",[\"^ \",\"^\\\"\",[1,2]]]"), "[\"~:foo\",\"~:bar\",[\"^ \",\"^\\\"\",[1,2]]]");
+    test.equal(roundtrip("[\"~:foo\",\"~:bar\",[\"^ \",\"^1\",[1,2]]]"), "[\"~:foo\",\"~:bar\",[\"^ \",\"^1\",[1,2]]]");
     test.done();
 };
 
@@ -725,8 +725,8 @@ exports.testVerifyJSONCornerCases = function(test) {
     test.equal(roundtrip("{\"~#'\":\"~f-1.1E-1\"}"), "{\"~#\'\":\"~f-1.1E-1\"}");
     test.equal(roundtrip("{\"~#'\":\"~f-1.10E-1\"}"), "{\"~#\'\":\"~f-1.10E-1\"}");
     test.equal(roundtrip(
-                "[\"~#set\",[[\"~#ratio\",[\"~i4953778853208128465\",\"~i636801457410081246\"]],[\"^\\\"\",[\"~i-8516423834113052903\",\"~i5889347882583416451\"]]]]"),
-                "[\"~#set\",[[\"~#ratio\",[\"~i4953778853208128465\",\"~i636801457410081246\"]],[\"^\\\"\",[\"~i-8516423834113052903\",\"~i5889347882583416451\"]]]]");
+                "[\"~#set\",[[\"~#ratio\",[\"~i4953778853208128465\",\"~i636801457410081246\"]],[\"^1\",[\"~i-8516423834113052903\",\"~i5889347882583416451\"]]]]"),
+                "[\"~#set\",[[\"~#ratio\",[\"~i4953778853208128465\",\"~i636801457410081246\"]],[\"^1\",[\"~i-8516423834113052903\",\"~i5889347882583416451\"]]]]");
 
     test.done();
 };
@@ -737,8 +737,8 @@ exports.testVerifyRoundtripCmap = function(test) {
 };
 
 exports.testVerifyRoundtripMapCachedStrings = function(test) {
-    test.equal(roundtrip('[["^ ","aaaa",1,"bbbb",2],["^ ","^!",3,"^\\"",4],["^ ","^!",5,"^\\"",6]]'),
-                         '[["^ ","aaaa",1,"bbbb",2],["^ ","^!",3,"^\\"",4],["^ ","^!",5,"^\\"",6]]');
+    test.equal(roundtrip('[["^ ","aaaa",1,"bbbb",2],["^ ","^0",3,"^1",4],["^ ","^0",5,"^1",6]]'),
+                         '[["^ ","aaaa",1,"bbbb",2],["^ ","^0",3,"^1",4],["^ ","^0",5,"^1",6]]');
     test.done();
 };
 
@@ -795,8 +795,8 @@ exports.testMapCornerCase = function(test) {
 };
 
 exports.testMapKeyRatioCase = function(test) {
-    test.equal(roundtrip("[\"~#cmap\",[[\"~#ratio\",[\"~n1\",\"~n2\"]],[\"^\\\"\",[\"~n2\",\"~n5\"]]]]"),
-                         "[\"~#cmap\",[[\"~#ratio\",[\"~n1\",\"~n2\"]],[\"^\\\"\",[\"~n2\",\"~n5\"]]]]");
+    test.equal(roundtrip("[\"~#cmap\",[[\"~#ratio\",[\"~n1\",\"~n2\"]],[\"^1\",[\"~n2\",\"~n5\"]]]]"),
+                         "[\"~#cmap\",[[\"~#ratio\",[\"~n1\",\"~n2\"]],[\"^1\",[\"~n2\",\"~n5\"]]]]");
                           
     test.done();
 };
