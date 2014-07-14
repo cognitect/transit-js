@@ -162,20 +162,36 @@ transit.uuid = types.uuid;
 transit.isUUID = types.isUUID;
 
 /**
+ * Create a transit big integer.
+ * @method transit.bigInt
+ * @param {String} s A string representing an arbitrary size integer value.
+ * @return {transit.bigdec} A transit big integer.
+ */
+transit.bigInt =  types.bigInteger;
+
+/**
+ * Test if an object is a transit big integer.
+ * @method transit.isBigInt
+ * @param {Object} x Any JavaScript value.
+ * @return {Boolean} true if x is a transit big integer, false otherwise.
+ */
+transit.isBigInt = types.isBigInteger;
+
+/**
  * Create a transit big decimal.
- * @method transit.bigdec
+ * @method transit.bigDec
  * @param {String} s A string representing an arbitrary precisions decimal value.
  * @return {transit.bigdec} A transit big decimal.
  */
-transit.bigdec =  types.bigDecimalValue;
+transit.bigDec =  types.bigDecimalValue;
 
 /**
  * Test if an object is a transit big decimal.
- * @method transit.isBigDecimal
+ * @method transit.isBigDec
  * @param {Object} x Any JavaScript value.
  * @return {Boolean} true if x is a transit big decimal, false otherwise.
  */
-transit.isBigDecimal = types.isBigDecimal;
+transit.isBigDec = types.isBigDecimal;
 
 /**
  * Create transit keyword.
@@ -435,8 +451,10 @@ if(TRANSIT_BROWSER_TARGET) {
     goog.exportSymbol("transit.isInteger",      types.isInteger);
     goog.exportSymbol("transit.uuid",           types.uuid);
     goog.exportSymbol("transit.isUUID",         types.isUUID);
-    goog.exportSymbol("transit.bigdec",         types.bigDecimalValue);
-    goog.exportSymbol("transit.isBigDecimal",   types.isBigDecimal);
+    goog.exportSymbol("transit.bigInt",         types.bigInteger);
+    goog.exportSymbol("transit.isBigInt",       types.isBigInteger);
+    goog.exportSymbol("transit.bigDec",         types.bigDecimalValue);
+    goog.exportSymbol("transit.isBigDec",       types.isBigDecimal);
     goog.exportSymbol("transit.keyword",        types.keyword);
     goog.exportSymbol("transit.isKeyword",      types.isKeyword);
     goog.exportSymbol("transit.symbol",         types.symbol);
@@ -480,8 +498,10 @@ if(TRANSIT_NODE_TARGET) {
         isInteger:      types.isInteger,
         uuid:           types.uuid,
         isUUID:         types.isUUID,
-        bigdec:         types.bigDecimalValue,
-        isBigDecimal:   types.isBigDecimal,
+        bigInt:         types.bigInteger,
+        isBigInt:       types.isBigInteger,
+        bigDec:         types.bigDecimalValue,
+        isBigDec:       types.isBigDecimal,
         keyword:        types.keyword,
         isKeyword:      types.isKeyword,
         symbol:         types.symbol,

@@ -100,6 +100,10 @@ types.bigInteger = function(s) {
     return new types.BigInteger(s);
 };
 
+types.isBigInteger = function(x) {
+    return x instanceof types.BigInteger;
+};
+
 /**
  * @constructor
  */
