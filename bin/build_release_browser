@@ -6,7 +6,12 @@ cd `dirname $0`/..
 
 mkdir -p target
 
-java -jar deps/closure-compiler/compiler.jar -O ADVANCED --output_wrapper ";(function(){%output%})();" --generate_exports -D TRANSIT_BROWSER_TARGET=true \
+prefix=`cat VERSION_PREFIX`
+suffix=`build/revision`
+version=$prefix.$suffix
+prelude=`bin/prelude`
+
+java -jar deps/closure-compiler/compiler.jar -O ADVANCED --output_wrapper "$prelude\n;(function(){%output%})();" --generate_exports -D TRANSIT_BROWSER_TARGET=true \
 --js deps/closure-library/closure/goog/base.js \
 --js deps/closure-library/closure/goog/object/object.js \
 --js deps/closure-library/closure/goog/math/long.js \
@@ -20,4 +25,4 @@ java -jar deps/closure-compiler/compiler.jar -O ADVANCED --output_wrapper ";(fun
 --js src/com/cognitect/transit/handlers.js \
 --js src/com/cognitect/transit/stringbuilder.js \
 --js src/com/cognitect/transit/impl/writer.js \
---js src/com/cognitect/transit.js > target/transit.js
+--js src/com/cognitect/transit.js > target/transit-$version-min.js
