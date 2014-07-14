@@ -690,7 +690,13 @@ exports.testTagEdgeCase = function(test) {
     test.ok(transit.equals(r.read("{\"~~:set\":[1,2,3]}"),
                            transit.map(["~:set",[1,2,3]])));
 
+    test.ok(transit.equals(r.read("[\"^ \",\"~~:set\",[1,2,3]]"),
+                           transit.map(["~:set",[1,2,3]])));
+
     test.ok(transit.equals(r.read("[{\"~~:set\":[1,2,3]},{\"^!\":[1,2,3]}]"),
+                           [transit.map(["~:set",[1,2,3]]),transit.map(["~:set",[1,2,3]])]));
+
+    test.ok(transit.equals(r.read("[[\"^ \",\"~~:set\",[1,2,3]],[\"^ \",\"^!\",[1,2,3]]]"),
                            [transit.map(["~:set",[1,2,3]]),transit.map(["~:set",[1,2,3]])]));
 
     test.done();

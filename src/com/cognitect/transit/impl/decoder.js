@@ -243,18 +243,15 @@ decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue
         // tagged value as 2-array case
         if((node.length === 2) &&
            (typeof node[0] === "string")) {
-            var tagKey = this.decode(node[0], cache, false, false);
-            if((tagKey != null) &&
-               (typeof tagKey === "string") &&
-               (tagKey.charAt(0) === d.ESC) &&
-               (tagKey.charAt(1) === d.TAG)) {
+            var tag = this.decode(node[0], cache, false, false);
+            if(decoder.isTag(tag)) {
                 var val     = node[1],
-                    handler = this.handlers[tagKey.substring(2)];
+                    handler = this.handlers[tag.str];
                 if(handler != null) {
                     var ret = handler(this.decode(val, cache, false, true));
                     return ret;
                 } else {
-                    return types.taggedValue(tagKey.substring(2), this.decode(val, cache, false, false))
+                    return types.taggedValue(tag.str, this.decode(val, cache, false, false))
                 }
             }
         }
