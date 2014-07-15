@@ -34,7 +34,7 @@ types.TaggedValue = function(tag, rep) {
 };
 
 types.TaggedValue.prototype.toString = function() {
-    return "[TaggedValue: " + tag + ", " + rep + "]";
+    return "[TaggedValue: " + this.tag + ", " + this.rep + "]";
 };
 
 types.TaggedValue.prototype.equiv = function(other) {
