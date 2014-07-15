@@ -23,6 +23,5 @@ java -jar deps/closure-compiler/compiler.jar -O ADVANCED --output_wrapper "$prel
 --js src/com/cognitect/transit/impl/decoder.js \
 --js src/com/cognitect/transit/impl/reader.js \
 --js src/com/cognitect/transit/handlers.js \
---js src/com/cognitect/transit/stringbuilder.js \
 --js src/com/cognitect/transit/impl/writer.js \
 --js src/com/cognitect/transit.js > target/transit-$version-min.js

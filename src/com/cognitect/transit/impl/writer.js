@@ -18,7 +18,6 @@ goog.require("com.cognitect.transit.caching");
 goog.require("com.cognitect.transit.handlers");
 goog.require("com.cognitect.transit.types");
 goog.require("com.cognitect.transit.delimiters");
-goog.require("com.cognitect.transit.stringbuilder");
 goog.require("goog.math.Long");
 
 goog.scope(function() {
@@ -29,7 +28,6 @@ var writer   = com.cognitect.transit.impl.writer,
     handlers = com.cognitect.transit.handlers,
     types    = com.cognitect.transit.types,
     d        = com.cognitect.transit.delimiters,
-    sb       = com.cognitect.transit.stringbuilder,
     Long     = goog.math.Long;
 
 writer.escape = function(string) {
@@ -50,7 +48,6 @@ writer.escape = function(string) {
  */
 writer.JSONMarshaller = function(opts) {
     this.opts = opts || {};
-    this.buffer = this.opts.buffer || (new sb.StringBuilder());
     this.preferStrings = this.opts["preferStrings"] != null ? this.opts["preferStrings"] : true;
 
     this.objectBuilder = this.opts["objectBuilder"] || null;
