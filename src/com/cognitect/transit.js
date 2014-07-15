@@ -342,7 +342,7 @@ transit.isTaggedValue =  types.isTaggedValue;
 /**
  * Create a transit link.
  * @method transit.link
- * @param {Object} obj A JavaScript object which must contain at a
+ * @param {transit.map} A transit map which must contain at a
  *     minimum the following keys: href, rel. It may optionally include
  *     name, render, and prompt. href must be a transit.uri, all other
  *     values are strings, and render must be either "image" or "link".
