@@ -412,26 +412,6 @@ types.isURI = function(x) {
     return x instanceof types.URI;
 };
 
-types.ints = function(xs) {
-    return xs;
-};
-
-types.longs = function(xs) {
-    return xs;
-};
-
-types.floats = function(xs) {
-    return xs;
-};
-
-types.doubles = function(xs) {
-    return xs;
-};
-
-types.bools = function(xs) {
-    return xs;
-};
-
 /**
  * @const
  * @type {number}

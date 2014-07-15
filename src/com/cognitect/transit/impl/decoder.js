@@ -105,11 +105,6 @@ decoder.Decoder.prototype.defaults = {
         "u": function(v) { return types.uuid(v); },
         "set": function(v) { return types.set(v); },
         "list": function(v) { return types.list(v); },
-        "ints": function(v) { return types.ints(v); },
-        "longs": function(v) { return types.longs(v); },
-        "floats": function(v) { return types.floats(v); },
-        "doubles": function(v) { return types.doubles(v); },
-        "bools": function(v) { return types.bools(v); },
         "cmap": function(v) { return types.map(v, false); }
     },
     defaultHandler: function(c, val) {

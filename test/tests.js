@@ -399,22 +399,6 @@ exports.testRead = function(test) {
     test.done();
 };
 
-exports.testReadTransitTypes = function(test) {
-    var reader = transit.reader("json");
-
-    // TODO: should this work? Verbose maps with complex keys? - David
-    // test.ok(transit.equals(reader.read("{\"~:foo\":\"bar\"}"),
-    //                        transit.map([transit.keyword("foo"), "bar"])));
-
-    test.deepEqual(reader.read("{\"~#ints\":[1,2,3]}"), [1,2,3]);
-    test.deepEqual(reader.read("{\"~#longs\":[1,2,3]}"), [1,2,3]);
-    test.deepEqual(reader.read("{\"~#floats\":[1.5,2.5,3.5]}"), [1.5,2.5,3.5]);
-    test.deepEqual(reader.read("{\"~#doubles\":[1.5,2.5,3.5]}"), [1.5,2.5,3.5]);
-    test.deepEqual(reader.read("{\"~#bools\":[\"~?t\",\"~?f\",\"~?t\"]}"), [true,false,true]);
-
-    test.done();
-};
-
 exports.testWriteTransitTypes = function(test) {
     var writer = transit.writer("json");
     
