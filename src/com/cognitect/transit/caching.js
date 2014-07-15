@@ -36,13 +36,13 @@ caching.BASE_CHAR_IDX = 48;
  * @const
  * @type {number}
  */
-caching.CACHE_CODE_NUMERALS = 91;
+caching.CACHE_CODE_DIGITS = 44;
 
 /**
  * @const
  * @type {number}
  */
-caching.MAX_CACHE_ENTRIES = 44*44;
+caching.MAX_CACHE_ENTRIES = caching.CACHE_CODE_DIGITS*caching.CACHE_CODE_DIGITS;
 
 /**
  * @const
@@ -72,8 +72,8 @@ caching.isCacheable = function(string, asMapKey) {
 // WriteCache
 
 caching.idxToCode = function(idx) {
-    var hi  = Math.floor(idx / caching.CACHE_CODE_NUMERALS),
-        lo  = idx % caching.CACHE_CODE_NUMERALS,
+    var hi  = Math.floor(idx / caching.CACHE_CODE_DIGITS),
+        lo  = idx % caching.CACHE_CODE_DIGITS,
         loc = String.fromCharCode(lo + caching.BASE_CHAR_IDX)
     if(hi === 0) {
         return d.SUB + loc;
@@ -135,7 +135,7 @@ caching.codeToIdx = function(code) {
     if(code.length === 2) {
         return code.charCodeAt(1) - caching.BASE_CHAR_IDX;        
     } else {
-        var hi = (code.charCodeAt(1) - caching.BASE_CHAR_IDX) * caching.CACHE_CODE_NUMERALS,
+        var hi = (code.charCodeAt(1) - caching.BASE_CHAR_IDX) * caching.CACHE_CODE_DIGITS,
             lo = (code.charCodeAt(2) - caching.BASE_CHAR_IDX);
         return hi + lo; 
     }
