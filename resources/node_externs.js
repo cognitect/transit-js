@@ -1,3 +1,11 @@
+/**
+ * @type {boolean}
+ */
+Object.value;
+/**
+ * @type {boolean}
+ */
+Object.done;
 var module = {};
 module.exports = {};
 module.exports.reader = function() {};

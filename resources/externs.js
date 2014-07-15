@@ -1,8 +1,8 @@
 /**
  * @type {boolean}
  */
-Object.prototype.done;
+Object.value;
 /**
- * @type {Object}
+ * @type {boolean}
  */
-Object.prototype.value;
+Object.done;
