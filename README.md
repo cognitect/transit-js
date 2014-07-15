@@ -101,14 +101,6 @@ Abbreviations:
 |array|Array|Array|
 |set|t.set|t.set|
 |map|t.map|t.map|
-|bytes|Array|Array|
-|shorts|Array|Array|
-|ints|Array|Array|
-|longs|Array|Array|
-|floats|Array|Array|
-|doubles|Array|Array|
-|chars|Array|Array|
-|bools|Array|Array|
 |link|t.link|t.link|
 
 ## Contributing 
