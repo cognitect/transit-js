@@ -24,6 +24,47 @@ var types = com.cognitect.transit.types,
     eq    = com.cognitect.transit.eq,
     Long  = goog.math.Long;
 
+/**
+ * @constructor
+ */
+types.TaggedValue = function(tag, rep) {
+    this.tag = tag;
+    this.rep = rep;
+    this.hashCode = -1;
+};
+
+types.TaggedValue.prototype.toString = function() {
+    return "[TaggedValue: " + tag + ", " + rep + "]";
+};
+
+types.TaggedValue.prototype.equiv = function(other) {
+    return eq.equals(this, other);
+};
+types.TaggedValue.prototype["equiv"] = types.TaggedValue.prototype.equiv;
+
+types.TaggedValue.prototype.com$cognitect$transit$equals = function(other) {
+    if(other instanceof types.TaggedValue) {
+        return (this.tag === other.tag) && eq.equals(this.rep, other.rep);
+    } else {
+        return false;
+    }
+};
+
+types.TaggedValue.prototype.com$cognitect$transit$hashCode = function() {
+    if(this.hashCode === -1) {
+        this.hashCode = eq.hashCombine(eq.hashCode(this.tag), eq.hashCode(this.rep));
+    }
+    return this.hashCode;
+};
+
+types.taggedValue = function(tag, rep) {
+    return new types.TaggedValue(tag, rep);
+};
+
+types.isTaggedValue = function(x) {
+    return x instanceof types.TaggedValue;
+};
+
 types.nullValue = function() {
     return null;
 };
@@ -72,68 +113,23 @@ types.floatValue = function(s) {
     return parseFloat(s);
 };
 
-/**
- * @constructor
- */
-types.BigInteger = function(s) {
-    this.value = s;
-};
-
-types.BigInteger.prototype.toString = function() {
-    return "[BigInteger: "+this.value+"]";
-};
-
-types.BigInteger.prototype.equiv = function(other) {
-    return eq.equals(this, other);
-};
-types.BigInteger.prototype["equiv"] = types.BigInteger.prototype.equiv;
-    
-types.BigInteger.prototype.com$cognitect$transit$equals = function(other) {
-    return (other instanceof types.BigInteger) && (this.value === other.value);
-};
-    
-types.BigInteger.prototype.com$cognitect$transit$hashCode = function() {
-    return eq.hashCode(this.value);
-};
-
 types.bigInteger = function(s) {
-    return new types.BigInteger(s);
+    return types.taggedValue("n", s);
 };
 
 types.isBigInteger = function(x) {
-    return x instanceof types.BigInteger;
+    return (x instanceof types.taggedValue) && (x.tag === "n");
 };
 
 /**
  * @constructor
  */
-types.BigDecimal = function(s) {
-    this.value = s;
-};
-
-types.BigDecimal.prototype.toString = function() {
-    return "[BigDecimal: "+this.value+"]";
-};
-
-types.BigDecimal.prototype.equiv = function(other) {
-    return eq.equals(this, other);
-};
-types.BigDecimal.prototype["equiv"] = types.BigDecimal.prototype.equiv;
-
-types.BigDecimal.prototype.com$cognitect$transit$equals = function(other) {
-    return (other instanceof types.BigDecimal) && (this.value === other.value);
-};
-    
-types.BigDecimal.prototype.com$cognitect$transit$hashCode = function() {
-    return eq.hashCode(this.value);
-};
-
 types.bigDecimalValue = function(s) {
-    return new types.BigDecimal(s);
+    return types.taggedValue("f", s);
 };
 
 types.isBigDecimal = function(x) {
-    return x instanceof types.BigDecimal;
+    return (x instanceof types.TaggedValue) && (x.tag === "f");
 };
 
 types.charValue = function(s) {
@@ -339,77 +335,23 @@ Date.prototype.com$cognitect$transit$hashCode = function() {
 /**
  * @constructor
  */
-types.Binary = function(str) {
-    this.str = str;
-    this.hashCode = -1;
-};
-
-types.Binary.prototype.equiv = function(other) {
-    return eq.equals(this, other);
-};
-types.Binary.prototype["equiv"] = types.Binary.prototype.equiv;
-
-types.Binary.prototype.com$cognitect$transit$equals = function(other) {
-    if(other instanceof types.Binary) {
-        return this.str = other.str;
-    } else {
-        return false;
-    }
-};
-
-types.Binary.prototype.com$cognitect$transit$hashCode = function() {
-    if(this.hashCode === -1) {
-        this.hashCode = eq.hashCode(this.str);
-    }
-    return this.hashCode;
-};
-
 types.binary = function(str) {
-    return new types.Binary(str);
+    return types.taggedValue("b", str);
 };
 
 types.isBinary = function(x) {
-    return x instanceof types.Binary;
+    return (x instanceof types.TaggedValue) && (x.tag === "b");
 };
 
 /**
  * @constructor
  */
-types.URI = function(uri) {
-    this.uri = uri;
-    this.hashCode = -1;
-};
-
-types.URI.prototype.toString = function() {
-    return "[URI: "+this.uri+"]";
-};
-
-types.URI.prototype.equiv = function(other) {
-    return eq.equals(this, other);
-};
-types.URI.prototype["equiv"] = types.URI.prototype.equiv;
-
-types.URI.prototype.com$cognitect$transit$equals = function(other) {
-    if(other instanceof types.URI) {
-        return this.uri = other.uri;
-    } else {
-        return false;
-    }
-};
-
-types.URI.prototype.com$cognitect$transit$hashCode = function() {
-    if(this.hashCode === -1) {
-        this.hashCode = eq.hashCode(this.uri);
-    }
-    return this.hashCode;
-};
-
 types.uri = function(s) {
-    return new types.URI(s);
+    return types.taggedValue("r", s);
 };
 
 types.isURI = function(x) {
-    return x instanceof types.URI;
+    return (x instanceof types.TaggedValue) && (x.tag === "r");
 };
 
 /**
@@ -1079,156 +1021,28 @@ types.isSet = function(x) {
     return x instanceof types.TransitSet;
 };
 
-/**
- * @constructor
- */
-types.Quote = function(obj) {
-    this.obj = obj;
-    this.hashCode = -1;
-};
-
-types.Quote.prototype.equiv = function(other) {
-    return eq.equals(this, other);
-};
-types.Quote.prototype["equiv"] = types.Quote.prototype.equiv;
-
-types.Quote.prototype.com$cognitect$transit$equals = function(other) {
-    if(other instanceof types.Quote) {
-        return eq.equals(this.obj, other.obj);
-    } else {
-        return false;
-    }
-};
-
-types.Quote.prototype.com$cognitect$transit$hashCode = function() {
-    if(this.hashCode === -1) {
-        this.hashCode =  eq.hashCode(this.obj);
-    }
-    return this.hashCode;
-};
-
-types.Quote.prototype.toString = function() {
-    return "[Quoted]";
-};
-
 types.quoted = function(obj) {
-    return new types.Quote(obj);
+    return types.taggedValue("'", obj);
 };
 
 types.isQuoted = function(x) {
-    return x instanceof types.Quoted;
-};
-
-/**
- * @constructor
- */
-types.TaggedValue = function(tag, rep) {
-    this.tag = tag;
-    this.rep = rep;
-    this.hashCode = -1;
-};
-
-types.TaggedValue.prototype.toString = function() {
-    return "[TaggedValue: " + tag + ", " + rep + "]";
-};
-
-types.TaggedValue.prototype.equiv = function(other) {
-    return eq.equals(this, other);
-};
-types.TaggedValue.prototype["equiv"] = types.TaggedValue.prototype.equiv;
-
-types.TaggedValue.prototype.com$cognitect$transit$equals = function(other) {
-    if(other instanceof types.TaggedValue) {
-        return (this.tag === other.tag) && eq.equals(this.rep, other.rep);
-    } else {
-        return false;
-    }
-};
-
-types.TaggedValue.prototype.com$cognitect$transit$hashCode = function() {
-    if(this.hashCode === -1) {
-        this.hashCode = eq.hashCombine(eq.hashCode(this.tag), eq.hashCode(this.rep));
-    }
-    return this.hashCode;
-};
-
-types.taggedValue = function(tag, rep) {
-    return new types.TaggedValue(tag, rep);
-};
-
-types.isTaggedValue = function(x) {
-    return x instanceof types.TaggedValue;
-};
-
-/**
- * @constructor
- */
-types.List = function(arr) {
-    this.arr = arr;
-};
-
-types.List.prototype.equiv = function(other) {
-    return eq.equals(this, other);
-};
-types.List.prototype["equiv"] = types.List.prototype.equiv;
-
-types.List.prototype.com$cognitect$transit$equals = function(other) {
-    if(other instanceof types.List) {
-        return eq.equals(this.arr, other.arr);
-    } else {
-        return false;
-    }
-};
-
-types.List.prototype.com$cognitect$transit$hashCode = function() {
-    if(this.hashCode == -1) {
-        this.hashCode = eq.hashCode(this.obj);
-    }
-    return this.hashCode;
+    return (x instanceof types.TaggedValue) && (x.tag === "'");
 };
 
 types.list = function(xs) {
-    return new types.List(xs);
+    return types.taggedValue("list", xs);
 };
 
 types.isList = function(x) {
-    return x instanceof types.List;
-};
-
-/**
- * @constructor
- */
-types.Link = function(rep) {
-    this.rep = rep;
-    this.hashCode = -1;
-};
-
-types.Link.prototype.equiv = function(other) {
-    return eq.equals(this, other);
-};
-types.Link.prototype["equiv"] = types.Link.prototype.equiv;
-
-types.Link.prototype.com$cognitect$transit$equals = function(other) {
-    if(other instanceof types.Link) {
-        return eq.equals(this.rep, other.rep);
-    } else {
-        return false;
-    }
-};
-
-types.Link.prototype.com$cognitect$transit$hashCode = function() {
-    if(this.hashCode === -1) {
-        this.hashCode = eq.hashCode(this.rep);
-    }
-    return this.hashCode;
+    return (x instanceof types.List) && (x.tag === "list");
 };
 
 types.link = function(rep) {
-    return new types.Link(rep);
+    return types.taggedValue("link", rep);
 };
 
 types.isLink = function(x) {
-    return x instanceof types.Link;
+    return (x instanceof types.TaggedValue) && (x.tag === "link")
 };
 
 });

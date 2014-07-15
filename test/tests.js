@@ -400,7 +400,8 @@ exports.testRead = function(test) {
 };
 
 exports.testWriteTransitTypes = function(test) {
-    var writer = transit.writer("json");
+    var writer  = transit.writer("json"),
+        writerv = transit.writer("json-verbose");
     
     test.equal(writer.write(["foo"]), "[\"foo\"]");
     test.equal(writer.write([1]), "[1]");
@@ -417,7 +418,8 @@ exports.testWriteTransitTypes = function(test) {
     test.equal(writer.write([transit.uri("http://foo.com/")]), "[\"~rhttp://foo.com/\"]");
     test.equal(writer.write(transit.list([1,2,3])), "[\"~#list\",[1,2,3]]");
     test.equal(writer.write([transit.list([1,2,3])]), "[[\"~#list\",[1,2,3]]]");
-    test.equal(writer.write(transit.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~#\'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}");
+    test.equal(writer.write(transit.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "[\"^ \",\"~#\'\",\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]");
+    test.equal(writerv.write(transit.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~#\'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}");
     test.equal(writer.write([transit.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")]), "[\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]");
     test.equal(writer.write([transit.binary("c3VyZS4=")]), "[\"~bc3VyZS4=\"]");
     
@@ -706,8 +708,8 @@ exports.testVerifyJSONCornerCases = function(test) {
     test.equal(roundtrip("[\"^ \",\"foo\",\"~xfoo\"]"), "[\"^ \",\"foo\",\"~xfoo\"]");
     test.equal(roundtrip("[\"^ \",\"~/t\",null]"), "[\"^ \",\"~/t\",null]");
     test.equal(roundtrip("[\"^ \",\"~/f\",null]"), "[\"^ \",\"~/f\",null]");
-    test.equal(roundtrip("{\"~#'\":\"~f-1.1E-1\"}"), "{\"~#\'\":\"~f-1.1E-1\"}");
-    test.equal(roundtrip("{\"~#'\":\"~f-1.10E-1\"}"), "{\"~#\'\":\"~f-1.10E-1\"}");
+    test.equal(roundtrip("{\"~#'\":\"~f-1.1E-1\"}"), "[\"^ \",\"~#\'\",\"~f-1.1E-1\"]");
+    test.equal(roundtrip("{\"~#'\":\"~f-1.10E-1\"}"), "[\"^ \",\"~#\'\",\"~f-1.10E-1\"]");
     test.equal(roundtrip(
                 "[\"~#set\",[[\"~#ratio\",[\"~i4953778853208128465\",\"~i636801457410081246\"]],[\"^1\",[\"~i-8516423834113052903\",\"~i5889347882583416451\"]]]]"),
                 "[\"~#set\",[[\"~#ratio\",[\"~i4953778853208128465\",\"~i636801457410081246\"]],[\"^1\",[\"~i-8516423834113052903\",\"~i5889347882583416451\"]]]]");
@@ -769,7 +771,7 @@ exports.testRoundtripBigInteger = function(test) {
 
 exports.testRoundtripUUIDCornerCase = function(test) {
     test.equal(roundtrip("{\"~#'\":\"~u2f9e540c-0591-eff5-4e77-267b2cb3951f\"}"),
-                         "{\"~#'\":\"~u2f9e540c-0591-eff5-4e77-267b2cb3951f\"}");
+                         "[\"^ \",\"~#'\",\"~u2f9e540c-0591-eff5-4e77-267b2cb3951f\"]");
     test.done();
 };
 
@@ -787,7 +789,7 @@ exports.testMapKeyRatioCase = function(test) {
 
 exports.testRoundTripEscapedString = function(test) {
     test.equal(roundtrip("{\"~#\'\":\"~\`~hello\"}"),
-                         "{\"~#\'\":\"~\`~hello\"}");
+                         "[\"^ \",\"~#\'\",\"~\`~hello\"]");
 
     test.done();
 };

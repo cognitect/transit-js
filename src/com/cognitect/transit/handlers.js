@@ -115,22 +115,6 @@ handlers.IntegerHandler.prototype.stringRep = function(v) { return v.toString();
 /**
  * @constructor
  */
-handlers.BigIntegerHandler = function(){};
-handlers.BigIntegerHandler.prototype.tag = function(v) { return "n"; };
-handlers.BigIntegerHandler.prototype.rep = function(v) { return v.value; };
-handlers.BigIntegerHandler.prototype.stringRep = function(v) { return v.value; };
-
-/**
- * @constructor
- */
-handlers.BigDecimalHandler = function(){};
-handlers.BigDecimalHandler.prototype.tag = function(v) { return "f"; };
-handlers.BigDecimalHandler.prototype.rep = function(v) { return v.value; };
-handlers.BigDecimalHandler.prototype.stringRep = function(v) { return v.value; };
-
-/**
- * @constructor
- */
 handlers.BooleanHandler = function(){};
 handlers.BooleanHandler.prototype.tag = function(v) { return "?"; };
 handlers.BooleanHandler.prototype.rep = function(v) { return v; };
@@ -181,26 +165,10 @@ handlers.DateHandler.prototype.getVerboseHandler = function(v) {
 /**
  * @constructor
  */
-handlers.BinaryHandler = function(){};
-handlers.BinaryHandler.prototype.tag = function(v) { return "b"; };
-handlers.BinaryHandler.prototype.rep = function(v) { return v.str; };
-handlers.BinaryHandler.prototype.stringRep = function(v) { return v.str; };
-
-/**
- * @constructor
- */
 handlers.UUIDHandler = function(){};
 handlers.UUIDHandler.prototype.tag = function(v) { return "u"; };
 handlers.UUIDHandler.prototype.rep = function(v) { return v.toString(); };
 handlers.UUIDHandler.prototype.stringRep = function(v) { return v.toString(); };
-
-/**
- * @constructor
- */
-handlers.URIHandler = function(){};
-handlers.URIHandler.prototype.tag = function(v) { return "r"; };
-handlers.URIHandler.prototype.rep = function(v) { return v.uri; };
-handlers.URIHandler.prototype.stringRep = function(v) { return v.uri; };
 
 /**
  * @constructor
@@ -217,14 +185,6 @@ handlers.SymbolHandler = function(){};
 handlers.SymbolHandler.prototype.tag = function(v) { return "$"; };
 handlers.SymbolHandler.prototype.rep = function(v) { return v.name; }; // NOTE: should be str
 handlers.SymbolHandler.prototype.stringRep = function(v, h) { return h.rep(v); };
-
-/**
- * @constructor
- */
-handlers.QuoteHandler = function(){};
-handlers.QuoteHandler.prototype.tag = function(v) { return "'"; };
-handlers.QuoteHandler.prototype.rep = function(v) { return v.obj; };
-handlers.QuoteHandler.prototype.stringRep = function(v, h) { return null; };
 
 /**
  * @constructor
@@ -264,44 +224,22 @@ handlers.TransitMapHandler.prototype.tag = function(v) { return "map"; };
 handlers.TransitMapHandler.prototype.rep = function(v) { return v; };
 handlers.TransitMapHandler.prototype.stringRep = function(v, h) { return null; };
 
-/**
- * @constructor
- */
-handlers.ListHandler = function(){};
-handlers.ListHandler.prototype.tag = function(v) { return "list"; };
-handlers.ListHandler.prototype.rep = function(v) { return types.taggedValue("array", v.arr); };
-handlers.ListHandler.prototype.stringRep = function(b) { return null; };
-    
-/**
- * @constructor
- */
-handlers.LinkHandler = function(){};
-handlers.LinkHandler.prototype.tag = function(v) { return "link"; };
-handlers.LinkHandler.prototype.rep = function(v) { return types.taggedValue("map", v.rep); };
-handlers.LinkHandler.prototype.stringRep = function(b) { return null; };
-
 handlers.defaultHandlers = function(hs) {
     hs.set(null, new handlers.NilHandler());
     hs.set(String, new handlers.StringHandler());
     hs.set(Number, new handlers.NumberHandler());
     hs.set(Long, new handlers.IntegerHandler());
-    hs.set(types.BigInteger, new handlers.BigIntegerHandler());
-    hs.set(types.BigDecimal, new handlers.BigDecimalHandler());
     hs.set(Boolean, new handlers.BooleanHandler());
     hs.set(Array, new handlers.ArrayHandler());
     hs.set(Object, new handlers.MapHandler());
     hs.set(Date, new handlers.DateHandler());
-    hs.set(types.Binary, new handlers.BinaryHandler());
     hs.set(types.UUID, new handlers.UUIDHandler());
-    hs.set(types.URI, new handlers.URIHandler());
     hs.set(types.Keyword, new handlers.KeywordHandler());
     hs.set(types.Symbol, new handlers.SymbolHandler());
-    hs.set(types.Quote, new handlers.QuoteHandler());
     hs.set(types.TaggedValue, new handlers.TaggedHandler());
     hs.set(types.TransitSet, new handlers.TransitSetHandler());
     hs.set(types.TransitArrayMap, new handlers.TransitArrayMapHandler());
     hs.set(types.TransitMap, new handlers.TransitMapHandler());
-    hs.set(types.List, new handlers.ListHandler());
     return hs;
 };
 

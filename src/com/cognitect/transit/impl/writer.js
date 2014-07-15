@@ -125,11 +125,15 @@ writer.JSONMarshaller.prototype.emitBinary = function(b, asMapKey, cache) {
     return this.emitString(d.ESC, "b", b, asMapKey, cache);
 };
 
-writer.JSONMarshaller.prototype.emitQuoted = function(obj, cache) {
-    var ret = {},
-        k   = this.emitString(d.ESC_TAG, "'", "", true, cache);
-    ret[k] = writer.marshal(this, obj, false, cache);
-    return ret;
+writer.JSONMarshaller.prototype.emitQuoted = function(em, obj, cache) {
+    if(em.verbose) {
+        var ret = {},
+            k   = this.emitString(d.ESC_TAG, "'", "", true, cache);
+        ret[k] = writer.marshal(this, obj, false, cache);
+        return ret;
+    } else {
+        return ["^ ", this.emitString(d.ESC_TAG, "'", "", true, cache), writer.marshal(this, obj, false, cache)];
+    }
 };
 
 writer.emitObjects = function(em, iterable, cache) {
@@ -337,7 +341,7 @@ writer.marshal = function(em, obj, asMapKey, cache) {
             return em.emitBinary(rep, asMapKey, cache);
             break;
         case "'":
-            return em.emitQuoted(rep, cache);
+            return em.emitQuoted(em, rep, cache);
             break;
         case "array":
             return writer.emitArray(em, rep, asMapKey, cache);
