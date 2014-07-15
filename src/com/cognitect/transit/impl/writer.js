@@ -176,12 +176,14 @@ writer.stringableKeys = function(em, obj) {
         }
         return stringableKeys;
     } else {
-        var ks = obj.keySet();
-        for(var i = 0; i < ks.length; i++) {
-            stringableKeys = writer.isStringableKey(em, ks[i]);
+        var iter = obj.keys();
+            step = iter.next();
+        while(!step.done) {
+            stringableKeys = writer.isStringableKey(em, step.value);
             if(!stringableKeys) {
                 break;
             }
+            step = iter.next();
         }
         return stringableKeys;
     }
