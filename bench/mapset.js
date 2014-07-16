@@ -37,7 +37,28 @@ function time(f, iters) {
     }
 }
 
-console.log("Add 1e4 entries es6-shim Map");
+console.log("Add 8 entries, 1000 iters, string key, es6-shim Map");
+time(function() {
+    for(var j = 0; j < 10000; j++) {
+        var m = new Map();
+        for(var i = 0; i < 4; i++) {
+            m.set("foo"+i, i);
+        }
+    }
+});
+
+console.log("Add 8 entries, 1000 iters, string key, transit map");
+time(function() {
+    for(var j = 0; j < 10000; j++) {
+        var m = transit.map();
+        for(var i = 0; i < 4; i++) {
+            m.set("foo"+i, i);
+        }
+    }
+});
+
+
+console.log("Add 1e4 entries, array key, es6-shim Map");
 time(function() {
     var m = new Map();
     for(var i = 0; i < 10000; i++) {
@@ -45,7 +66,7 @@ time(function() {
     }
 });
 
-console.log("Add 1e4 entries, transit map");
+console.log("Add 1e4 entries, array key, transit map");
 time(function() {
     var m = transit.map();
     for(var i = 0; i < 10000; i++) {
