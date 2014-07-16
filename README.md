@@ -26,7 +26,15 @@ your webpage.
 
 ### Node.js
 
-transit-js is released to [npm](https://www.npmjs.org). Add transit-js to your `package.json` dependencies.
+transit-js is released to [npm](https://www.npmjs.org). Add transit-js to your `package.json` dependencies:
+
+```javascript
+{...
+  "dependencies": {
+    "transit-js": "TBD"
+  }
+ ...}
+```
 
 ### Bower
 
