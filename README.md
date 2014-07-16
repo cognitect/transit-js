@@ -21,7 +21,7 @@ or newer JavaScript implementation provided that a
 
 ### JavaScript
 
-You can include either the [development]()(8.9K gzipped) or [release]() build of transit-js in
+You can include either the [development]() or [release]()(8.9K gzipped) build of transit-js in
 your webpage.
 
 ### Node.js
