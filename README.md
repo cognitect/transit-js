@@ -57,10 +57,11 @@ function testRoundtrip() {
 }
 ```
 
-From Node.js you must require transit-js:
+From Node.js you must require transit-js (assuming you've
+included it in your project dependencies):
 
 ```javascript
-var t = require("transit");
+var t = require("transit-js");
 
 function roundtrip(x) {
   var r = t.reader("json"),
