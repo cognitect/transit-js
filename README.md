@@ -88,7 +88,7 @@ Abbreviations:
 |null|null|null|
 |string|String|String|
 |boolean|Boolean|Boolean|
-|integer|Number|Number, t.integer|
+|integer|Number, t.integer|Number, t.integer|
 |decimal|Number|Number|
 |keyword|t.keyword|t.keyword|
 |symbol|t.symbol|t.symbol|
