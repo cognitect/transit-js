@@ -1,6 +1,13 @@
 # transit-js
 
-Transit is a data format and a set of libraries for conveying values between applications written in different languages. This library provides support for marshalling Transit data to/from JavaScript.
+Transit is a data format and a set of libraries for conveying values
+between applications written in different languages. This library
+provides support for marshalling Transit data to/from
+JavaScript. transit-js will work with any
+[ECMAScript-262 Edition 3](http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262,%203rd%20edition,%20December%201999.pdf)
+or newer JavaScript implementation provided that a
+[JSON](http://www.json.org) module that supplies `parse` and
+`stringify` methods is present.
 
 * [Rationale](http://i-should-be-a-link)
 * [API docs](http://cognitect.github.io/transit-java/)
@@ -57,10 +64,11 @@ function testRoundtrip() {
 }
 ```
 
-From Node.js you must require transit-js:
+From Node.js you must require transit-js (assuming you've
+included it in your project dependencies):
 
 ```javascript
-var t = require("transit");
+var t = require("transit-js");
 
 function roundtrip(x) {
   var r = t.reader("json"),
@@ -88,7 +96,7 @@ Abbreviations:
 |null|null|null|
 |string|String|String|
 |boolean|Boolean|Boolean|
-|integer|Number|Number, t.integer|
+|integer|Number, t.integer|Number, t.integer|
 |decimal|Number|Number|
 |keyword|t.keyword|t.keyword|
 |symbol|t.symbol|t.symbol|
