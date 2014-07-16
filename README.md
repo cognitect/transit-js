@@ -12,6 +12,7 @@ or newer JavaScript implementation provided that a
 * [Rationale](http://i-should-be-a-link)
 * [API docs](http://cognitect.github.io/transit-java/)
 * [Specification](http://github.com/cognitect/transit-format)
+* [FAQ](http://github.com/cognitect/transit-js/wiki/FAQ), for common transit-js specific questions
 
 ## Releases and Dependency Information
 
