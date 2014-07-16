@@ -1,6 +1,12 @@
 # transit-js
 
-Transit is a data format and a set of libraries for conveying values between applications written in different languages. This library provides support for marshalling Transit data to/from JavaScript.
+Transit is a data format and a set of libraries for conveying values
+between applications written in different languages. This library
+provides support for marshalling Transit data to/from
+JavaScript. transit-js will work with any
+[ECMAScript-262 Edition 3](http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262,%203rd%20edition,%20December%201999.pdf)
+implementation provided that a [JSON](http://www.json.org) module that
+supplies `parse` and `stringify` methods is present.
 
 * [Rationale](http://i-should-be-a-link)
 * [API docs](http://cognitect.github.io/transit-java/)
