@@ -136,18 +136,23 @@ eq.hashMapLike = function(m) {
 };
 
 eq.hashArrayLike = function(arr) {
-    var code = 0;
-    if(util.isArray(arr)) {
-        for(var i = 0; i < arr.length; i++) {
-            code = eq.hashCombine(code, eq.hashCode(arr[i]));
+    var code = arr[eq.transitHashCodeProperty] || 0;
+    if(code !== 0) {
+        return code;
+    } else {
+        if(util.isArray(arr)) {
+            for(var i = 0; i < arr.length; i++) {
+                code = eq.hashCombine(code, eq.hashCode(arr[i]));
+            }
+            arr[eq.transitHashCodeProperty] = code;
+        } else if(arr.forEach) {
+            arr.forEach(function(x, i) {
+                code = eq.hashCombine(code, eq.hashCode(x));
+            });
         }
-    } else if(arr.forEach) {
-        arr.forEach(function(x, i) {
-            code = eq.hashCombine(code, eq.hashCode(x));
-        });
+        return code;
     }
-    return code;
-}
+};
 
 eq.hashCode = function(x) {
     if(x == null) {

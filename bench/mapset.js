@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-require("es6-shim");
+//require("es6-shim");
 var transit = require("../target/transit.js");
 
 function sum(a, b) { return a+b; };
@@ -84,7 +84,7 @@ for(var i = 0; i < 10000; i++) {
 
 var tm = transit.map();
 for(var i = 0; i < 10000; i++) {
-    tm.set(["foo"+i], i);
+    tm.set(ks[i], i);
 }
 
 console.log("has 1e4 entries es6-shim Map");
@@ -100,7 +100,7 @@ console.log("has 1e4 entries transit map");
 time(function() {
     var has = true;
     for(var i = 0; i < 10000; i++) {
-        has = has && tm.has(["foo"+i]);
+        has = has && tm.has(ks[i]);
     }
     console.log(has);
 });
@@ -145,7 +145,7 @@ for(var i = 0; i < 32; i++) {
 
 var smalltm = transit.map();
 for(var i = 0; i < 32; i++) {
-    smalltm.set(["foo"+i], i);
+    smalltm.set(ks[i], i);
 }
 
 console.log("has 32 entries es6-shim Map, 1000000 iters");
@@ -161,7 +161,7 @@ console.log("has 32 entries transit map, 1000000 iters");
 time(function() {
     var has = true;
     for(var i = 0; i < 1000000; i++) {
-        has = has && smalltm.has(["foo"+(i % 32)]);
+        has = has && smalltm.has(ks[i % 32]);
     }
     console.log(has);
 });
