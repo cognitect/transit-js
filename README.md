@@ -79,7 +79,8 @@ such a 64bit integers and dates.
 Furthermore, the restriction that JSON object keys be strings means
 that indexes naturally constructed in many programming langugages
 cannot be conveyed to JavaScript. This shortcoming is particular
-evident and is being addressed in the proposed ECMAScript 6
+evident from a programmatic perspective and is being addressed in the
+proposed ECMAScript 6
 [Map](http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 type.
 
