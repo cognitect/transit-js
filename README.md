@@ -69,17 +69,16 @@ JavaScript servers and clients.
 
 #### Beyond JSON
 
-The [Transit rationale](http://i-should-be-a-link) covers many of
-the reasons to put aside the limitations of JSON. As with the other
+The [Transit rationale](http://i-should-be-a-link) covers many of the
+reasons to put aside the limitations of JSON. As with the other
 Transit implementations, transit-js supports conveying a larger range
 of scalar and non-scalar values than permitted by JSON. Of these
-types, the transit-js handling of the Transit wire map
-representation is the most novel from the perspective of a JavaScript
-applications developer.
+types, the transit-js handling of the map representation is the most
+novel from the perspective of a JavaScript applications developer.
 
 #### Transit Maps
 
-Transit wire representations of maps will be decoded by transit-js
+Transit representations of maps will be decoded by transit-js
 into a high performance [ECMAScript Edition
 6](http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts)
 compliant
