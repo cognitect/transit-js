@@ -78,10 +78,11 @@ being addressed in the proposed ECMAScript 6
 [Map](http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 type.
 
-In order to preserve value semantics between other systems and
-JavaScript, transit-js supports a larger range of scalar values than
-JSON. In addition, to support rich indexing transit-js returns enhanced
-versions of the proposed ES6 map rather than JavaScript objects.
+In order to preserve value semantic between system X and JavaScript
+(where of course X may very well be JavaScript), transit-js supports a
+larger range of scalar values than JSON. In addition, to support rich
+indexing transit-js returns enhanced versions of the proposed ES6 map
+rather than JavaScript objects.
 
 Of course better semantics at the cost of performance of is not much
 of an improvement. transit-js map and set implementations offer a
