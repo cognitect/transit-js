@@ -75,7 +75,7 @@ Transit implementations, transit-js supports conveying a larger range
 of scalar and non-scalar values than permitted by JSON. Of these
 types, the transit-js handling of the Transit wire map
 representation is the most novel from the perspective of a JavaScript
-application developer.
+applications developer.
 
 #### Transit Maps
 
@@ -88,10 +88,9 @@ type. Doing so allows natural indexing of data using common scalars
 like 64 bit integers and dates without requiring the out of band
 application logic often encoutered in systems that marshal JSON.
 
-At first glance this may seem like a performance loss but the
-implementation of transits maps is tuned and adaptive, delivering
-performance comparable to plain JavaScript Objects and native
-ES6 Map implementations.
+At first glance this may seem like a performance loss but the adaptive
+implementation of transits maps delivers performance comparable to
+plain JavaScript Objects and native ES6 Map implementations.
 
 ## Usage
 
