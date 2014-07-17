@@ -67,7 +67,7 @@ transit-js supports the conveyance of semantically rich and extensible
 data between heterogenous software systems whose components include
 JavaScript servers and clients.
 
-### The Problem with JSON
+#### The Problem with JSON
 
 While the [JSON](http://json.org) data format is convenient and
 reasonably efficient, the format is semantically poor and lacks
@@ -83,7 +83,7 @@ evident and is being addressed in the proposed ECMAScript 6
 [Map](http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 type.
 
-### ES6 Maps
+#### ES6 Maps
 
 In order to preserve value semantics between system X and JavaScript
 (where of course X may very well be JavaScript), transit-js supports a
@@ -91,7 +91,7 @@ larger range of scalar values than JSON. To support arbitrary indexing
 transit-js returns enhanced versions of the proposed ES6 map rather
 than JavaScript objects.
 
-### Performance
+#### Performance
 
 Of course better semantics at the cost of performance is not much of
 an improvement. transit-js map and set implementations offer a
