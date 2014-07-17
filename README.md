@@ -93,10 +93,10 @@ implementations to be found in more recent builds of V8,
 JavaScriptCore, and SpiderMonkey.
 
 Caching in addition to the tuned adaptive map implementation means
-that under a large number of JavaScript implementations (Chrome 32,
+that under a number of JavaScript implementations (Node.js, Chrome 32,
 Opera 22, Internet Explorer 9/10/11), transit-js decoding can deliver
-performance comparable to `JSON.parse` while adding considerably
-more value.
+performance comparable to `JSON.parse` while adding considerably more
+value.
 
 ## Usage
 
