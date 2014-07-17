@@ -73,15 +73,15 @@ itself via custom data structures) cannot be represented in JSON, even
 common scalar values such a 64bit integers and dates. Furthermore, the
 restriction that JSON object keys be strings means that indexes
 naturally constructed in many programming langugages cannot be
-conveyed to JavaScript.
+conveyed to JavaScript. This shortcoming is evident given existence of
+the proposed ECMAScript 6
+[Map](http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
+type.
 
 In order to preserve value semantics between other systems and
 JavaScript, transit-js supports a larger range of scalar values than
 JSON. In addition, to support rich indexing transit-js returns enhanced
-versions of proposed [ECMAScript Edition
-6](http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts)
-[Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
-rather than JavaScript objects.
+versions of the proposed ES6 map rather than JavaScript objects.
 
 Of course better semantics at the cost of performance of is not much
 of an improvement. transit-js map and set implementations offer a
