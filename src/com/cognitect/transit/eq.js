@@ -179,9 +179,7 @@ eq.hashCode = function(x) {
             } else if(x[eq.transitHashCodeProperty]) {
                 return x[eq.transitHashCodeProperty];
             } else {
-                var code = eq.hashMapLike(x);
-                x[eq.transitHashCodeProperty] = code;
-                return code;
+                return eq.hashMapLike(x);
             }
             break;
         }

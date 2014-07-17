@@ -42,6 +42,7 @@ module.exports.isTaggedValue = function() {};
 module.exports.link = function() {};
 module.exports.isLink = function() {};
 module.exports.hash = function() {};
+module.exports.hashKey;
 module.exports.hashMapLike = function() {};
 module.exports.hashArrayLike = function() {};
 module.exports.equals = function() {};
