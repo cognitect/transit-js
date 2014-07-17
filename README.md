@@ -84,7 +84,7 @@ larger range of scalar values than JSON. In addition, to support rich
 indexing transit-js returns enhanced versions of the proposed ES6 map
 rather than JavaScript objects.
 
-Of course better semantics at the cost of performance of is not much
+Of course better semantics at the cost of performance is not much
 of an improvement. transit-js map and set implementations offer a
 performance profile that is in many cases greater than an order of
 magnitude faster than existing shims. In a number of cases
