@@ -85,7 +85,7 @@ compliant
 [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 type. Doing so allows natural indexing of data using common scalars
 like 64 bit integers and dates without requiring the out of band
-application logic often encoutered in systems that marshal JSON.
+application logic often encountered in systems that marshal JSON.
 
 At first glance this may seem like a performance loss but the adaptive
 implementation of transit-js maps delivers performance comparable to
