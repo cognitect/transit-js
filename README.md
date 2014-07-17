@@ -73,8 +73,8 @@ itself via custom data structures) cannot be represented in JSON, even
 common scalar values such a 64bit integers and dates. Furthermore, the
 restriction that JSON object keys be strings means that indexes
 naturally constructed in many programming langugages cannot be
-conveyed to JavaScript. This shortcoming is evident given existence of
-the proposed ECMAScript 6
+conveyed to JavaScript. This shortcoming is particular evident and is
+being addressed in the proposed ECMAScript 6
 [Map](http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 type.
 
