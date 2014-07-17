@@ -76,13 +76,11 @@ langugages cannot be conveyed to JavaScript.
 
 In order to preserve value semantics between other systems and
 JavaScript, transit-js supports a larger range of scalar values than
-JSON. In addition, to support rich indexing transit-js embraces and
-extends the proposed [ECMAScript Edition
+JSON. In addition, to support rich indexing transit-js returns enhanced
+versions of proposed [ECMAScript Edition
 6](http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts)
-specifications for
 [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
-and
-[Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set).
+rather than JavaScript objects.
 
 Of course better semantics at the cost of performance of is not much
 of an improvement. transit-js map and set implementations offer a
