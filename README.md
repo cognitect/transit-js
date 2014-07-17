@@ -68,11 +68,12 @@ data between heterogenous software systems whose components include
 JavaScript servers and clients. While the [JSON](http://json.org) data
 format is convenient and reasonably efficient, the format is
 semantically poor and lacks extensiblity. Many values easily
-represented in other popular programming languages cannot be
-represented in JSON, even common scalar values such a 64bit integers
-and dates. Furthermore, the restriction that JSON object keys be
-strings means that indexes naturally constructed in many programming
-langugages cannot be conveyed to JavaScript.
+represented in other popular programming languages (or JavaScript
+itself via custom data structures) cannot be represented in JSON, even
+common scalar values such a 64bit integers and dates. Furthermore, the
+restriction that JSON object keys be strings means that indexes
+naturally constructed in many programming langugages cannot be
+conveyed to JavaScript.
 
 In order to preserve value semantics between other systems and
 JavaScript, transit-js supports a larger range of scalar values than
