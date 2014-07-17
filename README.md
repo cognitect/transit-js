@@ -199,8 +199,11 @@ bin/docs
 
 #### Build JAR for ClojureScript
 
-The following will install a JAR suitable for use from ClojureScript
-into your local Maven repository.
+Assuming you have a
+[JDK](http://www.oracle.com/technetwork/java/javaee/downloads/java-ee-sdk-6u3-jdk-7u1-downloads-523391.html)
+and [Maven](http://maven.apache.org) installed, the following will
+install a JAR suitable for use from ClojureScript into your local
+Maven repository.
 
 ```
 build/package
