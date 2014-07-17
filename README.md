@@ -88,7 +88,7 @@ like 64 bit integers and dates without requiring the out of band
 application logic often encoutered in systems that marshal JSON.
 
 At first glance this may seem like a performance loss but the adaptive
-implementation of transits maps delivers performance comparable to
+implementation of transit-js maps delivers performance comparable to
 plain JavaScript Objects and native ES6 Map implementations.
 
 ## Usage
