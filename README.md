@@ -10,9 +10,9 @@ or newer JavaScript implementation provided that a
 `stringify` methods is present.
 
 * [Rationale](http://i-should-be-a-link)
+* [Take a tour!]()
 * [API docs](http://cognitect.github.io/transit-java/)
 * [Specification](http://github.com/cognitect/transit-format)
-* [Take a tour!]()
 * [FAQ](http://github.com/cognitect/transit-js/wiki/FAQ), for common transit-js specific questions
 
 ## Releases and Dependency Information
