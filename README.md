@@ -86,7 +86,7 @@ and
 Of course better semantics at the cost of performance of is not much
 of an improvement. transit-js map and set implementations offer a
 performance profile that is in many cases greater than an order of
-magnitude faster than existing alternatives. In a number of cases
+magnitude faster than existing shims. In a number of cases
 transit-js maps and sets compare favorably even against native
 implementations to be found in more recent builds of V8,
 JavaScriptCore, and SpiderMonkey.
