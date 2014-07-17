@@ -80,9 +80,9 @@ type.
 
 In order to preserve value semantics between system X and JavaScript
 (where of course X may very well be JavaScript), transit-js supports a
-larger range of scalar values than JSON. In addition, to support rich
-indexing transit-js returns enhanced versions of the proposed ES6 map
-rather than JavaScript objects.
+larger range of scalar values than JSON. To support arbitrary indexing
+transit-js returns enhanced versions of the proposed ES6 map rather
+than JavaScript objects.
 
 Of course better semantics at the cost of performance is not much
 of an improvement. transit-js map and set implementations offer a
