@@ -83,7 +83,7 @@ evident and is being addressed in the proposed ECMAScript 6
 [Map](http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 type.
 
-#### ES6 Maps
+#### Beyond JSON
 
 In order to preserve value semantics between system X and JavaScript
 (where of course X may very well be JavaScript), transit-js supports a
