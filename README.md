@@ -65,16 +65,19 @@ You can also include transit-js in your `bower.json` dependencies:
 
 transit-js supports the conveyance of semantically rich and extensible
 data between heterogenous software systems whose components include
-JavaScript servers and clients. While the [JSON](http://json.org) data
-format is convenient and reasonably efficient, the format is
-semantically poor and lacks extensiblity. Many values easily
-represented in other popular programming languages (or JavaScript
-itself via custom data structures) cannot be represented in JSON, even
-common scalar values such a 64bit integers and dates. Furthermore, the
-restriction that JSON object keys be strings means that indexes
-naturally constructed in many programming langugages cannot be
-conveyed to JavaScript. This shortcoming is particular evident and is
-being addressed in the proposed ECMAScript 6
+JavaScript servers and clients.
+
+While the [JSON](http://json.org) data format is convenient and
+reasonably efficient, the format is semantically poor and lacks
+extensiblity. Many values easily represented in other popular
+programming languages (or JavaScript itself via custom data
+structures) cannot be represented in JSON, even common scalar values
+such a 64bit integers and dates.
+
+Furthermore, the restriction that JSON object keys be strings means
+that indexes naturally constructed in many programming langugages
+cannot be conveyed to JavaScript. This shortcoming is particular
+evident and is being addressed in the proposed ECMAScript 6
 [Map](http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
 type.
 
@@ -84,19 +87,18 @@ larger range of scalar values than JSON. To support arbitrary indexing
 transit-js returns enhanced versions of the proposed ES6 map rather
 than JavaScript objects.
 
-Of course better semantics at the cost of performance is not much
-of an improvement. transit-js map and set implementations offer a
+Of course better semantics at the cost of performance is not much of
+an improvement. transit-js map and set implementations offer a
 performance profile that is in many cases greater than an order of
-magnitude faster than existing shims. In a number of cases
-transit-js maps and sets compare favorably even against native
+magnitude faster than existing shims. In a number of cases transit-js
+maps and sets compare favorably even against the native
 implementations to be found in more recent builds of V8,
 JavaScriptCore, and SpiderMonkey.
 
-Caching in addition to the tuned adaptive map implementation means
-that under a number of JavaScript implementations (Node.js, Chrome 32,
-Opera 22, Internet Explorer 9/10/11), transit-js decoding can deliver
-performance comparable to `JSON.parse` while adding considerably more
-value.
+Finally, overall transit-js decoding can deliver performance
+comparable to `JSON.parse` under a number of JavaScript
+implementations (Node.js, Chrome 32, Opera 22, Internet Explorer
+9/10/11) due to caching and the tuned map implementation.
 
 ## Usage
 
