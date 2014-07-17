@@ -102,9 +102,10 @@ implementations to be found in more recent builds of V8,
 JavaScriptCore, and SpiderMonkey.
 
 Finally, overall transit-js decoding can deliver performance
-comparable to `JSON.parse` under a number of JavaScript
-implementations (Node.js, Chrome 32, Opera 22, Internet Explorer
-9/10/11) due to caching and the tuned map implementation.
+comparable to `JSON.parse` for the same logical data under a number of
+JavaScript implementations (Node.js, Chrome 32, Opera 22, Internet
+Explorer 9/10/11) due to caching and the tuned map implementation. [See
+the tour](http://transit-format.org/tour).
 
 ## Usage
 
