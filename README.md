@@ -78,8 +78,8 @@ function testRoundtrip() {
   var arr1 = ["red", "green", "blue"],
       arr2 = ["apple", "pear", "grape"]
       data = t.map();
-  data.set(t.integer(1), list1);
-  data.set(t.integer(2), list2);
+  data.set(t.integer(1), arr1);
+  data.set(t.integer(2), arr2);
   return t.equals(data, roundtrip(data));
 }
 ```
@@ -100,8 +100,8 @@ function testRoundtrip() {
   var arr1 = ["red", "green", "blue"],
       arr2 = ["apple", "pear", "grape"]
       data = t.map();
-  data.set(t.integer(1), list1);
-  data.set(t.integer(2), list2);
+  data.set(t.integer(1), arr1);
+  data.set(t.integer(2), arr2);
   return t.equals(data, roundtrip(data));
 }
 ```
