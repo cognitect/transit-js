@@ -67,46 +67,30 @@ transit-js supports the conveyance of semantically rich and extensible
 data between heterogenous software systems whose components include
 JavaScript servers and clients.
 
-#### JSON as a data format
-
-While the [JSON](http://json.org) data format is convenient and
-reasonably efficient, the format is semantically poor and lacks
-extensiblity. Many values easily represented in other popular
-programming languages (or JavaScript itself via custom data
-structures) cannot be represented in JSON, even common scalar values
-such a 64bit integers and dates.
-
-Furthermore, the restriction that JSON object keys be strings means
-that indexes naturally constructed in many programming langugages
-cannot be conveyed to JavaScript. This shortcoming is particular
-evident from a programmatic perspective and is being addressed in the
-proposed ECMAScript 6
-[Map](http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
-type.
-
 #### Beyond JSON
 
-In order to preserve value semantics between system X and JavaScript
-(where of course X may very well be JavaScript), transit-js supports a
-larger range of scalar values than JSON. To support arbitrary indexing
-transit-js returns enhanced versions of the proposed ES6 map rather
-than JavaScript objects.
+The [Transit rationale](http://i-should-be-a-link) covers many of
+the reasons to put aside the limitations of JSON. As with the other
+Transit implementations, transit-js supports conveying a larger range
+of scalar and non-scalar values then permitted by JSON. Of these
+types, the transit-js handling of maps is perhaps the most novel from
+the perspective of JavaScript.
 
-#### Performance
+#### Transit Maps
 
-Of course better semantics at the cost of performance is not much of
-an improvement. transit-js map and set implementations offer a
-performance profile that is in many cases greater than an order of
-magnitude faster than existing shims. In a number of cases transit-js
-maps and sets compare favorably even against the native
-implementations to be found in more recent builds of V8,
-JavaScriptCore, and SpiderMonkey.
+Transit wire representations of maps will be decoded by transit-js
+into a high performance [ECMAScript Edition
+6](http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts)
+compliant
+[Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
+type. Doing so allows natural indexing of data using common scalars
+like 64 bit integers and dates without requiring the out of band
+application logic often encoutered in systems that marshal JSON.
 
-Finally, overall transit-js decoding can deliver performance
-comparable to `JSON.parse` for the same logical data under a number of
-JavaScript implementations (Node.js, Chrome 32, Opera 22, Internet
-Explorer 9/10/11) due to caching and the tuned map implementation. [See
-the tour](http://transit-format.org/tour).
+At first glance this may seem like a performance loss but the
+implementation of transits maps is tuned and adaptive, delivering
+performance comparable to plain JavaScript Objects and native
+ES6 Map implementations.
 
 ## Usage
 
