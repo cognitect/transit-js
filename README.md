@@ -61,6 +61,36 @@ You can also include transit-js in your `bower.json` dependencies:
 </dependency>
 ```
 
+## Overview
+
+transit-js supports the conveyance of semantically rich and extensible
+data between heterogenous software systems whose components include
+JavaScript servers and clients. While the [JSON](http://json.org) data
+format is convenient and reasonably efficient, the format is
+semantically poor and lacks extensiblity. Many values easily
+represented in other popular programming languages cannot be
+represented in JSON, even common scalar values such a 64bit integers
+and dates. Furthermore, the restriction that JSON object keys be
+strings means that indexes naturally constructed in many programming
+langugages cannot be conveyed to JavaScript.
+
+In order to preserve value semantics between other systems and
+JavaScript, transit-js embraces and extends the proposed [ECMAScript
+Edition
+6](http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts)
+specifications for
+[Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
+and
+[Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set).
+
+Of course better semantics at the cost of performance of is not much
+of an improvement. transit-js map and set implementations offer a
+performance profile that is in many cases greater than an order of
+magnitude faster than existing alternatives. In a number of cases
+transit-js maps and sets compare favorably even against native
+implementations to be found in more recent builds of V8,
+JavaScriptCore, and SpiderMonkey.
+
 ## Usage
 
 From the browser transit-js is available at the top level:
