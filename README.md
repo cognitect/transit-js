@@ -67,7 +67,7 @@ transit-js supports the conveyance of semantically rich and extensible
 data between heterogenous software systems whose components include
 JavaScript servers and clients.
 
-#### The Problem with JSON
+#### JSON as a data format
 
 While the [JSON](http://json.org) data format is convenient and
 reasonably efficient, the format is semantically poor and lacks
