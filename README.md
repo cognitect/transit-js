@@ -73,7 +73,7 @@ The [Transit rationale](http://i-should-be-a-link) covers many of
 the reasons to put aside the limitations of JSON. As with the other
 Transit implementations, transit-js supports conveying a larger range
 of scalar and non-scalar values then permitted by JSON. Of these
-types, the transit-js decoding the Transit wire map
+types, the transit-js handling of the Transit wire map
 representation is most novel from the perspective of a JavaScript
 application developer.
 
