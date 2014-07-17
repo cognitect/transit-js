@@ -1,8 +1,16 @@
 /**
- * @type {boolean}
+ * @type {Object}
  */
 Object.value;
 /**
- * @type {boolean}
+ * @type {Boolean}
  */
 Object.done;
+/**
+ * @type {Object}
+ */
+Object.rep;
+/**
+ * @type {String}
+ */
+Object.tag;
