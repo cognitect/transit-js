@@ -78,12 +78,12 @@ novel from the perspective of a JavaScript applications developer.
 
 #### Transit Maps
 
-Transit representations of maps will be decoded by transit-js
-into a high performance [ECMAScript Edition
+Transit representations of maps are decoded by transit-js
+into a high performance, [ECMAScript Edition
 6](http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts)
 compliant
 [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
-type. Doing so allows natural indexing of data using common scalars
+data type. Doing so allows natural indexing of data using common scalars
 like 64 bit integers and dates without requiring the out of band
 application logic often encountered in systems that marshal JSON.
 
