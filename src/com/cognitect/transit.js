@@ -373,6 +373,7 @@ transit.hash = eq.hashCode;
 /**
  * A unique string that can be used to set the hash code on plain
  * JavaScript Objects as well property skip during iteration.
+ * @property transit.hashKey
  * @const
  * @type {String}
  */
