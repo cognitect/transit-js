@@ -87,9 +87,9 @@ type. Doing so allows natural indexing of data using common scalars
 like 64 bit integers and dates without requiring the out of band
 application logic often encountered in systems that marshal JSON.
 
-At first glance this may seem like a performance loss but the adaptive
-implementation of transit-js maps delivers performance comparable to
-plain JavaScript objects and native ES6 Map implementations.
+The adaptive implementation of transit-js maps delivers performance
+comparable to plain JavaScript objects and native ES6 Map
+implementations.
 
 ## Usage
 
