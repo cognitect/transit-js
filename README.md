@@ -15,6 +15,14 @@ or newer JavaScript implementation provided that a
 * [Take a tour!](http://cognitect.github.io/transit-tour)
 * [FAQ](http://github.com/cognitect/transit-js/wiki/FAQ), for common transit-js specific questions
 
+This implementation's major.minor version number corresponds to the version of it supports.
+
+_NOTE: Transit is a work in progress and may evolve based on feedback.
+As a result, while Transit is a great option for transferring data
+between applications, it should not yet be used for storing data
+durably over time. This recommendation will change when the
+specification is complete._ 
+
 ## Releases and Dependency Information
 
 * Latest release: TBD
