@@ -14,7 +14,7 @@ echo $version
 echo "Packaging..."
 bin/build_jar
 mvn versions:set -DnewVersion=${version}
-mvn install:install-file -Dfile=./target/transit.jar -DpomFile=pom.xml
+mvn install:install-file -Dfile=./target/transit.jar -DpomFile=pom.xml -DcreateChecksum=true -DlocalRepositoryPath=./target/package
 mvn versions:revert
 
 echo "Package done!"
