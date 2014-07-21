@@ -1,6 +1,6 @@
 {
   "name": "transit-js",
-  "version": "0.0.1-alpha",
+  "version": "0.8.613",
   "engines": {
     "node": ">= 0.10.0"
   },

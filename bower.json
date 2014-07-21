@@ -1,6 +1,6 @@
 {
   "name": "transit-js",
-  "version": "0.0.0",
+  "version": "0.8.613",
   "homepage": "https://github.com/cognitect/transit-js",
   "description": "Transit for JavaScript",
   "main": "target/transit.js",
@@ -11,8 +11,7 @@
     "serialization"
   ],
   "authors": [
-    "Cognitect",
-    "Inc."
+    "Cognitect, Inc."
   ],
   "license": "EPL",
   "private": true,
