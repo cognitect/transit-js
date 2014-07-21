@@ -25,13 +25,12 @@ specification is complete._
 
 ## Releases and Dependency Information
 
-* Latest release: TBD
+* Latest release: 0.8.616
 * [All Released Versions](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.cognitect%22%20AND%20a%3A%22transit-cljs%22)
 
 ### JavaScript
 
-You can include either the [development]() or [release]()(8.9K gzipped) build of transit-js in
-your webpage.
+You can include either the [development](cdn.cognitect.com/transit/transit-0.8.616.js) or [release](cdn.cognitect.com/transit/transit-0.8.616-min.js)(8.9K gzipped) build of transit-js in your webpage.
 
 ### Node.js
 
@@ -40,7 +39,7 @@ transit-js is released to [npm](https://www.npmjs.org). Add transit-js to your `
 ```javascript
 {...
   "dependencies": {
-    "transit-js": "TBD"
+    "transit-js": "0.8.616"
   }
  ...}
 ```
@@ -52,7 +51,7 @@ You can also include transit-js in your `bower.json` dependencies:
 ```javascript
 {...
   "dependencies": {
-    "transit-js": "TBD"
+    "transit-js": "0.8.616"
   }
  ...}
 ```
@@ -65,7 +64,7 @@ You can also include transit-js in your `bower.json` dependencies:
 <dependency>
   <groupId>com.cognitect</groupId>
   <artifactId>transit-js</artifactId>
-  <version>TBD</version>
+  <version>0.8.616</version>
 </dependency>
 ```
 
@@ -77,7 +76,7 @@ JavaScript servers and clients.
 
 #### Beyond JSON
 
-The [Transit rationale](http://i-should-be-a-link) covers many of the
+The [Transit rationale](http://blog.cognitect.com/blog/2014/7/22/transit) covers many of the
 reasons to put aside the limitations of JSON. As with the other
 Transit implementations, transit-js supports conveying a larger range
 of scalar and non-scalar values than permitted by JSON. Of these
