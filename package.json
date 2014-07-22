@@ -22,7 +22,7 @@
   "main": "target/transit.js",
   "bugs": {
     "url": "https://github.com/cognitect/transit-js/issues"
-  }
+  },
   "contributors": [
     "David Nolen (https://github.com/swannodette)"
   ],
@@ -46,7 +46,7 @@
   },
   "scripts": {
     "build": "./bin/build_release_node",
-    "prepublish": "npm run-script build"
+    "prepublish": "npm run-script build",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
