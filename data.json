@@ -2,7 +2,7 @@
     "project": {
         "name": "transit-js",
         "description": "A JavaScript implementation of the Transit format",
-        "version": "0.8.613",
+        "version": "0.8.616",
         "url": "http://github.com/cognitect/transit-js"
     },
     "files": {
@@ -1034,7 +1034,7 @@
             "line": 301,
             "description": "Test if an object is a transit list.",
             "itemtype": "method",
-            "name": "transit.list",
+            "name": "transit.isList",
             "params": [
                 {
                     "name": "x",
