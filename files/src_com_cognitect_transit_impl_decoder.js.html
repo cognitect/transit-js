@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/com/cognitect/transit/impl/decoder.js - transit-js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.8.0pr2/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <script src="http://yui.yahooapis.com/combo?3.8.0pr2/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            <h1><a href="../index.html"><img src="../assets/css/logo.png">transit-js: src/com/cognitect/transit/impl/decoder.js</a></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.8.613</em>
+        </div>
+    </div>
+    <div class="yui3-g">
+
+        <div id="sidebar" class="yui3-u">
+            <div id="modules" class="sidebox">
+    <div class="hd">
+        <h2 class="no-toc">Modules</h2>
+    </div>
+    <div class="bd">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+
+<div id="classes" class="sidebox">
+    <div class="hd">
+        <h2 class="no-toc">Classes</h2>
+    </div>
+    <div class="bd">
+        <ul>
+            
+                <li><a href="../classes/transit.html">transit</a></li>
+            
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="fileTree" class="sidebox">
+    <div class="hd">
+        <h2 class="no-toc">Files</h2>
+    </div>
+    <div class="bd">
+        <ul><li>src/<ul><li>com/<ul><li>cognitect/<ul><li><a href="../files/src_com_cognitect_transit.js.html">transit.js</a></li><li>transit/<ul><li><a href="../files/src_com_cognitect_transit_caching.js.html">caching.js</a></li><li><a href="../files/src_com_cognitect_transit_delimiters.js.html">delimiters.js</a></li><li><a href="../files/src_com_cognitect_transit_eq.js.html">eq.js</a></li><li><a href="../files/src_com_cognitect_transit_handlers.js.html">handlers.js</a></li><li>impl/<ul><li><a href="../files/src_com_cognitect_transit_impl_decoder.js.html">decoder.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_reader.js.html">reader.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_writer.js.html">writer.js</a></li></ul></li><li><a href="../files/src_com_cognitect_transit_types.js.html">types.js</a></li></ul></li></ul></li></ul></li></ul></li></ul>
+    </div>
+</div>
+
+
+
+        </div>
+
+        <div id="main" class="yui3-u">
+            <div class="content"><h4>src/com/cognitect/transit/impl/decoder.js</h4>
+
+<pre class="code prettyprint linenums">
+// Copyright 2014 Cognitect. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an &quot;AS-IS&quot; BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+goog.provide(&quot;com.cognitect.transit.impl.decoder&quot;);
+goog.require(&quot;com.cognitect.transit.util&quot;);
+goog.require(&quot;com.cognitect.transit.delimiters&quot;);
+goog.require(&quot;com.cognitect.transit.caching&quot;);
+goog.require(&quot;com.cognitect.transit.types&quot;);
+
+goog.scope(function() {
+
+var decoder = com.cognitect.transit.impl.decoder,
+    util    = com.cognitect.transit.util,
+    d       = com.cognitect.transit.delimiters,
+    caching = com.cognitect.transit.caching,
+    types   = com.cognitect.transit.types;
+
+// =============================================================================
+// Decoder
+
+/**
+ * @constructor
+ */
+decoder.Tag = function(s) {
+    this.str = s;
+};
+
+decoder.tag = function(s) {
+    return new decoder.Tag(s);
+};
+
+decoder.isTag = function(x) {
+    return x &amp;&amp; (x instanceof decoder.Tag);
+};
+
+decoder.isGroundHandler = function(handler) {
+    switch(handler) {
+        case &quot;_&quot;:
+        case &quot;s&quot;:
+        case &quot;?&quot;:
+        case &quot;i&quot;:
+        case &quot;d&quot;:
+        case &quot;b&quot;:
+        case &quot;&#x27;&quot;:
+        case &quot;array&quot;:
+        case &quot;map&quot;:
+        return true;
+    }
+    return false;
+};
+
+/**
+ * A transit decoder
+ * @constructor
+ */
+decoder.Decoder = function(options) {
+    this.options = options || {};
+    this.handlers = {};
+    for(var h in this.defaults.handlers) {
+        this.handlers[h] = this.defaults.handlers[h];
+    }
+    for(var h in this.options[&quot;handlers&quot;]) {
+        if(decoder.isGroundHandler(h)) {
+            throw new Error(&quot;Cannot override handler for ground types&quot;);
+        }
+        this.handlers[h] = this.options[&quot;handlers&quot;][h];
+    }
+    this.preferStrings = this.options[&quot;preferStrings&quot;] != null ? this.options[&quot;preferStrings&quot;] : this.defaults.preferStrings;
+    this.defaultHandler = this.options[&quot;defaultHandler&quot;] || this.defaults.defaultHandler;
+    /* NOT PUBLIC */
+    this.mapBuilder = this.options[&quot;mapBuilder&quot;];
+    this.arrayBuilder = this.options[&quot;arrayBuilder&quot;];
+};
+
+
+decoder.Decoder.prototype.defaults = {
+    handlers: {
+        &quot;_&quot;: function(v) { return types.nullValue(); },
+        &quot;?&quot;: function(v) { return types.boolValue(v); },
+        &quot;b&quot;: function(v) { return types.binary(v); },
+        &quot;i&quot;: function(v) { return types.intValue(v); },
+        &quot;n&quot;: function(v) { return types.bigInteger(v); },
+        &quot;d&quot;: function(v) { return types.floatValue(v); },
+        &quot;f&quot;: function(v) { return types.bigDecimalValue(v); },
+        &quot;c&quot;: function(v) { return types.charValue(v); },
+        &quot;:&quot;: function(v) { return types.keyword(v); },
+        &quot;$&quot;: function(v) { return types.symbol(v); },
+        &quot;r&quot;: function(v) { return types.uri(v); },
+
+        // tagged
+        &quot;&#x27;&quot;: function(v) { return v; },
+        &quot;m&quot;: function(v) { return types.date(v); },
+        &quot;t&quot;: function(v) { return types.verboseDate(v); },
+        &quot;u&quot;: function(v) { return types.uuid(v); },
+        &quot;set&quot;: function(v) { return types.set(v); },
+        &quot;list&quot;: function(v) { return types.list(v); },
+        &quot;link&quot;: function(v) { return types.link(v); },
+        &quot;cmap&quot;: function(v) { return types.map(v, false); }
+    },
+    defaultHandler: function(c, val) {
+        return types.taggedValue(c, val);
+    },
+    preferStrings: true
+};
+
+decoder.Decoder.prototype.decode = function(node, cache, asMapKey, tagValue) {
+    if(node == null) return null;
+
+    var t = typeof node;
+
+    switch(t) {
+    case &quot;string&quot;:
+        return this.decodeString(node, cache, asMapKey, tagValue);
+        break;
+    case &quot;object&quot;:
+        if(util.isArray(node)) {
+            if(node[0] === &quot;^ &quot;) {
+                return this.decodeArrayHash(node, cache, asMapKey, tagValue);
+            } else {
+                return this.decodeArray(node, cache, false, tagValue);
+            }
+        } else {
+            return this.decodeHash(node, cache, asMapKey, tagValue);
+        }
+        break;
+    }
+
+    return node;
+};
+decoder.Decoder.prototype[&quot;decode&quot;] = decoder.Decoder.prototype.decode;
+
+decoder.Decoder.prototype.decodeString = function(string, cache, asMapKey, tagValue) {
+    if(caching.isCacheable(string, asMapKey)) {
+        var val = this.parseString(string, cache, false);
+        if(cache) {
+            cache.write(val, asMapKey);
+        }
+        return val;
+    } else if(caching.isCacheCode(string)) {
+        return cache.read(string, asMapKey);
+    } else {
+        return this.parseString(string, cache, asMapKey);
+    }
+};
+
+decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue) {
+    var ks  = util.objectKeys(hash),
+        key = ks[0],
+        tag = ks.length == 1 ? this.decode(key, cache, false, false) : null;
+
+    if(decoder.isTag(tag)) {
+        var val     = hash[key],
+            handler = this.handlers[tag.str];
+        if(handler != null) {
+            return handler(this.decode(val, cache, false, true));
+        } else {
+            return types.taggedValue(tag.str, this.decode(val, cache, false, false));
+        }
+    } else if(this.mapBuilder) {
+        if((ks.length &lt; (types.SMALL_ARRAY_MAP_THRESHOLD*2)) &amp;&amp; this.mapBuilder.fromArray) {
+            var nodep = [];
+            for(var i = 0; i &lt; ks.length; i++) {
+                var strKey = ks[i];
+                nodep.push(this.decode(strKey, cache, true, false));
+                nodep.push(this.decode(hash[strKey], cache, false, false));
+            }
+            return this.mapBuilder.fromArray(nodep);
+        } else {
+            var ret = this.mapBuilder.init();
+            for(var i = 0; i &lt; ks.length; i++) {
+                var strKey = ks[i];
+                ret = this.mapBuilder.add(ret, this.decode(strKey, cache, true, false),
+                                               this.decode(hash[strKey], cache, false, false));
+            }
+            return this.mapBuilder.finalize(ret);
+        }
+    } else {
+        var nodep = [];
+
+        for(var i = 0; i &lt; ks.length; i++) {
+            var strKey = ks[i];
+            nodep.push(this.decode(strKey, cache, true, false));
+            nodep.push(this.decode(hash[strKey], cache, false, false));
+        }
+
+        return types.map(nodep, false);
+    }
+};
+
+decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagValue) {
+    if(this.mapBuilder) {
+        if((node.length &lt; ((types.SMALL_ARRAY_MAP_THRESHOLD*2)+1)) &amp;&amp; this.mapBuilder.fromArray) {
+            var nodep = [];
+            for(var i = 1; i &lt; node.length; i+=2) {
+                nodep.push(this.decode(node[i], cache, true, false));
+                nodep.push(this.decode(node[i+1], cache, false, false));
+            }
+            return this.mapBuilder.fromArray(nodep);
+        } else {
+            var ret = this.mapBuilder.init();
+            for(var i = 1; i &lt; node.length; i+=2) {
+                ret = this.mapBuilder.add(ret, this.decode(node[i], cache, true, false),
+                                               this.decode(node[i+1], cache, false, false))
+            }
+            return this.mapBuilder.finalize(ret);
+        }
+    } else {
+        var nodep = [];
+
+        // collect keys
+        for(var i = 1; i &lt; node.length; i +=2) {
+            nodep.push(this.decode(node[i], cache, true, false));
+            nodep.push(this.decode(node[i+1], cache, false, false));
+        }
+
+        return types.map(nodep, false);
+    }
+};
+
+decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue) {
+    if(tagValue) {
+        var ret = [];
+        for(var i = 0; i &lt; node.length; i++) {
+            ret.push(this.decode(node[i], cache, asMapKey, false));
+        }
+        return ret;
+    } else {
+        // tagged value as 2-array case
+        if((node.length === 2) &amp;&amp;
+           (typeof node[0] === &quot;string&quot;)) {
+            var tag = this.decode(node[0], cache, false, false);
+            if(decoder.isTag(tag)) {
+                var val     = node[1],
+                    handler = this.handlers[tag.str];
+                if(handler != null) {
+                    var ret = handler(this.decode(val, cache, false, true));
+                    return ret;
+                } else {
+                    return types.taggedValue(tag.str, this.decode(val, cache, false, false))
+                }
+            }
+        }
+
+        if(this.arrayBuilder) {
+            // NOTE: hard coded for ClojureScript for now - David
+            if(node.length &lt;= 32 &amp;&amp; this.arrayBuilder.fromArray) {
+                var arr = [];
+                for(var i = 0; i &lt; node.length; i++) {
+                    arr.push(this.decode(node[i], cache, asMapKey, false));
+                }
+                return this.arrayBuilder.fromArray(arr);
+            } else {
+                var ret = this.arrayBuilder.init();
+                for(var i = 0; i &lt; node.length; i++) {
+                    ret = this.arrayBuilder.add(ret, this.decode(node[i], cache, asMapKey, false));
+                }
+                return this.arrayBuilder.finalize(ret);
+            }
+        } else {
+            var ret = [];
+            for(var i = 0; i &lt; node.length; i++) {
+                ret.push(this.decode(node[i], cache, asMapKey, false));
+            }
+            return ret;
+        }
+    }
+};
+
+decoder.Decoder.prototype.parseString = function(string, cache, asMapKey) {
+    if(string.charAt(0) === d.ESC) {
+        var c = string.charAt(1);
+        if(c === d.ESC || c === d.SUB || c === d.RES) {
+            return string.substring(1);
+        } else if (c === d.TAG) {
+            return decoder.tag(string.substring(2));
+        } else {
+            var handler = this.handlers[c];
+            if(handler == null) {
+                return this.defaultHandler(c, string.substring(2));
+            } else {
+                return handler(string.substring(2));
+            }
+        }
+    } else {
+        return string;
+    }
+};
+
+decoder.decoder = function(options) {
+    return new decoder.Decoder(options);
+};
+
+});
+
+</pre>
+
+</div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/js/tabs.js"></script>
+</body>
+</html>
