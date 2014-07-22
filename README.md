@@ -30,7 +30,7 @@ specification is complete._
 
 ### JavaScript
 
-You can include either the [development](http://cdn.cognitect.com/transit/transit-0.8.616.js) or [release](http://cdn.cognitect.com/transit/transit-0.8.616-min.js)(8.9K gzipped) build of transit-js in your webpage.
+You can include either the [release](http://cdn.cognitect.com/transit/transit-0.8.616-min.js)(8.9K gzipped) or [development](http://cdn.cognitect.com/transit/transit-0.8.616.js) build of transit-js on your webpage.
 
 ### Node.js
 
