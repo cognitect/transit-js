@@ -300,7 +300,7 @@ transit.list = types.list;
 
 /**
  * Test if an object is a transit list.
- * @method transit.list
+ * @method transit.isList
  * @param {Object} x Any JavaScript value.
  * @return {Boolean} true if x is a transit list, false otherwise.
  */
