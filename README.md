@@ -110,13 +110,13 @@ var t = transit;
 
 function roundtrip(x) {
   var r = t.reader("json"),
-      w = t.writer("json"),
+      w = t.writer("json");
   return t.read(r, t.write(w, x));
 }
 
 function testRoundtrip() {
   var arr1 = ["red", "green", "blue"],
-      arr2 = ["apple", "pear", "grape"]
+      arr2 = ["apple", "pear", "grape"],
       data = t.map();
   data.set(t.integer(1), arr1);
   data.set(t.integer(2), arr2);
@@ -132,13 +132,13 @@ var t = require("transit-js");
 
 function roundtrip(x) {
   var r = t.reader("json"),
-      w = t.writer("json"),
+      w = t.writer("json");
   return t.read(r, t.write(w, x));
 }
 
 function testRoundtrip() {
   var arr1 = ["red", "green", "blue"],
-      arr2 = ["apple", "pear", "grape"]
+      arr2 = ["apple", "pear", "grape"],
       data = t.map();
   data.set(t.integer(1), arr1);
   data.set(t.integer(2), arr2);
