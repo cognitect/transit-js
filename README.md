@@ -109,8 +109,8 @@ var t = transit;
 
 function roundtrip(x) {
   var r = t.reader("json"),
-      w = t.writer("json"),
-  return t.read(r, t.write(w, x));
+      w = t.writer("json");
+  return r.read(w.write(x));
 }
 
 function testRoundtrip() {
