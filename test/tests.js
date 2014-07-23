@@ -800,3 +800,12 @@ exports.testRollingCacheEdgeCase = function(test) {
 
     test.done();
 };
+
+exports.testMapMarkerEdgeCase = function(test) {
+    var w = transit.writer("json"),
+        r = transit.reader("json");
+
+    test.deepEqual(["^ "], (r.read(w.write(["^ "]))));
+
+    test.done();
+};

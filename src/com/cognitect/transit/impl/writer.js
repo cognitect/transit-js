@@ -274,8 +274,9 @@ writer.emitMap = function(em, obj, skip, cache) {
         return em.objectBuilder(obj, function(k) { return writer.marshal(em, k, true, cache);  },
                                      function(v) { return writer.marshal(em, v, false, cache); });
     } else {
-        var err = new Error("Not supported");
-        err.data = {obj: obj, type: handlers.constructor(obj).name};
+        var name = handlers.constructor(obj).name,
+            err  = new Error("Cannot write " + name);
+        err.data = {obj: obj, type: name};
         throw err;
     }
 };
