@@ -45,8 +45,6 @@
     "uglify-js": "2.4.15"
   },
   "scripts": {
-    "build": "./bin/build_release_node",
-    "prepublish": "npm run-script build",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
