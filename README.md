@@ -131,7 +131,7 @@ var t = require("transit-js");
 
 function roundtrip(x) {
   var r = t.reader("json"),
-      w = t.writer("json"),
+      w = t.writer("json");
   return t.read(r, t.write(w, x));
 }
 
