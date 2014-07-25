@@ -481,7 +481,7 @@ if(TRANSIT_BROWSER_TARGET) {
     goog.exportSymbol("transit.quoted",         types.quoted);
     goog.exportSymbol("transit.isQuoted",       types.isQuoted);
     goog.exportSymbol("transit.tagged",         types.taggedValue);
-    goog.exportSymbol("transit.isTaggedValue",  types.idTaggedValue);
+    goog.exportSymbol("transit.isTaggedValue",  types.isTaggedValue);
     goog.exportSymbol("transit.link",           types.link);
     goog.exportSymbol("transit.isLink",         types.isLink);
     goog.exportSymbol("transit.hash",           eq.hashCode);
