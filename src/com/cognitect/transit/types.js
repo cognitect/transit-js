@@ -118,7 +118,7 @@ types.bigInteger = function(s) {
 };
 
 types.isBigInteger = function(x) {
-    return (x instanceof types.taggedValue) && (x.tag === "n");
+    return (x instanceof types.TaggedValue) && (x.tag === "n");
 };
 
 /**
@@ -989,9 +989,12 @@ types.TransitSet.prototype.com$cognitect$transit$hashCode = function(other) {
 };
 
 types.set = function(arr) {
+    arr = arr || [];
+
     var map  = {},
         keys = [],
         size = 0;
+
     for(var i = 0; i < arr.length; i++) {
         var code = eq.hashCode(arr[i]),
             vals = map[code];
@@ -1014,6 +1017,7 @@ types.set = function(arr) {
             }
         }
     }
+
     return new types.TransitSet(new types.TransitMap(keys, map, size));
 };
 

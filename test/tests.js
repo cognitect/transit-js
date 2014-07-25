@@ -809,3 +809,26 @@ exports.testMapMarkerEdgeCase = function(test) {
 
     test.done();
 };
+
+// =============================================================================
+// Constructors & Predicates
+// =============================================================================
+
+exports.testConstructorsAndPredicates = function(test) {
+    var t = transit;
+
+    test.ok(t.isInteger(t.integer("9007199254740993")));
+    test.ok(t.isUUID(t.uuid("2f9e540c-0591-eff5-4e77-267b2cb3951f")));
+    test.ok(t.isBigInt(t.bigInt("1")));
+    test.ok(t.isBigDec(t.bigDec("1.5")));
+    test.ok(t.isKeyword(t.keyword("foo")));
+    test.ok(t.isSymbol(t.symbol("foo")));
+    test.ok(t.isBinary(t.binary("Zm9v")));
+    test.ok(t.isURI(t.uri("http://foo.com")));
+    test.ok(t.isMap(t.map()));
+    test.ok(t.isSet(t.set()));
+    test.ok(t.isQuoted(t.quoted(1)));
+    test.ok(t.isTaggedValue(t.tagged("n", 1)));
+
+    test.done();
+};
