@@ -72,7 +72,7 @@ decoder.Decoder = function(options) {
     }
     for(var h in this.options["handlers"]) {
         if(decoder.isGroundHandler(h)) {
-            throw new Error("Cannot override handler for ground types");
+            throw new Error("Cannot override handler for ground type \""+h+"\"");
         }
         this.handlers[h] = this.options["handlers"][h];
     }
