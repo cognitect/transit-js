@@ -703,6 +703,23 @@ exports.testVerifyRoundTripCachedKeys = function(test) {
     test.done();
 };
 
+exports.testReadArrayMapQuoted = function(test) {
+    var reader = transit.reader("json");
+
+    test.equal(reader.read("[\"^ \",\"~#\'\",null]"), null);
+    test.equal(reader.read("[\"^ \",\"~#\'\",1]"), 1);
+    test.equal(reader.read("[\"^ \",\"~#\'\",2.5]"), 2.5);
+    test.equal(reader.read("[\"^ \",\"~#\'\",\"foo\"]"), "foo");
+    test.equal(reader.read("[\"^ \",\"~#\'\",true]"), true);
+    test.equal(reader.read("[\"^ \",\"~#\'\",false]"), false);
+    test.ok(transit.equals(reader.read("[\"^ \",\"~#\'\",\"~m0\"]"), new Date(0)));
+    test.ok(transit.equals(reader.read("[\"^ \",\"~#\'\",\"~i4953778853208128465\"]"), transit.integer("4953778853208128465")));
+    test.ok(transit.equals(reader.read("[\"^ \",\"~#\'\",\"~n8987676543234565432178765987645654323456554331234566789\"]"),
+                           transit.bigInt("8987676543234565432178765987645654323456554331234566789")));
+
+    test.done();
+};
+
 exports.testVerifyJSONCornerCases = function(test) {
     test.equal(roundtrip("[\"~#point\",[1,2]]"), "[\"~#point\",[1,2]]");
     test.equal(roundtrip("[\"^ \",\"foo\",\"~xfoo\"]"), "[\"^ \",\"foo\",\"~xfoo\"]");
@@ -734,11 +751,11 @@ exports.testVerifyRoundtripEmptyString = function(test) {
     test.done();
 };
 
-// exports.testVerifyRoundtripBigInteger = function(test) {
-//     test.equal(roundtrip("{\"~#'\":\"~n8987676543234565432178765987645654323456554331234566789\"}"),
-//                          "{\"~#'\":\"~n8987676543234565432178765987645654323456554331234566789\"}");
-//     test.done();
-// };
+exports.testVerifyRoundtripBigInteger = function(test) {
+     test.equal(roundtrip("{\"~#'\":\"~n8987676543234565432178765987645654323456554331234566789\"}"),
+                          "[\"^ \",\"~#'\",\"~n8987676543234565432178765987645654323456554331234566789\"]");
+     test.done();
+};
 
 exports.testRoundtripLongKey = function(test) {
     var r = transit.reader("json");
