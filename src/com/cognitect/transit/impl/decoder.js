@@ -199,18 +199,7 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
 };
 
 decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagValue) {
-    var key = (node.length === 3) && node[1],
-        tag = key && this.decode(key, cache, false, false);
-
-    if(tag && decoder.isTag(tag)) {
-        var val     = node[2],
-            handler = this.handlers[tag.str];
-        if(handler != null) {
-            return handler(this.decode(val, cache, false, true));
-        } else {
-            return types.taggedValue(tag.str, this.decode(val, cache, false, false));
-        }
-    } else if(this.mapBuilder) {
+    if(this.mapBuilder) {
         if((node.length < ((types.SMALL_ARRAY_MAP_THRESHOLD*2)+1)) && this.mapBuilder.fromArray) {
             var nodep = [];
             for(var i = 1; i < node.length; i+=2) {

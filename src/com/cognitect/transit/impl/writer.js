@@ -132,7 +132,7 @@ writer.JSONMarshaller.prototype.emitQuoted = function(em, obj, cache) {
         ret[k] = writer.marshal(this, obj, false, cache);
         return ret;
     } else {
-        return ["^ ", this.emitString(d.ESC_TAG, "'", "", true, cache), writer.marshal(this, obj, false, cache)];
+        return [this.emitString(d.ESC_TAG, "'", "", true, cache), writer.marshal(this, obj, false, cache)];
     }
 };
 

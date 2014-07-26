@@ -418,7 +418,7 @@ exports.testWriteTransitTypes = function(test) {
     test.equal(writer.write([transit.uri("http://foo.com/")]), "[\"~rhttp://foo.com/\"]");
     test.equal(writer.write(transit.list([1,2,3])), "[\"~#list\",[1,2,3]]");
     test.equal(writer.write([transit.list([1,2,3])]), "[[\"~#list\",[1,2,3]]]");
-    test.equal(writer.write(transit.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "[\"^ \",\"~#\'\",\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]");
+    test.equal(writer.write(transit.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "[\"~#\'\",\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]");
     test.equal(writerv.write(transit.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~#\'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}");
     test.equal(writer.write([transit.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")]), "[\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]");
     test.equal(writer.write([transit.binary("c3VyZS4=")]), "[\"~bc3VyZS4=\"]");
@@ -703,19 +703,30 @@ exports.testVerifyRoundTripCachedKeys = function(test) {
     test.done();
 };
 
-exports.testReadArrayMapQuoted = function(test) {
-    var reader = transit.reader("json");
+exports.testQuoted = function(test) {
+    var reader = transit.reader("json"),
+        writer = transit.writer("json");
 
-    test.equal(reader.read("[\"^ \",\"~#\'\",null]"), null);
-    test.equal(reader.read("[\"^ \",\"~#\'\",1]"), 1);
-    test.equal(reader.read("[\"^ \",\"~#\'\",2.5]"), 2.5);
-    test.equal(reader.read("[\"^ \",\"~#\'\",\"foo\"]"), "foo");
-    test.equal(reader.read("[\"^ \",\"~#\'\",true]"), true);
-    test.equal(reader.read("[\"^ \",\"~#\'\",false]"), false);
-    test.ok(transit.equals(reader.read("[\"^ \",\"~#\'\",\"~m0\"]"), new Date(0)));
-    test.ok(transit.equals(reader.read("[\"^ \",\"~#\'\",\"~i4953778853208128465\"]"), transit.integer("4953778853208128465")));
-    test.ok(transit.equals(reader.read("[\"^ \",\"~#\'\",\"~n8987676543234565432178765987645654323456554331234566789\"]"),
+    test.equal(reader.read("[\"~#\'\",null]"), null);
+    test.equal(writer.write(null), "[\"~#\'\",null]");
+    test.equal(reader.read("[\"~#\'\",1]"), 1);
+    test.equal(writer.write(1), "[\"~#\'\",1]");
+    test.equal(reader.read("[\"~#\'\",2.5]"), 2.5);
+    test.equal(writer.write(2.5), "[\"~#\'\",2.5]");
+    test.equal(reader.read("[\"~#\'\",\"foo\"]"), "foo");
+    test.equal(writer.write("foo"), "[\"~#\'\",\"foo\"]");
+    test.equal(reader.read("[\"~#\'\",true]"), true);
+    test.equal(writer.write(true), "[\"~#\'\",true]");
+    test.equal(reader.read("[\"~#\'\",false]"), false);
+    test.equal(writer.write(false), "[\"~#\'\",false]");
+    test.ok(transit.equals(reader.read("[\"~#\'\",\"~m0\"]"), new Date(0)));
+    test.ok(transit.equals(writer.write(new Date(0)), "[\"~#\'\",\"~m0\"]"));
+    test.ok(transit.equals(reader.read("[\"~#\'\",\"~i4953778853208128465\"]"), transit.integer("4953778853208128465")));
+    test.ok(transit.equals(writer.write(transit.integer("4953778853208128465")), "[\"~#\'\",\"~i4953778853208128465\"]"));
+    test.ok(transit.equals(reader.read("[\"~#\'\",\"~n8987676543234565432178765987645654323456554331234566789\"]"),
                            transit.bigInt("8987676543234565432178765987645654323456554331234566789")));
+    test.ok(transit.equals(writer.write(transit.bigInt("8987676543234565432178765987645654323456554331234566789")),
+                          "[\"~#\'\",\"~n8987676543234565432178765987645654323456554331234566789\"]"));
 
     test.done();
 };
@@ -725,8 +736,8 @@ exports.testVerifyJSONCornerCases = function(test) {
     test.equal(roundtrip("[\"^ \",\"foo\",\"~xfoo\"]"), "[\"^ \",\"foo\",\"~xfoo\"]");
     test.equal(roundtrip("[\"^ \",\"~/t\",null]"), "[\"^ \",\"~/t\",null]");
     test.equal(roundtrip("[\"^ \",\"~/f\",null]"), "[\"^ \",\"~/f\",null]");
-    test.equal(roundtrip("{\"~#'\":\"~f-1.1E-1\"}"), "[\"^ \",\"~#\'\",\"~f-1.1E-1\"]");
-    test.equal(roundtrip("{\"~#'\":\"~f-1.10E-1\"}"), "[\"^ \",\"~#\'\",\"~f-1.10E-1\"]");
+    test.equal(roundtrip("{\"~#'\":\"~f-1.1E-1\"}"), "[\"~#\'\",\"~f-1.1E-1\"]");
+    test.equal(roundtrip("{\"~#'\":\"~f-1.10E-1\"}"), "[\"~#\'\",\"~f-1.10E-1\"]");
     test.equal(roundtrip(
                 "[\"~#set\",[[\"~#ratio\",[\"~i4953778853208128465\",\"~i636801457410081246\"]],[\"^1\",[\"~i-8516423834113052903\",\"~i5889347882583416451\"]]]]"),
                 "[\"~#set\",[[\"~#ratio\",[\"~i4953778853208128465\",\"~i636801457410081246\"]],[\"^1\",[\"~i-8516423834113052903\",\"~i5889347882583416451\"]]]]");
@@ -753,7 +764,7 @@ exports.testVerifyRoundtripEmptyString = function(test) {
 
 exports.testVerifyRoundtripBigInteger = function(test) {
      test.equal(roundtrip("{\"~#'\":\"~n8987676543234565432178765987645654323456554331234566789\"}"),
-                          "[\"^ \",\"~#'\",\"~n8987676543234565432178765987645654323456554331234566789\"]");
+                          "[\"~#'\",\"~n8987676543234565432178765987645654323456554331234566789\"]");
      test.done();
 };
 
@@ -788,7 +799,7 @@ exports.testRoundtripBigInteger = function(test) {
 
 exports.testRoundtripUUIDCornerCase = function(test) {
     test.equal(roundtrip("{\"~#'\":\"~u2f9e540c-0591-eff5-4e77-267b2cb3951f\"}"),
-                         "[\"^ \",\"~#'\",\"~u2f9e540c-0591-eff5-4e77-267b2cb3951f\"]");
+                         "[\"~#'\",\"~u2f9e540c-0591-eff5-4e77-267b2cb3951f\"]");
     test.done();
 };
 
@@ -806,7 +817,7 @@ exports.testMapKeyRatioCase = function(test) {
 
 exports.testRoundTripEscapedString = function(test) {
     test.equal(roundtrip("{\"~#\'\":\"~\`~hello\"}"),
-                         "[\"^ \",\"~#\'\",\"~\`~hello\"]");
+                         "[\"~#\'\",\"~\`~hello\"]");
 
     test.done();
 };
