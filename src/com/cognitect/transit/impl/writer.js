@@ -306,7 +306,7 @@ writer.emitEncoded = function(em, h, tag, rep, obj, asMapKey, cache) {
             if(rep !== null) {
                 return em.emitString(d.ESC, tag, rep, asMapKey, cache);
             } else {
-                var err = new Error("Cannot be encoded as string");
+                var err = new Error("Tag \""+tag+"\" cannot be encoded as string");
                 err.data = {tag: tag, rep: rep, obj: obj};
                 throw err;
             }
@@ -357,8 +357,9 @@ writer.marshal = function(em, obj, asMapKey, cache) {
             break;
         }
     } else {
-        var err = new Error("Not supported");
-        err.data = {obj: obj, type: handlers.constructor(obj).name};
+        var name = handlers.constructor(obj).name,
+            err = new Error("Cannot write " + name);
+        err.data = {obj: obj, type: name};
         throw err;
     }
 };
@@ -373,8 +374,9 @@ writer.maybeQuoted = function(em, obj) {
             return obj;
         }
     } else {
-        var err = new Error("Not supported");
-        err.data = {obj: obj, type: handlers.constructor(obj).name};
+        var name = handlers.constructor(obj).name,
+            err  = new Error("Cannot write " + name);
+        err.data = {obj: obj, type: name};
         throw err;
     }
 };
