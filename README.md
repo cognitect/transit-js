@@ -243,7 +243,7 @@ install a JAR suitable for use from ClojureScript into your local
 Maven repository.
 
 ```
-build/package
+build/package_local
 ```
 
 #### Deploy
