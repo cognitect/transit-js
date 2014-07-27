@@ -246,16 +246,6 @@ Maven repository.
 build/package_local
 ```
 
-#### Deploy
-
-Deployment requires that the AWS CLI tools be installed (see
-https://aws.amazon.com/cli/).
-
-The deploy script runs the package script, and then deploys the
-artifacts to the S3 bucket "mrel".  To deploy:
-
-    build/deploy
-
 ## Copyright and License
 
 Copyright © 2014 Cognitect
