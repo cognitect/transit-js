@@ -169,6 +169,7 @@ Abbreviations:
 |set|t.set|t.set|
 |map|t.map|t.map|
 |link|t.link|t.link|
+|cmap|t.map|t.map|
 
 ## Contributing 
 
