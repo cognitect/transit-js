@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+echo "Cleaning..."
+rm -rf ./target
+
+echo "Calculating version..."
+prefix=`cat VERSION_PREFIX`
+suffix=`build/revision`
+version=$prefix.$suffix
+echo $version
+
+target_name=transit-js-${version}
+
+echo "Releasing..."
+mvn versions:set -DnewVersion=${version}
+mvn clean deploy
+mvn versions:revert
+
+echo "Release done!"
