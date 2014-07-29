@@ -97,7 +97,8 @@ transit.writer = function(type, opts) {
  * @param {Object} obj An object containing 3 functions, tag, rep and stringRep.
  *    "tag" should return a string representing the tag to be written on the wire.
  *    "rep" should return the representation on the wire. "stringRep" is should return
- *    the string representation of the value.
+ *    the string representation of the value. Optional "getVerboseHandler" should return a
+ *    handler for writing verbose output.
  * @return {transit.handler} A transit write handler.
  */
 transit.makeWriteHandler = function(obj) {
@@ -105,6 +106,7 @@ transit.makeWriteHandler = function(obj) {
     Handler.prototype.tag = obj["tag"];
     Handler.prototype.rep = obj["rep"];
     Handler.prototype.stringRep = obj["stringRep"];
+    Handler.prototype.getVerboseHandler = obj["getVerboseHandler"];
     return new Handler();
 };
 
