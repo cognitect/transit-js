@@ -926,7 +926,8 @@ types.TransitSet.prototype.toString = function() {
 };
 
 types.TransitSet.prototype.add = function(value) {
-    throw new Error("Unsupported operation: add");
+    this.map.set(value, value);
+    this.size = this.map.size;
 };
 types.TransitSet.prototype["add"] = types.TransitSet.prototype.add;
 
