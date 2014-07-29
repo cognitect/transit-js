@@ -30,6 +30,12 @@
   <dependencies>
   </dependencies>
   <build>
+    <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
