@@ -16,7 +16,7 @@
             <h1><a href="../index.html"><img src="../assets/css/logo.png">transit-js: src/com/cognitect/transit/impl/decoder.js</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.8.616</em>
+            <em>API Docs for: 0.8.656</em>
         </div>
     </div>
     <div class="yui3-g">
@@ -146,7 +146,7 @@ decoder.Decoder = function(options) {
     }
     for(var h in this.options[&quot;handlers&quot;]) {
         if(decoder.isGroundHandler(h)) {
-            throw new Error(&quot;Cannot override handler for ground types&quot;);
+            throw new Error(&quot;Cannot override handler for ground type \&quot;&quot;+h+&quot;\&quot;&quot;);
         }
         this.handlers[h] = this.options[&quot;handlers&quot;][h];
     }

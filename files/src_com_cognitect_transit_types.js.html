@@ -16,7 +16,7 @@
             <h1><a href="../index.html"><img src="../assets/css/logo.png">transit-js: src/com/cognitect/transit/types.js</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.8.616</em>
+            <em>API Docs for: 0.8.656</em>
         </div>
     </div>
     <div class="yui3-g">
@@ -192,7 +192,7 @@ types.bigInteger = function(s) {
 };
 
 types.isBigInteger = function(x) {
-    return (x instanceof types.taggedValue) &amp;&amp; (x.tag === &quot;n&quot;);
+    return (x instanceof types.TaggedValue) &amp;&amp; (x.tag === &quot;n&quot;);
 };
 
 /**
@@ -337,7 +337,7 @@ types.UUID.prototype.com$cognitect$transit$equals = function(other) {
     return (other instanceof types.UUID) &amp;&amp; this.high.equals(other.high) &amp;&amp; this.low.equals(other.low);
 };
 
-types.UUID.prototype.com$cognitecat$transit$hashCode = function() {
+types.UUID.prototype.com$cognitect$transit$hashCode = function() {
     if(this.hashCode === -1) {
         // TODO: follow http://hg.openjdk.java.net/jdk6/jdk6/jdk/file/2d585507a41b/src/share/classes/java/util/UUID.java
         this.hashCode = eq.hashCode(this.toString());
@@ -1063,9 +1063,12 @@ types.TransitSet.prototype.com$cognitect$transit$hashCode = function(other) {
 };
 
 types.set = function(arr) {
+    arr = arr || [];
+
     var map  = {},
         keys = [],
         size = 0;
+
     for(var i = 0; i &lt; arr.length; i++) {
         var code = eq.hashCode(arr[i]),
             vals = map[code];
@@ -1088,6 +1091,7 @@ types.set = function(arr) {
             }
         }
     }
+
     return new types.TransitSet(new types.TransitMap(keys, map, size));
 };
 

@@ -16,7 +16,7 @@
             <h1><a href="../index.html"><img src="../assets/css/logo.png">transit-js: src/com/cognitect/transit/impl/writer.js</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.8.616</em>
+            <em>API Docs for: 0.8.656</em>
         </div>
     </div>
     <div class="yui3-g">
@@ -206,7 +206,7 @@ writer.JSONMarshaller.prototype.emitQuoted = function(em, obj, cache) {
         ret[k] = writer.marshal(this, obj, false, cache);
         return ret;
     } else {
-        return [&quot;^ &quot;, this.emitString(d.ESC_TAG, &quot;&#x27;&quot;, &quot;&quot;, true, cache), writer.marshal(this, obj, false, cache)];
+        return [this.emitString(d.ESC_TAG, &quot;&#x27;&quot;, &quot;&quot;, true, cache), writer.marshal(this, obj, false, cache)];
     }
 };
 
@@ -348,8 +348,9 @@ writer.emitMap = function(em, obj, skip, cache) {
         return em.objectBuilder(obj, function(k) { return writer.marshal(em, k, true, cache);  },
                                      function(v) { return writer.marshal(em, v, false, cache); });
     } else {
-        var err = new Error(&quot;Not supported&quot;);
-        err.data = {obj: obj, type: handlers.constructor(obj).name};
+        var name = handlers.constructor(obj).name,
+            err  = new Error(&quot;Cannot write &quot; + name);
+        err.data = {obj: obj, type: name};
         throw err;
     }
 };
@@ -379,7 +380,7 @@ writer.emitEncoded = function(em, h, tag, rep, obj, asMapKey, cache) {
             if(rep !== null) {
                 return em.emitString(d.ESC, tag, rep, asMapKey, cache);
             } else {
-                var err = new Error(&quot;Cannot be encoded as string&quot;);
+                var err = new Error(&quot;Tag \&quot;&quot;+tag+&quot;\&quot; cannot be encoded as string&quot;);
                 err.data = {tag: tag, rep: rep, obj: obj};
                 throw err;
             }
@@ -430,8 +431,9 @@ writer.marshal = function(em, obj, asMapKey, cache) {
             break;
         }
     } else {
-        var err = new Error(&quot;Not supported&quot;);
-        err.data = {obj: obj, type: handlers.constructor(obj).name};
+        var name = handlers.constructor(obj).name,
+            err = new Error(&quot;Cannot write &quot; + name);
+        err.data = {obj: obj, type: name};
         throw err;
     }
 };
@@ -446,8 +448,9 @@ writer.maybeQuoted = function(em, obj) {
             return obj;
         }
     } else {
-        var err = new Error(&quot;Not supported&quot;);
-        err.data = {obj: obj, type: handlers.constructor(obj).name};
+        var name = handlers.constructor(obj).name,
+            err  = new Error(&quot;Cannot write &quot; + name);
+        err.data = {obj: obj, type: name};
         throw err;
     }
 };

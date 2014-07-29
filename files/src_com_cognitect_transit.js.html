@@ -16,7 +16,7 @@
             <h1><a href="../index.html"><img src="../assets/css/logo.png">transit-js: src/com/cognitect/transit.js</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.8.616</em>
+            <em>API Docs for: 0.8.656</em>
         </div>
     </div>
     <div class="yui3-g">
@@ -171,7 +171,8 @@ transit.writer = function(type, opts) {
  * @param {Object} obj An object containing 3 functions, tag, rep and stringRep.
  *    &quot;tag&quot; should return a string representing the tag to be written on the wire.
  *    &quot;rep&quot; should return the representation on the wire. &quot;stringRep&quot; is should return
- *    the string representation of the value.
+ *    the string representation of the value. Optional &quot;getVerboseHandler&quot; should return a
+ *    handler for writing verbose output.
  * @return {transit.handler} A transit write handler.
  */
 transit.makeWriteHandler = function(obj) {
@@ -179,6 +180,7 @@ transit.makeWriteHandler = function(obj) {
     Handler.prototype.tag = obj[&quot;tag&quot;];
     Handler.prototype.rep = obj[&quot;rep&quot;];
     Handler.prototype.stringRep = obj[&quot;stringRep&quot;];
+    Handler.prototype.getVerboseHandler = obj[&quot;getVerboseHandler&quot;];
     return new Handler();
 };
 
@@ -555,7 +557,7 @@ if(TRANSIT_BROWSER_TARGET) {
     goog.exportSymbol(&quot;transit.quoted&quot;,         types.quoted);
     goog.exportSymbol(&quot;transit.isQuoted&quot;,       types.isQuoted);
     goog.exportSymbol(&quot;transit.tagged&quot;,         types.taggedValue);
-    goog.exportSymbol(&quot;transit.isTaggedValue&quot;,  types.idTaggedValue);
+    goog.exportSymbol(&quot;transit.isTaggedValue&quot;,  types.isTaggedValue);
     goog.exportSymbol(&quot;transit.link&quot;,           types.link);
     goog.exportSymbol(&quot;transit.isLink&quot;,         types.isLink);
     goog.exportSymbol(&quot;transit.hash&quot;,           eq.hashCode);
