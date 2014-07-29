@@ -1,6 +1,6 @@
 {
   "name": "transit-js",
-  "version": "0.8.656",
+  "version": "0.8.660",
   "homepage": "https://github.com/cognitect/transit-js",
   "description": "Transit is a data format and a set of libraries for conveying values between applications written in different languages. This library provides support for marshalling Transit data to/from Javascript.",
   "keywords": [
