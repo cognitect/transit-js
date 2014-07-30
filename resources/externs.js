@@ -14,3 +14,19 @@ Object.rep;
  * @type {String}
  */
 Object.tag;
+/**
+ * @type {Object}
+ */
+Object.init;
+/**
+ * @type {Boolean}
+ */
+Object.add;
+/**
+ * @type {Object}
+ */
+Object.finalize;
+/**
+ * @type {String}
+ */
+Object.fromArray;

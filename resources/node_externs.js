@@ -14,6 +14,22 @@ Object.rep;
  * @type {String}
  */
 Object.tag;
+/**
+ * @type {Object}
+ */
+Object.init;
+/**
+ * @type {Boolean}
+ */
+Object.add;
+/**
+ * @type {Object}
+ */
+Object.finalize;
+/**
+ * @type {String}
+ */
+Object.fromArray;
 var module = {};
 module.exports = {};
 module.exports.reader = function() {};
