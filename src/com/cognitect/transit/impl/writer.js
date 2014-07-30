@@ -175,17 +175,29 @@ writer.stringableKeys = function(em, obj) {
             }
         }
         return stringableKeys;
-    } else {
+    } else if(obj.keys) {
         var iter = obj.keys();
+
+        if(iter.next) {
             step = iter.next();
-        while(!step.done) {
-            stringableKeys = writer.isStringableKey(em, step.value);
-            if(!stringableKeys) {
-                break;
+            while(!step.done) {
+                stringableKeys = writer.isStringableKey(em, step.value);
+                if(!stringableKeys) {
+                    break;
+                }
+                step = iter.next();
             }
-            step = iter.next();
+            return stringableKeys;
         }
+    }
+
+    if(obj.forEach) {
+        obj.forEach(function(v, k) {
+            stringableKeys = stringableKeys && writer.isStringableKey(em, k);
+        });
         return stringableKeys;
+    } else {
+        throw new Error("Cannot walk keys of object type " + handlers.constructor(obj).name);
     }
 };
 
