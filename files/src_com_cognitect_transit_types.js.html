@@ -16,7 +16,7 @@
             <h1><a href="../index.html"><img src="../assets/css/logo.png">transit-js: src/com/cognitect/transit/types.js</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.8.656</em>
+            <em>API Docs for: 0.8.667</em>
         </div>
     </div>
     <div class="yui3-g">
@@ -180,7 +180,11 @@ Long.prototype.com$cognitect$transit$hashCode = function() {
 };
 
 types.isInteger = function(x) {
-    return x instanceof Long;
+    if(x instanceof Long) {
+        return true;
+    } else {
+        return (typeof x === &quot;number&quot;) &amp;&amp; !isNaN(x) &amp;&amp; !(x === Infinity) &amp;&amp; (parseFloat(x) === parseInt(x));
+    }
 };
 
 types.floatValue = function(s) {
@@ -1000,7 +1004,8 @@ types.TransitSet.prototype.toString = function() {
 };
 
 types.TransitSet.prototype.add = function(value) {
-    throw new Error(&quot;Unsupported operation: add&quot;);
+    this.map.set(value, value);
+    this.size = this.map.size;
 };
 types.TransitSet.prototype[&quot;add&quot;] = types.TransitSet.prototype.add;
 
