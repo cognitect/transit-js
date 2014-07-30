@@ -1,7 +1,7 @@
 {
     "name": "transit-js",
     "description": "A JavaScript implementation of the Transit format",
-    "version": "0.8.663",
+    "version": "0.8.665",
     "url": "http://github.com/cognitect/transit-js",
     "options": {
         "outdir": "docs"
