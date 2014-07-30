@@ -175,15 +175,17 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
                 nodep.push(this.decode(strKey, cache, true, false));
                 nodep.push(this.decode(hash[strKey], cache, false, false));
             }
-            return this.mapBuilder.fromArray(nodep);
+            return this.mapBuilder.fromArray(nodep, hash);
         } else {
-            var ret = this.mapBuilder.init();
+            var ret = this.mapBuilder.init(hash);
             for(var i = 0; i < ks.length; i++) {
                 var strKey = ks[i];
-                ret = this.mapBuilder.add(ret, this.decode(strKey, cache, true, false),
-                                               this.decode(hash[strKey], cache, false, false));
+                ret = this.mapBuilder.add(ret,
+                                          this.decode(strKey, cache, true, false),
+                                          this.decode(hash[strKey], cache, false, false),
+                                          hash);
             }
-            return this.mapBuilder.finalize(ret);
+            return this.mapBuilder.finalize(ret, hash);
         }
     } else {
         var nodep = [];
@@ -206,14 +208,16 @@ decoder.Decoder.prototype.decodeArrayHash = function(node, cache, asMapKey, tagV
                 nodep.push(this.decode(node[i], cache, true, false));
                 nodep.push(this.decode(node[i+1], cache, false, false));
             }
-            return this.mapBuilder.fromArray(nodep);
+            return this.mapBuilder.fromArray(nodep, node);
         } else {
-            var ret = this.mapBuilder.init();
+            var ret = this.mapBuilder.init(node);
             for(var i = 1; i < node.length; i+=2) {
-                ret = this.mapBuilder.add(ret, this.decode(node[i], cache, true, false),
-                                               this.decode(node[i+1], cache, false, false))
+                ret = this.mapBuilder.add(ret,
+                                          this.decode(node[i], cache, true, false),
+                                          this.decode(node[i+1], cache, false, false),
+                                          node)
             }
-            return this.mapBuilder.finalize(ret);
+            return this.mapBuilder.finalize(ret, node);
         }
     } else {
         var nodep = [];
@@ -259,13 +263,13 @@ decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue
                 for(var i = 0; i < node.length; i++) {
                     arr.push(this.decode(node[i], cache, asMapKey, false));
                 }
-                return this.arrayBuilder.fromArray(arr);
+                return this.arrayBuilder.fromArray(arr, node);
             } else {
                 var ret = this.arrayBuilder.init();
                 for(var i = 0; i < node.length; i++) {
-                    ret = this.arrayBuilder.add(ret, this.decode(node[i], cache, asMapKey, false));
+                    ret = this.arrayBuilder.add(ret, this.decode(node[i], cache, asMapKey, false), node);
                 }
-                return this.arrayBuilder.finalize(ret);
+                return this.arrayBuilder.finalize(ret, node);
             }
         } else {
             var ret = [];
