@@ -860,3 +860,19 @@ exports.testConstructorsAndPredicates = function(test) {
 
     test.done();
 };
+
+exports.testIsInteger = function(test) {
+    var t = transit;
+
+    test.ok(t.isInteger(0))
+    test.ok(t.isInteger(1));
+    test.ok(!t.isInteger(1.5));
+    test.ok(!t.isInteger(Infinity));
+    test.ok(!t.isInteger(-Infinity));
+    test.ok(!t.isInteger(NaN));
+    test.ok(!t.isInteger("string"));
+    test.ok(!t.isInteger([]));
+    test.ok(!t.isInteger(new Date()));
+
+    test.done();
+};

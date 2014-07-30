@@ -106,7 +106,11 @@ Long.prototype.com$cognitect$transit$hashCode = function() {
 };
 
 types.isInteger = function(x) {
-    return x instanceof Long;
+    if(x instanceof Long) {
+        return true;
+    } else {
+        return (typeof x === "number") && !isNaN(x) && !(x === Infinity) && (parseFloat(x) === parseInt(x));
+    }
 };
 
 types.floatValue = function(s) {

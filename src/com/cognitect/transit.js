@@ -138,12 +138,14 @@ transit.date = types.date;
 transit.integer = types.intValue;
 
 /**
- * Test if an object is a transit 64 bit integer.
+ * Test if an object is a transit integer. Will return true if argument
+ * is a 64 bit integer or a JavaScript number that has an interpretation as
+ * an integer value, i.e. parseFloat(n) === parseInt(n)
  * @method transit.isInteger
  * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if the value is a transit 64bit integer, false otherwise.
+ * @return {Boolean} true if the value is a transit integer, false otherwise.
  */
-transit.isInteger = types.intValue;
+transit.isInteger = types.isInteger;
 
 /**
  * Create transit UUID from high and low 64 bits. These integer values
