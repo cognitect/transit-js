@@ -115,6 +115,7 @@ transit.makeBuilder = function(obj) {
     Builder.prototype.init = obj["init"];
     Builder.prototype.add = obj["add"];
     Builder.prototype.finalize = obj["finalize"];
+    Builder.prototype.fromArray = obj["fromArray"];
     return new Builder();
 };
 
