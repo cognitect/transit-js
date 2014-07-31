@@ -18,4 +18,28 @@ mvn versions:set -DnewVersion=${version}
 mvn clean deploy
 mvn versions:revert
 
+echo "Tagging..."
+git tag -a v${version} -m "Release ${version}"
+git push origin v${version}
+
+echo "Building browser .js to cdn"
+bin/build_release_browser
+bin/build_dev_browser
+
+echo "Pushing browser .js to cdn in s3"
+# push to s3
+# change content type
+
+echo "Updating README.md versions"
+sed -i '' "s/[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/${version}/g" README.md
+git ci -m "Update README.md with ${version}" README.md
+git push 
+
+echo "Building new api docs"
+build/docs
+
+# bower 
+
+# npm
+
 echo "Release done!"
