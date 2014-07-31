@@ -27,8 +27,7 @@ bin/build_release_browser
 bin/build_dev_browser
 
 echo "Pushing browser .js to cdn in s3"
-# push to s3
-# change content type
+aws s3 --profile transit-upload sync ./target s3://cdn.cognitect.com/transit --exclude "*" --include "transit-${version}*.js" --content-type text/plain
 
 echo "Updating README.md versions"
 sed -i '' "s/[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/${version}/g" README.md
