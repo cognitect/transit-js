@@ -37,8 +37,39 @@ git push
 echo "Building new api docs"
 build/docs
 
-# bower 
+echo -e "Updating bower version\n"
+rm -rf bower-transit-js
+git clone --quiet git@github.com:cognitect/bower-transit-js.git bower-transit-js > /dev/null
+cd bower-transit-js
+cp ../target/transit-${version}-min.js ./transit.js
+git add -f transit.js
+sed -i '' "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/\"version\": \"${version}/g" package.json
+git add -f package.json
+git commit -m "${version}"
+git push -fq > /dev/null
+git tag -a ${version}
+git push --tags > /dev/null
+cd ..
+rm -rf bower-transit-js
 
-# npm
+echo "Updating npm version\n"
+bin/build_release_node
+rm -rf npm-transit-js
+git clone --quiet git@github.com:cognitect/npm-transit-js.git npm-transit-js > /dev/null
+cd npm-transit-js
+cp ../target/transit.js ./transit.js
+git add -f transit.js
+sed -i '' "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/\"version\": \"${version}/g" package.json
+git add -f package.json
+git commit -m "${version}"
+git push -fq > /dev/null
+git tag -a ${version}
+git push --tags > /dev/null
+cd ..
+rm -rf npm-transit-js
+
+echo "Releasing npm package\n"
+# Need help on this command!
+# npm publish ./ --tag ${version}
 
 echo "Release done!"
