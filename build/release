@@ -70,6 +70,6 @@ rm -rf npm-transit-js
 
 echo "Releasing npm package\n"
 # Need help on this command!
-# npm publish ./ --tag ${version}
+npm publish
 
 echo "Release done!"
