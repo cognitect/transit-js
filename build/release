@@ -45,6 +45,8 @@ cp ../target/transit-${version}-min.js ./transit.js
 git add -f transit.js
 sed -i '' "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/\"version\": \"${version}/g" package.json
 git add -f package.json
+sed -i '' "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/\"version\": \"${version}/g" bower.json
+git add -f bower.json
 git commit -m "${version}"
 git push -fq > /dev/null
 git tag -a ${version}
