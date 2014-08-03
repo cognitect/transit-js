@@ -7,7 +7,8 @@ JavaScript. transit-js will work with any
 [ECMAScript-262 Edition 3](http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262,%203rd%20edition,%20December%201999.pdf)
 or newer JavaScript implementation provided that a
 [JSON](http://www.json.org) module that supplies `parse` and
-`stringify` methods is present.
+`stringify` methods is present. transit-js does not currently
+support encoding to [MessagePack](http://msgpack.org).
 
 * [Rationale](http://blog.cognitect.com/blog/2014/7/22/transit)
 * [API docs](http://cognitect.github.io/transit-js/)
