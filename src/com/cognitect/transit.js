@@ -27,6 +27,9 @@ var TRANSIT_NODE_TARGET = false;
 /** @define {boolean} */
 var TRANSIT_BROWSER_TARGET = false;
 
+/** @define {boolean} */
+var TRANSIT_BROWSER_AMD_TARGET = false;
+
 goog.scope(function() {
 
 /**
