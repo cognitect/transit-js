@@ -417,7 +417,7 @@ writer.Writer.prototype["marshaller"] = writer.Writer.prototype.marshaller;
 
 writer.Writer.prototype.write = function(obj, opts) {
     var ret      = null,
-        ropts    = opts || {};
+        ropts    = opts || {},
         asMapKey = ropts["asMapKey"] || false,
         cache    = this._marshaller.verbose ? false : this.cache;
 
