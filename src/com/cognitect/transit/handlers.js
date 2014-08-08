@@ -53,7 +53,7 @@ handlers.typeTag = function(ctor) {
                 Object.defineProperty(ctor, handlers.ctorGuidProperty, {
                     value: tag,
                     enumerable: false
-                })
+                });
             } else {
                 ctor[handlers.ctorGuidProperty] = tag = ++handlers.ctorGuid;
             }
