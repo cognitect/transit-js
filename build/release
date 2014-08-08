@@ -81,12 +81,10 @@ git commit -m "${version}"
 git push -fq > /dev/null
 git tag ${version}
 git push --tags > /dev/null
-cd ..
-rm -rf npm-transit-js
-
-
 echo "Releasing npm package\n"
 # Need help on this command!
 npm publish
+cd ..
+rm -rf npm-transit-js
 
 echo "Release done!"
