@@ -51,9 +51,13 @@ git add -f transit.js
 git add -f transit-min.js
 git add -f transit-amd.js
 git add -f transit-amd-min.js
-sed -i '' "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/\"version\": \"${version}/g" package.json
+sed -e "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/\"version\": \"${version}/g" package.json > package.json.tmp
+rm package.json
+mv package.json.tmp package.json
 git add -f package.json
-sed -i '' "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/\"version\": \"${version}/g" bower.json
+sed -e "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/\"version\": \"${version}/g" bower.json > bower.json.tmp
+rm bower.json
+mv bower.json.tmp bower.json
 git add -f bower.json
 git commit -m "${version}"
 git push -fq > /dev/null
@@ -69,7 +73,9 @@ git clone --quiet git@github.com:cognitect/npm-transit-js.git npm-transit-js > /
 cd npm-transit-js
 cp ../target/transit.js ./transit.js
 git add -f transit.js
-sed -i '' "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/\"version\": \"${version}/g" package.json
+sed -e "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/\"version\": \"${version}/g" package.json > package.json.tmp
+rm package.json
+mv package.json.tmp package.json
 git add -f package.json
 git commit -m "${version}"
 git push -fq > /dev/null
