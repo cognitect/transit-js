@@ -57,7 +57,7 @@ sed -i '' "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\
 git add -f bower.json
 git commit -m "${version}"
 git push -fq > /dev/null
-git tag -a ${version}
+git tag ${version}
 git push --tags > /dev/null
 cd ..
 rm -rf bower-transit-js
@@ -73,7 +73,7 @@ sed -i '' "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\
 git add -f package.json
 git commit -m "${version}"
 git push -fq > /dev/null
-git tag -a ${version}
+git tag ${version}
 git push --tags > /dev/null
 cd ..
 rm -rf npm-transit-js
