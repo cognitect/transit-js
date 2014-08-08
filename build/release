@@ -37,7 +37,7 @@ git commit -v -m "Update README.md with ${version}" README.md
 git push 
 
 echo "Building new api docs"
-build/docs
+bin/docs
 
 echo -e "Updating bower version\n"
 rm -rf bower-transit-js
