@@ -252,11 +252,33 @@ handlers.Handlers = function() {
 };
 
 handlers.Handlers.prototype.get = function(ctor) {
-    return this.handlers[handlers.typeTag(ctor)];
+    if(typeof ctor === "string") {
+        return this.handlers[ctor];
+    } else {
+        return this.handlers[handlers.typeTag(ctor)];
+    }
+};
+
+handlers.validTag = function(tag) {
+    switch(tag) {
+        case "null":
+        case "string":
+        case "boolean":
+        case "number":
+        case "array":
+        case "map":
+        return false;
+        break;
+    }
+    return true;
 };
 
 handlers.Handlers.prototype.set = function(ctor, handler) {
-    this.handlers[handlers.typeTag(ctor)] = handler;
+    if(typeof ctor === "string" && handlers.validTag(ctor)) {
+        this.handlers[ctor] = handler;
+    } else {
+        this.handlers[handlers.typeTag(ctor)] = handler;
+    }
 };
 
 });    

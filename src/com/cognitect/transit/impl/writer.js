@@ -72,7 +72,18 @@ writer.JSONMarshaller = function(opts) {
 };
 
 writer.JSONMarshaller.prototype.handler = function(obj) {
-        return this.handlers.get(handlers.constructor(obj));
+    var h = this.handlers.get(handlers.constructor(obj));
+
+    if(h != null) {
+        return h;
+    } else {
+        var tag = obj && obj["transitTag"];
+        if(tag) {
+            return this.handlers.get(tag)
+        } else {
+            return null;
+        }
+    }
 };
 
 writer.JSONMarshaller.prototype.registerHandler = function(ctor, handler) {

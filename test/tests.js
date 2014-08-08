@@ -876,3 +876,53 @@ exports.testIsInteger = function(test) {
 
     test.done();
 };
+
+// =============================================================================
+// Custom tags
+// =============================================================================
+
+exports.testTag = function(test) {
+    var Point2d = function(x, y) {
+        this.x = x;
+        this.y = y;
+    };
+
+    Point2d.prototype.transitTag = "point";
+
+    var Point3d = function(x, y, z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    };
+
+    Point3d.prototype.transitTag = "point";
+
+    var w = transit.writer("json", {
+        "handlers": transit.map([
+            "point", transit.makeWriteHandler({
+                tag: function(v) {
+                    if(v instanceof Point2d) {
+                        return "point/2d";
+                    } else if(v instanceof Point3d) {
+                        return "point/3d";
+                    }
+                },
+                rep: function(v) {
+                    if(v instanceof Point2d) {
+                        return [v.x, v.y];
+                    } else if(v instanceof Point3d){
+                        return [v.x, v.y, v.z];
+                    }
+                },
+                stringRep: function(v) {
+                    return null;
+                }
+            })
+        ])
+    });
+
+    test.equal(w.write([new Point2d(1.5,2.5), new Point3d(1.5,2.5,3.5)]),
+               '[["~#point/2d",[1.5,2.5]],["~#point/3d",[1.5,2.5,3.5]]]');
+
+    test.done();
+};
