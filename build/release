@@ -24,7 +24,9 @@ git push origin v${version}
 
 echo "Building browser .js to cdn"
 bin/build_release_browser
+bin/build_release_browser_amd
 bin/build_dev_browser
+bin/build_dev_browser_amd
 
 echo "Pushing browser .js to cdn in s3"
 aws s3 --profile transit-upload sync ./target s3://cdn.cognitect.com/transit --exclude "*" --include "transit-${version}*.js" --content-type text/plain
