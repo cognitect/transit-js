@@ -48,7 +48,15 @@ handlers.typeTag = function(ctor) {
     } else {
         var tag = ctor[handlers.ctorGuidProperty];
         if(tag == null) {
-            ctor[handlers.ctorGuidProperty] = tag = ++handlers.ctorGuid;
+            if(typeof Object.defineProperty != "undefined") {
+                tag = ++handlers.ctorGuid;
+                Object.defineProperty(ctor, handlers.ctorGuidProperty, {
+                    value: tag,
+                    enumerable: false
+                })
+            } else {
+                ctor[handlers.ctorGuidProperty] = tag = ++handlers.ctorGuid;
+            }
         }
         return tag;
     }
