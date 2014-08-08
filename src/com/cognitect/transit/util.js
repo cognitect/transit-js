@@ -40,4 +40,25 @@ if(typeof Array.isArray != "undefined") {
     };
 }
 
+util.randInt = function(ub) {
+    return Math.round(Math.random()*ub);
+};
+
+util.randHex = function() {
+    return util.randInt(15).toString(16);
+};
+
+util.randomUUID = function() {
+    var rhex = (0x8 | (0x3 & util.randInt(14))).toString(16),
+        ret  =  util.randHex() + util.randHex() + util.randHex() + util.randHex() +
+                util.randHex() + util.randHex() + util.randHex() + util.randHex() + "-" +
+                util.randHex() + util.randHex() + util.randHex() + util.randHex() + "-" +
+                  "4" + util.randHex() + util.randHex() + util.randHex() + "-" +
+                 rhex + util.randHex() + util.randHex() + util.randHex() + "-" +
+                util.randHex() + util.randHex() + util.randHex() + util.randHex() +
+                util.randHex() + util.randHex() + util.randHex() + util.randHex() +
+                util.randHex() + util.randHex() + util.randHex() + util.randHex();
+    return ret;
+};
+
 });

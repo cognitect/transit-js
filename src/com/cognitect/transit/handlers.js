@@ -30,7 +30,7 @@ handlers.ctorGuid = 0;
  * @const
  * @type {string}
  */
-handlers.ctorGuidProperty = "com$cognitect$transit$ctor$guid";
+handlers.ctorGuidProperty = "transit$guid$" + util.randomUUID();
 
 handlers.typeTag = function(ctor) {
     if(ctor == null) {
