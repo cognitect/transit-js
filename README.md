@@ -26,12 +26,12 @@ specification is complete._
 
 ## Releases and Dependency Information
 
-* Latest release: 0.8.699
+* Latest release: 0.8.702
 * [All Released Versions](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.cognitect%22%20AND%20a%3A%22transit-cljs%22)
 
 ### JavaScript
 
-You can include either the [release](http://cdn.cognitect.com/transit/transit-0.8.699-min.js)(8.9K gzipped) or [development](http://cdn.cognitect.com/transit/transit-0.8.699.js) build of transit-js on your webpage. We also provide [Require.js](http://requirejs.org) compatible [release](http://cdn.cognitect.com/transit/transit-0.8.699-amd-min.js) and [dev](http://cdn.cognitect.com/transit/transit-0.8.699-amd.js) builds.
+You can include either the [release](http://cdn.cognitect.com/transit/transit-0.8.702-min.js)(8.9K gzipped) or [development](http://cdn.cognitect.com/transit/transit-0.8.702.js) build of transit-js on your webpage. We also provide [Require.js](http://requirejs.org) compatible [release](http://cdn.cognitect.com/transit/transit-0.8.702-amd-min.js) and [dev](http://cdn.cognitect.com/transit/transit-0.8.702-amd.js) builds.
 
 ### Node.js
 
@@ -40,7 +40,7 @@ transit-js is released to [npm](https://www.npmjs.org). Add transit-js to your `
 ```javascript
 {...
   "dependencies": {
-    "transit-js": "0.8.699"
+    "transit-js": "0.8.702"
   }
  ...}
 ```
@@ -52,7 +52,7 @@ You can also include transit-js in your `bower.json` dependencies:
 ```javascript
 {...
   "dependencies": {
-    "transit-js": "0.8.699"
+    "transit-js": "0.8.702"
   }
  ...}
 ```
@@ -65,7 +65,7 @@ You can also include transit-js in your `bower.json` dependencies:
 <dependency>
   <groupId>com.cognitect</groupId>
   <artifactId>transit-js</artifactId>
-  <version>0.8.699</version>
+  <version>0.8.702</version>
 </dependency>
 ```
 
