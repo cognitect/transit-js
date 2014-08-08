@@ -43,8 +43,14 @@ echo -e "Updating bower version\n"
 rm -rf bower-transit-js
 git clone --quiet git@github.com:cognitect/bower-transit-js.git bower-transit-js > /dev/null
 cd bower-transit-js
-cp ../target/transit-${version}-min.js ./transit.js
+cp ../target/transit-${version}.js ./transit.js
+cp ../target/transit-${version}-min.js ./transit-min.js
+cp ../target/transit-${version}-amd.js ./transit-amd.js
+cp ../target/transit-${version}-amd-min.js ./transit-amd-min.js
 git add -f transit.js
+git add -f transit-min.js
+git add -f transit-amd.js
+git add -f transit-amd-min.js
 sed -i '' "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/\"version\": \"${version}/g" package.json
 git add -f package.json
 sed -i '' "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/\"version\": \"${version}/g" bower.json
@@ -57,7 +63,7 @@ cd ..
 rm -rf bower-transit-js
 
 echo "Updating npm version\n"
-bin/build_release_node
+bin/build_dev_node
 rm -rf npm-transit-js
 git clone --quiet git@github.com:cognitect/npm-transit-js.git npm-transit-js > /dev/null
 cd npm-transit-js
