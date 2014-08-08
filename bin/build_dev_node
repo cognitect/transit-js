@@ -6,7 +6,13 @@ cd `dirname $0`/..
 
 mkdir -p target
 
-java -jar deps/closure-compiler/compiler.jar -O SIMPLE --formatting PRETTY_PRINT --generate_exports -D TRANSIT_NODE_TARGET=true \
+prefix=`cat VERSION_PREFIX`
+suffix=`build/revision`
+version=$prefix.$suffix
+prelude=`bin/prelude`
+preludenl=$prelude.$'\n'
+
+java -jar deps/closure-compiler/compiler.jar -O SIMPLE --formatting PRETTY_PRINT --generate_exports --output_wrapper "$preludenl%output%" -D TRANSIT_NODE_TARGET=true \
 --externs=resources/node_externs.js \
 --js deps/closure-library/closure/goog/base.js \
 --js deps/closure-library/closure/goog/object/object.js \
