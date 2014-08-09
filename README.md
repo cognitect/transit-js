@@ -101,8 +101,8 @@ implementations.
 
 ## Usage
 
-For a more detailed guide to transit-js please refer to the
-[tour](http://cognitect.github.io/transit-tour).
+Please see the [Getting Started](https://github.com/cognitect/transit-js/wiki/Getting-Started) page. For an interactive guide
+check out the [tour](http://cognitect.github.io/transit-tour).
 
 From the browser transit-js is available at the top level:
 
