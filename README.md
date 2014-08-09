@@ -11,6 +11,7 @@ or newer JavaScript implementation provided that a
 support encoding to [MessagePack](http://msgpack.org).
 
 * [Rationale](http://blog.cognitect.com/blog/2014/7/22/transit)
+* [Getting Started](https://github.com/cognitect/transit-js/wiki/Getting-Started), Get up and running ASAP
 * [API docs](http://cognitect.github.io/transit-js/)
 * [Specification](http://github.com/cognitect/transit-format)
 * [Take a tour!](http://cognitect.github.io/transit-tour)
