@@ -379,15 +379,6 @@ transit.isLink = types.isLink;
 transit.hash = eq.hashCode;
 
 /**
- * A unique string that can be used to set the hash code on plain
- * JavaScript Objects as well property skip during iteration.
- * @property transit.hashKey
- * @const
- * @type {String}
- */
-transit.hashKey = eq.transitHashCodeProperty;
-
-/**
  * Compute the hashCode for JavaScript map-like types - either a JavaScript
  *    object or a JavaScript object that implements ES6 Map forEach.
  * @method transit.hashMapLike
@@ -498,7 +489,6 @@ if(TRANSIT_BROWSER_TARGET) {
     goog.exportSymbol("transit.link",           types.link);
     goog.exportSymbol("transit.isLink",         types.isLink);
     goog.exportSymbol("transit.hash",           eq.hashCode);
-    goog.exportSymbol("transit.hashKey",        eq.transitHashCodeProperty);
     goog.exportSymbol("transit.hashMapLike",    eq.hashMapLike);
     goog.exportSymbol("transit.hashArrayLike",  eq.hashArrayLike);
     goog.exportSymbol("transit.equals",         eq.equals);
@@ -546,7 +536,6 @@ if(TRANSIT_NODE_TARGET) {
         link:           types.link,
         isLink:         types.isLink,
         hash:           eq.hashCode,
-        hashKey:        eq.transitHashCodeProperty,
         hashArrayLike:  eq.hashArrayLike,
         hashMapLike:    eq.hashMapLike,
         equals:         eq.equals,

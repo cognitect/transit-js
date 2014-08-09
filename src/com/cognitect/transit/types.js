@@ -470,11 +470,10 @@ types.mapEquals = function(me, you) {
         return true;
     } else if(you != null && (typeof you === "object")) {
         var ks    = util.objectKeys(you),
-            kslen = ks.length - ((you.hasOwnProperty(eq.transitHashCodeProperty) && 1) || 0); 
+            kslen = ks.length;
         if(me.size === kslen) {
             for(var p in you) {
-                if((p !== eq.transitHashCodeProperty) &&
-                   (!eq.equals(you[p], me.get(p)))) {
+                if(!me.has(p) || !eq.equals(you[p], me.get(p))) {
                     return false;
                 }
             }

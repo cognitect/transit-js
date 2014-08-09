@@ -66,7 +66,6 @@ transit.isTaggedValue = function(){};
 transit.link = function(){};
 transit.isLink = function(){};
 transit.hash = function(){};
-transit.hashKey = function(){};
 transit.hashMapLike = function(){};
 transit.hashArrayLike = function(){};
 transit.equals = function(){};

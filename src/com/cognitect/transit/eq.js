@@ -20,12 +20,6 @@ goog.scope(function() {
 var eq   = com.cognitect.transit.eq,
     util = com.cognitect.transit.util;
 
-/**
- * @const
- * @type {string}
- */
-eq.transitHashCodeProperty = "$com$cognitect$transit$hashCode$";
-
 eq.equals = function (x, y) {
     if(x == null) {
         return y == null;
@@ -53,16 +47,11 @@ eq.equals = function (x, y) {
             if(y.com$cognitect$transit$equals) {
                 return y.com$cognitect$transit$equals(x);
             } else {
-                var sub   = 0,
-                    xklen = 0,
+                var xklen = 0,
                     yklen = util.objectKeys(y).length;
                 for(var p in x) {
                     if(!x.hasOwnProperty(p)) continue;
                     xklen++;
-                    if(p == eq.transitHashCodeProperty) {
-                        if(!y[p]) sub = -1;
-                        continue;
-                    }
                     if(!y.hasOwnProperty(p)) {
                         return false;
                     } else {
@@ -71,7 +60,7 @@ eq.equals = function (x, y) {
                         }
                     }
                 }
-                return (xklen + sub) === yklen;
+                return xklen === yklen;
             }
         } else {
             return false;
@@ -127,7 +116,6 @@ eq.hashMapLike = function(m) {
         var keys = util.objectKeys(m);
         for(var i = 0; i < keys.length; i++) {
             var key = keys[i];
-            if(key === eq.transitHashCodeProperty) continue;
             var val = m[key];
             code = (code + (eq.hashCode(key) ^ eq.hashCode(val))) % 4503599627370496;
         }
@@ -136,22 +124,17 @@ eq.hashMapLike = function(m) {
 };
 
 eq.hashArrayLike = function(arr) {
-    var code = arr[eq.transitHashCodeProperty] || 0;
-    if(code !== 0) {
-        return code;
-    } else {
-        if(util.isArray(arr)) {
-            for(var i = 0; i < arr.length; i++) {
-                code = eq.hashCombine(code, eq.hashCode(arr[i]));
-            }
-            arr[eq.transitHashCodeProperty] = code;
-        } else if(arr.forEach) {
-            arr.forEach(function(x, i) {
-                code = eq.hashCombine(code, eq.hashCode(x));
-            });
+    var code = 0;
+    if(util.isArray(arr)) {
+        for(var i = 0; i < arr.length; i++) {
+            code = eq.hashCombine(code, eq.hashCode(arr[i]));
         }
-        return code;
+    } else if(arr.forEach) {
+        arr.forEach(function(x, i) {
+            code = eq.hashCombine(code, eq.hashCode(x));
+        });
     }
+    return code;
 };
 
 eq.hashCode = function(x) {
@@ -176,8 +159,6 @@ eq.hashCode = function(x) {
                 return eq.hashArrayLike(x);
             } if(x.com$cognitect$transit$hashCode) {
                 return x.com$cognitect$transit$hashCode();
-            } else if(x[eq.transitHashCodeProperty]) {
-                return x[eq.transitHashCodeProperty];
             } else {
                 return eq.hashMapLike(x);
             }
