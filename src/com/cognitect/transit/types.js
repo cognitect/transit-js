@@ -535,6 +535,7 @@ types.TransitArrayMap.prototype.convert = function() {
 };
 
 types.TransitArrayMap.prototype.clear = function() {
+    this.hashCode = -1;
     if(this.backingMap) {
         this.backingMap.clear();
         this.size = 0;
@@ -633,6 +634,7 @@ types.TransitArrayMap.prototype.has = function(k) {
 types.TransitArrayMap.prototype["has"] = types.TransitArrayMap.prototype.has;
 
 types.TransitArrayMap.prototype.set = function(k, v) {
+    this.hashCode = -1;
     if(this.backingMap) {
         this.backingMap.set(k, v);
         this.size = this.backingMap.size;
@@ -657,6 +659,7 @@ types.TransitArrayMap.prototype.set = function(k, v) {
 types.TransitArrayMap.prototype["set"] = types.TransitArrayMap.prototype.set;
 
 types.TransitArrayMap.prototype["delete"] = function(k) {
+    this.hashCode = -1;
     if(this.backingMap) {
         this.backingMap["delete"](k);
         this.size = this.backingMap.size;
@@ -709,10 +712,10 @@ types.TransitMap.prototype.toString = function() {
 };
 
 types.TransitMap.prototype.clear = function() {
+    this.hashCode = -1;
     this.map = {};
     this._keys = [];
     this.size = 0;
-    this.hashCode = -1;
 };
 types.TransitMap.prototype["clear"] = types.TransitMap.prototype.clear;
 
@@ -725,6 +728,7 @@ types.TransitMap.prototype.getKeys = function() {
 };
 
 types.TransitMap.prototype['delete'] = function(k) {
+    this.hashCode = -1;
     this._keys = null;
     var code   = eq.hashCode(k),
         bucket = this.map[code];
@@ -809,6 +813,7 @@ types.TransitMap.prototype.keySet = function() {
 types.TransitMap.prototype["keySet"] = types.TransitMap.prototype.keySet;
   
 types.TransitMap.prototype.set = function(k, v) {
+    this.hashCode = -1;
     var code = eq.hashCode(k),
         bucket = this.map[code];
     if(bucket == null) {
