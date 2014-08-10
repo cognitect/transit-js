@@ -448,12 +448,6 @@ transit.UUIDfromString = types.UUIDfromString;
 transit.randomUUID =     types.randomUUID;
 transit.stringableKeys = writer.stringableKeys;
 
-if(TRANSIT_BROWSER_AMD_TARGET) {
-    define("transit", [], function() {
-        return transit;
-    });
-}
-
 if(TRANSIT_BROWSER_TARGET) {
     goog.exportSymbol("transit.reader",         transit.reader);
     goog.exportSymbol("transit.writer",         transit.writer);
