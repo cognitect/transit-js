@@ -472,8 +472,9 @@ types.mapEquals = function(me, you) {
         var ks    = util.objectKeys(you),
             kslen = ks.length;
         if(me.size === kslen) {
-            for(var p in you) {
-                if(!me.has(p) || !eq.equals(you[p], me.get(p))) {
+            for(var i = 0 ; i < kslen; i++) {
+                var k = ks[i];
+                if(!me.has(k) || !eq.equals(you[k], me.get(k))) {
                     return false;
                 }
             }
