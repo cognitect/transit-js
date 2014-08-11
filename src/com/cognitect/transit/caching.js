@@ -128,7 +128,7 @@ caching.WriteCache.prototype.clear = function() {
 // ReadCache
 
 caching.isCacheCode = function(string) {
-    return string.charAt(0) === d.SUB;
+    return (string.charAt(0) === d.SUB) && (string.charAt(1) !== " ");
 };
 
 caching.codeToIdx = function(code) {
