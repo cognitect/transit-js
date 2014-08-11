@@ -53,9 +53,14 @@ writer.JSONMarshaller = function(opts) {
     this.objectBuilder = this.opts["objectBuilder"] || null;
 
     this.handlers = new handlers.Handlers();
-    if(this.opts["handlers"]) {
+
+    var optsHandlers = this.opts["handlers"];
+    if(optsHandlers) {
+        if(util.isArray(optsHandlers) || !optsHandlers.forEach) {
+            throw new Error("transit writer \"handlers\" option must be a map");
+        }
         var self = this;
-        this.opts["handlers"].forEach(function(v, k) {
+        optsHandlers.forEach(function(v, k) {
             self.handlers.set(k, v);
         });
     }
