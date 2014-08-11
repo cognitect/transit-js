@@ -747,6 +747,8 @@ exports.testVerifyJSONCornerCases = function(test) {
 
 exports.testVerifyRoundtripCmap = function(test) {
     test.equal(roundtrip("[\"~#cmap\",[[1,1],\"one\"]]"), "[\"~#cmap\",[[1,1],\"one\"]]");
+    test.equal(roundtrip("[\"~#cmap\",[[\"~:foo\",1],[[\"^ \",\"~:bar\",2],[\"^ \",\"^2\",3]]]]"),
+                         "[\"~#cmap\",[[\"~:foo\",1],[[\"^ \",\"~:bar\",2],[\"^ \",\"^2\",3]]]]");
     test.done();
 };
 
