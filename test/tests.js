@@ -813,7 +813,8 @@ exports.testMapCornerCase = function(test) {
 exports.testMapKeyRatioCase = function(test) {
     test.equal(roundtrip("[\"~#cmap\",[[\"~#ratio\",[\"~n1\",\"~n2\"]],[\"^1\",[\"~n2\",\"~n5\"]]]]"),
                          "[\"~#cmap\",[[\"~#ratio\",[\"~n1\",\"~n2\"]],[\"^1\",[\"~n2\",\"~n5\"]]]]");
-                          
+    test.equal(roundtrip("[\"~#cmap\",[[\"~#ratio\",[\"~n10\",\"~n11\"]],\"~:foobar\",[\"^1\",[\"~n10\",\"~n13\"]],\"^2\"]]"),
+                         "[\"~#cmap\",[[\"~#ratio\",[\"~n10\",\"~n11\"]],\"~:foobar\",[\"^1\",[\"~n10\",\"~n13\"]],\"^2\"]]");
     test.done();
 };
 
