@@ -929,3 +929,38 @@ exports.testTag = function(test) {
 
     test.done();
 };
+
+// =============================================================================
+// Default write handler
+// =============================================================================
+
+exports.testDefaultWriteHandler = function(test) {
+    var Point = function(x, y) {
+        this.x = x;
+        this.y = y;
+    };
+
+    Point.prototype.transitRep = function() {
+        return {
+            tag: "point",
+            x: this.x,
+            y: this.y
+        }
+    };
+
+    var DefaultHandler = transit.makeWriteHandler({
+        tag: function(v, h) { return "unknown"; },
+        rep: function(v, h) { return v.transitRep(); }
+    });
+
+    var w = transit.writer("json", {
+        "handlers": transit.map([
+            "default", DefaultHandler
+        ])
+    });
+
+    test.equal(w.write(new Point(1.5,2.5)),
+               "[\"~#unknown\",[\"^ \",\"tag\",\"point\",\"x\",1.5,\"y\",2.5]]");
+
+    test.done();
+};

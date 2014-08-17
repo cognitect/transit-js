@@ -260,10 +260,16 @@ handlers.Handlers = function() {
 };
 
 handlers.Handlers.prototype.get = function(ctor) {
+    var h = null;
     if(typeof ctor === "string") {
-        return this.handlers[ctor];
+        h = this.handlers[ctor];
     } else {
-        return this.handlers[handlers.typeTag(ctor)];
+        h = this.handlers[handlers.typeTag(ctor)];
+    }
+    if(h != null) {
+        return h;
+    } else {
+        return this.handlers["default"];
     }
 };
 
