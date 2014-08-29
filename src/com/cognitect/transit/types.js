@@ -1059,5 +1059,19 @@ types.isLink = function(x) {
     return (x instanceof types.TaggedValue) && (x.tag === "link")
 };
 
+types.specialDouble = function(v) {
+  switch(v) {
+      case "-INF":
+          return -Infinity;
+      case "INF":
+          return Infinity;
+      case "NaN":
+          return NaN;
+      default:
+          throw new Error("Invalid special double value " + v);
+      break;
+  }
+};
+
 });
 

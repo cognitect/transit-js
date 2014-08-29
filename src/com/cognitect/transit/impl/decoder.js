@@ -97,6 +97,7 @@ decoder.Decoder.prototype.defaults = {
         ":": function(v) { return types.keyword(v); },
         "$": function(v) { return types.symbol(v); },
         "r": function(v) { return types.uri(v); },
+        "z": function(v) { return types.specialDouble(v); },
 
         // tagged
         "'": function(v) { return v; },
