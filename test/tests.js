@@ -968,12 +968,22 @@ exports.testDefaultWriteHandler = function(test) {
 // Special Double Values
 // =============================================================================
 
-exports.testDecodeSpecialDoubleValues = function(test) {
+exports.testReadSpecialDoubleValues = function(test) {
     var r = transit.reader();
 
     test.ok(isNaN(r.read("[\"~#'\",\"~zNaN\"]")));
     test.equal(r.read("[\"~#'\",\"~zINF\"]"), Infinity);
     test.equal(r.read("[\"~#'\",\"~z-INF\"]"), -Infinity);
+
+    test.done();
+};
+
+exports.testWriteSpecialDoubleValues = function(test) {
+    var w = transit.writer();
+
+    test.equal(w.write(Infinity), "[\"~#'\",\"~zINF\"]")
+    test.equal(w.write(-Infinity), "[\"~#'\",\"~z-INF\"]");
+    test.equal(w.write(NaN), "[\"~#'\",\"~zNaN\"]");
 
     test.done();
 };

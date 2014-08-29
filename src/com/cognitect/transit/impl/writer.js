@@ -122,7 +122,13 @@ writer.JSONMarshaller.prototype.emitBoolean = function(b, asMapKey, cache) {
 };
 
 writer.JSONMarshaller.prototype.emitInteger = function(i, asMapKey, cache) {
-    if(asMapKey || (typeof i === "string") || (i instanceof Long)) {
+    if(i === Infinity) {
+        return this.emitString(d.ESC, "z", "INF", asMapKey, cache);
+    } else if(i === -Infinity) {
+        return this.emitString(d.ESC, "z", "-INF", asMapKey, cache);
+    } else if(isNaN(i)) {
+        return this.emitString(d.ESC, "z", "NaN", asMapKey, cache);
+    } else if(asMapKey || (typeof i === "string") || (i instanceof Long)) {
         return this.emitString(d.ESC, "i", i.toString(), asMapKey, cache);
     } else {
         return i;
