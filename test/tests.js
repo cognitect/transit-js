@@ -641,11 +641,10 @@ exports.testDefaultHandler = function(test) {
     });
 
     try {
-        r.read("[\"~z1\"]");
+        r.read("[\"~q1\"]");
     } catch(e) {
-        if(e.message === "Oops!") {
-            test.done();
-        }
+        test.equal(e.message, "Oops!");
+        test.done();
     }
 };
 
