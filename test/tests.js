@@ -987,3 +987,18 @@ exports.testWriteSpecialDoubleValues = function(test) {
 
     test.done();
 };
+
+// =============================================================================
+// Map Not Found
+// =============================================================================
+
+exports.testMapGetNotFound = function(test) {
+    var m = transit.map([
+        "foo", 1,
+        "bar", 2
+    ]);
+
+    test.equal(m.get("baz", "woz"), "woz");
+
+    test.done();
+};
