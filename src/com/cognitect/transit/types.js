@@ -598,7 +598,7 @@ types.TransitArrayMap.prototype.forEach = function(f) {
 };
 types.TransitArrayMap.prototype["forEach"] = types.TransitArrayMap.prototype.forEach;
 
-types.TransitArrayMap.prototype.get = function(k) {
+types.TransitArrayMap.prototype.get = function(k, notFound) {
     if(this.backingMap) {
         return this.backingMap.get(k);
     } else {
@@ -610,7 +610,7 @@ types.TransitArrayMap.prototype.get = function(k) {
                     return this._entries[i+1];
                 }
             }
-            return null;
+            return notFound;
         }
     }
 };
@@ -762,7 +762,7 @@ types.TransitMap.prototype.forEach = function(callback) {
 };
 types.TransitMap.prototype["forEach"] = types.TransitMap.prototype.forEach;
 
-types.TransitMap.prototype.get = function(k) {
+types.TransitMap.prototype.get = function(k, notFound) {
   var code   = eq.hashCode(k),
       bucket = this.map[code];
     if(bucket != null) {
@@ -772,7 +772,7 @@ types.TransitMap.prototype.get = function(k) {
             }
         }
     } else {
-        return null;
+        return notFound;
     } 
 };
 types.TransitMap.prototype["get"] = types.TransitMap.prototype.get;
