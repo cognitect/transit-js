@@ -1013,7 +1013,8 @@ exports.testFunctionsAsKeys = function(test) {
         m      = transit.map([
             isEven, "isEven",
             isOdd, "isOdd"
-        ]);
+        ]),
+        s      = transit.set();
 
     test.equal(m.get(isEven), "isEven");
     test.equal(m.get(isOdd), "isOdd");
@@ -1021,6 +1022,17 @@ exports.testFunctionsAsKeys = function(test) {
     m["delete"](isEven);
 
     test.equals(m.get(isEven, "removed"), "removed");
+
+    s.add(isEven);
+    s.add(isOdd);
+
+    test.equal(s.size, 2);
+    test.ok(s.has(isEven));
+    test.ok(s.has(isOdd));
+
+    s["delete"](isEven);
+
+    test.ok(!s.has(isEven));
 
     test.done();
 };
