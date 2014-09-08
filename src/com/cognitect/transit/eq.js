@@ -20,6 +20,17 @@ goog.scope(function() {
 var eq   = com.cognitect.transit.eq,
     util = com.cognitect.transit.util;
 
+/**
+ * @const
+ * @type {string}
+ */
+eq.hashCodeProperty = "transit$hashCode$";
+
+/**
+ * @type {number}
+ */
+eq.hashCodeCounter = 1;
+
 eq.equals = function (x, y) {
     if(x == null) {
         return y == null;
@@ -141,8 +152,7 @@ eq.hashCode = function(x) {
     if(x == null) {
         return 0;
     } else {
-        var t = typeof x;
-        switch(t) {
+        switch(typeof x) {
         case 'number':
             return x;
             break;
@@ -151,6 +161,24 @@ eq.hashCode = function(x) {
             break;
         case 'string':
             return eq.hashString(x);
+            break;
+        case 'function':
+            var code = x[eq.hashCodeProperty];
+            if(code) {
+                return code;
+            } else {
+                code = eq.hashCodeCounter;
+                if(typeof Object.defineProperty != "undefined") {
+                    Object.defineProperty(x, eq.hashCodeProperty, {
+                        value: code,
+                        enumerable: false
+                    });
+                } else {
+                    x[eq.hashCodeProperty] = code;
+                }
+                eq.hashCodeCounter++;    
+                return code;
+            }
             break;
         default:
             if(x instanceof Date) {

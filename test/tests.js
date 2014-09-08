@@ -1002,3 +1002,25 @@ exports.testMapGetNotFound = function(test) {
 
     test.done();
 };
+
+// =============================================================================
+// Functions as keys
+// =============================================================================
+
+exports.testFunctionsAsKeys = function(test) {
+    var isEven = function(n) { return n % 2 == 0; },
+        isOdd  = function(n) { return !isEven(n); },
+        m      = transit.map([
+            isEven, "isEven",
+            isOdd, "isOdd"
+        ]);
+
+    test.equal(m.get(isEven), "isEven");
+    test.equal(m.get(isOdd), "isOdd");
+
+    m["delete"](isEven);
+
+    test.equals(m.get(isEven, "removed"), "removed");
+
+    test.done();
+};
