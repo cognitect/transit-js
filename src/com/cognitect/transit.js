@@ -22,6 +22,9 @@ goog.require("com.cognitect.transit.eq");
 goog.require("com.cognitect.transit.impl.decoder");
 
 /** @define {boolean} */
+var TRANSIT_DEV = true;
+
+/** @define {boolean} */
 var TRANSIT_NODE_TARGET = false;
 
 /** @define {boolean} */

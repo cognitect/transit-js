@@ -12,7 +12,7 @@ version=$prefix.$suffix
 prelude=`bin/prelude`
 preludenl=$prelude.$'\n'
 
-java -jar deps/closure-compiler/compiler.jar -O ADVANCED --output_wrapper "$preludenl;(function(){%output%})();" --generate_exports -D TRANSIT_BROWSER_AMD_TARGET=true --externs resources/amd_externs.js \
+java -jar deps/closure-compiler/compiler.jar -O ADVANCED --output_wrapper "$preludenl;(function(){%output%})();" --generate_exports -D TRANSIT_BROWSER_AMD_TARGET=true -D TRANSIT_DEV=false --externs resources/amd_externs.js \
 --js deps/closure-library/closure/goog/base.js \
 --js deps/closure-library/closure/goog/object/object.js \
 --js deps/closure-library/closure/goog/math/long.js \

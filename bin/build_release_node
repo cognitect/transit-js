@@ -12,7 +12,7 @@ version=$prefix.$suffix
 prelude=`bin/prelude`
 preludenl=$prelude.$'\n'
 
-java -jar deps/closure-compiler/compiler.jar -O ADVANCED --generate_exports --output_wrapper "$preludenl%output%" -D TRANSIT_NODE_TARGET=true --externs resources/node_externs.js \
+java -jar deps/closure-compiler/compiler.jar -O ADVANCED --generate_exports --output_wrapper "$preludenl%output%" -D TRANSIT_NODE_TARGET=true -D TRANSIT_DEV=false --externs resources/node_externs.js \
 --js deps/closure-library/closure/goog/base.js \
 --js deps/closure-library/closure/goog/object/object.js \
 --js deps/closure-library/closure/goog/math/long.js \
