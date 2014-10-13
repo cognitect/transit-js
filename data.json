@@ -2,7 +2,7 @@
     "project": {
         "name": "transit-js",
         "description": "A JavaScript implementation of the Transit format",
-        "version": "0.8.667",
+        "version": "0.8.773",
         "url": "http://github.com/cognitect/transit-js"
     },
     "files": {
@@ -83,7 +83,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/com/cognitect/transit.js",
-            "line": 32
+            "line": 38
         }
     },
     "classitems": [
@@ -171,7 +171,7 @@
         },
         {
             "file": "src/com/cognitect/transit/impl/writer.js",
-            "line": 388,
+            "line": 422,
             "is_constructor": 1,
             "class": "transit"
         },
@@ -288,6 +288,12 @@
         },
         {
             "file": "src/com/cognitect/transit/eq.js",
+            "line": 29,
+            "type": "{number}",
+            "class": "transit"
+        },
+        {
+            "file": "src/com/cognitect/transit/eq.js",
             "line": 91,
             "itemtype": "property",
             "name": "",
@@ -302,12 +308,6 @@
             "name": "",
             "final": "",
             "type": "{string}",
-            "class": "transit"
-        },
-        {
-            "file": "src/com/cognitect/transit/handlers.js",
-            "line": 83,
-            "is_constructor": 1,
             "class": "transit"
         },
         {
@@ -354,13 +354,13 @@
         },
         {
             "file": "src/com/cognitect/transit/handlers.js",
-            "line": 154,
+            "line": 147,
             "is_constructor": 1,
             "class": "transit"
         },
         {
             "file": "src/com/cognitect/transit/handlers.js",
-            "line": 165,
+            "line": 162,
             "is_constructor": 1,
             "class": "transit"
         },
@@ -390,7 +390,7 @@
         },
         {
             "file": "src/com/cognitect/transit/handlers.js",
-            "line": 211,
+            "line": 205,
             "is_constructor": 1,
             "class": "transit"
         },
@@ -402,7 +402,13 @@
         },
         {
             "file": "src/com/cognitect/transit/handlers.js",
-            "line": 246,
+            "line": 227,
+            "is_constructor": 1,
+            "class": "transit"
+        },
+        {
+            "file": "src/com/cognitect/transit/handlers.js",
+            "line": 254,
             "is_constructor": 1,
             "class": "transit"
         },
@@ -522,14 +528,14 @@
         },
         {
             "file": "src/com/cognitect/transit/types.js",
-            "line": 694,
+            "line": 697,
             "description": "TransitMap\n  A hash map. Support arbitrarily complex keys. Lookup is based on the value of the\n  the key not identity. Otherwise the API follows the ES6 map interface:\n  http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
             "is_constructor": 1,
             "class": "transit"
         },
         {
             "file": "src/com/cognitect/transit/types.js",
-            "line": 920,
+            "line": 925,
             "is_constructor": 1,
             "class": "transit"
         },
@@ -545,7 +551,17 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 43,
+            "line": 30,
+            "class": "transit"
+        },
+        {
+            "file": "src/com/cognitect/transit.js",
+            "line": 33,
+            "class": "transit"
+        },
+        {
+            "file": "src/com/cognitect/transit.js",
+            "line": 49,
             "description": "Create a transit reader instance.",
             "itemtype": "method",
             "name": "transit.reader",
@@ -569,7 +585,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 67,
+            "line": 73,
             "description": "Create a transit writer instance.",
             "itemtype": "method",
             "name": "transit.writer",
@@ -593,7 +609,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 94,
+            "line": 100,
             "description": "Create a transit writer handler.",
             "itemtype": "method",
             "name": "transit.makeWriteHandler",
@@ -612,7 +628,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 121,
+            "line": 128,
             "description": "Create a transit date.",
             "itemtype": "method",
             "name": "transit.date",
@@ -631,7 +647,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 129,
+            "line": 136,
             "description": "Create an integer. If given a transit integer or a JavaScript\n    number will simply return that value. Given a string will\n    return a JavaScript number if the string represents an integer\n    value in the 53bit range and a transit integer otherwise.",
             "itemtype": "method",
             "name": "transit.integer",
@@ -650,7 +666,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 140,
+            "line": 147,
             "description": "Test if an object is a transit integer. Will return true if argument\nis a 64 bit integer or a JavaScript number that has an interpretation as\nan integer value, i.e. parseFloat(n) === parseInt(n)",
             "itemtype": "method",
             "name": "transit.isInteger",
@@ -669,7 +685,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 150,
+            "line": 157,
             "description": "Create transit UUID from high and low 64 bits. These integer values\n     can be constructed with transit.integer.",
             "itemtype": "method",
             "name": "transit.uuid",
@@ -693,7 +709,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 160,
+            "line": 167,
             "description": "Test if an object is a transit UUID.",
             "itemtype": "method",
             "name": "transit.isUUID",
@@ -712,7 +728,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 168,
+            "line": 175,
             "description": "Create a transit big integer.",
             "itemtype": "method",
             "name": "transit.bigInt",
@@ -731,7 +747,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 176,
+            "line": 183,
             "description": "Test if an object is a transit big integer.",
             "itemtype": "method",
             "name": "transit.isBigInt",
@@ -750,7 +766,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 184,
+            "line": 191,
             "description": "Create a transit big decimal.",
             "itemtype": "method",
             "name": "transit.bigDec",
@@ -769,7 +785,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 192,
+            "line": 199,
             "description": "Test if an object is a transit big decimal.",
             "itemtype": "method",
             "name": "transit.isBigDec",
@@ -788,7 +804,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 200,
+            "line": 207,
             "description": "Create transit keyword.",
             "itemtype": "method",
             "name": "transit.keyword",
@@ -807,7 +823,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 208,
+            "line": 215,
             "description": "Test if an object is a transit keyword.",
             "itemtype": "method",
             "name": "transit.isKeyword",
@@ -826,7 +842,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 216,
+            "line": 223,
             "description": "Create a transit symbol.",
             "itemtype": "method",
             "name": "transit.symbol",
@@ -845,7 +861,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 224,
+            "line": 231,
             "description": "Test if an object is a transit symbol",
             "itemtype": "method",
             "name": "transit.isSymbol",
@@ -864,7 +880,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 232,
+            "line": 239,
             "description": "Create transit binary blob.",
             "itemtype": "method",
             "name": "transit.binary",
@@ -883,7 +899,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 240,
+            "line": 247,
             "description": "Test if an object is a transit binary blob.",
             "itemtype": "method",
             "name": "transit.isBinary",
@@ -898,7 +914,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 247,
+            "line": 254,
             "description": "Create a transit URI.",
             "itemtype": "method",
             "name": "transit.uri",
@@ -917,7 +933,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 255,
+            "line": 262,
             "description": "Test if an object is a transit URI.",
             "itemtype": "method",
             "name": "transit.isURI",
@@ -936,7 +952,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 263,
+            "line": 270,
             "description": "Create a transit hash map. Transit maps satisfy the current version\n    of the ECMAScript 6 Map specification.",
             "itemtype": "method",
             "name": "transit.map",
@@ -955,7 +971,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 272,
+            "line": 279,
             "description": "Test if an object is a transit map.",
             "itemtype": "method",
             "name": "transit.isMap",
@@ -974,7 +990,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 280,
+            "line": 287,
             "description": "Create a transit set. Transit sets satisfy the current version of the\n    of the ECMAScript 6 Set specification.",
             "itemtype": "method",
             "name": "transit.set",
@@ -993,7 +1009,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 289,
+            "line": 296,
             "description": "Test if an object is a transit set.",
             "itemtype": "method",
             "name": "transit.isSet",
@@ -1012,7 +1028,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 297,
+            "line": 304,
             "description": "Create a transit list.",
             "itemtype": "method",
             "name": "transit.list",
@@ -1031,7 +1047,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 305,
+            "line": 312,
             "description": "Test if an object is a transit list.",
             "itemtype": "method",
             "name": "transit.isList",
@@ -1050,7 +1066,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 313,
+            "line": 320,
             "description": "Create a transit quoted value.",
             "itemtype": "method",
             "name": "transit.quoted",
@@ -1069,7 +1085,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 321,
+            "line": 328,
             "description": "Test if an object is a transit quoted value.",
             "itemtype": "method",
             "name": "transit.isQuoted",
@@ -1088,7 +1104,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 329,
+            "line": 336,
             "description": "Create a transit tagged value.",
             "itemtype": "method",
             "name": "transit.tagged",
@@ -1112,7 +1128,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 338,
+            "line": 345,
             "description": "Test if an object is a transit tagged value.",
             "itemtype": "method",
             "name": "transit.isTaggedValue",
@@ -1131,7 +1147,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 346,
+            "line": 353,
             "description": "Create a transit link.",
             "itemtype": "method",
             "name": "transit.link",
@@ -1150,7 +1166,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 357,
+            "line": 364,
             "description": "Test if an object is a transit link.",
             "itemtype": "method",
             "name": "transit.isLink",
@@ -1169,7 +1185,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 365,
+            "line": 372,
             "description": "Compute the hashCode for any JavaScript object that has been\n   extend to transit's equality and hashing protocol. JavaScript\n   primitives and transit value are already extended to this protocol.\n   Custom types may be extended to the protocol via transit.extenToEQ.",
             "itemtype": "method",
             "name": "transit.hash",
@@ -1188,17 +1204,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 377,
-            "description": "A unique string that can be used to set the hash code on plain\nJavaScript Objects as well property skip during iteration.",
-            "itemtype": "property",
-            "name": "",
-            "final": "",
-            "type": "{String}",
-            "class": "transit"
-        },
-        {
-            "file": "src/com/cognitect/transit.js",
-            "line": 386,
+            "line": 384,
             "description": "Compute the hashCode for JavaScript map-like types - either a JavaScript\n   object or a JavaScript object that implements ES6 Map forEach.",
             "itemtype": "method",
             "name": "transit.hashMapLike",
@@ -1217,7 +1223,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 396,
+            "line": 394,
             "description": "Compute the hashCode for JavaScript array-like types - either a JavaScript\n   array or a JavaScript object that implements Array forEach.",
             "itemtype": "method",
             "name": "transit.hashArrayLike",
@@ -1236,7 +1242,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 406,
+            "line": 404,
             "description": "Test whether two JavaScript objects represent equal values. The\n   objects to be tested should be extended to transit's equality\n   and hasing protocol. JavaScript natives and transit value have\n   already been extended to the protocol, including objects and\n   arrays.  Also transit maps and JavaScript objects may be\n   compared for equality. Custom types may be extended via\n   transit.extendToEQ.",
             "params": [
                 {
@@ -1258,7 +1264,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 420,
+            "line": 418,
             "description": "Extend an object to hashing and equality required by\n    transit maps and sets. Only required for custom\n    types, JavaScript primitive types and transit\n    types are handled.",
             "itemtype": "method",
             "name": "transit.extendToEQ",
@@ -1277,7 +1283,7 @@
         },
         {
             "file": "src/com/cognitect/transit.js",
-            "line": 431,
+            "line": 429,
             "description": "Convert a transit map instance into a JavaScript Object.\nThrows if the map has keys which have no string representation.",
             "itemtype": "method",
             "name": "transit.mapToObject",
@@ -1334,7 +1340,7 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/com/cognitect/transit/impl/writer.js:388"
+            "line": " src/com/cognitect/transit/impl/writer.js:422"
         },
         {
             "message": "Missing item type",
@@ -1346,7 +1352,7 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/com/cognitect/transit/handlers.js:83"
+            "line": " src/com/cognitect/transit/eq.js:29"
         },
         {
             "message": "Missing item type",
@@ -1378,11 +1384,11 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/com/cognitect/transit/handlers.js:154"
+            "line": " src/com/cognitect/transit/handlers.js:147"
         },
         {
             "message": "Missing item type",
-            "line": " src/com/cognitect/transit/handlers.js:165"
+            "line": " src/com/cognitect/transit/handlers.js:162"
         },
         {
             "message": "Missing item type",
@@ -1402,7 +1408,7 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/com/cognitect/transit/handlers.js:211"
+            "line": " src/com/cognitect/transit/handlers.js:205"
         },
         {
             "message": "Missing item type",
@@ -1410,7 +1416,11 @@
         },
         {
             "message": "Missing item type",
-            "line": " src/com/cognitect/transit/handlers.js:246"
+            "line": " src/com/cognitect/transit/handlers.js:227"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/com/cognitect/transit/handlers.js:254"
         },
         {
             "message": "Missing item type",
@@ -1454,11 +1464,11 @@
         },
         {
             "message": "Missing item type\nTransitMap\n  A hash map. Support arbitrarily complex keys. Lookup is based on the value of the\n  the key not identity. Otherwise the API follows the ES6 map interface:\n  http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
-            "line": " src/com/cognitect/transit/types.js:694"
+            "line": " src/com/cognitect/transit/types.js:697"
         },
         {
             "message": "Missing item type",
-            "line": " src/com/cognitect/transit/types.js:920"
+            "line": " src/com/cognitect/transit/types.js:925"
         },
         {
             "message": "Missing item type",
@@ -1469,8 +1479,16 @@
             "line": " src/com/cognitect/transit.js:27"
         },
         {
+            "message": "Missing item type",
+            "line": " src/com/cognitect/transit.js:30"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/com/cognitect/transit.js:33"
+        },
+        {
             "message": "Missing item type\nTest whether two JavaScript objects represent equal values. The\n   objects to be tested should be extended to transit's equality\n   and hasing protocol. JavaScript natives and transit value have\n   already been extended to the protocol, including objects and\n   arrays.  Also transit maps and JavaScript objects may be\n   compared for equality. Custom types may be extended via\n   transit.extendToEQ.",
-            "line": " src/com/cognitect/transit.js:406"
+            "line": " src/com/cognitect/transit.js:404"
         }
     ]
 }
