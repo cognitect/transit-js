@@ -129,7 +129,7 @@ decoder.Decoder.prototype.decode = function(node, cache, asMapKey, tagValue) {
             if(node[0] === "^ ") {
                 return this.decodeArrayHash(node, cache, asMapKey, tagValue);
             } else {
-                return this.decodeArray(node, cache, false, tagValue);
+                return this.decodeArray(node, cache, asMapKey, tagValue);
             }
         } else {
             return this.decodeHash(node, cache, asMapKey, tagValue);
@@ -250,10 +250,10 @@ decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue
                 var val     = node[1],
                     handler = this.handlers[tag.str];
                 if(handler != null) {
-                    var ret = handler(this.decode(val, cache, false, true));
+                    var ret = handler(this.decode(val, cache, asMapKey, true));
                     return ret;
                 } else {
-                    return types.taggedValue(tag.str, this.decode(val, cache, false, false))
+                    return types.taggedValue(tag.str, this.decode(val, cache, asMapKey, false))
                 }
             }
         }

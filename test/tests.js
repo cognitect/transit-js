@@ -1036,3 +1036,17 @@ exports.testFunctionsAsKeys = function(test) {
 
     test.done();
 };
+
+// =============================================================================
+// Recursive asMapKey
+// =============================================================================
+
+exports.testRecursiveAsMapKey = function(test) {
+    var r = transit.reader("json"),
+        expected = transit.map(["cached", 0, transit.symbol("Explain"), "cached"]);
+
+    test.ok(transit.equals(r.read("[\"^ \",[\"~#'\",\"cached\"],0,\"~$Explain\",\"^0\"]"),
+                           expected));
+
+    test.done();
+};
