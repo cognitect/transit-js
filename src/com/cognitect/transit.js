@@ -59,6 +59,12 @@ var reader  = com.cognitect.transit.impl.reader,
  *     values are functions that will receive the value of matched
  *     tag.
  * @return {transit.reader} A transit reader.
+ * @example
+ *     var r = transit.reader("json", {
+ *         handlers: {
+ *            "point": function(v) { return new Point(v[0], v[1]); }
+ *         }
+ *     });
  */
 transit.reader = function(type, opts) {
     if(type === "json" || type === "json-verbose" || type == null) {
@@ -80,6 +86,12 @@ transit.reader = function(type, opts) {
  *     JavaScript constructor and transit writer handler instance
  *     entries.
  * @return {transit.writer} A transit writer.
+ * @example
+ *     var r = transit.writer("json", {
+ *         handlers: transit.map([
+ *            Point, PointHandler
+ *         ])
+ *     });
  */
 transit.writer = function(type, opts) {
     if(type === "json" || type === "json-verbose" || type == null) {
@@ -106,6 +118,12 @@ transit.writer = function(type, opts) {
  *    the string representation of the value. Optional "getVerboseHandler" should return a
  *    handler for writing verbose output.
  * @return {transit.handler} A transit write handler.
+ * @example
+ *     var PointHandler = transit.makeWriteHandler({
+ *          tag: "point",
+ *          rep: function(p) { return [p.x, p.y]; },
+ *          stringRep: function(p) { return null; }
+ *     });
  */
 transit.makeWriteHandler = function(obj) {
     var Handler = function(){};
@@ -209,6 +227,8 @@ transit.isBigDec = types.isBigDecimal;
  * @method transit.keyword
  * @param {String} name A string.
  * @return {transit.keyword} A transit keyword.
+ * @example
+ *     transit.keyword("foo");
  */
 transit.keyword = types.keyword;
 
@@ -225,6 +245,8 @@ transit.isKeyword = types.isKeyword;
  * @method transit.symbol
  * @param {s} name A string.
  * @return {transit.symbol} A transit symbol instance.
+ * @example
+ *     transit.symbol("foo");
  */
 transit.symbol = types.symbol;
 
@@ -273,6 +295,8 @@ transit.isURI = types.isURI;
  * @method transit.map
  * @param {Array} xs A JavaScript array of alternating key value pairs.
  * @return {transit.map} A transit map.
+ * @example
+ *     transit.map([new Date(), "foo", [1,2], 3]);
  */
 transit.map = types.map;
 
@@ -290,6 +314,8 @@ transit.isMap = types.isMap;
  * @method transit.set
  * @param {Array} xs A JavaScript array of values.
  * @return {transit.set} A transit set.
+ * @example
+ *     transit.set(["foo", [1,2], 3, {bar: "baz"}]);
  */
 transit.set = types.set;
 
@@ -339,6 +365,8 @@ transit.isQuoted = types.isQuoted;
  * @param {String} tag A tag.
  * @param {Object} value A JavaScrpt array, object, or string.
  * @return {transit.tagged} A transit tagged value.
+ * @example
+ *     transit.tagged("point", new Point(1,2));
  */
 transit.tagged = types.taggedValue;
 
@@ -423,6 +451,16 @@ transit.equals = eq.equals;
  * @method transit.extendToEQ
  * @param {Object} x A JavaScript object, will be mutated.
  * @return {Object} x
+ * @example
+ *     transit.extendToEq(Point.protototype, {
+ *         hashCode: function() {
+ *             var bits = (this.x | 0) ^ ((this.y | 0) * 31);
+ *             return bits ^ (bits >>> 32);
+ *         },
+ *         equals: function(other) {
+ *             return this.x == other.x && this.y == other.y;
+ *         }
+ *     });
  */
 transit.extendToEQ = eq.extendToEQ;
 
