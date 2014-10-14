@@ -70,6 +70,10 @@ You can also include transit-js in your `bower.json` dependencies:
 </dependency>
 ```
 
+## Documentation
+
+Comprehensive documentation can be found [here](http://cognitect.github.io/transit-js).
+
 ## Overview
 
 transit-js supports the conveyance of semantically rich and extensible
