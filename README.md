@@ -12,7 +12,7 @@ support encoding to [MessagePack](http://msgpack.org).
 
 * [Rationale](http://blog.cognitect.com/blog/2014/7/22/transit)
 * [Getting Started](https://github.com/cognitect/transit-js/wiki/Getting-Started), Get up and running ASAP
-* [API docs](http://cognitect.github.io/transit-js/)
+* [API docs](http://cognitect.github.io/transit-js/classes/transit.html)
 * [Specification](http://github.com/cognitect/transit-format)
 * [Take a tour!](http://cognitect.github.io/transit-tour)
 * [FAQ](http://github.com/cognitect/transit-js/wiki/FAQ), for common transit-js specific questions
@@ -72,7 +72,7 @@ You can also include transit-js in your `bower.json` dependencies:
 
 ## Documentation
 
-Comprehensive documentation can be found [here](http://cognitect.github.io/transit-js).
+Comprehensive documentation can be found [here](http://cognitect.github.io/transit-js/classes/transit.html).
 
 ## Overview
 
