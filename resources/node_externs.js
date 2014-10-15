@@ -75,3 +75,5 @@ module.exports.decoder = function() {};
 module.exports.UUIDfromString = function() {};
 module.exports.randomUUID = function() {};
 module.exports.stringableKeys = function() {};
+module.exports.readCache = function() {};
+module.exports.writeCache = function() {};

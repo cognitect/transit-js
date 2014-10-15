@@ -75,3 +75,5 @@ transit.decoder = function(){};
 transit.UUIDfromString = function(){};
 transit.randomUUID = function(){};
 transit.stringableKeys = function(){};
+transit.readCache = function() {};
+transit.writeCache = function() {};

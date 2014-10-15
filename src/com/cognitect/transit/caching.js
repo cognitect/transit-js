@@ -124,6 +124,10 @@ caching.WriteCache.prototype.clear = function() {
     this.gen++;
 };
 
+caching.writeCache = function() {
+    return new caching.WriteCache();
+};
+
 // =============================================================================
 // ReadCache
 
@@ -164,6 +168,10 @@ caching.ReadCache.prototype.read = function(string, asMapKey) {
 
 caching.ReadCache.prototype.clear = function() {
     this.idx = 0;
+};
+
+caching.readCache = function() {
+    return new caching.ReadCache();
 };
 
 });    

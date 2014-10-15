@@ -20,6 +20,7 @@ goog.require("com.cognitect.transit.impl.writer");
 goog.require("com.cognitect.transit.types");
 goog.require("com.cognitect.transit.eq");
 goog.require("com.cognitect.transit.impl.decoder");
+goog.require("com.cognitect.transit.caching");
 
 /** @define {boolean} */
 var TRANSIT_DEV = true;
@@ -44,7 +45,8 @@ var reader  = com.cognitect.transit.impl.reader,
     writer  = com.cognitect.transit.impl.writer,
     decoder = com.cognitect.transit.impl.decoder,
     types   = com.cognitect.transit.types,
-    eq      = com.cognitect.transit.eq;
+    eq      = com.cognitect.transit.eq,
+    caching = com.cognitect.transit.caching;
 
 /**
  * Create a transit reader instance.
@@ -533,6 +535,8 @@ if(TRANSIT_BROWSER_TARGET) {
     goog.exportSymbol("transit.UUIDfromString", types.UUIDfromString);
     goog.exportSymbol("transit.randomUUID",     types.randomUUID);
     goog.exportSymbol("transit.stringableKeys", writer.stringableKeys);
+    goog.exportSymbol("transit.readCache",      caching.readCache);
+    goog.exportSymbol("transit.writeCache",     caching.writeCache);
 }
 
 if(TRANSIT_NODE_TARGET) {
@@ -579,7 +583,9 @@ if(TRANSIT_NODE_TARGET) {
         decoder:        decoder.decoder,
         UUIDfromString: types.UUIDfromString,
         randomUUID:     types.randomUUID,
-        stringableKeys: writer.stringableKeys
+        stringableKeys: writer.stringableKeys,
+        readCache:      caching.readCache,
+        writeCache:     caching.writeCache
     };
 }
 
