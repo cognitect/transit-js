@@ -485,8 +485,32 @@ transit.mapToObject = function(m) {
     return ret;
 };
     
-/* The following are undocumented for now */
-transit.decoder =        decoder.decoder;
+/**
+ * Construct a Transit JSON decoder.
+ * @method transit.decoder
+ * @param {Object} options to the decoder. Can include map of
+ *     handlers.
+ * @return {transit.decoder} a Transit JSON decoder
+ * @example
+ *     var decoder = transit.decoder();
+ *     var x = decoder.decode(json, transit.readCache());
+ */
+transit.decoder = decoder.decoder;
+
+/**
+ * Construct a Transit read cache
+ * @method transit.readCache
+ * @return {transit.readCAche} a Transit read cache
+ */
+transit.readCache = caching.readCache;
+
+/**
+ * Construct a Transit write cache
+ * @method transit.writeCache
+ * @return {transit.writeCache} a Transit write cache
+ */
+transit.writeCache = caching.writeCache;
+
 transit.UUIDfromString = types.UUIDfromString;
 transit.randomUUID =     types.randomUUID;
 transit.stringableKeys = writer.stringableKeys;
