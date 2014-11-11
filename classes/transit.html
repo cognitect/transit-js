@@ -16,7 +16,7 @@
             <h1><a href="../index.html"><img width="100" src="../assets/css/cognitect.jpg">transit-js: transit</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.8.773</em>
+            <em>API Docs for: 0.8.746</em>
         </div>
     </div>
     <div class="yui3-g">
@@ -61,6 +61,8 @@
                 <li><a href="#methods_transit.binary">transit.binary</a></li>
             
                 <li><a href="#methods_transit.date">transit.date</a></li>
+            
+                <li><a href="#methods_transit.decoder">transit.decoder</a></li>
             
                 <li><a href="#methods_transit.extendToEQ">transit.extendToEQ</a></li>
             
@@ -114,6 +116,8 @@
             
                 <li><a href="#methods_transit.quoted">transit.quoted</a></li>
             
+                <li><a href="#methods_transit.readCache">transit.readCache</a></li>
+            
                 <li><a href="#methods_transit.reader">transit.reader</a></li>
             
                 <li><a href="#methods_transit.set">transit.set</a></li>
@@ -125,6 +129,8 @@
                 <li><a href="#methods_transit.uri">transit.uri</a></li>
             
                 <li><a href="#methods_transit.uuid">transit.uuid</a></li>
+            
+                <li><a href="#methods_transit.writeCache">transit.writeCache</a></li>
             
                 <li><a href="#methods_transit.writer">transit.writer</a></li>
             
@@ -145,7 +151,7 @@
         <h2 class="no-toc">Files</h2>
     </div>
     <div class="bd">
-        <ul><li>src/<ul><li>com/<ul><li>cognitect/<ul><li><a href="../files/src_com_cognitect_transit.js.html">transit.js</a></li><li>transit/<ul><li><a href="../files/src_com_cognitect_transit_caching.js.html">caching.js</a></li><li><a href="../files/src_com_cognitect_transit_delimiters.js.html">delimiters.js</a></li><li><a href="../files/src_com_cognitect_transit_eq.js.html">eq.js</a></li><li><a href="../files/src_com_cognitect_transit_handlers.js.html">handlers.js</a></li><li>impl/<ul><li><a href="../files/src_com_cognitect_transit_impl_decoder.js.html">decoder.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_reader.js.html">reader.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_writer.js.html">writer.js</a></li></ul></li><li><a href="../files/src_com_cognitect_transit_types.js.html">types.js</a></li></ul></li></ul></li></ul></li></ul></li></ul>
+        <ul><li>src/<ul><li>com/<ul><li>cognitect/<ul><li><a href="../files/src_com_cognitect_transit.js.html">transit.js</a></li><li>transit/<ul><li><a href="../files/src_com_cognitect_transit_caching.js.html">caching.js</a></li><li><a href="../files/src_com_cognitect_transit_delimiters.js.html">delimiters.js</a></li><li><a href="../files/src_com_cognitect_transit_eq.js.html">eq.js</a></li><li><a href="../files/src_com_cognitect_transit_handlers.js.html">handlers.js</a></li><li>impl/<ul><li><a href="../files/src_com_cognitect_transit_impl_decoder.js.html">decoder.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_reader.js.html">reader.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_writer.js.html">writer.js</a></li></ul></li><li><a href="../files/src_com_cognitect_transit_types.js.html">types.js</a></li><li><a href="../files/src_com_cognitect_transit_util.js.html">util.js</a></li></ul></li></ul></li></ul></li></ul></li></ul>
     </div>
 </div>
 
@@ -158,7 +164,7 @@
 
 
 
-<span class="foundat">Class defined in: <a href="../../files/src_com_cognitect_transit.js.html#l38"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:38</code></a></span>
+<span class="foundat">Class defined in: <a href="../../files/src_com_cognitect_transit.js.html#l39"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:39</code></a></span>
 <div class="intro"></div>
 
 
@@ -186,7 +192,7 @@
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l209"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:209</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l216"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:216</code></a>
     </span><br>
     <p>Create a transit big decimal.</p>
 
@@ -224,7 +230,7 @@
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l193"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:193</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l200"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:200</code></a>
     </span><br>
     <p>Create a transit big integer.</p>
 
@@ -262,7 +268,7 @@
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l261"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:261</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l268"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:268</code></a>
     </span><br>
     <p>Create transit binary blob.</p>
 
@@ -300,7 +306,7 @@
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l146"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:146</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l153"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:153</code></a>
     </span><br>
     <p>Create a transit date.</p>
 
@@ -330,6 +336,50 @@
 </div>
 
             
+                <a name="methods_transit.decoder"></a>
+<div class="method item">
+    transit.decoder <strong class="name"><code>transit.decoder</code></strong>( <code>options </code> ) 
+    <br>
+    <span class="foundat">
+    
+        
+    
+        <a href="../../files/src_com_cognitect_transit.js.html#l493"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:493</code></a>
+    </span><br>
+    <p>Construct a Transit JSON decoder.</p>
+
+    
+    <strong>Parameters:</strong>
+    <ul class="params">
+    
+        <li>
+        
+            <code>options</code> <strong>&lt;Object&gt;</strong>
+        
+        
+        <p>to the decoder. Can include map of
+    handlers.</p>
+
+            
+        </li>
+    
+    </ul>
+    
+    
+    
+    <br><div class="returns"><strong>Returns:</strong> &lt;transit.decoder&gt; <p>a Transit JSON decoder</p>
+</div>
+    
+    
+    
+        <h5>Example</h5>
+        <pre class="code prettyprint"><code>var decoder = transit.decoder();
+var x = decoder.decode(json, transit.readCache());</code></pre>
+
+    
+</div>
+
+            
                 <a name="methods_transit.extendToEQ"></a>
 <div class="method item">
     Object <strong class="name"><code>transit.extendToEQ</code></strong>( <code>x </code> ) 
@@ -338,7 +388,7 @@
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l446"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:446</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l453"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:453</code></a>
     </span><br>
     <p>Extend an object to hashing and equality required by
     transit maps and sets. Only required for custom
@@ -391,7 +441,7 @@
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l400"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:400</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l407"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:407</code></a>
     </span><br>
     <p>Compute the hashCode for any JavaScript object that has been
    extend to transit&#39;s equality and hashing protocol. JavaScript
@@ -433,7 +483,7 @@
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l422"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:422</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l429"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:429</code></a>
     </span><br>
     <p>Compute the hashCode for JavaScript array-like types - either a JavaScript
    array or a JavaScript object that implements Array forEach.</p>
@@ -473,7 +523,7 @@
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l412"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:412</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l419"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:419</code></a>
     </span><br>
     <p>Compute the hashCode for JavaScript map-like types - either a JavaScript
    object or a JavaScript object that implements ES6 Map forEach.</p>
@@ -513,7 +563,7 @@
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l154"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:154</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l161"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:161</code></a>
     </span><br>
     <p>Create an integer. If given a transit integer or a JavaScript
     number will simply return that value. Given a string will
@@ -554,7 +604,7 @@
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l217"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:217</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l224"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:224</code></a>
     </span><br>
     <p>Test if an object is a transit big decimal.</p>
 
@@ -592,7 +642,7 @@
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l201"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:201</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l208"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:208</code></a>
     </span><br>
     <p>Test if an object is a transit big integer.</p>
 
@@ -630,7 +680,7 @@
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l269"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:269</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l276"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:276</code></a>
     </span><br>
     <p>Test if an object is a transit binary blob.</p>
 
@@ -663,7 +713,7 @@
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l165"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:165</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l172"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:172</code></a>
     </span><br>
     <p>Test if an object is a transit integer. Will return true if argument
 is a 64 bit integer or a JavaScript number that has an interpretation as
@@ -703,7 +753,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l235"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:235</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l242"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:242</code></a>
     </span><br>
     <p>Test if an object is a transit keyword.</p>
 
@@ -741,7 +791,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l392"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:392</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l399"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:399</code></a>
     </span><br>
     <p>Test if an object is a transit link.</p>
 
@@ -779,7 +829,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l338"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:338</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l345"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:345</code></a>
     </span><br>
     <p>Test if an object is a transit list.</p>
 
@@ -817,7 +867,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l303"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:303</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l310"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:310</code></a>
     </span><br>
     <p>Test if an object is a transit map.</p>
 
@@ -855,7 +905,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l354"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:354</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l361"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:361</code></a>
     </span><br>
     <p>Test if an object is a transit quoted value.</p>
 
@@ -893,7 +943,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l322"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:322</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l329"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:329</code></a>
     </span><br>
     <p>Test if an object is a transit set.</p>
 
@@ -931,7 +981,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l253"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:253</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l260"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:260</code></a>
     </span><br>
     <p>Test if an object is a transit symbol</p>
 
@@ -969,7 +1019,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l373"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:373</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l380"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:380</code></a>
     </span><br>
     <p>Test if an object is a transit tagged value.</p>
 
@@ -1007,7 +1057,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l284"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:284</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l291"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:291</code></a>
     </span><br>
     <p>Test if an object is a transit URI.</p>
 
@@ -1045,7 +1095,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l185"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:185</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l192"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:192</code></a>
     </span><br>
     <p>Test if an object is a transit UUID.</p>
 
@@ -1083,7 +1133,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l225"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:225</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l232"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:232</code></a>
     </span><br>
     <p>Create transit keyword.</p>
 
@@ -1125,7 +1175,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l381"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:381</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l388"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:388</code></a>
     </span><br>
     <p>Create a transit link.</p>
 
@@ -1166,7 +1216,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l330"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:330</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l337"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:337</code></a>
     </span><br>
     <p>Create a transit list.</p>
 
@@ -1204,7 +1254,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l112"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:112</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l119"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:119</code></a>
     </span><br>
     <p>Create a transit writer handler.</p>
 
@@ -1254,7 +1304,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l292"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:292</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l299"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:299</code></a>
     </span><br>
     <p>Create a transit hash map. Transit maps satisfy the current version
     of the ECMAScript 6 Map specification.</p>
@@ -1297,7 +1347,7 @@ an integer value, i.e. parseFloat(n) === parseInt(n)</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l467"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:467</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l474"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:474</code></a>
     </span><br>
     <p>Convert a transit map instance into a JavaScript Object.
 Throws if the map has keys which have no string representation.</p>
@@ -1336,7 +1386,7 @@ Throws if the map has keys which have no string representation.</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l346"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:346</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l353"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:353</code></a>
     </span><br>
     <p>Create a transit quoted value.</p>
 
@@ -1366,6 +1416,29 @@ Throws if the map has keys which have no string representation.</p>
 </div>
 
             
+                <a name="methods_transit.readCache"></a>
+<div class="method item">
+    transit.readCAche <strong class="name"><code>transit.readCache</code></strong>( <code>  </code> ) 
+    <br>
+    <span class="foundat">
+    
+        
+    
+        <a href="../../files/src_com_cognitect_transit.js.html#l505"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:505</code></a>
+    </span><br>
+    <p>Construct a Transit read cache</p>
+
+    
+    
+    
+    <br><div class="returns"><strong>Returns:</strong> &lt;transit.readCAche&gt; <p>a Transit read cache</p>
+</div>
+    
+    
+    
+</div>
+
+            
                 <a name="methods_transit.reader"></a>
 <div class="method item">
     transit.reader <strong class="name"><code>transit.reader</code></strong>( <code>type, opts </code> ) 
@@ -1374,7 +1447,7 @@ Throws if the map has keys which have no string representation.</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l49"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:49</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l51"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:51</code></a>
     </span><br>
     <p>Create a transit reader instance.</p>
 
@@ -1404,7 +1477,12 @@ Throws if the map has keys which have no string representation.</p>
     taking two arguments, the first is the tag, the second the
     value. &quot;handlers&quot; should be an object of tags to handle. The
     values are functions that will receive the value of matched
-    tag.</p>
+    tag. &quot;preferBuffers&quot; may be supplied to customize binary
+    decoding. If available binary data will read as Node.js Buffers,
+    If Buffer is not available or &quot;prefersBuffers&quot; is set to false
+    data will be read as Uint8Array. If neither Buffer nor Uint8Array is
+    available - defaults to tagged value that simply wraps the
+    base64 encoded string.</p>
 
             
         </li>
@@ -1437,7 +1515,7 @@ Throws if the map has keys which have no string representation.</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l311"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:311</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l318"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:318</code></a>
     </span><br>
     <p>Create a transit set. Transit sets satisfy the current version of the
     of the ECMAScript 6 Set specification.</p>
@@ -1480,7 +1558,7 @@ Throws if the map has keys which have no string representation.</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l243"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:243</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l250"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:250</code></a>
     </span><br>
     <p>Create a transit symbol.</p>
 
@@ -1522,7 +1600,7 @@ Throws if the map has keys which have no string representation.</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l362"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:362</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l369"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:369</code></a>
     </span><br>
     <p>Create a transit tagged value.</p>
 
@@ -1574,7 +1652,7 @@ Throws if the map has keys which have no string representation.</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l276"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:276</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l283"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:283</code></a>
     </span><br>
     <p>Create a transit URI.</p>
 
@@ -1612,7 +1690,7 @@ Throws if the map has keys which have no string representation.</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l175"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:175</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l182"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:182</code></a>
     </span><br>
     <p>Create transit UUID from high and low 64 bits. These integer values
      can be constructed with transit.integer.</p>
@@ -1653,6 +1731,29 @@ Throws if the map has keys which have no string representation.</p>
 </div>
 
             
+                <a name="methods_transit.writeCache"></a>
+<div class="method item">
+    transit.writeCache <strong class="name"><code>transit.writeCache</code></strong>( <code>  </code> ) 
+    <br>
+    <span class="foundat">
+    
+        
+    
+        <a href="../../files/src_com_cognitect_transit.js.html#l512"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:512</code></a>
+    </span><br>
+    <p>Construct a Transit write cache</p>
+
+    
+    
+    
+    <br><div class="returns"><strong>Returns:</strong> &lt;transit.writeCache&gt; <p>a Transit write cache</p>
+</div>
+    
+    
+    
+</div>
+
+            
                 <a name="methods_transit.writer"></a>
 <div class="method item">
     transit.writer <strong class="name"><code>transit.writer</code></strong>( <code>type, opts </code> ) 
@@ -1661,7 +1762,7 @@ Throws if the map has keys which have no string representation.</p>
     
         
     
-        <a href="../../files/src_com_cognitect_transit.js.html#l79"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:79</code></a>
+        <a href="../../files/src_com_cognitect_transit.js.html#l86"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit.js:86</code></a>
     </span><br>
     <p>Create a transit writer instance.</p>
 
@@ -1721,7 +1822,7 @@ Throws if the map has keys which have no string representation.</p>
                 <a name="props_"></a>
 <div class="props item">
     `` &lt;<strong>String</strong>&gt; <em>(final)</em><br>
-    <span class="foundat"><a href="../../files/src_com_cognitect_transit_delimiters.js.html#l45"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;delimiters.js:45</code></a></span>
+    <span class="foundat"><a href="../../files/src_com_cognitect_transit_eq.js.html#l23"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;eq.js:23</code></a></span>
     
     
 </div>
@@ -1801,8 +1902,8 @@ Throws if the map has keys which have no string representation.</p>
             
                 <a name="props_"></a>
 <div class="props item">
-    `` &lt;<strong>Number</strong>&gt; <em>(final)</em><br>
-    <span class="foundat"><a href="../../files/src_com_cognitect_transit_caching.js.html#l29"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;caching.js:29</code></a></span>
+    `` &lt;<strong>String</strong>&gt; <em>(final)</em><br>
+    <span class="foundat"><a href="../../files/src_com_cognitect_transit_delimiters.js.html#l45"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;delimiters.js:45</code></a></span>
     
     
 </div>
@@ -1810,8 +1911,8 @@ Throws if the map has keys which have no string representation.</p>
             
                 <a name="props_"></a>
 <div class="props item">
-    `` &lt;<strong>String</strong>&gt; <em>(final)</em><br>
-    <span class="foundat"><a href="../../files/src_com_cognitect_transit_eq.js.html#l23"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;eq.js:23</code></a></span>
+    `` &lt;<strong>Number</strong>&gt; <em>(final)</em><br>
+    <span class="foundat"><a href="../../files/src_com_cognitect_transit_caching.js.html#l29"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;caching.js:29</code></a></span>
     
     
 </div>
@@ -1838,24 +1939,6 @@ Throws if the map has keys which have no string representation.</p>
                 <a name="props_"></a>
 <div class="props item">
     `` &lt;<strong>Number</strong>&gt; <em>(final)</em><br>
-    <span class="foundat"><a href="../../files/src_com_cognitect_transit_types.js.html#l361"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;types.js:361</code></a></span>
-    
-    
-</div>
-
-            
-                <a name="props_"></a>
-<div class="props item">
-    `` &lt;<strong>Number</strong>&gt; <em>(final)</em><br>
-    <span class="foundat"><a href="../../files/src_com_cognitect_transit_types.js.html#l367"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;types.js:367</code></a></span>
-    
-    
-</div>
-
-            
-                <a name="props_"></a>
-<div class="props item">
-    `` &lt;<strong>Number</strong>&gt; <em>(final)</em><br>
     <span class="foundat"><a href="../../files/src_com_cognitect_transit_types.js.html#l373"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;types.js:373</code></a></span>
     
     
@@ -1865,7 +1948,7 @@ Throws if the map has keys which have no string representation.</p>
                 <a name="props_"></a>
 <div class="props item">
     `` &lt;<strong>Number</strong>&gt; <em>(final)</em><br>
-    <span class="foundat"><a href="../../files/src_com_cognitect_transit_types.js.html#l490"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;types.js:490</code></a></span>
+    <span class="foundat"><a href="../../files/src_com_cognitect_transit_types.js.html#l379"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;types.js:379</code></a></span>
     
     
 </div>
@@ -1874,7 +1957,7 @@ Throws if the map has keys which have no string representation.</p>
                 <a name="props_"></a>
 <div class="props item">
     `` &lt;<strong>Number</strong>&gt; <em>(final)</em><br>
-    <span class="foundat"><a href="../../files/src_com_cognitect_transit_types.js.html#l496"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;types.js:496</code></a></span>
+    <span class="foundat"><a href="../../files/src_com_cognitect_transit_types.js.html#l385"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;types.js:385</code></a></span>
     
     
 </div>
@@ -1884,6 +1967,33 @@ Throws if the map has keys which have no string representation.</p>
 <div class="props item">
     `` &lt;<strong>Number</strong>&gt; <em>(final)</em><br>
     <span class="foundat"><a href="../../files/src_com_cognitect_transit_types.js.html#l502"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;types.js:502</code></a></span>
+    
+    
+</div>
+
+            
+                <a name="props_"></a>
+<div class="props item">
+    `` &lt;<strong>Number</strong>&gt; <em>(final)</em><br>
+    <span class="foundat"><a href="../../files/src_com_cognitect_transit_types.js.html#l508"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;types.js:508</code></a></span>
+    
+    
+</div>
+
+            
+                <a name="props_"></a>
+<div class="props item">
+    `` &lt;<strong>Number</strong>&gt; <em>(final)</em><br>
+    <span class="foundat"><a href="../../files/src_com_cognitect_transit_types.js.html#l514"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;types.js:514</code></a></span>
+    
+    
+</div>
+
+            
+                <a name="props_"></a>
+<div class="props item">
+    `` &lt;<strong>String</strong>&gt; <em>(final)</em><br>
+    <span class="foundat"><a href="../../files/src_com_cognitect_transit_util.js.html#l43"><code>src&#x2F;com&#x2F;cognitect&#x2F;transit&#x2F;util.js:43</code></a></span>
     
     
 </div>

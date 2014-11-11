@@ -16,7 +16,7 @@
             <h1><a href="../index.html"><img width="100" src="../assets/css/cognitect.jpg">transit-js: src/com/cognitect/transit/impl/decoder.js</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.8.773</em>
+            <em>API Docs for: 0.8.746</em>
         </div>
     </div>
     <div class="yui3-g">
@@ -60,7 +60,7 @@
         <h2 class="no-toc">Files</h2>
     </div>
     <div class="bd">
-        <ul><li>src/<ul><li>com/<ul><li>cognitect/<ul><li><a href="../files/src_com_cognitect_transit.js.html">transit.js</a></li><li>transit/<ul><li><a href="../files/src_com_cognitect_transit_caching.js.html">caching.js</a></li><li><a href="../files/src_com_cognitect_transit_delimiters.js.html">delimiters.js</a></li><li><a href="../files/src_com_cognitect_transit_eq.js.html">eq.js</a></li><li><a href="../files/src_com_cognitect_transit_handlers.js.html">handlers.js</a></li><li>impl/<ul><li><a href="../files/src_com_cognitect_transit_impl_decoder.js.html">decoder.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_reader.js.html">reader.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_writer.js.html">writer.js</a></li></ul></li><li><a href="../files/src_com_cognitect_transit_types.js.html">types.js</a></li></ul></li></ul></li></ul></li></ul></li></ul>
+        <ul><li>src/<ul><li>com/<ul><li>cognitect/<ul><li><a href="../files/src_com_cognitect_transit.js.html">transit.js</a></li><li>transit/<ul><li><a href="../files/src_com_cognitect_transit_caching.js.html">caching.js</a></li><li><a href="../files/src_com_cognitect_transit_delimiters.js.html">delimiters.js</a></li><li><a href="../files/src_com_cognitect_transit_eq.js.html">eq.js</a></li><li><a href="../files/src_com_cognitect_transit_handlers.js.html">handlers.js</a></li><li>impl/<ul><li><a href="../files/src_com_cognitect_transit_impl_decoder.js.html">decoder.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_reader.js.html">reader.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_writer.js.html">writer.js</a></li></ul></li><li><a href="../files/src_com_cognitect_transit_types.js.html">types.js</a></li><li><a href="../files/src_com_cognitect_transit_util.js.html">util.js</a></li></ul></li></ul></li></ul></li></ul></li></ul>
     </div>
 </div>
 
@@ -151,6 +151,7 @@ decoder.Decoder = function(options) {
         this.handlers[h] = this.options[&quot;handlers&quot;][h];
     }
     this.preferStrings = this.options[&quot;preferStrings&quot;] != null ? this.options[&quot;preferStrings&quot;] : this.defaults.preferStrings;
+    this.preferBuffers = this.options[&quot;preferBuffers&quot;] != null ? this.options[&quot;preferBuffers&quot;] : this.defaults.preferBuffers;
     this.defaultHandler = this.options[&quot;defaultHandler&quot;] || this.defaults.defaultHandler;
     /* NOT PUBLIC */
     this.mapBuilder = this.options[&quot;mapBuilder&quot;];
@@ -160,33 +161,34 @@ decoder.Decoder = function(options) {
 
 decoder.Decoder.prototype.defaults = {
     handlers: {
-        &quot;_&quot;: function(v) { return types.nullValue(); },
-        &quot;?&quot;: function(v) { return types.boolValue(v); },
-        &quot;b&quot;: function(v) { return types.binary(v); },
-        &quot;i&quot;: function(v) { return types.intValue(v); },
-        &quot;n&quot;: function(v) { return types.bigInteger(v); },
-        &quot;d&quot;: function(v) { return types.floatValue(v); },
-        &quot;f&quot;: function(v) { return types.bigDecimalValue(v); },
-        &quot;c&quot;: function(v) { return types.charValue(v); },
-        &quot;:&quot;: function(v) { return types.keyword(v); },
-        &quot;$&quot;: function(v) { return types.symbol(v); },
-        &quot;r&quot;: function(v) { return types.uri(v); },
-        &quot;z&quot;: function(v) { return types.specialDouble(v); },
+        &quot;_&quot;: function(v, d) { return types.nullValue(); },
+        &quot;?&quot;: function(v, d) { return types.boolValue(v); },
+        &quot;b&quot;: function(v, d) { return types.binary(v, d); },
+        &quot;i&quot;: function(v, d) { return types.intValue(v); },
+        &quot;n&quot;: function(v, d) { return types.bigInteger(v); },
+        &quot;d&quot;: function(v, d) { return types.floatValue(v); },
+        &quot;f&quot;: function(v, d) { return types.bigDecimalValue(v); },
+        &quot;c&quot;: function(v, d) { return types.charValue(v); },
+        &quot;:&quot;: function(v, d) { return types.keyword(v); },
+        &quot;$&quot;: function(v, d) { return types.symbol(v); },
+        &quot;r&quot;: function(v, d) { return types.uri(v); },
+        &quot;z&quot;: function(v, d) { return types.specialDouble(v); },
 
         // tagged
-        &quot;&#x27;&quot;: function(v) { return v; },
-        &quot;m&quot;: function(v) { return types.date(v); },
-        &quot;t&quot;: function(v) { return types.verboseDate(v); },
-        &quot;u&quot;: function(v) { return types.uuid(v); },
-        &quot;set&quot;: function(v) { return types.set(v); },
-        &quot;list&quot;: function(v) { return types.list(v); },
-        &quot;link&quot;: function(v) { return types.link(v); },
-        &quot;cmap&quot;: function(v) { return types.map(v, false); }
+        &quot;&#x27;&quot;: function(v, d) { return v; },
+        &quot;m&quot;: function(v, d) { return types.date(v); },
+        &quot;t&quot;: function(v, d) { return types.verboseDate(v); },
+        &quot;u&quot;: function(v, d) { return types.uuid(v); },
+        &quot;set&quot;: function(v, d) { return types.set(v); },
+        &quot;list&quot;: function(v, d) { return types.list(v); },
+        &quot;link&quot;: function(v, d) { return types.link(v); },
+        &quot;cmap&quot;: function(v, d) { return types.map(v, false); }
     },
     defaultHandler: function(c, val) {
         return types.taggedValue(c, val);
     },
-    preferStrings: true
+    preferStrings: true,
+    preferBuffers: true
 };
 
 decoder.Decoder.prototype.decode = function(node, cache, asMapKey, tagValue) {
@@ -238,7 +240,7 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
         var val     = hash[key],
             handler = this.handlers[tag.str];
         if(handler != null) {
-            return handler(this.decode(val, cache, false, true));
+            return handler(this.decode(val, cache, false, true), this);
         } else {
             return types.taggedValue(tag.str, this.decode(val, cache, false, false));
         }
@@ -324,7 +326,7 @@ decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue
                 var val     = node[1],
                     handler = this.handlers[tag.str];
                 if(handler != null) {
-                    var ret = handler(this.decode(val, cache, asMapKey, true));
+                    var ret = handler(this.decode(val, cache, asMapKey, true), this);
                     return ret;
                 } else {
                     return types.taggedValue(tag.str, this.decode(val, cache, asMapKey, false))
@@ -374,7 +376,7 @@ decoder.Decoder.prototype.parseString = function(string, cache, asMapKey) {
             if(handler == null) {
                 return this.defaultHandler(c, string.substring(2));
             } else {
-                return handler(string.substring(2));
+                return handler(string.substring(2), this);
             }
         }
     } else {
