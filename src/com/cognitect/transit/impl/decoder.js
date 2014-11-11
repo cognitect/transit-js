@@ -77,6 +77,7 @@ decoder.Decoder = function(options) {
         this.handlers[h] = this.options["handlers"][h];
     }
     this.preferStrings = this.options["preferStrings"] != null ? this.options["preferStrings"] : this.defaults.preferStrings;
+    this.preferBuffers = this.options["preferBuffers"] != null ? this.options["preferBuffers"] : this.defaults.preferBuffers;
     this.defaultHandler = this.options["defaultHandler"] || this.defaults.defaultHandler;
     /* NOT PUBLIC */
     this.mapBuilder = this.options["mapBuilder"];
@@ -86,33 +87,34 @@ decoder.Decoder = function(options) {
 
 decoder.Decoder.prototype.defaults = {
     handlers: {
-        "_": function(v) { return types.nullValue(); },
-        "?": function(v) { return types.boolValue(v); },
-        "b": function(v) { return types.binary(v); },
-        "i": function(v) { return types.intValue(v); },
-        "n": function(v) { return types.bigInteger(v); },
-        "d": function(v) { return types.floatValue(v); },
-        "f": function(v) { return types.bigDecimalValue(v); },
-        "c": function(v) { return types.charValue(v); },
-        ":": function(v) { return types.keyword(v); },
-        "$": function(v) { return types.symbol(v); },
-        "r": function(v) { return types.uri(v); },
-        "z": function(v) { return types.specialDouble(v); },
+        "_": function(v, d) { return types.nullValue(); },
+        "?": function(v, d) { return types.boolValue(v); },
+        "b": function(v, d) { return types.binary(v, d); },
+        "i": function(v, d) { return types.intValue(v); },
+        "n": function(v, d) { return types.bigInteger(v); },
+        "d": function(v, d) { return types.floatValue(v); },
+        "f": function(v, d) { return types.bigDecimalValue(v); },
+        "c": function(v, d) { return types.charValue(v); },
+        ":": function(v, d) { return types.keyword(v); },
+        "$": function(v, d) { return types.symbol(v); },
+        "r": function(v, d) { return types.uri(v); },
+        "z": function(v, d) { return types.specialDouble(v); },
 
         // tagged
-        "'": function(v) { return v; },
-        "m": function(v) { return types.date(v); },
-        "t": function(v) { return types.verboseDate(v); },
-        "u": function(v) { return types.uuid(v); },
-        "set": function(v) { return types.set(v); },
-        "list": function(v) { return types.list(v); },
-        "link": function(v) { return types.link(v); },
-        "cmap": function(v) { return types.map(v, false); }
+        "'": function(v, d) { return v; },
+        "m": function(v, d) { return types.date(v); },
+        "t": function(v, d) { return types.verboseDate(v); },
+        "u": function(v, d) { return types.uuid(v); },
+        "set": function(v, d) { return types.set(v); },
+        "list": function(v, d) { return types.list(v); },
+        "link": function(v, d) { return types.link(v); },
+        "cmap": function(v, d) { return types.map(v, false); }
     },
     defaultHandler: function(c, val) {
         return types.taggedValue(c, val);
     },
-    preferStrings: true
+    preferStrings: true,
+    preferBuffers: true
 };
 
 decoder.Decoder.prototype.decode = function(node, cache, asMapKey, tagValue) {
@@ -164,7 +166,7 @@ decoder.Decoder.prototype.decodeHash = function(hash, cache, asMapKey, tagValue)
         var val     = hash[key],
             handler = this.handlers[tag.str];
         if(handler != null) {
-            return handler(this.decode(val, cache, false, true));
+            return handler(this.decode(val, cache, false, true), this);
         } else {
             return types.taggedValue(tag.str, this.decode(val, cache, false, false));
         }
@@ -250,7 +252,7 @@ decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue
                 var val     = node[1],
                     handler = this.handlers[tag.str];
                 if(handler != null) {
-                    var ret = handler(this.decode(val, cache, asMapKey, true));
+                    var ret = handler(this.decode(val, cache, asMapKey, true), this);
                     return ret;
                 } else {
                     return types.taggedValue(tag.str, this.decode(val, cache, asMapKey, false))
@@ -300,7 +302,7 @@ decoder.Decoder.prototype.parseString = function(string, cache, asMapKey) {
             if(handler == null) {
                 return this.defaultHandler(c, string.substring(2));
             } else {
-                return handler(string.substring(2));
+                return handler(string.substring(2), this);
             }
         }
     } else {

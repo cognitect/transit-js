@@ -167,6 +167,7 @@ Abbreviations:
 |symbol|t.symbol|t.symbol|
 |big integer|t.bigInt|t.bigInt|
 |big decimal|t.bigDec|t.bigDec|
+|bytes|Buffer,Uint8Array,t.tagged|Buffer,Uint8Array,t.tagged|
 |time|Date|Date|
 |uri|t.uri|t.uri|
 |uuid|t.uuid|t.uuid|

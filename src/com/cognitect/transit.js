@@ -59,7 +59,12 @@ var reader  = com.cognitect.transit.impl.reader,
  *     taking two arguments, the first is the tag, the second the
  *     value. "handlers" should be an object of tags to handle. The
  *     values are functions that will receive the value of matched
- *     tag.
+ *     tag. "preferBuffers" may be supplied to customize binary
+ *     decoding. If available binary data will read as Node.js Buffers,
+ *     If Buffer is not available or "prefersBuffers" is set to false
+ *     data will be read as Uint8Array. If neither Buffer nor Uint8Array is
+ *     available - defaults to tagged value that simply wraps the
+ *     base64 encoded string.
  * @return {transit.reader} A transit reader.
  * @example
  *     var r = transit.reader("json", {

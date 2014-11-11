@@ -40,6 +40,12 @@ if(typeof Array.isArray != "undefined") {
     };
 }
 
+/**
+ * @const
+ * @type {string}
+ */
+util.chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
 util.randInt = function(ub) {
     return Math.round(Math.random()*ub);
 };
@@ -59,6 +65,80 @@ util.randomUUID = function() {
                 util.randHex() + util.randHex() + util.randHex() + util.randHex() +
                 util.randHex() + util.randHex() + util.randHex() + util.randHex();
     return ret;
+};
+
+// https://github.com/davidchambers/Base64.js
+
+util.btoa = function(input) {
+    if(typeof btoa != "undefined") {
+        return btoa(input);
+    } else {
+        var str = String(input);
+        for (
+            var block, charCode, idx = 0, map = util.chars, output = '';
+            str.charAt(idx | 0) || (map = '=', idx % 1);
+            output += map.charAt(63 & block >> 8 - idx % 1 * 8)
+        ) {
+            charCode = str.charCodeAt(idx += 3/4);
+            if (charCode > 0xFF) {
+                throw new Error("'btoa' failed: The string to be encoded contains characters outside of the Latin1 range.");
+            }
+            block = block << 8 | charCode;
+        }
+        return output;
+    }
+};
+
+/**
+ * @suppress {uselessCode}
+ */
+util.atob = function(input) {
+    if(typeof atob != "undefined") {
+        return atob(input);
+    } else {
+        var str = String(input).replace(/=+$/, '');
+        if (str.length % 4 == 1) {
+            throw new Error("'atob' failed: The string to be decoded is not correctly encoded.");
+        }
+        for (
+            var bc = 0, bs, buffer, idx = 0, output = '';
+            buffer = str.charAt(idx++);
+            ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer,
+                        bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0
+        ) {
+            buffer = util.chars.indexOf(buffer);
+        }
+        return output;
+    }
+};
+
+util.Uint8ToBase64 = function(u8Arr) {
+    var CHUNK_SIZE = 0x8000,
+        index = 0,
+        length = u8Arr.length,
+        result = '',
+        slice = null;
+
+    while (index < length) {
+        slice = u8Arr.subarray(index, Math.min(index + CHUNK_SIZE, length)); 
+        result += String.fromCharCode.apply(null, slice);
+        index += CHUNK_SIZE;
+    }
+
+    return util.btoa(result);
+};
+
+util.Base64ToUint8 = function(base64) {
+    var binary_string =  util.atob(base64),
+        len = binary_string.length,
+        bytes = new Uint8Array(len);
+    
+    for (var i = 0; i < len; i++)        {
+        var ascii = binary_string.charCodeAt(i);
+        bytes[i] = ascii;
+    }
+
+    return bytes;
 };
 
 });

@@ -339,12 +339,24 @@ Date.prototype.com$cognitect$transit$hashCode = function() {
 /**
  * @constructor
  */
-types.binary = function(str) {
-    return types.taggedValue("b", str);
+types.binary = function(str, decoder) {
+    if((!decoder || (decoder.preferBuffers !== false)) && (typeof Buffer != "undefined")) {
+        return new Buffer(str, "base64");
+    } else if(typeof Uint8Array != "undefined") {
+        return util.Base64ToUint8(str);
+    } else {
+        return types.taggedValue("b", str);
+    }
 };
 
 types.isBinary = function(x) {
-    return (x instanceof types.TaggedValue) && (x.tag === "b");
+    if((typeof Buffer != "undefined") && (x instanceof Buffer)) {
+        return true;
+    } else if((typeof Uint8Array != "undefined") && (x instanceof Uint8Array)) {
+        return true;
+    } else {
+        return (x instanceof types.TaggedValue) && (x.tag === "b");
+    }
 };
 
 /**

@@ -232,6 +232,22 @@ handlers.TransitMapHandler.prototype.tag = function(v) { return "map"; };
 handlers.TransitMapHandler.prototype.rep = function(v) { return v; };
 handlers.TransitMapHandler.prototype.stringRep = function(v, h) { return null; };
 
+/**
+ * @constructor
+ */
+handlers.BufferHandler = function() {};
+handlers.BufferHandler.prototype.tag = function(v) { return "b"; };
+handlers.BufferHandler.prototype.rep = function(v) { return v.toString("base64"); };
+handlers.BufferHandler.prototype.stringRep = function(v, h) { return null; };
+
+/**
+ * @constructor
+ */
+handlers.Uint8ArrayHandler = function() {};
+handlers.Uint8ArrayHandler.prototype.tag = function(v) { return "b"; };
+handlers.Uint8ArrayHandler.prototype.rep = function(v) { return util.Uint8ToBase64(v); };
+handlers.Uint8ArrayHandler.prototype.stringRep = function(v, h) { return null; };
+
 handlers.defaultHandlers = function(hs) {
     hs.set(null, new handlers.NilHandler());
     hs.set(String, new handlers.StringHandler());
@@ -248,6 +264,15 @@ handlers.defaultHandlers = function(hs) {
     hs.set(types.TransitSet, new handlers.TransitSetHandler());
     hs.set(types.TransitArrayMap, new handlers.TransitArrayMapHandler());
     hs.set(types.TransitMap, new handlers.TransitMapHandler());
+
+    if(typeof Buffer != "undefined") {
+        hs.set(Buffer, new handlers.BufferHandler());
+    }
+
+    if(typeof Uint8Array != "undefined") {
+        hs.set(Uint8Array, new handlers.Uint8ArrayHandler());
+    }
+
     return hs;
 };
 
