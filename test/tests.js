@@ -1060,13 +1060,11 @@ exports.testBinaryData = function(test) {
         r0 = transit.reader("json"),
         r1 = transit.reader("json", {preferBuffers: false}),
         w  = transit.writer("json");
-
     test.ok(r0.read(s) instanceof Buffer);
     test.ok(transit.isBinary(r0.read(s)));
     test.equal(w.write(r0.read(s)), "[\"~#\'\",\"~bc3VyZS4=\"]");
     test.ok(r1.read(s) instanceof Uint8Array);
     test.ok(transit.isBinary(r1.read(s)));
     test.equal(w.write(r1.read(s)), "[\"~#\'\",\"~bc3VyZS4=\"]");
-
     test.done();
 };
