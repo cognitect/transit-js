@@ -297,6 +297,7 @@ handlers.Handlers.prototype.get = function(ctor) {
         return this.handlers["default"];
     }
 };
+handlers.Handlers.prototype["get"] = handlers.Handlers.prototype.get;
 
 handlers.validTag = function(tag) {
     switch(tag) {

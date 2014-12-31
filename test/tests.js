@@ -14,7 +14,9 @@
 
 "use strict";
 
-var transit = require("../target/transit.js");
+var transit = require("../target/transit.js"),
+    vm      = require("vm"),
+    ctxt    = vm.createContext();
 
 // =============================================================================
 // Equality & Hashing
@@ -646,6 +648,30 @@ exports.testDefaultHandler = function(test) {
         test.equal(e.message, "Oops!");
         test.done();
     }
+};
+
+// =============================================================================
+// Write Foreign Handler
+// =============================================================================
+
+exports.testHandlerForForeign = function(test) {
+    var x = vm.runInContext("(function(){return [];})()", ctxt, "test"),
+        y = vm.runInContext("(function(){return {};})()", ctxt, "test"),
+        w = transit.writer("json", {
+            handlerForForeign: function(x, handlers) {
+                if(Array.isArray(x)) {
+                    return handlers.get(Array);
+                } else if(typeof x == "object") {
+                    return handlers.get(Object);
+                }
+            }
+        });
+
+    test.equal(w.write(x), "[]");
+    test.equal(w.write(y), "[\"^ \"]");
+    test.equal(w.write(y), "[\"^ \"]");
+
+    test.done();
 };
 
 // =============================================================================

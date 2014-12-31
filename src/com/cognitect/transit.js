@@ -89,9 +89,14 @@ transit.reader = function(type, opts) {
  * @param {String|null} type type of writer to construct.
  *     Defaults to "json". For verbose mode supply "json-verbose".
  * @param {Object|null} opts writer options. A JavaScript object to
- *     customize the writer. Takes "handlers", a transit.map of
+ *     customize the writer. "handlers" options, a transit.map of
  *     JavaScript constructor and transit writer handler instance
- *     entries.
+ *     entries. "handlerForForeign" option, for dealing with values
+ *     from other JavaScript contexts. This function will be passed
+ *     the unmatchable value and the installed handlers. The function
+ *     should return the correct handler. Note if this function is
+ *     provided, special handling for Objects will also be
+ *     auto-installed to catch plain Objects from the foreign context.
  * @return {transit.writer} A transit writer.
  * @example
  *     var r = transit.writer("json", {
