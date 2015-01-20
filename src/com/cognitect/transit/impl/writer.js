@@ -201,7 +201,8 @@ writer.stringableKeys = function(em, obj) {
         }
         return stringableKeys;
     } else if(obj.keys) {
-        var iter = obj.keys();
+        var iter = obj.keys(),
+            step = null;
 
         if(iter.next) {
             step = iter.next();
