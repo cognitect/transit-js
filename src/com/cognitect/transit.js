@@ -132,7 +132,7 @@ transit.writer = function(type, opts) {
  * @return {transit.handler} A transit write handler.
  * @example
  *     var PointHandler = transit.makeWriteHandler({
- *          tag: "point",
+ *          tag: function(p) { return "point"; },
  *          rep: function(p) { return [p.x, p.y]; },
  *          stringRep: function(p) { return null; }
  *     });
