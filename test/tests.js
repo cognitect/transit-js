@@ -1094,3 +1094,22 @@ exports.testBinaryData = function(test) {
     test.equal(w.write(r1.read(s)), "[\"~#\'\",\"~bc3VyZS4=\"]");
     test.done();
 };
+
+// =============================================================================
+// Tickets
+// =============================================================================
+
+// TJS-22
+exports.testUndefinedHandlerKey = function(test) {
+    try {
+        var foo  = {},
+            wrtr = transit.writer("json-verbose", {
+                handlers: transit.map([
+                    foo.bar, foo
+                ])
+            });
+    } catch(e) {
+        test.equal(e.message, "Cannot create handler for JavaScript undefined");
+        test.done();
+    }
+};

@@ -61,7 +61,11 @@ writer.JSONMarshaller = function(opts) {
         }
         var self = this;
         optsHandlers.forEach(function(v, k) {
-            self.handlers.set(k, v);
+            if(k !== undefined) {
+                self.handlers.set(k, v);
+            } else {
+                throw new Error("Cannot create handler for JavaScript undefined");
+            }
         });
     }
 
