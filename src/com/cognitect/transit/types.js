@@ -687,6 +687,18 @@ goog.scope(function() {
         }
     };
 
+    types.TransitArrayMap.prototype.clone = function() {
+        var clone = types.map();
+
+        this.forEach(function(v, k) {
+            clone.set(k, v);
+        });
+
+        return clone;
+    };
+    types.TransitArrayMap.prototype["clone"] = types.TransitArrayMap.prototype.clone;
+
+
     types.TransitArrayMap.prototype.com$cognitect$transit$hashCode = function() {
         if(this.backingMap) {
             return this.backingMap.com$cognitect$transit$hashCode();
@@ -858,6 +870,17 @@ goog.scope(function() {
     };
     types.TransitMap.prototype["values"] = types.TransitMap.prototype.values;
 
+    types.TransitMap.prototype.clone = function() {
+        var clone = types.map();
+
+        this.forEach(function(v, k) {
+           clone.set(k, v);
+        });
+
+        return clone;
+    };
+    types.TransitMap.prototype["clone"] = types.TransitMap.prototype.clone;
+
     types.TransitMap.prototype.com$cognitect$transit$hashCode = function() {
         if(this.hashCode === -1) {
             this.hashCode = eq.hashMapLike(this);
@@ -995,6 +1018,17 @@ goog.scope(function() {
         return this.map.values();
     };
     types.TransitSet.prototype["values"] = types.TransitSet.prototype.values;
+
+    types.TransitSet.prototype.clone = function() {
+        var clone = types.set();
+
+        this.forEach(function(k) {
+            clone.add(k);
+        });
+
+        return clone;
+    };
+    types.TransitSet.prototype["clone"] = types.TransitSet.prototype.clone;
 
     types.TransitSet.prototype.com$cognitect$transit$equals = function(other) {
         if(other instanceof types.TransitSet) {

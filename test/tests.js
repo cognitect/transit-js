@@ -1096,6 +1096,28 @@ exports.testBinaryData = function(test) {
 };
 
 // =============================================================================
+// Cloning
+// =============================================================================
+
+exports.testMapClone = function(test) {
+    var m0 = transit.map(["foo", 1, "bar", 2]),
+        m1 = m0.clone();
+
+    test.ok(transit.equals(m0, m1), "Cloned map equals original map");
+
+    test.done();
+};
+
+exports.testSetClone = function(test) {
+    var s0 = transit.set("foo", "bar", 1),
+        s1 = transit.set("foo", "bar", 1);
+
+    test.ok(transit.equals(s0, s1.clone()));
+
+    test.done();
+};
+
+// =============================================================================
 // Tickets
 // =============================================================================
 
