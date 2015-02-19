@@ -12,22 +12,8 @@ version=$prefix.$suffix
 prelude=`bin/prelude`
 preludenl=$prelude.$'\n'
 
-java -jar deps/closure-compiler/compiler.jar -O SIMPLE --formatting PRETTY_PRINT --output_wrapper "$preludenl;(function(){%output%})();" --generate_exports -D TRANSIT_BROWSER_TARGET=true \
---js deps/closure-library/closure/goog/base.js \
---js deps/closure-library/closure/goog/debug/error.js \
---js deps/closure-library/closure/goog/dom/nodetype.js \
---js deps/closure-library/closure/goog/string/string.js \
---js deps/closure-library/closure/goog/asserts/asserts.js \
---js deps/closure-library/closure/goog/array/array.js \
---js deps/closure-library/closure/goog/object/object.js \
---js deps/closure-library/closure/goog/math/long.js \
---js src/com/cognitect/transit/util.js \
---js src/com/cognitect/transit/delimiters.js \
---js src/com/cognitect/transit/eq.js \
---js src/com/cognitect/transit/types.js \
---js src/com/cognitect/transit/caching.js \
---js src/com/cognitect/transit/impl/decoder.js \
---js src/com/cognitect/transit/impl/reader.js \
---js src/com/cognitect/transit/handlers.js \
---js src/com/cognitect/transit/impl/writer.js \
---js src/com/cognitect/transit.js > target/transit-$version.js
+java -jar deps/closure-compiler/compiler.jar -O SIMPLE --formatting PRETTY_PRINT \
+--output_wrapper "$preludenl;(function(){%output%})();" --generate_exports -D TRANSIT_BROWSER_TARGET=true \
+--manage_closure_dependencies --only_closure_dependencies --closure_entry_point=com.cognitect.transit \
+--js_output_file=target/transit-$version.js \
+'deps/closure-library/closure/**.js' 'src/**.js'

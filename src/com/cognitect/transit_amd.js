@@ -14,6 +14,7 @@
 
 "use strict";
 
+goog.provide("com.cognitect.transit.amd");
 goog.require("com.cognitect.transit");
 
 if(TRANSIT_BROWSER_AMD_TARGET) {
