@@ -496,6 +496,22 @@ goog.scope(function() {
     };
 
     /**
+     * Convert a POJO into a transit map.
+     * @method transit.objectToMap
+     * @param {Object} a JavaScript Object
+     * @return {transit.map} a transit map
+     */
+    transit.objectToMap = function(obj) {
+        var ret = transit.map();
+        for(var p in obj) {
+            if(obj.hasOwnProperty(p)) {
+                ret.set(p, obj[p]);
+            }
+        }
+        return ret;
+    };
+
+    /**
      * Construct a Transit JSON decoder.
      * @method transit.decoder
      * @param {Object} options to the decoder. Can include map of
@@ -565,6 +581,7 @@ goog.scope(function() {
         goog.exportSymbol("transit.equals",         eq.equals);
         goog.exportSymbol("transit.extendToEQ",     eq.extendToEQ);
         goog.exportSymbol("transit.mapToObject",    transit.mapToObject);
+        goog.exportSymbol("transit.objectToMap",    transit.objectToMap);
         goog.exportSymbol("transit.decoder",        decoder.decoder);
         goog.exportSymbol("transit.UUIDfromString", types.UUIDfromString);
         goog.exportSymbol("transit.randomUUID",     types.randomUUID);
@@ -614,6 +631,7 @@ goog.scope(function() {
             equals:         eq.equals,
             extendToEQ:     eq.extendToEQ,
             mapToObject:    transit.mapToObject,
+            objectToMap:    transit.objectToMap,
             decoder:        decoder.decoder,
             UUIDfromString: types.UUIDfromString,
             randomUUID:     types.randomUUID,

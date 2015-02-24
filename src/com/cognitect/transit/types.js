@@ -468,15 +468,23 @@ goog.scope(function() {
     types.TransitMapIterator.prototype["next"] = types.TransitMapIterator.prototype.next;
 
     types.mapEquals = function(me, you) {
-        if(((you instanceof types.TransitMap) ||
-            (you instanceof types.TransitArrayMap)) &&
-            (me.size === you.size)) {
-            for(var code in me.map) {
+        if ((me instanceof types.TransitMap) && types.isMap(you)) {
+            if(me.size !== you.size) return false;
+            for (var code in me.map) {
                 var bucket = me.map[code];
-                for(var j = 0; j < bucket.length; j+=2) {
-                    if(!eq.equals(bucket[j+1], you.get(bucket[j]))) {
+                for (var j = 0; j < bucket.length; j+=2) {
+                    if (!eq.equals(bucket[j+1], you.get(bucket[j]))) {
                         return false;
                     }
+                }
+            }
+            return true;
+        } else if((me instanceof types.TransitArrayMap) && types.isMap(you)) {
+            if(me.size !== you.size) return false;
+            var entries = me._entries;
+            for (var j = 0; j < entries.length; j+=2) {
+                if (!eq.equals(entries[j+1], you.get(entries[j]))) {
+                    return false;
                 }
             }
             return true;
@@ -954,7 +962,7 @@ goog.scope(function() {
 
     types.isMap = function(x) {
         return ((x instanceof types.TransitArrayMap) ||
-        (x instanceof types.TransitMap));
+                (x instanceof types.TransitMap));
     };
 
     /**

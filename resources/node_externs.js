@@ -71,6 +71,7 @@ module.exports.hashArrayLike = function() {};
 module.exports.equals = function() {};
 module.exports.extendToEQ = function() {};
 module.exports.mapToObject = function() {};
+module.exports.objectToMap = function() {};
 module.exports.decoder = function() {};
 module.exports.UUIDfromString = function() {};
 module.exports.randomUUID = function() {};

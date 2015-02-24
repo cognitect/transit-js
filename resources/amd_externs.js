@@ -71,6 +71,7 @@ transit.hashArrayLike = function(){};
 transit.equals = function(){};
 transit.extendToEQ = function(){};
 transit.mapToObject = function(){};
+transit.objectToMap = function(){};
 transit.decoder = function(){};
 transit.UUIDfromString = function(){};
 transit.randomUUID = function(){};

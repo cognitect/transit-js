@@ -590,7 +590,7 @@ exports.testVerifyArrayHash = function(test) {
 exports.testVerifyArrayHashWithCaching = function(test) {
     var reader = transit.reader("json");
 
-    test.ok(transit.equals(reader.read("[\"^ \", \"~:foo\", \"^!\"]"),
+    test.ok(transit.equals(reader.read("[\"^ \", \"~:foo\", \"^0\"]"),
                            transit.map([transit.keyword("foo"), transit.keyword("foo")])));
 
     test.done();
@@ -691,6 +691,35 @@ exports.testMapToObject = function(test) {
 };
 
 // =============================================================================
+// objectToMap
+// =============================================================================
+
+exports.testObjectToMap = function(test) {
+    var o = {
+            "foo": 1,
+            "bar": 2,
+            "baz": 3
+        },
+        m0 = transit.map([
+            "foo", 1,
+            "bar", 2,
+            "baz", 3
+        ]),
+        m1 = transit.map([
+            "foo", 1,
+            "bar", 2,
+            "baz", 4
+        ]);
+
+    test.ok(transit.equals(transit.objectToMap(o), m0));
+    test.ok(transit.equals(m0, transit.objectToMap(o)));
+    test.ok(!transit.equals(transit.objectToMap(o), m1));
+    test.ok(!transit.equals(m1, transit.objectToMap(o)));
+
+    test.done();
+};
+
+// =============================================================================
 // Tag Edge Case
 // =============================================================================
 
@@ -704,10 +733,10 @@ exports.testTagEdgeCase = function(test) {
     test.ok(transit.equals(r.read("[\"^ \",\"~~:set\",[1,2,3]]"),
                            transit.map(["~:set",[1,2,3]])));
 
-    test.ok(transit.equals(r.read("[{\"~~:set\":[1,2,3]},{\"^!\":[1,2,3]}]"),
+    test.ok(transit.equals(r.read("[{\"~~:set\":[1,2,3]},{\"^0\":[1,2,3]}]"),
                            [transit.map(["~:set",[1,2,3]]),transit.map(["~:set",[1,2,3]])]));
 
-    test.ok(transit.equals(r.read("[[\"^ \",\"~~:set\",[1,2,3]],[\"^ \",\"^!\",[1,2,3]]]"),
+    test.ok(transit.equals(r.read("[[\"^ \",\"~~:set\",[1,2,3]],[\"^ \",\"^0\",[1,2,3]]]"),
                            [transit.map(["~:set",[1,2,3]]),transit.map(["~:set",[1,2,3]])]));
 
     test.done();
