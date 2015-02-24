@@ -16,7 +16,7 @@
             <h1><a href="../index.html"><img width="100" src="../assets/css/cognitect.jpg">transit-js: src/com/cognitect/transit.js</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.8.746</em>
+            <em>API Docs for: 0.8.770</em>
         </div>
     </div>
     <div class="yui3-g">
@@ -110,588 +110,610 @@ var TRANSIT_BROWSER_AMD_TARGET = false;
 
 goog.scope(function() {
 
-/**
- * @class transit
- */
-var transit = com.cognitect.transit;
+    /**
+     * @class transit
+     */
+    var transit = com.cognitect.transit;
 
-var reader  = com.cognitect.transit.impl.reader,
-    writer  = com.cognitect.transit.impl.writer,
-    decoder = com.cognitect.transit.impl.decoder,
-    types   = com.cognitect.transit.types,
-    eq      = com.cognitect.transit.eq,
-    caching = com.cognitect.transit.caching;
+    var reader  = com.cognitect.transit.impl.reader,
+        writer  = com.cognitect.transit.impl.writer,
+        decoder = com.cognitect.transit.impl.decoder,
+        types   = com.cognitect.transit.types,
+        eq      = com.cognitect.transit.eq,
+        caching = com.cognitect.transit.caching;
 
-/**
- * Create a transit reader instance.
- * @method transit.reader
- * @param {string|null} type type of reader to construct.
- *     Default to &quot;json&quot;. For verbose mode supply &quot;json-verbose&quot;.
- * @param {Object|null} opts reader options. A JavaScript object to
- *     customize the writer Valid entries include &quot;defaultHandler&quot;,
- *     and &quot;handler&quot;. &quot;defaultHandler&quot; should be JavaScript function
- *     taking two arguments, the first is the tag, the second the
- *     value. &quot;handlers&quot; should be an object of tags to handle. The
- *     values are functions that will receive the value of matched
- *     tag. &quot;preferBuffers&quot; may be supplied to customize binary
- *     decoding. If available binary data will read as Node.js Buffers,
- *     If Buffer is not available or &quot;prefersBuffers&quot; is set to false
- *     data will be read as Uint8Array. If neither Buffer nor Uint8Array is
- *     available - defaults to tagged value that simply wraps the
- *     base64 encoded string.
- * @return {transit.reader} A transit reader.
- * @example
- *     var r = transit.reader(&quot;json&quot;, {
- *         handlers: {
- *            &quot;point&quot;: function(v) { return new Point(v[0], v[1]); }
- *         }
- *     });
- */
-transit.reader = function(type, opts) {
-    if(type === &quot;json&quot; || type === &quot;json-verbose&quot; || type == null) {
-        type = &quot;json&quot;;
-        var unmarshaller = new reader.JSONUnmarshaller(opts);
-        return new reader.Reader(unmarshaller, opts);
-    } else {
-        throw new Error(&quot;Cannot create reader of type &quot; + type);
-    }
-};
-
-/**
- * Create a transit writer instance.
- * @method transit.writer
- * @param {String|null} type type of writer to construct.
- *     Defaults to &quot;json&quot;. For verbose mode supply &quot;json-verbose&quot;.
- * @param {Object|null} opts writer options. A JavaScript object to
- *     customize the writer. Takes &quot;handlers&quot;, a transit.map of
- *     JavaScript constructor and transit writer handler instance
- *     entries.
- * @return {transit.writer} A transit writer.
- * @example
- *     var r = transit.writer(&quot;json&quot;, {
- *         handlers: transit.map([
- *            Point, PointHandler
- *         ])
- *     });
- */
-transit.writer = function(type, opts) {
-    if(type === &quot;json&quot; || type === &quot;json-verbose&quot; || type == null) {
-        if(type === &quot;json-verbose&quot;) {
-            if(opts == null) opts = {};
-            opts[&quot;verbose&quot;] = true;
-        }
-        type = &quot;json&quot;;
-        var marshaller = new writer.JSONMarshaller(opts);
-        return new writer.Writer(marshaller, opts);
-    } else {
-        var err = new Error(&quot;Type must be \&quot;json\&quot;&quot;);
-        err.data = {type: type};
-        throw err;
-    }
-};
-
-/**
- * Create a transit writer handler.
- * @method transit.makeWriteHandler
- * @param {Object} obj An object containing 3 functions, tag, rep and stringRep.
- *    &quot;tag&quot; should return a string representing the tag to be written on the wire.
- *    &quot;rep&quot; should return the representation on the wire. &quot;stringRep&quot; is should return
- *    the string representation of the value. Optional &quot;getVerboseHandler&quot; should return a
- *    handler for writing verbose output.
- * @return {transit.handler} A transit write handler.
- * @example
- *     var PointHandler = transit.makeWriteHandler({
- *          tag: &quot;point&quot;,
- *          rep: function(p) { return [p.x, p.y]; },
- *          stringRep: function(p) { return null; }
- *     });
- */
-transit.makeWriteHandler = function(obj) {
-    var Handler = function(){};
-    Handler.prototype.tag = obj[&quot;tag&quot;];
-    Handler.prototype.rep = obj[&quot;rep&quot;];
-    Handler.prototype.stringRep = obj[&quot;stringRep&quot;];
-    Handler.prototype.getVerboseHandler = obj[&quot;getVerboseHandler&quot;];
-    return new Handler();
-};
-
-transit.makeBuilder = function(obj) {
-    var Builder = function(){};
-    Builder.prototype.init = obj[&quot;init&quot;];
-    Builder.prototype.add = obj[&quot;add&quot;];
-    Builder.prototype.finalize = obj[&quot;finalize&quot;];
-    Builder.prototype.fromArray = obj[&quot;fromArray&quot;];
-    return new Builder();
-};
-
-/**
- * Create a transit date.
- * @method transit.date
- * @param {Number|String} A number or string representing milliseconds since epoch.
- * @return {Date} A JavaScript Date.
- */
-transit.date = types.date;
-
-/**
- * Create an integer. If given a transit integer or a JavaScript
- *     number will simply return that value. Given a string will
- *     return a JavaScript number if the string represents an integer
- *     value in the 53bit range and a transit integer otherwise.
- * @method transit.integer
- * @param {Number|String|integer} s A value representing an integer.
- * @return {transit.integer} A JavaScript number or transit integer.
- */
-transit.integer = types.intValue;
-
-/**
- * Test if an object is a transit integer. Will return true if argument
- * is a 64 bit integer or a JavaScript number that has an interpretation as
- * an integer value, i.e. parseFloat(n) === parseInt(n)
- * @method transit.isInteger
- * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if the value is a transit integer, false otherwise.
- */
-transit.isInteger = types.isInteger;
-
-/**
- * Create transit UUID from high and low 64 bits. These integer values
- *      can be constructed with transit.integer.
- * @method transit.uuid
- * @param {transit.integer} high The high 64 bits.
- * @param {transit.integer} low The low 64 bits.
- * @return {transit.uuid} A transit UUID.
- */
-transit.uuid = types.uuid;
-
-/**
- * Test if an object is a transit UUID.
- * @method transit.isUUID
- * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if the vlaue is a transit UUID instance, false otherwise.
- */
-transit.isUUID = types.isUUID;
-
-/**
- * Create a transit big integer.
- * @method transit.bigInt
- * @param {String} s A string representing an arbitrary size integer value.
- * @return {transit.bigdec} A transit big integer.
- */
-transit.bigInt =  types.bigInteger;
-
-/**
- * Test if an object is a transit big integer.
- * @method transit.isBigInt
- * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if x is a transit big integer, false otherwise.
- */
-transit.isBigInt = types.isBigInteger;
-
-/**
- * Create a transit big decimal.
- * @method transit.bigDec
- * @param {String} s A string representing an arbitrary precisions decimal value.
- * @return {transit.bigdec} A transit big decimal.
- */
-transit.bigDec =  types.bigDecimalValue;
-
-/**
- * Test if an object is a transit big decimal.
- * @method transit.isBigDec
- * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if x is a transit big decimal, false otherwise.
- */
-transit.isBigDec = types.isBigDecimal;
-
-/**
- * Create transit keyword.
- * @method transit.keyword
- * @param {String} name A string.
- * @return {transit.keyword} A transit keyword.
- * @example
- *     transit.keyword(&quot;foo&quot;);
- */
-transit.keyword = types.keyword;
-
-/**
- * Test if an object is a transit keyword.
- * @method transit.isKeyword
- * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if x is a transit keyword, false otherwise.
- */
-transit.isKeyword = types.isKeyword;
-
-/**
- * Create a transit symbol.
- * @method transit.symbol
- * @param {s} name A string.
- * @return {transit.symbol} A transit symbol instance.
- * @example
- *     transit.symbol(&quot;foo&quot;);
- */
-transit.symbol = types.symbol;
-
-/**
- * Test if an object is a transit symbol
- * @method transit.isSymbol
- * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if x is a transit symbol, false otherwise.
- */
-transit.isSymbol = types.isSymbol;
-
-/**
- * Create transit binary blob.
- * @method transit.binary
- * @param {String} s A base64 encoded string.
- * @return {transit.binary} A transit binary blob instance.
- */
-transit.binary = types.binary;
-
-/**
- * Test if an object is a transit binary blob.
- * @method transit.isBinary
- * @param {Object} x Any JavaScript value.
- */
-transit.isBinary = types.isBinary;
-
-/**
- * Create a transit URI.
- * @method transit.uri
- * @param {String} A string representing a valid URI.
- * @return {transit.uri} A transit URI.
- */
-transit.uri = types.uri;
-
-/**
- * Test if an object is a transit URI.
- * @method transit.isURI
- * @param {Object} Any JavaScript value.
- * @return {Boolean} true if x is a transit symbol, false otherwise.
- */
-transit.isURI = types.isURI;
-
-/**
- * Create a transit hash map. Transit maps satisfy the current version
- *     of the ECMAScript 6 Map specification.
- * @method transit.map
- * @param {Array} xs A JavaScript array of alternating key value pairs.
- * @return {transit.map} A transit map.
- * @example
- *     transit.map([new Date(), &quot;foo&quot;, [1,2], 3]);
- */
-transit.map = types.map;
-
-/**
- * Test if an object is a transit map.
- * @method transit.isMap
- * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if x is a transit map, false otherwise.
- */
-transit.isMap = types.isMap;
-
-/**
- * Create a transit set. Transit sets satisfy the current version of the
- *     of the ECMAScript 6 Set specification.
- * @method transit.set
- * @param {Array} xs A JavaScript array of values.
- * @return {transit.set} A transit set.
- * @example
- *     transit.set([&quot;foo&quot;, [1,2], 3, {bar: &quot;baz&quot;}]);
- */
-transit.set = types.set;
-
-/**
- * Test if an object is a transit set.
- * @method transit.isSet
- * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if x is a transit set, false otherwise.
- */
-transit.isSet = types.isSet;
-
-/**
- * Create a transit list.
- * @method transit.list
- * @param {Array} A JavaScript array.
- * @return {transit.list} A transit list.
- */
-transit.list = types.list;
-
-/**
- * Test if an object is a transit list.
- * @method transit.isList
- * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if x is a transit list, false otherwise.
- */
-transit.isList = types.isList;
-
-/**
- * Create a transit quoted value.
- * @method transit.quoted
- * @param {Object} x Any JavaScript value.
- * @return {transit.quoted} A transit quoted value.
- */
-transit.quoted = types.quoted;
-
-/**
- * Test if an object is a transit quoted value.
- * @method transit.isQuoted
- * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if x is a transit value, false otherwise.
- */
-transit.isQuoted = types.isQuoted;
-
-/**
- * Create a transit tagged value.
- * @method transit.tagged
- * @param {String} tag A tag.
- * @param {Object} value A JavaScrpt array, object, or string.
- * @return {transit.tagged} A transit tagged value.
- * @example
- *     transit.tagged(&quot;point&quot;, new Point(1,2));
- */
-transit.tagged = types.taggedValue;
-
-/**
- * Test if an object is a transit tagged value.
- * @method transit.isTaggedValue
- * @param {Object} x Any JavaScript value.
- * @return {Boolean} true if x is a transit value, false otherwise.
- */
-transit.isTaggedValue =  types.isTaggedValue;
-
-/**
- * Create a transit link.
- * @method transit.link
- * @param {transit.map} A transit map which must contain at a
- *     minimum the following keys: href, rel. It may optionally include
- *     name, render, and prompt. href must be a transit.uri, all other
- *     values are strings, and render must be either &quot;image&quot; or &quot;link&quot;.
- * @return {Object} A transit link.
- */
-transit.link = types.link;
-
-/**
- * Test if an object is a transit link.
- * @method transit.isLink
- * @param {Object} x Any JavaScript object.
- * @return {Boolean} true if x is a transit link, false otherwise.
- */
-transit.isLink = types.isLink;
-
-/**
- * Compute the hashCode for any JavaScript object that has been
- *    extend to transit&#x27;s equality and hashing protocol. JavaScript
- *    primitives and transit value are already extended to this protocol.
- *    Custom types may be extended to the protocol via transit.extenToEQ.
- * @method transit.hash
- * @param {Object} x Any JavaScript object that has been extended to
- *    transit&#x27;s equality and hashing protocol.
- * @return {Number} Returns JavaScript number - semantically a 32bit integer.
- */
-transit.hash = eq.hashCode;
-
-/**
- * Compute the hashCode for JavaScript map-like types - either a JavaScript
- *    object or a JavaScript object that implements ES6 Map forEach.
- * @method transit.hashMapLike
- * @param {Object} x A plain JavaScript Object or Object that implements
- *    ES6 Map forEach.
- * @return {Number} Returns JavaScript number - semantically a 32bit integer.
- */
-transit.hashMapLike = eq.hashMapLike;
-
-/**
- * Compute the hashCode for JavaScript array-like types - either a JavaScript
- *    array or a JavaScript object that implements Array forEach.
- * @method transit.hashArrayLike
- * @param {Object} x A JavaScript Array or Object that implements
- *    Array forEach.
- * @return {Number} Returns JavaScript number - semantically a 32bit integer.
- */
-transit.hashMapLike = eq.hashArrayLike;
-
-/**
- * Test whether two JavaScript objects represent equal values. The
- *    objects to be tested should be extended to transit&#x27;s equality
- *    and hasing protocol. JavaScript natives and transit value have
- *    already been extended to the protocol, including objects and
- *    arrays.  Also transit maps and JavaScript objects may be
- *    compared for equality. Custom types may be extended via
- *    transit.extendToEQ.
- * @param {Object} x A JavaScript object
- * @param {Object} y A JavaScript object
- * @return {Boolean} true if the x and y are equal, false otherwise.
- */
-transit.equals = eq.equals;
-
-/**
- * Extend an object to hashing and equality required by
- *     transit maps and sets. Only required for custom
- *     types, JavaScript primitive types and transit
- *     types are handled.
- * @method transit.extendToEQ
- * @param {Object} x A JavaScript object, will be mutated.
- * @return {Object} x
- * @example
- *     transit.extendToEq(Point.protototype, {
- *         hashCode: function() {
- *             var bits = (this.x | 0) ^ ((this.y | 0) * 31);
- *             return bits ^ (bits &gt;&gt;&gt; 32);
- *         },
- *         equals: function(other) {
- *             return this.x == other.x &amp;&amp; this.y == other.y;
- *         }
- *     });
- */
-transit.extendToEQ = eq.extendToEQ;
-
-/**
- * Convert a transit map instance into a JavaScript Object.
- * Throws if the map has keys which have no string representation.
- * @method transit.mapToObject
- * @param {transit.map} m a transit map
- * @return {Object} a JavaScript Object
- */
-transit.mapToObject = function(m) {
-    var ret = {};
-    m.forEach(function(v, k) {
-        if(typeof k !== &quot;string&quot;) {
-            throw Error(&quot;Cannot convert map with non-string keys&quot;);
+    /**
+     * Create a transit reader instance.
+     * @method transit.reader
+     * @param {string|null} type type of reader to construct.
+     *     Default to &quot;json&quot;. For verbose mode supply &quot;json-verbose&quot;.
+     * @param {Object|null} opts reader options. A JavaScript object to
+     *     customize the writer Valid entries include &quot;defaultHandler&quot;,
+     *     and &quot;handler&quot;. &quot;defaultHandler&quot; should be JavaScript function
+     *     taking two arguments, the first is the tag, the second the
+     *     value. &quot;handlers&quot; should be an object of tags to handle. The
+     *     values are functions that will receive the value of matched
+     *     tag. &quot;preferBuffers&quot; may be supplied to customize binary
+     *     decoding. If available binary data will read as Node.js Buffers,
+     *     If Buffer is not available or &quot;prefersBuffers&quot; is set to false
+     *     data will be read as Uint8Array. If neither Buffer nor Uint8Array is
+     *     available - defaults to tagged value that simply wraps the
+     *     base64 encoded string.
+     * @return {transit.reader} A transit reader.
+     * @example
+     *     var r = transit.reader(&quot;json&quot;, {
+     *         handlers: {
+     *            &quot;point&quot;: function(v) { return new Point(v[0], v[1]); }
+     *         }
+     *     });
+     */
+    transit.reader = function(type, opts) {
+        if(type === &quot;json&quot; || type === &quot;json-verbose&quot; || type == null) {
+            type = &quot;json&quot;;
+            var unmarshaller = new reader.JSONUnmarshaller(opts);
+            return new reader.Reader(unmarshaller, opts);
         } else {
-            ret[k] = v;
+            throw new Error(&quot;Cannot create reader of type &quot; + type);
         }
-    })
-    return ret;
-};
-    
-/**
- * Construct a Transit JSON decoder.
- * @method transit.decoder
- * @param {Object} options to the decoder. Can include map of
- *     handlers.
- * @return {transit.decoder} a Transit JSON decoder
- * @example
- *     var decoder = transit.decoder();
- *     var x = decoder.decode(json, transit.readCache());
- */
-transit.decoder = decoder.decoder;
-
-/**
- * Construct a Transit read cache
- * @method transit.readCache
- * @return {transit.readCAche} a Transit read cache
- */
-transit.readCache = caching.readCache;
-
-/**
- * Construct a Transit write cache
- * @method transit.writeCache
- * @return {transit.writeCache} a Transit write cache
- */
-transit.writeCache = caching.writeCache;
-
-transit.UUIDfromString = types.UUIDfromString;
-transit.randomUUID =     types.randomUUID;
-transit.stringableKeys = writer.stringableKeys;
-
-if(TRANSIT_BROWSER_TARGET) {
-    goog.exportSymbol(&quot;transit.reader&quot;,         transit.reader);
-    goog.exportSymbol(&quot;transit.writer&quot;,         transit.writer);
-    goog.exportSymbol(&quot;transit.makeBuilder&quot;,    transit.makeBuilder);
-    goog.exportSymbol(&quot;transit.makeWriteHandler&quot;, transit.makeWriteHandler);
-    goog.exportSymbol(&quot;transit.date&quot;,           types.date);
-    goog.exportSymbol(&quot;transit.integer&quot;,        types.intValue);
-    goog.exportSymbol(&quot;transit.isInteger&quot;,      types.isInteger);
-    goog.exportSymbol(&quot;transit.uuid&quot;,           types.uuid);
-    goog.exportSymbol(&quot;transit.isUUID&quot;,         types.isUUID);
-    goog.exportSymbol(&quot;transit.bigInt&quot;,         types.bigInteger);
-    goog.exportSymbol(&quot;transit.isBigInt&quot;,       types.isBigInteger);
-    goog.exportSymbol(&quot;transit.bigDec&quot;,         types.bigDecimalValue);
-    goog.exportSymbol(&quot;transit.isBigDec&quot;,       types.isBigDecimal);
-    goog.exportSymbol(&quot;transit.keyword&quot;,        types.keyword);
-    goog.exportSymbol(&quot;transit.isKeyword&quot;,      types.isKeyword);
-    goog.exportSymbol(&quot;transit.symbol&quot;,         types.symbol);
-    goog.exportSymbol(&quot;transit.isSymbol&quot;,       types.isSymbol);
-    goog.exportSymbol(&quot;transit.binary&quot;,         types.binary);
-    goog.exportSymbol(&quot;transit.isBinary&quot;,       types.isBinary);
-    goog.exportSymbol(&quot;transit.uri&quot;,            types.uri);
-    goog.exportSymbol(&quot;transit.isURI&quot;,          types.isURI);
-    goog.exportSymbol(&quot;transit.map&quot;,            types.map);
-    goog.exportSymbol(&quot;transit.isMap&quot;,          types.isMap);
-    goog.exportSymbol(&quot;transit.set&quot;,            types.set);
-    goog.exportSymbol(&quot;transit.isSet&quot;,          types.isSet);
-    goog.exportSymbol(&quot;transit.list&quot;,           types.list);
-    goog.exportSymbol(&quot;transit.isList&quot;,         types.isList);
-    goog.exportSymbol(&quot;transit.quoted&quot;,         types.quoted);
-    goog.exportSymbol(&quot;transit.isQuoted&quot;,       types.isQuoted);
-    goog.exportSymbol(&quot;transit.tagged&quot;,         types.taggedValue);
-    goog.exportSymbol(&quot;transit.isTaggedValue&quot;,  types.isTaggedValue);
-    goog.exportSymbol(&quot;transit.link&quot;,           types.link);
-    goog.exportSymbol(&quot;transit.isLink&quot;,         types.isLink);
-    goog.exportSymbol(&quot;transit.hash&quot;,           eq.hashCode);
-    goog.exportSymbol(&quot;transit.hashMapLike&quot;,    eq.hashMapLike);
-    goog.exportSymbol(&quot;transit.hashArrayLike&quot;,  eq.hashArrayLike);
-    goog.exportSymbol(&quot;transit.equals&quot;,         eq.equals);
-    goog.exportSymbol(&quot;transit.extendToEQ&quot;,     eq.extendToEQ);
-    goog.exportSymbol(&quot;transit.mapToObject&quot;,    transit.mapToObject);
-    goog.exportSymbol(&quot;transit.decoder&quot;,        decoder.decoder);
-    goog.exportSymbol(&quot;transit.UUIDfromString&quot;, types.UUIDfromString);
-    goog.exportSymbol(&quot;transit.randomUUID&quot;,     types.randomUUID);
-    goog.exportSymbol(&quot;transit.stringableKeys&quot;, writer.stringableKeys);
-    goog.exportSymbol(&quot;transit.readCache&quot;,      caching.readCache);
-    goog.exportSymbol(&quot;transit.writeCache&quot;,     caching.writeCache);
-}
-
-if(TRANSIT_NODE_TARGET) {
-    module.exports = {
-        reader:         transit.reader,
-        writer:         transit.writer,
-        makeBuilder:    transit.makeBuilder,
-        makeWriteHandler: transit.makeWriteHandler,
-        date:           types.date,
-        integer:        types.intValue,
-        isInteger:      types.isInteger,
-        uuid:           types.uuid,
-        isUUID:         types.isUUID,
-        bigInt:         types.bigInteger,
-        isBigInt:       types.isBigInteger,
-        bigDec:         types.bigDecimalValue,
-        isBigDec:       types.isBigDecimal,
-        keyword:        types.keyword,
-        isKeyword:      types.isKeyword,
-        symbol:         types.symbol,
-        isSymbol:       types.isSymbol,
-        binary:         types.binary,
-        isBinary:       types.isBinary,
-        uri:            types.uri,
-        isURI:          types.isURI,
-        map:            types.map,
-        isMap:          types.isMap,
-        set:            types.set,
-        isSet:          types.isSet,
-        list:           types.list,
-        isList:         types.isList,
-        quoted:         types.quoted,
-        isQuoted:       types.isQuoted,
-        tagged:         types.taggedValue,
-        isTaggedValue:  types.isTaggedValue,
-        link:           types.link,
-        isLink:         types.isLink,
-        hash:           eq.hashCode,
-        hashArrayLike:  eq.hashArrayLike,
-        hashMapLike:    eq.hashMapLike,
-        equals:         eq.equals,
-        extendToEQ:     eq.extendToEQ,
-        mapToObject:    transit.mapToObject,
-        decoder:        decoder.decoder,
-        UUIDfromString: types.UUIDfromString,
-        randomUUID:     types.randomUUID,
-        stringableKeys: writer.stringableKeys,
-        readCache:      caching.readCache,
-        writeCache:     caching.writeCache
     };
-}
 
+    /**
+     * Create a transit writer instance.
+     * @method transit.writer
+     * @param {String|null} type type of writer to construct.
+     *     Defaults to &quot;json&quot;. For verbose mode supply &quot;json-verbose&quot;.
+     * @param {Object|null} opts writer options. A JavaScript object to
+     *     customize the writer. &quot;handlers&quot; options, a transit.map of
+     *     JavaScript constructor and transit writer handler instance
+     *     entries. &quot;handlerForForeign&quot; option, for dealing with values
+     *     from other JavaScript contexts. This function will be passed
+     *     the unmatchable value and the installed handlers. The function
+     *     should return the correct handler. Note if this function is
+     *     provided, special handling for Objects will also be
+     *     auto-installed to catch plain Objects from the foreign context.
+     * @return {transit.writer} A transit writer.
+     * @example
+     *     var r = transit.writer(&quot;json&quot;, {
+     *         handlers: transit.map([
+     *            Point, PointHandler
+     *         ])
+     *     });
+     */
+    transit.writer = function(type, opts) {
+        if(type === &quot;json&quot; || type === &quot;json-verbose&quot; || type == null) {
+            if(type === &quot;json-verbose&quot;) {
+                if(opts == null) opts = {};
+                opts[&quot;verbose&quot;] = true;
+            }
+            type = &quot;json&quot;;
+            var marshaller = new writer.JSONMarshaller(opts);
+            return new writer.Writer(marshaller, opts);
+        } else {
+            var err = new Error(&quot;Type must be \&quot;json\&quot;&quot;);
+            err.data = {type: type};
+            throw err;
+        }
+    };
+
+    /**
+     * Create a transit writer handler.
+     * @method transit.makeWriteHandler
+     * @param {Object} obj An object containing 3 functions, tag, rep and stringRep.
+     *    &quot;tag&quot; should return a string representing the tag to be written on the wire.
+     *    &quot;rep&quot; should return the representation on the wire. &quot;stringRep&quot; is should return
+     *    the string representation of the value. Optional &quot;getVerboseHandler&quot; should return a
+     *    handler for writing verbose output.
+     * @return {transit.handler} A transit write handler.
+     * @example
+     *     var PointHandler = transit.makeWriteHandler({
+     *          tag: function(p) { return &quot;point&quot;; },
+     *          rep: function(p) { return [p.x, p.y]; },
+     *          stringRep: function(p) { return null; }
+     *     });
+     */
+    transit.makeWriteHandler = function(obj) {
+        var Handler = function(){};
+        Handler.prototype.tag = obj[&quot;tag&quot;];
+        Handler.prototype.rep = obj[&quot;rep&quot;];
+        Handler.prototype.stringRep = obj[&quot;stringRep&quot;];
+        Handler.prototype.getVerboseHandler = obj[&quot;getVerboseHandler&quot;];
+        return new Handler();
+    };
+
+    transit.makeBuilder = function(obj) {
+        var Builder = function(){};
+        Builder.prototype.init = obj[&quot;init&quot;];
+        Builder.prototype.add = obj[&quot;add&quot;];
+        Builder.prototype.finalize = obj[&quot;finalize&quot;];
+        Builder.prototype.fromArray = obj[&quot;fromArray&quot;];
+        return new Builder();
+    };
+
+    /**
+     * Create a transit date.
+     * @method transit.date
+     * @param {Number|String} A number or string representing milliseconds since epoch.
+     * @return {Date} A JavaScript Date.
+     */
+    transit.date = types.date;
+
+    /**
+     * Create an integer. If given a transit integer or a JavaScript
+     *     number will simply return that value. Given a string will
+     *     return a JavaScript number if the string represents an integer
+     *     value in the 53bit range and a transit integer otherwise.
+     * @method transit.integer
+     * @param {Number|String|integer} s A value representing an integer.
+     * @return {transit.integer} A JavaScript number or transit integer.
+     */
+    transit.integer = types.intValue;
+
+    /**
+     * Test if an object is a transit integer. Will return true if argument
+     * is a 64 bit integer or a JavaScript number that has an interpretation as
+     * an integer value, i.e. parseFloat(n) === parseInt(n)
+     * @method transit.isInteger
+     * @param {Object} x Any JavaScript value.
+     * @return {Boolean} true if the value is a transit integer, false otherwise.
+     */
+    transit.isInteger = types.isInteger;
+
+    /**
+     * Create transit UUID from high and low 64 bits. These integer values
+     *      can be constructed with transit.integer.
+     * @method transit.uuid
+     * @param {transit.integer} high The high 64 bits.
+     * @param {transit.integer} low The low 64 bits.
+     * @return {transit.uuid} A transit UUID.
+     */
+    transit.uuid = types.uuid;
+
+    /**
+     * Test if an object is a transit UUID.
+     * @method transit.isUUID
+     * @param {Object} x Any JavaScript value.
+     * @return {Boolean} true if the vlaue is a transit UUID instance, false otherwise.
+     */
+    transit.isUUID = types.isUUID;
+
+    /**
+     * Create a transit big integer.
+     * @method transit.bigInt
+     * @param {String} s A string representing an arbitrary size integer value.
+     * @return {transit.bigdec} A transit big integer.
+     */
+    transit.bigInt =  types.bigInteger;
+
+    /**
+     * Test if an object is a transit big integer.
+     * @method transit.isBigInt
+     * @param {Object} x Any JavaScript value.
+     * @return {Boolean} true if x is a transit big integer, false otherwise.
+     */
+    transit.isBigInt = types.isBigInteger;
+
+    /**
+     * Create a transit big decimal.
+     * @method transit.bigDec
+     * @param {String} s A string representing an arbitrary precisions decimal value.
+     * @return {transit.bigdec} A transit big decimal.
+     */
+    transit.bigDec =  types.bigDecimalValue;
+
+    /**
+     * Test if an object is a transit big decimal.
+     * @method transit.isBigDec
+     * @param {Object} x Any JavaScript value.
+     * @return {Boolean} true if x is a transit big decimal, false otherwise.
+     */
+    transit.isBigDec = types.isBigDecimal;
+
+    /**
+     * Create transit keyword.
+     * @method transit.keyword
+     * @param {String} name A string.
+     * @return {transit.keyword} A transit keyword.
+     * @example
+     *     transit.keyword(&quot;foo&quot;);
+     */
+    transit.keyword = types.keyword;
+
+    /**
+     * Test if an object is a transit keyword.
+     * @method transit.isKeyword
+     * @param {Object} x Any JavaScript value.
+     * @return {Boolean} true if x is a transit keyword, false otherwise.
+     */
+    transit.isKeyword = types.isKeyword;
+
+    /**
+     * Create a transit symbol.
+     * @method transit.symbol
+     * @param {s} name A string.
+     * @return {transit.symbol} A transit symbol instance.
+     * @example
+     *     transit.symbol(&quot;foo&quot;);
+     */
+    transit.symbol = types.symbol;
+
+    /**
+     * Test if an object is a transit symbol
+     * @method transit.isSymbol
+     * @param {Object} x Any JavaScript value.
+     * @return {Boolean} true if x is a transit symbol, false otherwise.
+     */
+    transit.isSymbol = types.isSymbol;
+
+    /**
+     * Create transit binary blob.
+     * @method transit.binary
+     * @param {String} s A base64 encoded string.
+     * @return {transit.binary} A transit binary blob instance.
+     */
+    transit.binary = types.binary;
+
+    /**
+     * Test if an object is a transit binary blob.
+     * @method transit.isBinary
+     * @param {Object} x Any JavaScript value.
+     */
+    transit.isBinary = types.isBinary;
+
+    /**
+     * Create a transit URI.
+     * @method transit.uri
+     * @param {String} A string representing a valid URI.
+     * @return {transit.uri} A transit URI.
+     */
+    transit.uri = types.uri;
+
+    /**
+     * Test if an object is a transit URI.
+     * @method transit.isURI
+     * @param {Object} Any JavaScript value.
+     * @return {Boolean} true if x is a transit symbol, false otherwise.
+     */
+    transit.isURI = types.isURI;
+
+    /**
+     * Create a transit hash map. Transit maps satisfy the current version
+     *     of the ECMAScript 6 Map specification.
+     * @method transit.map
+     * @param {Array} xs A JavaScript array of alternating key value pairs.
+     * @return {transit.map} A transit map.
+     * @example
+     *     transit.map([new Date(), &quot;foo&quot;, [1,2], 3]);
+     */
+    transit.map = types.map;
+
+    /**
+     * Test if an object is a transit map.
+     * @method transit.isMap
+     * @param {Object} x Any JavaScript value.
+     * @return {Boolean} true if x is a transit map, false otherwise.
+     */
+    transit.isMap = types.isMap;
+
+    /**
+     * Create a transit set. Transit sets satisfy the current version of the
+     *     of the ECMAScript 6 Set specification.
+     * @method transit.set
+     * @param {Array} xs A JavaScript array of values.
+     * @return {transit.set} A transit set.
+     * @example
+     *     transit.set([&quot;foo&quot;, [1,2], 3, {bar: &quot;baz&quot;}]);
+     */
+    transit.set = types.set;
+
+    /**
+     * Test if an object is a transit set.
+     * @method transit.isSet
+     * @param {Object} x Any JavaScript value.
+     * @return {Boolean} true if x is a transit set, false otherwise.
+     */
+    transit.isSet = types.isSet;
+
+    /**
+     * Create a transit list.
+     * @method transit.list
+     * @param {Array} A JavaScript array.
+     * @return {transit.list} A transit list.
+     */
+    transit.list = types.list;
+
+    /**
+     * Test if an object is a transit list.
+     * @method transit.isList
+     * @param {Object} x Any JavaScript value.
+     * @return {Boolean} true if x is a transit list, false otherwise.
+     */
+    transit.isList = types.isList;
+
+    /**
+     * Create a transit quoted value.
+     * @method transit.quoted
+     * @param {Object} x Any JavaScript value.
+     * @return {transit.quoted} A transit quoted value.
+     */
+    transit.quoted = types.quoted;
+
+    /**
+     * Test if an object is a transit quoted value.
+     * @method transit.isQuoted
+     * @param {Object} x Any JavaScript value.
+     * @return {Boolean} true if x is a transit value, false otherwise.
+     */
+    transit.isQuoted = types.isQuoted;
+
+    /**
+     * Create a transit tagged value.
+     * @method transit.tagged
+     * @param {String} tag A tag.
+     * @param {Object} value A JavaScrpt array, object, or string.
+     * @return {transit.tagged} A transit tagged value.
+     * @example
+     *     transit.tagged(&quot;point&quot;, new Point(1,2));
+     */
+    transit.tagged = types.taggedValue;
+
+    /**
+     * Test if an object is a transit tagged value.
+     * @method transit.isTaggedValue
+     * @param {Object} x Any JavaScript value.
+     * @return {Boolean} true if x is a transit value, false otherwise.
+     */
+    transit.isTaggedValue =  types.isTaggedValue;
+
+    /**
+     * Create a transit link.
+     * @method transit.link
+     * @param {transit.map} A transit map which must contain at a
+     *     minimum the following keys: href, rel. It may optionally include
+     *     name, render, and prompt. href must be a transit.uri, all other
+     *     values are strings, and render must be either &quot;image&quot; or &quot;link&quot;.
+     * @return {Object} A transit link.
+     */
+    transit.link = types.link;
+
+    /**
+     * Test if an object is a transit link.
+     * @method transit.isLink
+     * @param {Object} x Any JavaScript object.
+     * @return {Boolean} true if x is a transit link, false otherwise.
+     */
+    transit.isLink = types.isLink;
+
+    /**
+     * Compute the hashCode for any JavaScript object that has been
+     *    extend to transit&#x27;s equality and hashing protocol. JavaScript
+     *    primitives and transit value are already extended to this protocol.
+     *    Custom types may be extended to the protocol via transit.extenToEQ.
+     * @method transit.hash
+     * @param {Object} x Any JavaScript object that has been extended to
+     *    transit&#x27;s equality and hashing protocol.
+     * @return {Number} Returns JavaScript number - semantically a 32bit integer.
+     */
+    transit.hash = eq.hashCode;
+
+    /**
+     * Compute the hashCode for JavaScript map-like types - either a JavaScript
+     *    object or a JavaScript object that implements ES6 Map forEach.
+     * @method transit.hashMapLike
+     * @param {Object} x A plain JavaScript Object or Object that implements
+     *    ES6 Map forEach.
+     * @return {Number} Returns JavaScript number - semantically a 32bit integer.
+     */
+    transit.hashMapLike = eq.hashMapLike;
+
+    /**
+     * Compute the hashCode for JavaScript array-like types - either a JavaScript
+     *    array or a JavaScript object that implements Array forEach.
+     * @method transit.hashArrayLike
+     * @param {Object} x A JavaScript Array or Object that implements
+     *    Array forEach.
+     * @return {Number} Returns JavaScript number - semantically a 32bit integer.
+     */
+    transit.hashMapLike = eq.hashArrayLike;
+
+    /**
+     * Test whether two JavaScript objects represent equal values. The
+     *    objects to be tested should be extended to transit&#x27;s equality
+     *    and hasing protocol. JavaScript natives and transit value have
+     *    already been extended to the protocol, including objects and
+     *    arrays.  Also transit maps and JavaScript objects may be
+     *    compared for equality. Custom types may be extended via
+     *    transit.extendToEQ.
+     * @param {Object} x A JavaScript object
+     * @param {Object} y A JavaScript object
+     * @return {Boolean} true if the x and y are equal, false otherwise.
+     */
+    transit.equals = eq.equals;
+
+    /**
+     * Extend an object to hashing and equality required by
+     *     transit maps and sets. Only required for custom
+     *     types, JavaScript primitive types and transit
+     *     types are handled.
+     * @method transit.extendToEQ
+     * @param {Object} x A JavaScript object, will be mutated.
+     * @return {Object} x
+     * @example
+     *     transit.extendToEq(Point.protototype, {
+     *         hashCode: function() {
+     *             var bits = (this.x | 0) ^ ((this.y | 0) * 31);
+     *             return bits ^ (bits &gt;&gt;&gt; 32);
+     *         },
+     *         equals: function(other) {
+     *             return this.x == other.x &amp;&amp; this.y == other.y;
+     *         }
+     *     });
+     */
+    transit.extendToEQ = eq.extendToEQ;
+
+    /**
+     * Convert a transit map instance into a JavaScript Object.
+     * Throws if the map has keys which have no string representation.
+     * @method transit.mapToObject
+     * @param {transit.map} m a transit map
+     * @return {Object} a JavaScript Object
+     */
+    transit.mapToObject = function(m) {
+        var ret = {};
+        m.forEach(function(v, k) {
+            if(typeof k !== &quot;string&quot;) {
+                throw Error(&quot;Cannot convert map with non-string keys&quot;);
+            } else {
+                ret[k] = v;
+            }
+        })
+        return ret;
+    };
+
+    /**
+     * Convert a POJO into a transit map.
+     * @method transit.objectToMap
+     * @param {Object} a JavaScript Object
+     * @return {transit.map} a transit map
+     */
+    transit.objectToMap = function(obj) {
+        var ret = transit.map();
+        for(var p in obj) {
+            if(obj.hasOwnProperty(p)) {
+                ret.set(p, obj[p]);
+            }
+        }
+        return ret;
+    };
+
+    /**
+     * Construct a Transit JSON decoder.
+     * @method transit.decoder
+     * @param {Object} options to the decoder. Can include map of
+     *     handlers.
+     * @return {transit.decoder} a Transit JSON decoder
+     * @example
+     *     var decoder = transit.decoder();
+     *     var x = decoder.decode(json, transit.readCache());
+     */
+    transit.decoder = decoder.decoder;
+
+    /**
+     * Construct a Transit read cache
+     * @method transit.readCache
+     * @return {transit.readCAche} a Transit read cache
+     */
+    transit.readCache = caching.readCache;
+
+    /**
+     * Construct a Transit write cache
+     * @method transit.writeCache
+     * @return {transit.writeCache} a Transit write cache
+     */
+    transit.writeCache = caching.writeCache;
+
+    transit.UUIDfromString = types.UUIDfromString;
+    transit.randomUUID =     types.randomUUID;
+    transit.stringableKeys = writer.stringableKeys;
+
+    if(TRANSIT_BROWSER_TARGET) {
+        goog.exportSymbol(&quot;transit.reader&quot;,         transit.reader);
+        goog.exportSymbol(&quot;transit.writer&quot;,         transit.writer);
+        goog.exportSymbol(&quot;transit.makeBuilder&quot;,    transit.makeBuilder);
+        goog.exportSymbol(&quot;transit.makeWriteHandler&quot;, transit.makeWriteHandler);
+        goog.exportSymbol(&quot;transit.date&quot;,           types.date);
+        goog.exportSymbol(&quot;transit.integer&quot;,        types.intValue);
+        goog.exportSymbol(&quot;transit.isInteger&quot;,      types.isInteger);
+        goog.exportSymbol(&quot;transit.uuid&quot;,           types.uuid);
+        goog.exportSymbol(&quot;transit.isUUID&quot;,         types.isUUID);
+        goog.exportSymbol(&quot;transit.bigInt&quot;,         types.bigInteger);
+        goog.exportSymbol(&quot;transit.isBigInt&quot;,       types.isBigInteger);
+        goog.exportSymbol(&quot;transit.bigDec&quot;,         types.bigDecimalValue);
+        goog.exportSymbol(&quot;transit.isBigDec&quot;,       types.isBigDecimal);
+        goog.exportSymbol(&quot;transit.keyword&quot;,        types.keyword);
+        goog.exportSymbol(&quot;transit.isKeyword&quot;,      types.isKeyword);
+        goog.exportSymbol(&quot;transit.symbol&quot;,         types.symbol);
+        goog.exportSymbol(&quot;transit.isSymbol&quot;,       types.isSymbol);
+        goog.exportSymbol(&quot;transit.binary&quot;,         types.binary);
+        goog.exportSymbol(&quot;transit.isBinary&quot;,       types.isBinary);
+        goog.exportSymbol(&quot;transit.uri&quot;,            types.uri);
+        goog.exportSymbol(&quot;transit.isURI&quot;,          types.isURI);
+        goog.exportSymbol(&quot;transit.map&quot;,            types.map);
+        goog.exportSymbol(&quot;transit.isMap&quot;,          types.isMap);
+        goog.exportSymbol(&quot;transit.set&quot;,            types.set);
+        goog.exportSymbol(&quot;transit.isSet&quot;,          types.isSet);
+        goog.exportSymbol(&quot;transit.list&quot;,           types.list);
+        goog.exportSymbol(&quot;transit.isList&quot;,         types.isList);
+        goog.exportSymbol(&quot;transit.quoted&quot;,         types.quoted);
+        goog.exportSymbol(&quot;transit.isQuoted&quot;,       types.isQuoted);
+        goog.exportSymbol(&quot;transit.tagged&quot;,         types.taggedValue);
+        goog.exportSymbol(&quot;transit.isTaggedValue&quot;,  types.isTaggedValue);
+        goog.exportSymbol(&quot;transit.link&quot;,           types.link);
+        goog.exportSymbol(&quot;transit.isLink&quot;,         types.isLink);
+        goog.exportSymbol(&quot;transit.hash&quot;,           eq.hashCode);
+        goog.exportSymbol(&quot;transit.hashMapLike&quot;,    eq.hashMapLike);
+        goog.exportSymbol(&quot;transit.hashArrayLike&quot;,  eq.hashArrayLike);
+        goog.exportSymbol(&quot;transit.equals&quot;,         eq.equals);
+        goog.exportSymbol(&quot;transit.extendToEQ&quot;,     eq.extendToEQ);
+        goog.exportSymbol(&quot;transit.mapToObject&quot;,    transit.mapToObject);
+        goog.exportSymbol(&quot;transit.objectToMap&quot;,    transit.objectToMap);
+        goog.exportSymbol(&quot;transit.decoder&quot;,        decoder.decoder);
+        goog.exportSymbol(&quot;transit.UUIDfromString&quot;, types.UUIDfromString);
+        goog.exportSymbol(&quot;transit.randomUUID&quot;,     types.randomUUID);
+        goog.exportSymbol(&quot;transit.stringableKeys&quot;, writer.stringableKeys);
+        goog.exportSymbol(&quot;transit.readCache&quot;,      caching.readCache);
+        goog.exportSymbol(&quot;transit.writeCache&quot;,     caching.writeCache);
+    }
+
+    if(TRANSIT_NODE_TARGET) {
+        module.exports = {
+            reader:         transit.reader,
+            writer:         transit.writer,
+            makeBuilder:    transit.makeBuilder,
+            makeWriteHandler: transit.makeWriteHandler,
+            date:           types.date,
+            integer:        types.intValue,
+            isInteger:      types.isInteger,
+            uuid:           types.uuid,
+            isUUID:         types.isUUID,
+            bigInt:         types.bigInteger,
+            isBigInt:       types.isBigInteger,
+            bigDec:         types.bigDecimalValue,
+            isBigDec:       types.isBigDecimal,
+            keyword:        types.keyword,
+            isKeyword:      types.isKeyword,
+            symbol:         types.symbol,
+            isSymbol:       types.isSymbol,
+            binary:         types.binary,
+            isBinary:       types.isBinary,
+            uri:            types.uri,
+            isURI:          types.isURI,
+            map:            types.map,
+            isMap:          types.isMap,
+            set:            types.set,
+            isSet:          types.isSet,
+            list:           types.list,
+            isList:         types.isList,
+            quoted:         types.quoted,
+            isQuoted:       types.isQuoted,
+            tagged:         types.taggedValue,
+            isTaggedValue:  types.isTaggedValue,
+            link:           types.link,
+            isLink:         types.isLink,
+            hash:           eq.hashCode,
+            hashArrayLike:  eq.hashArrayLike,
+            hashMapLike:    eq.hashMapLike,
+            equals:         eq.equals,
+            extendToEQ:     eq.extendToEQ,
+            mapToObject:    transit.mapToObject,
+            objectToMap:    transit.objectToMap,
+            decoder:        decoder.decoder,
+            UUIDfromString: types.UUIDfromString,
+            randomUUID:     types.randomUUID,
+            stringableKeys: writer.stringableKeys,
+            readCache:      caching.readCache,
+            writeCache:     caching.writeCache
+        };
+    }
 });
 
 </pre>

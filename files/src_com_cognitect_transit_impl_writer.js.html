@@ -16,7 +16,7 @@
             <h1><a href="../index.html"><img width="100" src="../assets/css/cognitect.jpg">transit-js: src/com/cognitect/transit/impl/writer.js</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.8.746</em>
+            <em>API Docs for: 0.8.770</em>
         </div>
     </div>
     <div class="yui3-g">
@@ -135,9 +135,16 @@ writer.JSONMarshaller = function(opts) {
         }
         var self = this;
         optsHandlers.forEach(function(v, k) {
-            self.handlers.set(k, v);
+            if(k !== undefined) {
+                self.handlers.set(k, v);
+            } else {
+                throw new Error(&quot;Cannot create handler for JavaScript undefined&quot;);
+            }
         });
     }
+
+    // Multiple JS context helper
+    this.handlerForForeign = this.opts[&quot;handlerForForeign&quot;];
 
     this.unpack = this.opts[&quot;unpack&quot;] || function(x) {
         if(types.isArrayMap(x) &amp;&amp; x.backingMap === null) {
@@ -272,7 +279,8 @@ writer.stringableKeys = function(em, obj) {
         }
         return stringableKeys;
     } else if(obj.keys) {
-        var iter = obj.keys();
+        var iter = obj.keys(),
+            step = null;
 
         if(iter.next) {
             step = iter.next();
@@ -297,8 +305,32 @@ writer.stringableKeys = function(em, obj) {
     }
 };
 
+writer.isForeignObject = function(x) {
+    if(x.constructor[&quot;transit$isObject&quot;]) {
+        return true;
+    }
+
+    var ret = x.constructor.toString(),
+        ret = ret.substr(&#x27;function &#x27;.length),
+        ret = ret.substr(0, ret.indexOf(&#x27;(&#x27;)),
+        isObject = ret == &quot;Object&quot;;
+
+    if(typeof Object.defineProperty != &quot;undefined&quot;) {
+        Object.defineProperty(x.constructor, &quot;transit$isObject&quot;, {
+            value: isObject,
+            enumerable: false
+        });
+    } else {
+        x.constructor[&quot;transit$isObject&quot;] = isObject;
+    }
+    
+    return isObject;
+};
+
 writer.emitMap = function(em, obj, skip, cache) {
-    if((obj.constructor === Object) || (obj.forEach != null)) {
+    if((obj.constructor === Object) || 
+       (obj.forEach != null) ||
+       (em.handlerForForeign &amp;&amp; writer.isForeignObject(obj))) {
         if(em.verbose) {
             if(obj.forEach != null) {
                 if(writer.stringableKeys(em, obj)) {
@@ -427,7 +459,7 @@ writer.emitEncoded = function(em, h, tag, rep, obj, asMapKey, cache) {
 }
 
 writer.marshal = function(em, obj, asMapKey, cache) {
-    var h   = em.handler(obj),
+    var h   = em.handler(obj) || (em.handlerForForeign ? em.handlerForForeign(obj, em.handlers) : null),
         tag = h ? h.tag(obj) : null,
         rep = h ? h.rep(obj) : null;
 
@@ -473,7 +505,7 @@ writer.marshal = function(em, obj, asMapKey, cache) {
 };
 
 writer.maybeQuoted = function(em, obj) {
-    var h = em.handler(obj);
+    var h = em.handler(obj) || (em.handlerForForeign ? em.handlerForForeign(obj, em.handlers) : null);
 
     if(h != null) {
         if(h.tag(obj).length === 1) {
