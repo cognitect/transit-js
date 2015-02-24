@@ -254,8 +254,9 @@ exports.testTransitMapEntries = function(test) {
 exports.testTransitMapDelete = function(test) {
     var m0 = transit.map(["foo", 1, "bar", 2, "baz", 3]);
 
-    m0.delete("foo");
+    var v = m0.delete("foo");
 
+    test.equal(v, 1);
     test.equal(m0.size, 2);
     test.equal(m0.has("foo"), false);
     test.deepEqual(m0.keySet().sort(), ["bar","baz"].sort());
@@ -356,8 +357,9 @@ exports.testTransitSetEntries = function(test) {
 exports.testTransitSetDelete = function(test) {
     var s0 = transit.set(["foo", "bar", "baz"]);
     
-    s0.delete("bar");
+    var v = s0.delete("bar");
 
+    test.equal(v, "bar");
     test.equal(s0.size, 2);
     test.ok(!s0.has("bar"));
     test.deepEqual(s0.keySet().sort(), ["foo", "baz"].sort());
@@ -1074,8 +1076,9 @@ exports.testFunctionsAsKeys = function(test) {
     test.equal(m.get(isEven), "isEven");
     test.equal(m.get(isOdd), "isOdd");
 
-    m["delete"](isEven);
+    var v0 = m["delete"](isEven);
 
+    test.equals(v0, "isEven");
     test.equals(m.get(isEven, "removed"), "removed");
 
     s.add(isEven);
@@ -1085,8 +1088,9 @@ exports.testFunctionsAsKeys = function(test) {
     test.ok(s.has(isEven));
     test.ok(s.has(isOdd));
 
-    s["delete"](isEven);
+    var v1 = s["delete"](isEven);
 
+    test.equals(v1, isEven);
     test.ok(!s.has(isEven));
 
     test.done();

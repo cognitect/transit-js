@@ -682,14 +682,16 @@ goog.scope(function() {
     types.TransitArrayMap.prototype["delete"] = function(k) {
         this.hashCode = -1;
         if(this.backingMap) {
-            this.backingMap["delete"](k);
+            var ret = this.backingMap["delete"](k);
             this.size = this.backingMap.size;
+            return ret;
         } else {
             for(var i = 0; i < this._entries.length; i+=2) {
                 if(eq.equals(this._entries[i], k)) {
+                    var ret = this._entries[i+1];
                     this._entries.splice(i, 2);
                     this.size--;
-                    return;
+                    return ret;
                 }
             }
         }
@@ -760,7 +762,7 @@ goog.scope(function() {
         }
     };
 
-    types.TransitMap.prototype['delete'] = function(k) {
+    types.TransitMap.prototype["delete"] = function(k) {
         this.hashCode = -1;
         this._keys = null;
         var code   = eq.hashCode(k),
@@ -768,12 +770,13 @@ goog.scope(function() {
 
         for(var i = 0; i < bucket.length; i+=2) {
             if(eq.equals(k, bucket[i])) {
+                var ret = bucket[i+1];
                 bucket.splice(i,2);
                 if(bucket.length === 0) {
                     delete this.map[code];
                 }
                 this.size--;
-                break;
+                return ret;
             }
         }
     };
@@ -989,9 +992,10 @@ goog.scope(function() {
     };
     types.TransitSet.prototype["clear"] = types.TransitSet.prototype.clear;
 
-    types.TransitSet.prototype['delete'] = function(value) {
-        this.map["delete"](value);
+    types.TransitSet.prototype["delete"] = function(value) {
+        var ret = this.map["delete"](value);
         this.size = this.map.size;
+        return ret;
     };
 
     types.TransitSet.prototype.entries = function() {
