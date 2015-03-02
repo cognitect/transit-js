@@ -51,9 +51,9 @@ goog.scope(function() {
     /**
      * Create a transit reader instance.
      * @method transit.reader
-     * @param {string|null} type type of reader to construct.
+     * @param {string=} type type of reader to construct.
      *     Default to "json". For verbose mode supply "json-verbose".
-     * @param {Object|null} opts reader options. A JavaScript object to
+     * @param {Object=} opts reader options. A JavaScript object to
      *     customize the writer Valid entries include "defaultHandler",
      *     and "handler". "defaultHandler" should be JavaScript function
      *     taking two arguments, the first is the tag, the second the
@@ -86,9 +86,9 @@ goog.scope(function() {
     /**
      * Create a transit writer instance.
      * @method transit.writer
-     * @param {String|null} type type of writer to construct.
+     * @param {string=} type type of writer to construct.
      *     Defaults to "json". For verbose mode supply "json-verbose".
-     * @param {Object|null} opts writer options. A JavaScript object to
+     * @param {Object=} opts writer options. A JavaScript object to
      *     customize the writer. "handlers" options, a transit.map of
      *     JavaScript constructor and transit writer handler instance
      *     entries. "handlerForForeign" option, for dealing with values
