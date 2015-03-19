@@ -65,7 +65,7 @@ goog.scope(function() {
      *     data will be read as Uint8Array. If neither Buffer nor Uint8Array is
      *     available - defaults to tagged value that simply wraps the
      *     base64 encoded string.
-     * @return {transit.reader} A transit reader.
+     * @return {com.cognitect.transit.impl.reader.Reader} A transit reader.
      * @example
      *     var r = transit.reader("json", {
      *         handlers: {
@@ -97,7 +97,7 @@ goog.scope(function() {
      *     should return the correct handler. Note if this function is
      *     provided, special handling for Objects will also be
      *     auto-installed to catch plain Objects from the foreign context.
-     * @return {transit.writer} A transit writer.
+     * @return {com.cognitect.transit.impl.writer.Writer} A transit writer.
      * @example
      *     var r = transit.writer("json", {
      *         handlers: transit.map([
@@ -129,7 +129,7 @@ goog.scope(function() {
      *    "rep" should return the representation on the wire. "stringRep" is should return
      *    the string representation of the value. Optional "getVerboseHandler" should return a
      *    handler for writing verbose output.
-     * @return {transit.handler} A transit write handler.
+     * @return {Object} A transit write handler.
      * @example
      *     var PointHandler = transit.makeWriteHandler({
      *          tag: function(p) { return "point"; },
@@ -158,7 +158,7 @@ goog.scope(function() {
     /**
      * Create a transit date.
      * @method transit.date
-     * @param {Number|String} A number or string representing milliseconds since epoch.
+     * @param {number|string} A number or string representing milliseconds since epoch.
      * @return {Date} A JavaScript Date.
      */
     transit.date = types.date;
@@ -169,8 +169,8 @@ goog.scope(function() {
      *     return a JavaScript number if the string represents an integer
      *     value in the 53bit range and a transit integer otherwise.
      * @method transit.integer
-     * @param {Number|String|integer} s A value representing an integer.
-     * @return {transit.integer} A JavaScript number or transit integer.
+     * @param {number|string} s A value representing an integer.
+     * @return {number|goog.math.Long} A JavaScript number or transit integer.
      */
     transit.integer = types.intValue;
 
@@ -180,17 +180,15 @@ goog.scope(function() {
      * an integer value, i.e. parseFloat(n) === parseInt(n)
      * @method transit.isInteger
      * @param {Object} x Any JavaScript value.
-     * @return {Boolean} true if the value is a transit integer, false otherwise.
+     * @return {boolean} true if the value is a transit integer, false otherwise.
      */
     transit.isInteger = types.isInteger;
 
     /**
-     * Create transit UUID from high and low 64 bits. These integer values
-     *      can be constructed with transit.integer.
+     * Create transit UUID from a string
      * @method transit.uuid
-     * @param {transit.integer} high The high 64 bits.
-     * @param {transit.integer} low The low 64 bits.
-     * @return {transit.uuid} A transit UUID.
+     * @param {string}
+     * @return {com.cognitect.transit.types.UUID} A transit UUID.
      */
     transit.uuid = types.uuid;
 
@@ -198,15 +196,15 @@ goog.scope(function() {
      * Test if an object is a transit UUID.
      * @method transit.isUUID
      * @param {Object} x Any JavaScript value.
-     * @return {Boolean} true if the vlaue is a transit UUID instance, false otherwise.
+     * @return {boolean} true if the vlaue is a transit UUID instance, false otherwise.
      */
     transit.isUUID = types.isUUID;
 
     /**
      * Create a transit big integer.
      * @method transit.bigInt
-     * @param {String} s A string representing an arbitrary size integer value.
-     * @return {transit.bigdec} A transit big integer.
+     * @param {string} s A string representing an arbitrary size integer value.
+     * @return {com.cognitect.transit.types.TaggedValue} A transit big integer.
      */
     transit.bigInt =  types.bigInteger;
 
@@ -214,15 +212,15 @@ goog.scope(function() {
      * Test if an object is a transit big integer.
      * @method transit.isBigInt
      * @param {Object} x Any JavaScript value.
-     * @return {Boolean} true if x is a transit big integer, false otherwise.
+     * @return {boolean} true if x is a transit big integer, false otherwise.
      */
     transit.isBigInt = types.isBigInteger;
 
     /**
      * Create a transit big decimal.
      * @method transit.bigDec
-     * @param {String} s A string representing an arbitrary precisions decimal value.
-     * @return {transit.bigdec} A transit big decimal.
+     * @param {string} s A string representing an arbitrary precisions decimal value.
+     * @return {com.cognitect.transit.types.TaggedValue} A transit big decimal.
      */
     transit.bigDec =  types.bigDecimalValue;
 
@@ -230,15 +228,15 @@ goog.scope(function() {
      * Test if an object is a transit big decimal.
      * @method transit.isBigDec
      * @param {Object} x Any JavaScript value.
-     * @return {Boolean} true if x is a transit big decimal, false otherwise.
+     * @return {boolean} true if x is a transit big decimal, false otherwise.
      */
     transit.isBigDec = types.isBigDecimal;
 
     /**
      * Create transit keyword.
      * @method transit.keyword
-     * @param {String} name A string.
-     * @return {transit.keyword} A transit keyword.
+     * @param {string} name A string.
+     * @return {com.cognitect.transit.types.Keyword} A transit keyword.
      * @example
      *     transit.keyword("foo");
      */
@@ -248,15 +246,15 @@ goog.scope(function() {
      * Test if an object is a transit keyword.
      * @method transit.isKeyword
      * @param {Object} x Any JavaScript value.
-     * @return {Boolean} true if x is a transit keyword, false otherwise.
+     * @return {boolean} true if x is a transit keyword, false otherwise.
      */
     transit.isKeyword = types.isKeyword;
 
     /**
      * Create a transit symbol.
      * @method transit.symbol
-     * @param {s} name A string.
-     * @return {transit.symbol} A transit symbol instance.
+     * @param {string} name A string.
+     * @return {com.cognitect.transit.types.Symbol} A transit symbol instance.
      * @example
      *     transit.symbol("foo");
      */
@@ -266,15 +264,15 @@ goog.scope(function() {
      * Test if an object is a transit symbol
      * @method transit.isSymbol
      * @param {Object} x Any JavaScript value.
-     * @return {Boolean} true if x is a transit symbol, false otherwise.
+     * @return {boolean} true if x is a transit symbol, false otherwise.
      */
     transit.isSymbol = types.isSymbol;
 
     /**
      * Create transit binary blob.
      * @method transit.binary
-     * @param {String} s A base64 encoded string.
-     * @return {transit.binary} A transit binary blob instance.
+     * @param {string} s A base64 encoded string.
+     * @return {com.cognitect.transit.types.TaggedValue|Uint8Array} A transit binary blob instance.
      */
     transit.binary = types.binary;
 
@@ -288,8 +286,8 @@ goog.scope(function() {
     /**
      * Create a transit URI.
      * @method transit.uri
-     * @param {String} A string representing a valid URI.
-     * @return {transit.uri} A transit URI.
+     * @param {string} A string representing a valid URI.
+     * @return {com.cognitect.transit.types.TaggedValue} A transit URI.
      */
     transit.uri = types.uri;
 
@@ -305,8 +303,8 @@ goog.scope(function() {
      * Create a transit hash map. Transit maps satisfy the current version
      *     of the ECMAScript 6 Map specification.
      * @method transit.map
-     * @param {Array} xs A JavaScript array of alternating key value pairs.
-     * @return {transit.map} A transit map.
+     * @param {array} xs A JavaScript array of alternating key value pairs.
+     * @return {com.cognitect.transit.types.TransitArrayMap|com.cognitect.transit.types.TransitMap} A transit map.
      * @example
      *     transit.map([new Date(), "foo", [1,2], 3]);
      */
@@ -316,7 +314,7 @@ goog.scope(function() {
      * Test if an object is a transit map.
      * @method transit.isMap
      * @param {Object} x Any JavaScript value.
-     * @return {Boolean} true if x is a transit map, false otherwise.
+     * @return {boolean} true if x is a transit map, false otherwise.
      */
     transit.isMap = types.isMap;
 
@@ -324,8 +322,8 @@ goog.scope(function() {
      * Create a transit set. Transit sets satisfy the current version of the
      *     of the ECMAScript 6 Set specification.
      * @method transit.set
-     * @param {Array} xs A JavaScript array of values.
-     * @return {transit.set} A transit set.
+     * @param {array} xs A JavaScript array of values.
+     * @return {com.cognitect.transit.types.TransitSet} A transit set.
      * @example
      *     transit.set(["foo", [1,2], 3, {bar: "baz"}]);
      */
@@ -335,7 +333,7 @@ goog.scope(function() {
      * Test if an object is a transit set.
      * @method transit.isSet
      * @param {Object} x Any JavaScript value.
-     * @return {Boolean} true if x is a transit set, false otherwise.
+     * @return {boolean} true if x is a transit set, false otherwise.
      */
     transit.isSet = types.isSet;
 
@@ -343,7 +341,7 @@ goog.scope(function() {
      * Create a transit list.
      * @method transit.list
      * @param {Array} A JavaScript array.
-     * @return {transit.list} A transit list.
+     * @return {com.cognitect.transit.types.TaggedValue} A transit list.
      */
     transit.list = types.list;
 
@@ -351,7 +349,7 @@ goog.scope(function() {
      * Test if an object is a transit list.
      * @method transit.isList
      * @param {Object} x Any JavaScript value.
-     * @return {Boolean} true if x is a transit list, false otherwise.
+     * @return {boolean} true if x is a transit list, false otherwise.
      */
     transit.isList = types.isList;
 
@@ -359,7 +357,7 @@ goog.scope(function() {
      * Create a transit quoted value.
      * @method transit.quoted
      * @param {Object} x Any JavaScript value.
-     * @return {transit.quoted} A transit quoted value.
+     * @return {com.cognitect.transit.types.TaggedValue} A transit quoted value.
      */
     transit.quoted = types.quoted;
 
@@ -367,7 +365,7 @@ goog.scope(function() {
      * Test if an object is a transit quoted value.
      * @method transit.isQuoted
      * @param {Object} x Any JavaScript value.
-     * @return {Boolean} true if x is a transit value, false otherwise.
+     * @return {boolean} true if x is a transit value, false otherwise.
      */
     transit.isQuoted = types.isQuoted;
 
@@ -376,7 +374,7 @@ goog.scope(function() {
      * @method transit.tagged
      * @param {String} tag A tag.
      * @param {Object} value A JavaScrpt array, object, or string.
-     * @return {transit.tagged} A transit tagged value.
+     * @return {com.cognitect.transit.types.TaggedValue} A transit tagged value.
      * @example
      *     transit.tagged("point", new Point(1,2));
      */
@@ -386,14 +384,14 @@ goog.scope(function() {
      * Test if an object is a transit tagged value.
      * @method transit.isTaggedValue
      * @param {Object} x Any JavaScript value.
-     * @return {Boolean} true if x is a transit value, false otherwise.
+     * @return {boolean} true if x is a transit value, false otherwise.
      */
     transit.isTaggedValue =  types.isTaggedValue;
 
     /**
      * Create a transit link.
      * @method transit.link
-     * @param {transit.map} A transit map which must contain at a
+     * @param {com.cognitect.transit.types.TransitArrayMap|com.cognitect.transit.types.TransitMap} A transit map which must contain at a
      *     minimum the following keys: href, rel. It may optionally include
      *     name, render, and prompt. href must be a transit.uri, all other
      *     values are strings, and render must be either "image" or "link".
@@ -405,7 +403,7 @@ goog.scope(function() {
      * Test if an object is a transit link.
      * @method transit.isLink
      * @param {Object} x Any JavaScript object.
-     * @return {Boolean} true if x is a transit link, false otherwise.
+     * @return {boolean} true if x is a transit link, false otherwise.
      */
     transit.isLink = types.isLink;
 
@@ -417,7 +415,7 @@ goog.scope(function() {
      * @method transit.hash
      * @param {Object} x Any JavaScript object that has been extended to
      *    transit's equality and hashing protocol.
-     * @return {Number} Returns JavaScript number - semantically a 32bit integer.
+     * @return {number} Returns JavaScript number - semantically a 32bit integer.
      */
     transit.hash = eq.hashCode;
 
@@ -427,7 +425,7 @@ goog.scope(function() {
      * @method transit.hashMapLike
      * @param {Object} x A plain JavaScript Object or Object that implements
      *    ES6 Map forEach.
-     * @return {Number} Returns JavaScript number - semantically a 32bit integer.
+     * @return {number} Returns JavaScript number - semantically a 32bit integer.
      */
     transit.hashMapLike = eq.hashMapLike;
 
@@ -437,7 +435,7 @@ goog.scope(function() {
      * @method transit.hashArrayLike
      * @param {Object} x A JavaScript Array or Object that implements
      *    Array forEach.
-     * @return {Number} Returns JavaScript number - semantically a 32bit integer.
+     * @return {number} Returns JavaScript number - semantically a 32bit integer.
      */
     transit.hashMapLike = eq.hashArrayLike;
 
@@ -480,7 +478,7 @@ goog.scope(function() {
      * Convert a transit map instance into a JavaScript Object.
      * Throws if the map has keys which have no string representation.
      * @method transit.mapToObject
-     * @param {transit.map} m a transit map
+     * @param {com.cognitect.transit.types.TransitArrayMap|com.cognitect.transit.types.TransitMap} m a transit map
      * @return {Object} a JavaScript Object
      */
     transit.mapToObject = function(m) {
@@ -499,7 +497,7 @@ goog.scope(function() {
      * Convert a POJO into a transit map.
      * @method transit.objectToMap
      * @param {Object} a JavaScript Object
-     * @return {transit.map} a transit map
+     * @return {com.cognitect.transit.types.TransitArrayMap|com.cognitect.transit.types.TransitMap} a transit map
      */
     transit.objectToMap = function(obj) {
         var ret = transit.map();
@@ -516,7 +514,7 @@ goog.scope(function() {
      * @method transit.decoder
      * @param {Object} options to the decoder. Can include map of
      *     handlers.
-     * @return {transit.decoder} a Transit JSON decoder
+     * @return {com.cognitect.transit.impl.decoder.Decoder} a Transit JSON decoder
      * @example
      *     var decoder = transit.decoder();
      *     var x = decoder.decode(json, transit.readCache());
@@ -526,14 +524,14 @@ goog.scope(function() {
     /**
      * Construct a Transit read cache
      * @method transit.readCache
-     * @return {transit.readCAche} a Transit read cache
+     * @return {com.cognitect.transit.caching.ReadCache} a Transit read cache
      */
     transit.readCache = caching.readCache;
 
     /**
      * Construct a Transit write cache
      * @method transit.writeCache
-     * @return {transit.writeCache} a Transit write cache
+     * @return {com.cognitect.transit.caching.WriteCache} a Transit write cache
      */
     transit.writeCache = caching.writeCache;
 
