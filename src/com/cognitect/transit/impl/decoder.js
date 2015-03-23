@@ -274,7 +274,7 @@ decoder.Decoder.prototype.decodeArray = function(node, cache, asMapKey, tagValue
                 }
                 return this.arrayBuilder.fromArray(arr, node);
             } else {
-                var ret = this.arrayBuilder.init();
+                var ret = this.arrayBuilder.init(node);
                 for(var i = 0; i < node.length; i++) {
                     ret = this.arrayBuilder.add(ret, this.decode(node[i], cache, asMapKey, false), node);
                 }
