@@ -1106,7 +1106,7 @@ goog.scope(function() {
     };
 
     types.isList = function(x) {
-        return (x instanceof types.List) && (x.tag === "list");
+        return (x instanceof types.TaggedValue) && (x.tag === "list");
     };
 
     types.link = function(rep) {
