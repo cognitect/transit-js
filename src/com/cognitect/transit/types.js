@@ -152,6 +152,15 @@ goog.scope(function() {
         return ":"+this.name;
     };
 
+    types.Keyword.prototype["namespace"] = function() {
+        var idx = this.name.indexOf("/");
+        if(idx != -1) {
+            return this.name.substring(0, idx);
+        } else {
+            return null;
+        }
+    };
+
     types.Keyword.prototype.equiv = function(other) {
         return eq.equals(this, other);
     };
@@ -182,6 +191,15 @@ goog.scope(function() {
     types.Symbol = function(name) {
         this.name = name;
         this.hashCode = -1;
+    };
+
+    types.Symbol.prototype["namespace"] = function() {
+        var idx = this.name.indexOf("/");
+        if(idx != -1) {
+            return this.name.substring(0, idx);
+        } else {
+            return null;
+        }
     };
 
     types.Symbol.prototype.toString = function() {
