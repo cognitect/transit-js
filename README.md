@@ -28,7 +28,7 @@ specification is complete._
 ## Releases and Dependency Information
 
 * Latest release: 0.8.783
-* [All Released Versions](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.cognitect%22%20AND%20a%3A%22transit-cljs%22)
+* [All Released Versions](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.cognitect%22%20AND%20a%3A%22transit-js%22)
 
 ### JavaScript
 
