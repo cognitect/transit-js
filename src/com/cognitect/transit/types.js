@@ -73,8 +73,8 @@ goog.scope(function() {
         return s === "t";
     };
 
-    types.MAX_INT = Long.fromString("9007199254740992");
-    types.MIN_INT = Long.fromString("-9007199254740992");
+    types.MAX_INT = Long.fromString("9007199254740991");
+    types.MIN_INT = Long.fromString("-9007199254740991");
 
     types.intValue = function(s) {
         if(typeof s === "number") {

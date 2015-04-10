@@ -126,10 +126,10 @@ exports.testHashCode = function(test) {
 // =============================================================================
 
 exports.testIntegers = function(test) {
-    test.equal(typeof transit.integer("9007199254740992"), "number");
-    test.equal(typeof transit.integer("9007199254740993"), "object");
-    test.equal(typeof transit.integer("-9007199254740992"), "number");
-    test.equal(typeof transit.integer("-9007199254740993"), "object");
+    test.equal(typeof transit.integer("9007199254740991"), "number");
+    test.equal(typeof transit.integer("9007199254740992"), "object");
+    test.equal(typeof transit.integer("-9007199254740991"), "number");
+    test.equal(typeof transit.integer("-9007199254740992"), "object");
     test.done();
 };
 
