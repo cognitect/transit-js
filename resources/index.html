@@ -2,6 +2,10 @@
     <body>
         <h2>Playground</h2>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js" type="text/javascript"></script>
-        <script src="../target/transit.js" type="text/javascript"></script>
+        <script src="../deps/closure-library/closure/goog/base.js" type="text/javascript"></script>
+        <script src="../deps/closure-library/closure/goog/transit_deps.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            goog.require("com.cognitect.transit");
+        </script>
     </body>
 </html>
