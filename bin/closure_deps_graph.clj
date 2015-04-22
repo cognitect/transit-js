@@ -13,7 +13,7 @@
             (not= \. (first name))))
     (file-seq dir)))
 
-(spit (io/file "deps/closure-library/closure/goog/transducers_deps.js")
+(spit (io/file "deps/closure-library/closure/goog/transit_deps.js")
   (.computeDependencyCalls
     (DepsGenerator. (map #(SourceFile/fromFile (io/file %)) '("deps/closure-library/closure/goog/deps.js"))
       (map #(SourceFile/fromFile %)
