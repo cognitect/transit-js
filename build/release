@@ -72,6 +72,7 @@ rm -rf npm-transit-js
 git clone --quiet git@github.com:cognitect/npm-transit-js.git npm-transit-js > /dev/null
 cd npm-transit-js
 cp ../target/transit.js ./transit.js
+cp ../src/* ./src/
 git add -f transit.js
 sed -e "s/\"version\": \"[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{2,4\}/\"version\": \"${version}/g" package.json > package.json.tmp
 rm package.json
