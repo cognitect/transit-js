@@ -49,6 +49,16 @@ goog.scope(function() {
         caching = com.cognitect.transit.caching;
 
     /**
+     * @typedef {Map|com.cognitect.transit.types.TransitArrayMap|com.cognitect.transit.types.TransitMap}
+     */
+    transit.MapLike;
+
+    /**
+     * @typedef {Set|com.cognitect.transit.types.TransitSet}
+     */
+    transit.SetLike;
+
+    /**
      * Create a transit reader instance.
      * @method transit.reader
      * @param {string=} type type of reader to construct.
