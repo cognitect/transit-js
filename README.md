@@ -206,8 +206,9 @@ bin/test
 ```
 
 In order to run the `bin/verify` tests from
-[transit-clj](http://github.com/cognitect/transit-clj), you must first
-build the production Node.js build:
+[transit-format](https://github.com/cognitect/transit-format), you must first
+clone transit-format into the same parent directory as your transit-js checkout.
+Then build the production Node.js build:
 
 ```
 bin/build_release_node
