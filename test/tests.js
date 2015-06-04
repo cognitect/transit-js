@@ -1180,21 +1180,31 @@ exports.testList = function(test) {
 // =============================================================================
 
 exports.testPrintMap = function(test) {
-    var m = transit.map([
+    var m0 = transit.map([
         "foo", 1,
         "bar", 2,
         "baz", 3
     ]);
 
-    test.ok(m.toString() == "TransitMap {\"foo\" => 1, \"bar\" => 2, \"baz\" => 3}");
+    test.ok(m0.toString() == "TransitMap {\"foo\" => 1, \"bar\" => 2, \"baz\" => 3}");
+
+    var m1 = transit.map([
+       "foo", null
+    ]);
+
+    test.ok(m1.toString() == "TransitMap {\"foo\" => null}");
 
     test.done();
 };
 
 exports.testPrintSet = function(test) {
-    var s = transit.set(["foo", "bar", "baz"]);
+    var s0 = transit.set(["foo", "bar", "baz"]);
 
-    test.ok(s.toString() == "TransitSet {\"foo\", \"bar\", \"baz\"}");
+    test.ok(s0.toString() == "TransitSet {\"foo\", \"bar\", \"baz\"}");
+
+    var s1 = transit.set([null]);
+
+    test.ok(s1.toString() == "TransitSet {null}");
 
     test.done();
 };

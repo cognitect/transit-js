@@ -547,8 +547,8 @@ goog.scope(function() {
         var idx = 0,
             str = "TransitMap {";
         map.forEach(function(v, k) {
-            var kstr = k.toString(),
-                vstr = v.toString();
+            var kstr = k == null ? "null" : k.toString(),
+                vstr = v == null ? "null" : v.toString();
             kstr = goog.isString(k) ? "\"" + kstr + "\"" : kstr;
             vstr = goog.isString(v) ? "\"" + vstr + "\"" : vstr;
             str += kstr + " => " + vstr;
@@ -564,7 +564,7 @@ goog.scope(function() {
         var idx  = 0,
             str  = "TransitSet {";
         set.forEach(function(v) {
-            var vstr = v.toString();
+            var vstr = v == null ? "null" : v.toString();
             vstr = goog.isString(v) ?  "\"" + vstr + "\"" : vstr;
             str += vstr;
             if(idx < set.size-1) {
