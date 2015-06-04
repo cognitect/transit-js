@@ -1194,6 +1194,12 @@ exports.testPrintMap = function(test) {
 
     test.ok(m1.toString() == "TransitMap {\"foo\" => null}");
 
+    var m2 = transit.map([
+        "foo", [1, 2, 3]
+    ]);
+
+    test.ok(m2.toString() == "TransitMap {\"foo\" => [1,2,3]}");
+
     test.done();
 };
 
@@ -1205,6 +1211,10 @@ exports.testPrintSet = function(test) {
     var s1 = transit.set([null]);
 
     test.ok(s1.toString() == "TransitSet {null}");
+
+    var s2 = transit.set([[1,2,3]]);
+
+    test.ok(s2.toString() == "TransitSet {[1,2,3]}");
 
     test.done();
 };
