@@ -590,6 +590,10 @@ goog.scope(function() {
         return types.printMap(this);
     };
 
+    types.TransitArrayMap.prototype["inspect"] = function() {
+        return this.toString();
+    };
+
     types.TransitArrayMap.prototype.convert = function() {
         if(this.backingMap) {
             throw Error("Invalid operation, already converted");
@@ -794,6 +798,10 @@ goog.scope(function() {
 
     types.TransitMap.prototype.toString = function() {
         return types.printMap(this);
+    };
+
+    types.TransitMap.prototype["inspect"] = function() {
+        return this.toString();
     };
 
     types.TransitMap.prototype.clear = function() {
@@ -1028,6 +1036,10 @@ goog.scope(function() {
 
     types.TransitSet.prototype.toString = function() {
         return types.printSet(this);
+    };
+
+    types.TransitSet.prototype["inspect"] = function() {
+        return this.toString();
     };
 
     types.TransitSet.prototype.add = function(value) {
