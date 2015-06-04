@@ -543,6 +543,38 @@ goog.scope(function() {
      */
     types.ARRAY_MAP_ACCESS_THRESHOLD = 32;
 
+    types.printMap = function(map) {
+        var idx = 0,
+            str = "TransitMap {";
+        map.forEach(function(v, k) {
+            var kstr = k.toString(),
+                vstr = v.toString();
+            kstr = goog.isString(k) ? "\"" + kstr + "\"" : kstr;
+            vstr = goog.isString(v) ? "\"" + vstr + "\"" : vstr;
+            str += kstr + " => " + vstr;
+            if(idx < map.size-1) {
+                str += ", ";
+            }
+            idx++;
+        });
+        return str + "}";
+    };
+
+    types.printSet = function(set) {
+        var idx  = 0,
+            str  = "TransitSet {";
+        set.forEach(function(v) {
+            var vstr = v.toString();
+            vstr = goog.isString(v) ?  "\"" + vstr + "\"" : vstr;
+            str += vstr;
+            if(idx < set.size-1) {
+                str += ", ";
+            }
+            idx++;
+        });
+        return str + "}";
+    };
+
     /**
      * @constructor
      */
@@ -555,7 +587,7 @@ goog.scope(function() {
     };
 
     types.TransitArrayMap.prototype.toString = function() {
-        return "[TransitArrayMap]";
+        return types.printMap(this);
     };
 
     types.TransitArrayMap.prototype.convert = function() {
@@ -761,7 +793,7 @@ goog.scope(function() {
     };
 
     types.TransitMap.prototype.toString = function() {
-        return "[TransitMap]";
+        return types.printMap(this);
     };
 
     types.TransitMap.prototype.clear = function() {
@@ -995,7 +1027,7 @@ goog.scope(function() {
     };
 
     types.TransitSet.prototype.toString = function() {
-        return "[TransitSet]";
+        return types.printSet(this);
     };
 
     types.TransitSet.prototype.add = function(value) {

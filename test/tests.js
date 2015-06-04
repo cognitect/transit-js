@@ -1176,6 +1176,30 @@ exports.testList = function(test) {
 };
 
 // =============================================================================
+// Map & Set Printing
+// =============================================================================
+
+exports.testPrintMap = function(test) {
+    var m = transit.map([
+        "foo", 1,
+        "bar", 2,
+        "baz", 3
+    ]);
+
+    test.ok(m.toString() == "TransitMap {\"foo\" => 1, \"bar\" => 2, \"baz\" => 3}");
+
+    test.done();
+};
+
+exports.testPrintSet = function(test) {
+    var s = transit.set(["foo", "bar", "baz"]);
+
+    test.ok(s.toString() == "TransitSet {\"foo\", \"bar\", \"baz\"}");
+
+    test.done();
+};
+
+// =============================================================================
 // Tickets
 // =============================================================================
 
