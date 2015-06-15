@@ -203,7 +203,7 @@ goog.scope(function() {
     };
 
     types.Symbol.prototype.toString = function() {
-        return "[Symbol: "+this.name+"]";
+        return this.name;
     };
 
     types.Symbol.prototype.equiv = function(other) {
