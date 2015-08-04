@@ -1,24 +1,3 @@
-<div id="modules" class="sidebox">
-    <div class="hd">
-        <h2 class="no-toc">Modules</h2>
-    </div>
-    <div class="bd">
-        <ul>
-            {{#modules}}
-                <li><a href="{{../projectRoot}}modules/{{name}}.html">{{displayName}}</a>
-                {{#if submodules}}
-                    <ul>
-                        {{#submodules}}
-                            <li><a href="{{../../../projectRoot}}modules/{{../name}}.html#{{displayName}}">{{displayName}}</a></li>
-                        {{/submodules}}
-                    </ul>
-                {{/if}}
-                </li>
-            {{/modules}}
-        </ul>
-    </div>
-</div>
-
 <div id="classes" class="sidebox">
     <div class="hd">
         <h2 class="no-toc">Classes</h2>
