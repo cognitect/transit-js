@@ -11,7 +11,7 @@ YUI().use('node', function(Y) {
         });
         var h = location.hash;
         location.hash = '';
-        h = h.replace('LINE_', 'LINENUM_');
+        h = h.replace('l', 'LINENUM_');
         location.hash = h;
     }
 });

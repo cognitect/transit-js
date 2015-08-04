@@ -13,7 +13,7 @@
 <div id="doc">
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
-            <h1><a href="../index.html"><img width="100" src="../assets/css/cognitect.jpg">transit-js: src/com/cognitect/transit/types.js</a></h1>
+            <h1><a href="../index.html"><img src="../assets/css/cognitect.jpg" width="100">transit-js: src/com/cognitect/transit/types.js</a></h1>
         </div>
         <div class="yui3-u-1-4 version">
             <em>API Docs for: 0.8.770</em>
@@ -22,50 +22,30 @@
     <div class="yui3-g">
 
         <div id="sidebar" class="yui3-u">
-            <div id="modules" class="sidebox">
-    <div class="hd">
-        <h2 class="no-toc">Modules</h2>
-    </div>
-    <div class="bd">
-        <ul>
+            <div id="classes" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Classes</h2>
+                </div>
+                <div class="bd">
+                    <ul>
+                            <li><a href="../classes/transit.html">transit</a></li>
+                    </ul>
+                </div>
+            </div>
             
-        </ul>
-    </div>
-</div>
-
-<div id="classes" class="sidebox">
-    <div class="hd">
-        <h2 class="no-toc">Classes</h2>
-    </div>
-    <div class="bd">
-        <ul>
             
-                <li><a href="../classes/transit.html">transit</a></li>
             
-        </ul>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-<div id="fileTree" class="sidebox">
-    <div class="hd">
-        <h2 class="no-toc">Files</h2>
-    </div>
-    <div class="bd">
-        <ul><li>src/<ul><li>com/<ul><li>cognitect/<ul><li><a href="../files/src_com_cognitect_transit.js.html">transit.js</a></li><li>transit/<ul><li><a href="../files/src_com_cognitect_transit_caching.js.html">caching.js</a></li><li><a href="../files/src_com_cognitect_transit_delimiters.js.html">delimiters.js</a></li><li><a href="../files/src_com_cognitect_transit_eq.js.html">eq.js</a></li><li><a href="../files/src_com_cognitect_transit_handlers.js.html">handlers.js</a></li><li>impl/<ul><li><a href="../files/src_com_cognitect_transit_impl_decoder.js.html">decoder.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_reader.js.html">reader.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_writer.js.html">writer.js</a></li></ul></li><li><a href="../files/src_com_cognitect_transit_types.js.html">types.js</a></li><li><a href="../files/src_com_cognitect_transit_util.js.html">util.js</a></li></ul></li></ul></li></ul></li></ul></li></ul>
-    </div>
-</div>
-
-
-
+            
+            
+            <div id="fileTree" class="sidebox">
+                <div class="hd">
+                    <h2 class="no-toc">Files</h2>
+                </div>
+                <div class="bd">
+                    <ul><li>src/<ul><li>com/<ul><li>cognitect/<ul><li><a href="../files/src_com_cognitect_transit.js.html">transit.js</a></li><li>transit/<ul><li><a href="../files/src_com_cognitect_transit_caching.js.html">caching.js</a></li><li><a href="../files/src_com_cognitect_transit_delimiters.js.html">delimiters.js</a></li><li><a href="../files/src_com_cognitect_transit_eq.js.html">eq.js</a></li><li><a href="../files/src_com_cognitect_transit_handlers.js.html">handlers.js</a></li><li>impl/<ul><li><a href="../files/src_com_cognitect_transit_impl_decoder.js.html">decoder.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_reader.js.html">reader.js</a></li><li><a href="../files/src_com_cognitect_transit_impl_writer.js.html">writer.js</a></li></ul></li><li><a href="../files/src_com_cognitect_transit_types.js.html">types.js</a></li><li><a href="../files/src_com_cognitect_transit_util.js.html">util.js</a></li></ul></li></ul></li></ul></li></ul></li></ul>
+                </div>
+            </div>
+            
         </div>
 
         <div id="main" class="yui3-u">
@@ -147,8 +127,8 @@ goog.scope(function() {
         return s === &quot;t&quot;;
     };
 
-    types.MAX_INT = Long.fromString(&quot;9007199254740992&quot;);
-    types.MIN_INT = Long.fromString(&quot;-9007199254740992&quot;);
+    types.MAX_INT = Long.fromString(&quot;9007199254740991&quot;);
+    types.MIN_INT = Long.fromString(&quot;-9007199254740991&quot;);
 
     types.intValue = function(s) {
         if(typeof s === &quot;number&quot;) {
@@ -226,6 +206,15 @@ goog.scope(function() {
         return &quot;:&quot;+this.name;
     };
 
+    types.Keyword.prototype[&quot;namespace&quot;] = function() {
+        var idx = this.name.indexOf(&quot;/&quot;);
+        if(idx != -1) {
+            return this.name.substring(0, idx);
+        } else {
+            return null;
+        }
+    };
+
     types.Keyword.prototype.equiv = function(other) {
         return eq.equals(this, other);
     };
@@ -258,8 +247,17 @@ goog.scope(function() {
         this.hashCode = -1;
     };
 
+    types.Symbol.prototype[&quot;namespace&quot;] = function() {
+        var idx = this.name.indexOf(&quot;/&quot;);
+        if(idx != -1) {
+            return this.name.substring(0, idx);
+        } else {
+            return null;
+        }
+    };
+
     types.Symbol.prototype.toString = function() {
-        return &quot;[Symbol: &quot;+this.name+&quot;]&quot;;
+        return this.name;
     };
 
     types.Symbol.prototype.equiv = function(other) {
@@ -599,6 +597,44 @@ goog.scope(function() {
      */
     types.ARRAY_MAP_ACCESS_THRESHOLD = 32;
 
+    types.print = function(x) {
+        if(x == null) {
+            return &quot;null&quot;;
+        } if(goog.isArray(x)) {
+            return &quot;[&quot; + x.toString() + &quot;]&quot;;
+        } else if(goog.isString(x)) {
+            return &quot;\&quot;&quot; + x + &quot;\&quot;&quot;;
+        } else {
+            return x.toString();
+        }
+    };
+
+    types.printMap = function(map) {
+        var idx = 0,
+            str = &quot;TransitMap {&quot;;
+        map.forEach(function(v, k) {
+            str += types.print(k) + &quot; =&gt; &quot; + types.print(v);
+            if(idx &lt; map.size-1) {
+                str += &quot;, &quot;;
+            }
+            idx++;
+        });
+        return str + &quot;}&quot;;
+    };
+
+    types.printSet = function(set) {
+        var idx  = 0,
+            str  = &quot;TransitSet {&quot;;
+        set.forEach(function(v) {
+            str += types.print(v);
+            if(idx &lt; set.size-1) {
+                str += &quot;, &quot;;
+            }
+            idx++;
+        });
+        return str + &quot;}&quot;;
+    };
+
     /**
      * @constructor
      */
@@ -611,7 +647,11 @@ goog.scope(function() {
     };
 
     types.TransitArrayMap.prototype.toString = function() {
-        return &quot;[TransitArrayMap]&quot;;
+        return types.printMap(this);
+    };
+
+    types.TransitArrayMap.prototype[&quot;inspect&quot;] = function() {
+        return this.toString();
     };
 
     types.TransitArrayMap.prototype.convert = function() {
@@ -756,14 +796,16 @@ goog.scope(function() {
     types.TransitArrayMap.prototype[&quot;delete&quot;] = function(k) {
         this.hashCode = -1;
         if(this.backingMap) {
-            this.backingMap[&quot;delete&quot;](k);
+            var ret = this.backingMap[&quot;delete&quot;](k);
             this.size = this.backingMap.size;
+            return ret;
         } else {
             for(var i = 0; i &lt; this._entries.length; i+=2) {
                 if(eq.equals(this._entries[i], k)) {
+                    var ret = this._entries[i+1];
                     this._entries.splice(i, 2);
                     this.size--;
-                    return;
+                    return ret;
                 }
             }
         }
@@ -815,7 +857,11 @@ goog.scope(function() {
     };
 
     types.TransitMap.prototype.toString = function() {
-        return &quot;[TransitMap]&quot;;
+        return types.printMap(this);
+    };
+
+    types.TransitMap.prototype[&quot;inspect&quot;] = function() {
+        return this.toString();
     };
 
     types.TransitMap.prototype.clear = function() {
@@ -834,7 +880,7 @@ goog.scope(function() {
         }
     };
 
-    types.TransitMap.prototype[&#x27;delete&#x27;] = function(k) {
+    types.TransitMap.prototype[&quot;delete&quot;] = function(k) {
         this.hashCode = -1;
         this._keys = null;
         var code   = eq.hashCode(k),
@@ -842,12 +888,13 @@ goog.scope(function() {
 
         for(var i = 0; i &lt; bucket.length; i+=2) {
             if(eq.equals(k, bucket[i])) {
+                var ret = bucket[i+1];
                 bucket.splice(i,2);
                 if(bucket.length === 0) {
                     delete this.map[code];
                 }
                 this.size--;
-                break;
+                return ret;
             }
         }
     };
@@ -1048,7 +1095,11 @@ goog.scope(function() {
     };
 
     types.TransitSet.prototype.toString = function() {
-        return &quot;[TransitSet]&quot;;
+        return types.printSet(this);
+    };
+
+    types.TransitSet.prototype[&quot;inspect&quot;] = function() {
+        return this.toString();
     };
 
     types.TransitSet.prototype.add = function(value) {
@@ -1063,9 +1114,10 @@ goog.scope(function() {
     };
     types.TransitSet.prototype[&quot;clear&quot;] = types.TransitSet.prototype.clear;
 
-    types.TransitSet.prototype[&#x27;delete&#x27;] = function(value) {
-        this.map[&quot;delete&quot;](value);
+    types.TransitSet.prototype[&quot;delete&quot;] = function(value) {
+        var ret = this.map[&quot;delete&quot;](value);
         this.size = this.map.size;
+        return ret;
     };
 
     types.TransitSet.prototype.entries = function() {
@@ -1176,7 +1228,7 @@ goog.scope(function() {
     };
 
     types.isList = function(x) {
-        return (x instanceof types.List) &amp;&amp; (x.tag === &quot;list&quot;);
+        return (x instanceof types.TaggedValue) &amp;&amp; (x.tag === &quot;list&quot;);
     };
 
     types.link = function(rep) {
