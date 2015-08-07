@@ -170,7 +170,7 @@ goog.scope(function() {
     /**
      * Create a transit date.
      * @method transit.date
-     * @param {Number|String} x
+     * @param {number|String} x
      *     A number or string representing milliseconds since epoch.
      * @return {Date} A JavaScript Date.
      */
@@ -182,7 +182,7 @@ goog.scope(function() {
      *     return a JavaScript number if the string represents an integer
      *     value in the 53bit range and a transit integer otherwise.
      * @method transit.integer
-     * @param {Number|String} s
+     * @param {number|String} s
      *     A value representing an integer.
      * @return {number|goog.math.Long} A JavaScript number or transit integer.
      */

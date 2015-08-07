@@ -794,6 +794,9 @@ goog.scope(function() {
      *   the key not identity. Otherwise the API follows the ES6 map interface:
      *   http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map
      * @constructor
+     * @param {null|Array=} keys
+     * @param {null|Object=} map
+     * @param {null|number=} size
      */
     types.TransitMap = function(keys, map, size) {
         this.map = map || {};
