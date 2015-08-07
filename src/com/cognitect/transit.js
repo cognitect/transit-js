@@ -170,7 +170,7 @@ goog.scope(function() {
     /**
      * Create a transit date.
      * @method transit.date
-     * @param {number|string} x
+     * @param {Number|String} x
      *     A number or string representing milliseconds since epoch.
      * @return {Date} A JavaScript Date.
      */
@@ -182,7 +182,7 @@ goog.scope(function() {
      *     return a JavaScript number if the string represents an integer
      *     value in the 53bit range and a transit integer otherwise.
      * @method transit.integer
-     * @param {number|string} s
+     * @param {Number|String} s
      *     A value representing an integer.
      * @return {number|goog.math.Long} A JavaScript number or transit integer.
      */
@@ -202,7 +202,7 @@ goog.scope(function() {
     /**
      * Create transit UUID from a string
      * @method transit.uuid
-     * @param {string} s
+     * @param {String} s
      *     A string.
      * @return {com.cognitect.transit.types.UUID} A transit UUID.
      */
@@ -220,7 +220,7 @@ goog.scope(function() {
     /**
      * Create a transit big integer.
      * @method transit.bigInt
-     * @param {string} s
+     * @param {String} s
      *     A string representing an arbitrary size integer value.
      * @return {com.cognitect.transit.types.TaggedValue} A transit big integer.
      */
@@ -238,7 +238,7 @@ goog.scope(function() {
     /**
      * Create a transit big decimal.
      * @method transit.bigDec
-     * @param {string} s
+     * @param {String} s
      *     A string representing an arbitrary precisions decimal value.
      * @return {com.cognitect.transit.types.TaggedValue} A transit big decimal.
      */
@@ -256,7 +256,7 @@ goog.scope(function() {
     /**
      * Create transit keyword.
      * @method transit.keyword
-     * @param {string} name A string.
+     * @param {String} name A string.
      * @return {com.cognitect.transit.types.Keyword} A transit keyword.
      * @example
      *     transit.keyword("foo");
@@ -275,7 +275,7 @@ goog.scope(function() {
     /**
      * Create a transit symbol.
      * @method transit.symbol
-     * @param {string} name
+     * @param {String} name
      *     A string.
      * @return {com.cognitect.transit.types.Symbol} A transit symbol instance.
      * @example
@@ -295,7 +295,7 @@ goog.scope(function() {
     /**
      * Create transit binary blob.
      * @method transit.binary
-     * @param {string} s
+     * @param {String} s
      *     A base64 encoded string.
      * @return {com.cognitect.transit.types.TaggedValue|Uint8Array} A transit binary blob instance.
      */
@@ -313,7 +313,7 @@ goog.scope(function() {
     /**
      * Create a transit URI.
      * @method transit.uri
-     * @param {string} s
+     * @param {String} s
      *     A string representing a valid URI.
      * @return {com.cognitect.transit.types.TaggedValue} A transit URI.
      */
@@ -332,9 +332,9 @@ goog.scope(function() {
      * Create a transit hash map. Transit maps satisfy the current version
      *     of the ECMAScript 6 Map specification.
      * @method transit.map
-     * @param {array} xs
+     * @param {Array} xs
      *     A JavaScript array of alternating key value pairs.
-     * @return {com.cognitect.transit.types.TransitArrayMap|com.cognitect.transit.types.TransitMap} A transit map.
+     * @return {com.cognitect.transit.MapLike} A transit map.
      * @example
      *     transit.map([new Date(), "foo", [1,2], 3]);
      */
@@ -353,7 +353,7 @@ goog.scope(function() {
      * Create a transit set. Transit sets satisfy the current version of the
      *     of the ECMAScript 6 Set specification.
      * @method transit.set
-     * @param {array} xs
+     * @param {Array} xs
      *     A JavaScript array of values.
      * @return {com.cognitect.transit.types.TransitSet} A transit set.
      * @example
@@ -430,10 +430,11 @@ goog.scope(function() {
     /**
      * Create a transit link.
      * @method transit.link
-     * @param {com.cognitect.transit.types.TransitArrayMap|com.cognitect.transit.types.TransitMap} A transit map which must contain at a
-     *     minimum the following keys: href, rel. It may optionally include
-     *     name, render, and prompt. href must be a transit.uri, all other
-     *     values are strings, and render must be either "image" or "link".
+     * @param {com.cognitect.transit.MapLike} m
+     *     A transit map which must contain at a minimum the following keys:
+     *     href, rel. It may optionally include name, render, and prompt. href
+     *     must be a transit.uri, all other values are strings, and render must
+     *     be either "image" or "link".
      * @return {Object} A transit link.
      */
     transit.link = types.link;
@@ -478,7 +479,7 @@ goog.scope(function() {
      *    A JavaScript Array or Object that implements Array forEach.
      * @return {number} Returns JavaScript number - semantically a 32bit integer.
      */
-    transit.hashMapLike = eq.hashArrayLike;
+    transit.hashArrayLike = eq.hashArrayLike;
 
     /**
      * Test whether two JavaScript objects represent equal values. The
@@ -522,7 +523,7 @@ goog.scope(function() {
      * Convert a transit map instance into a JavaScript Object.
      * Throws if the map has keys which have no string representation.
      * @method transit.mapToObject
-     * @param {com.cognitect.transit.types.TransitArrayMap|com.cognitect.transit.types.TransitMap} m
+     * @param {com.cognitect.transit.MapLike} m
      *     a transit map
      * @return {Object} a JavaScript Object
      */
@@ -543,7 +544,7 @@ goog.scope(function() {
      * @method transit.objectToMap
      * @param {Object} obj
      *     a JavaScript Object
-     * @return {com.cognitect.transit.types.TransitArrayMap|com.cognitect.transit.types.TransitMap} a transit map
+     * @return {com.cognitect.transit.MapLike} a transit map
      */
     transit.objectToMap = function(obj) {
         var ret = transit.map();
