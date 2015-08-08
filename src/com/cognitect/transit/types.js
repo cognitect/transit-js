@@ -411,7 +411,7 @@ goog.scope(function() {
         this.idx = 0;
     };
 
-    types.TransitArrayMapIterator.prototype.next = function(map, type) {
+    types.TransitArrayMapIterator.prototype.next = function() {
         if(this.idx < this.entries.length) {
 
             var value = null;
