@@ -441,6 +441,7 @@ goog.scope(function() {
         this.type = type || types.KEYS;
         this.keys = this.map.getKeys();
         this.idx = 0;
+        /** @type {?Object} */
         this.bucket = null;
         this.bucketIdx = 0;
     };
