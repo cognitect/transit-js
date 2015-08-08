@@ -195,7 +195,7 @@ goog.scope(function() {
      * is a 64 bit integer or a JavaScript number that has an interpretation as
      * an integer value, i.e. parseFloat(n) === parseInt(n)
      * @method transit.isInteger
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {boolean} true if the value is a transit integer, false otherwise.
      */
@@ -213,7 +213,7 @@ goog.scope(function() {
     /**
      * Test if an object is a transit UUID.
      * @method transit.isUUID
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {boolean} true if the vlaue is a transit UUID instance, false otherwise.
      */
@@ -231,7 +231,7 @@ goog.scope(function() {
     /**
      * Test if an object is a transit big integer.
      * @method transit.isBigInt
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {boolean} true if x is a transit big integer, false otherwise.
      */
@@ -249,7 +249,7 @@ goog.scope(function() {
     /**
      * Test if an object is a transit big decimal.
      * @method transit.isBigDec
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {boolean} true if x is a transit big decimal, false otherwise.
      */
@@ -268,7 +268,7 @@ goog.scope(function() {
     /**
      * Test if an object is a transit keyword.
      * @method transit.isKeyword
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {boolean} true if x is a transit keyword, false otherwise.
      */
@@ -288,7 +288,7 @@ goog.scope(function() {
     /**
      * Test if an object is a transit symbol
      * @method transit.isSymbol
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {boolean} true if x is a transit symbol, false otherwise.
      */
@@ -306,7 +306,7 @@ goog.scope(function() {
     /**
      * Test if an object is a transit binary blob.
      * @method transit.isBinary
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {Boolean} true if x is a binary value, false otheriwse.
      */
@@ -324,7 +324,7 @@ goog.scope(function() {
     /**
      * Test if an object is a transit URI.
      * @method transit.isURI
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {Boolean} true if x is a transit symbol, false otherwise.
      */
@@ -334,7 +334,7 @@ goog.scope(function() {
      * Create a transit hash map. Transit maps satisfy the current version
      *     of the ECMAScript 6 Map specification.
      * @method transit.map
-     * @param {Array} xs
+     * @param {Array=} xs
      *     A JavaScript array of alternating key value pairs.
      * @return {com.cognitect.transit.MapLike} A transit map.
      * @example
@@ -345,7 +345,7 @@ goog.scope(function() {
     /**
      * Test if an object is a transit map.
      * @method transit.isMap
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {boolean} true if x is a transit map, false otherwise.
      */
@@ -355,7 +355,7 @@ goog.scope(function() {
      * Create a transit set. Transit sets satisfy the current version of the
      *     of the ECMAScript 6 Set specification.
      * @method transit.set
-     * @param {Array} xs
+     * @param {Array=} xs
      *     A JavaScript array of values.
      * @return {com.cognitect.transit.types.TransitSet} A transit set.
      * @example
@@ -366,7 +366,7 @@ goog.scope(function() {
     /**
      * Test if an object is a transit set.
      * @method transit.isSet
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {boolean} true if x is a transit set, false otherwise.
      */
@@ -384,7 +384,7 @@ goog.scope(function() {
     /**
      * Test if an object is a transit list.
      * @method transit.isList
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {boolean} true if x is a transit list, false otherwise.
      */
@@ -393,7 +393,7 @@ goog.scope(function() {
     /**
      * Create a transit quoted value.
      * @method transit.quoted
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {com.cognitect.transit.types.TaggedValue} A transit quoted value.
      */
@@ -402,7 +402,7 @@ goog.scope(function() {
     /**
      * Test if an object is a transit quoted value.
      * @method transit.isQuoted
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {boolean} true if x is a transit value, false otherwise.
      */
@@ -412,7 +412,7 @@ goog.scope(function() {
      * Create a transit tagged value.
      * @method transit.tagged
      * @param {String} tag A tag.
-     * @param {Object} value
+     * @param {*} value
      *     A JavaScrpt array, object, or string.
      * @return {com.cognitect.transit.types.TaggedValue} A transit tagged value.
      * @example
@@ -423,7 +423,7 @@ goog.scope(function() {
     /**
      * Test if an object is a transit tagged value.
      * @method transit.isTaggedValue
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript value.
      * @return {boolean} true if x is a transit value, false otherwise.
      */
@@ -444,7 +444,7 @@ goog.scope(function() {
     /**
      * Test if an object is a transit link.
      * @method transit.isLink
-     * @param {Object} x
+     * @param {*} x
      *     Any JavaScript object.
      * @return {boolean} true if x is a transit link, false otherwise.
      */
@@ -456,7 +456,7 @@ goog.scope(function() {
      *    primitives and transit value are already extended to this protocol.
      *    Custom types may be extended to the protocol via transit.extenToEQ.
      * @method transit.hash
-     * @param {Object} x
+     * @param {*} x
      *    Any JavaScript object that has been extended to transit's equality
      *    and hashing protocol.
      * @return {number} Returns JavaScript number - semantically a 32bit integer.
@@ -467,7 +467,7 @@ goog.scope(function() {
      * Compute the hashCode for JavaScript map-like types - either a JavaScript
      *    object or a JavaScript object that implements ES6 Map forEach.
      * @method transit.hashMapLike
-     * @param {Object} x
+     * @param {Object|com.cognitect.transit.MapLike} x
      *    A plain JavaScript Object or Object that implements ES6 Map forEach.
      * @return {number} Returns JavaScript number - semantically a 32bit integer.
      */
@@ -491,9 +491,9 @@ goog.scope(function() {
      *    arrays.  Also transit maps and JavaScript objects may be
      *    compared for equality. Custom types may be extended via
      *    transit.extendToEQ.
-     * @param {Object} x
+     * @param {*} x
      *     A JavaScript object
-     * @param {Object} y
+     * @param {*} y
      *     A JavaScript object
      * @return {Boolean} true if the x and y are equal, false otherwise.
      */
@@ -505,9 +505,9 @@ goog.scope(function() {
      *     types, JavaScript primitive types and transit
      *     types are handled.
      * @method transit.extendToEQ
-     * @param {Object} x
+     * @param {*} x
      *     A JavaScript object, will be mutated.
-     * @return {Object} x
+     * @return {*} x
      * @example
      *     transit.extendToEq(Point.protototype, {
      *         hashCode: function() {
