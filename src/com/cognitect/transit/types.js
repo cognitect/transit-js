@@ -351,6 +351,11 @@ goog.scope(function() {
         return this.valueOf();
     };
 
+    /**
+     * @param {string} str
+     * @param {*=} decoder
+     * @returns {com.cognitect.transit.types.TaggedValue|Uint8Array}
+     */
     types.binary = function(str, decoder) {
         if((!decoder || (decoder.preferBuffers !== false)) && (typeof Buffer != "undefined")) {
             return new Buffer(str, "base64");

@@ -152,6 +152,7 @@ goog.scope(function() {
      *     });
      */
     transit.makeWriteHandler = function(obj) {
+        /** @constructor */
         var Handler = function(){};
         Handler.prototype.tag = obj["tag"];
         Handler.prototype.rep = obj["rep"];
@@ -161,6 +162,7 @@ goog.scope(function() {
     };
 
     transit.makeBuilder = function(obj) {
+        /** @constructor */
         var Builder = function(){};
         Builder.prototype.init = obj["init"];
         Builder.prototype.add = obj["add"];
@@ -299,6 +301,8 @@ goog.scope(function() {
      * @method transit.binary
      * @param {string} s
      *     A base64 encoded string.
+     * @param {*=} decoder
+     *     A Transit compliant decoder
      * @return {com.cognitect.transit.types.TaggedValue|Uint8Array} A transit binary blob instance.
      */
     transit.binary = types.binary;
@@ -357,7 +361,7 @@ goog.scope(function() {
      * @method transit.set
      * @param {Array=} xs
      *     A JavaScript array of values.
-     * @return {com.cognitect.transit.types.TransitSet} A transit set.
+     * @return {com.cognitect.transit.SetLike} A transit set.
      * @example
      *     transit.set(["foo", [1,2], 3, {bar: "baz"}]);
      */
@@ -507,6 +511,9 @@ goog.scope(function() {
      * @method transit.extendToEQ
      * @param {*} x
      *     A JavaScript object, will be mutated.
+     * @param {{hashCode: function(), equals: function(*,*):boolean}}
+     *     A JavaScript object supplying `hashCode` and `equals`
+     *     implementations
      * @return {*} x
      * @example
      *     transit.extendToEq(Point.protototype, {

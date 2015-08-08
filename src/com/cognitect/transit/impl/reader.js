@@ -43,7 +43,7 @@ goog.scope(function () {
      * A transit reader
      * @constructor
      * @param {reader.JSONUnmarshaller} unmarshaller
-     * @param {Object} options
+     * @param {Object=} options
      */
     reader.Reader = function (unmarshaller, options) {
         this.unmarshaller = unmarshaller;
