@@ -63,7 +63,7 @@ goog.scope(function() {
     /**
      * Create a transit reader instance.
      * @method transit.reader
-     * @param {String=} type
+     * @param {string=} type
      *     type of reader to construct.  Default to "json". For verbose mode
      *     supply "json-verbose".
      * @param {Object=} opts
@@ -99,7 +99,7 @@ goog.scope(function() {
     /**
      * Create a transit writer instance.
      * @method transit.writer
-     * @param {String=} type
+     * @param {string=} type
      *     type of writer to construct. Defaults to "json". For verbose mode
      *     supply "json-verbose".
      * @param {Object=} opts
@@ -172,7 +172,7 @@ goog.scope(function() {
     /**
      * Create a transit date.
      * @method transit.date
-     * @param {number|String} x
+     * @param {number|string} x
      *     A number or string representing milliseconds since epoch.
      * @return {Date} A JavaScript Date.
      */
@@ -184,7 +184,7 @@ goog.scope(function() {
      *     return a JavaScript number if the string represents an integer
      *     value in the 53bit range and a transit integer otherwise.
      * @method transit.integer
-     * @param {number|String} s
+     * @param {number|string} s
      *     A value representing an integer.
      * @return {number|goog.math.Long} A JavaScript number or transit integer.
      */
@@ -204,7 +204,7 @@ goog.scope(function() {
     /**
      * Create transit UUID from a string
      * @method transit.uuid
-     * @param {String} s
+     * @param {string} s
      *     A string.
      * @return {com.cognitect.transit.types.UUID} A transit UUID.
      */
@@ -222,7 +222,7 @@ goog.scope(function() {
     /**
      * Create a transit big integer.
      * @method transit.bigInt
-     * @param {String} s
+     * @param {string} s
      *     A string representing an arbitrary size integer value.
      * @return {com.cognitect.transit.types.TaggedValue} A transit big integer.
      */
@@ -240,7 +240,7 @@ goog.scope(function() {
     /**
      * Create a transit big decimal.
      * @method transit.bigDec
-     * @param {String} s
+     * @param {string} s
      *     A string representing an arbitrary precisions decimal value.
      * @return {com.cognitect.transit.types.TaggedValue} A transit big decimal.
      */
@@ -258,7 +258,7 @@ goog.scope(function() {
     /**
      * Create transit keyword.
      * @method transit.keyword
-     * @param {String} name A string.
+     * @param {string} name A string.
      * @return {com.cognitect.transit.types.Keyword} A transit keyword.
      * @example
      *     transit.keyword("foo");
@@ -277,7 +277,7 @@ goog.scope(function() {
     /**
      * Create a transit symbol.
      * @method transit.symbol
-     * @param {String} name
+     * @param {string} name
      *     A string.
      * @return {com.cognitect.transit.types.Symbol} A transit symbol instance.
      * @example
@@ -297,7 +297,7 @@ goog.scope(function() {
     /**
      * Create transit binary blob.
      * @method transit.binary
-     * @param {String} s
+     * @param {string} s
      *     A base64 encoded string.
      * @return {com.cognitect.transit.types.TaggedValue|Uint8Array} A transit binary blob instance.
      */
@@ -315,7 +315,7 @@ goog.scope(function() {
     /**
      * Create a transit URI.
      * @method transit.uri
-     * @param {String} s
+     * @param {string} s
      *     A string representing a valid URI.
      * @return {com.cognitect.transit.types.TaggedValue} A transit URI.
      */
@@ -411,7 +411,7 @@ goog.scope(function() {
     /**
      * Create a transit tagged value.
      * @method transit.tagged
-     * @param {String} tag A tag.
+     * @param {string} tag A tag.
      * @param {*} value
      *     A JavaScrpt array, object, or string.
      * @return {com.cognitect.transit.types.TaggedValue} A transit tagged value.
