@@ -586,7 +586,7 @@ goog.scope(function() {
     transit.writeCache = caching.writeCache;
 
     transit.UUIDfromString = types.UUIDfromString;
-    transit.randomUUID =     types.randomUUID;
+    transit.randomUUID = util.randomUUID;
     transit.stringableKeys = writer.stringableKeys;
 
     if(TRANSIT_BROWSER_TARGET) {
@@ -632,7 +632,7 @@ goog.scope(function() {
         goog.exportSymbol("transit.objectToMap",    transit.objectToMap);
         goog.exportSymbol("transit.decoder",        decoder.decoder);
         goog.exportSymbol("transit.UUIDfromString", types.UUIDfromString);
-        goog.exportSymbol("transit.randomUUID",     types.randomUUID);
+        goog.exportSymbol("transit.randomUUID",     util.randomUUID);
         goog.exportSymbol("transit.stringableKeys", writer.stringableKeys);
         goog.exportSymbol("transit.readCache",      caching.readCache);
         goog.exportSymbol("transit.writeCache",     caching.writeCache);
