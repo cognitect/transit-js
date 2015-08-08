@@ -157,6 +157,13 @@ goog.scope(function () {
         preferBuffers: true
     };
 
+    /**
+     * @param {*} node
+     * @param {*} cache
+     * @param {boolean=} asMapKey
+     * @param {boolean=} tagValue
+     * @returns {*}
+     */
     decoder.Decoder.prototype.decode = function (node, cache, asMapKey, tagValue) {
         if (node == null) return null;
 

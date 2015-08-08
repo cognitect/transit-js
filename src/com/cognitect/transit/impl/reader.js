@@ -33,7 +33,7 @@ reader.JSONUnmarshaller = function(opts) {
 /**
  * @param {string} str a JSON string
  * @param {caching.ReadCache} cache a read cache
- * @returns {Object}
+ * @returns {*}
  */
 reader.JSONUnmarshaller.prototype.unmarshal = function(str, cache) {
     return this.decoder.decode(JSON.parse(str), cache);
