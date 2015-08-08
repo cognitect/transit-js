@@ -15,6 +15,7 @@
 "use strict";
 
 goog.provide("com.cognitect.transit");
+goog.require("com.cognitect.transit.util");
 goog.require("com.cognitect.transit.impl.reader");
 goog.require("com.cognitect.transit.impl.writer");
 goog.require("com.cognitect.transit.types");
@@ -41,7 +42,8 @@ goog.scope(function() {
      */
     var transit = com.cognitect.transit;
 
-    var reader  = com.cognitect.transit.impl.reader,
+    var util    = com.cognitect.transit.util,
+        reader  = com.cognitect.transit.impl.reader,
         writer  = com.cognitect.transit.impl.writer,
         decoder = com.cognitect.transit.impl.decoder,
         types   = com.cognitect.transit.types,
@@ -680,7 +682,7 @@ goog.scope(function() {
             objectToMap:    transit.objectToMap,
             decoder:        decoder.decoder,
             UUIDfromString: types.UUIDfromString,
-            randomUUID:     types.randomUUID,
+            randomUUID:     util.randomUUID,
             stringableKeys: writer.stringableKeys,
             readCache:      caching.readCache,
             writeCache:     caching.writeCache
