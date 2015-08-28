@@ -119,7 +119,7 @@ caching.WriteCache.prototype.write = function(string, asMapKey) {
     }
 };
 
-caching.WriteCache.prototype.clear = function() {
+caching.WriteCache.prototype.clear = function Transit$WriteCache() {
     this.idx = 0;
     this.gen++;
 };
@@ -148,7 +148,7 @@ caching.codeToIdx = function(code) {
 /**
  * @constructor
  */
-caching.ReadCache = function() {
+caching.ReadCache = function Transit$ReadCache() {
     this.idx = 0;
     this.cache = [];
 };

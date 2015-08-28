@@ -26,7 +26,7 @@ goog.scope(function () {
      * A JSON unmarshaller
      * @constructor
      */
-    reader.JSONUnmarshaller = function (opts) {
+    reader.JSONUnmarshaller = function Transit$JSONUnmarshaller(opts) {
         this.decoder = new decoder.Decoder(opts);
     };
 
@@ -45,7 +45,7 @@ goog.scope(function () {
      * @param {reader.JSONUnmarshaller} unmarshaller
      * @param {Object=} options
      */
-    reader.Reader = function (unmarshaller, options) {
+    reader.Reader = function Transit$Reader(unmarshaller, options) {
         this.unmarshaller = unmarshaller;
         this.options = options || {};
         this.cache = this.options["cache"] ? this.options["cache"] : new caching.ReadCache();

@@ -32,7 +32,7 @@ goog.scope(function () {
     /**
      * @constructor
      */
-    decoder.Tag = function (s) {
+    decoder.Tag = function Transit$Tag(s) {
         this.str = s;
     };
 
@@ -64,7 +64,7 @@ goog.scope(function () {
      * A transit decoder
      * @constructor
      */
-    decoder.Decoder = function (options) {
+    decoder.Decoder = function Transit$Decoder(options) {
         this.options = options || {};
         this.handlers = {};
         for (var h in this.defaults.handlers) {
