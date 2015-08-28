@@ -27,7 +27,7 @@ goog.scope(function() {
     /**
      * @constructor
      */
-    types.TaggedValue = function(tag, rep) {
+    types.TaggedValue = function Transit$TaggedValue(tag, rep) {
         this.tag = tag;
         this.rep = rep;
         this.hashCode = -1;
@@ -140,7 +140,7 @@ goog.scope(function() {
     /**
      * @constructor
      */
-    types.Keyword = function(name) {
+    types.Keyword = function Transit$Keyword(name) {
         this.name = name;
         this.hashCode = -1;
     };
@@ -185,7 +185,7 @@ goog.scope(function() {
     /**
      * @constructor
      */
-    types.Symbol = function(name) {
+    types.Symbol = function Transit$Symbol(name) {
         this.name = name;
         this.hashCode = -1;
     };
@@ -245,7 +245,7 @@ goog.scope(function() {
     /**
      * @constructor
      */
-    types.UUID = function(high, low) {
+    types.UUID = function Transit$UUID(high, low) {
         this.high = high;
         this.low = low;
         this.hashCode = -1;
@@ -405,7 +405,7 @@ goog.scope(function() {
     /**
      * @constructor
      */
-    types.TransitArrayMapIterator = function(entries, type) {
+    types.TransitArrayMapIterator = function Transit$ArrayMapIterator(entries, type) {
         this.entries = entries;
         this.type = type || types.KEYS;
         this.idx = 0;
@@ -441,7 +441,7 @@ goog.scope(function() {
     /**
      * @constructor
      */
-    types.TransitMapIterator = function(map, type) {
+    types.TransitMapIterator = function Transit$MapIterator(map, type) {
         this.map = map;
         this.type = type || types.KEYS;
         this.keys = this.map.getKeys();
@@ -582,7 +582,7 @@ goog.scope(function() {
      * @constructor
      * @param {Array} entries
      */
-    types.TransitArrayMap = function(entries) {
+    types.TransitArrayMap = function Transit$ArrayMap(entries) {
         this._entries = entries;
         this.backingMap = null;
         this.hashCode = -1;
@@ -804,7 +804,7 @@ goog.scope(function() {
      * @param {null|Object=} map
      * @param {null|number=} size
      */
-    types.TransitMap = function(keys, map, size) {
+    types.TransitMap = function Transit$Map(keys, map, size) {
         this.map = map || {};
         this._keys = keys || [];
         this.size = size || 0;
@@ -1051,7 +1051,7 @@ goog.scope(function() {
      * @constructor
      * @param {com.cognitect.transit.MapLike} map
      */
-    types.TransitSet = function(map) {
+    types.TransitSet = function Transit$Set(map) {
         this.map = map;
         this.size = map.size;
     };
