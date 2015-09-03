@@ -165,17 +165,18 @@ Abbreviations:
 |decimal|Number|Number|
 |keyword|t.keyword|t.keyword|
 |symbol|t.symbol|t.symbol|
-|big integer|t.bigInt|t.bigInt|
-|big decimal|t.bigDec|t.bigDec|
+|big integer|t.tagged|t.tagged|
+|big decimal|t.tagged|t.tagged|
 |bytes|Buffer, Uint8Array, t.tagged|Buffer, Uint8Array, t.tagged|
 |time|Date|Date|
-|uri|t.uri|t.uri|
+|uri|t.tagged|t.tagged|
 |uuid|t.uuid|t.uuid|
 |char|String|String|
 |array|Array|Array|
+|list|t.tagged|t.tagged|
 |set|t.set|t.set|
 |map|t.map|t.map|
-|link|t.link|t.link|
+|link|t.tagged|t.tagged|
 |cmap|t.map|t.map|
 
 ## Contributing 
