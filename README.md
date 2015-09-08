@@ -1,14 +1,15 @@
 # transit-js
 
-Transit is a data format and a set of libraries for conveying values
-between applications written in different languages. This library
-provides support for marshalling Transit data to/from
-JavaScript. transit-js will work with any
-[ECMAScript-262 Edition 3](http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262,%203rd%20edition,%20December%201999.pdf)
-or newer JavaScript implementation provided that a
-[JSON](http://www.json.org) module that supplies `parse` and
-`stringify` methods is present. transit-js does not currently
-support encoding to [MessagePack](http://msgpack.org).
+Transit is a data format and a set of libraries for conveying values between
+applications written in different languages. This library provides support for
+marshalling Transit data to/from JavaScript. transit-js will work with any
+[ECMAScript-262 Edition
+3](http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262,%203rd%20edition,%20December%201999.pdf) 
+or newer JavaScript implementation provided that a [JSON](http://www.json.org)
+module that supplies `parse` and `stringify` methods is present. transit-js does
+not currently support encoding to [MessagePack](http://msgpack.org). Unlike the
+Java and Clojure implementations it relies on the non-streaming JSON parsing
+mechanism of the host JavaScript environment.
 
 * [Rationale](http://blog.cognitect.com/blog/2014/7/22/transit)
 * [Getting Started](https://github.com/cognitect/transit-js/wiki/Getting-Started), Get up and running ASAP
@@ -17,7 +18,8 @@ support encoding to [MessagePack](http://msgpack.org).
 * [Take a tour!](http://cognitect.github.io/transit-tour)
 * [FAQ](http://github.com/cognitect/transit-js/wiki/FAQ), for common transit-js specific questions
 
-This implementation's major.minor version number corresponds to the version of the Transit specification it supports.
+This implementation's major.minor version number corresponds to the version of
+the Transit specification it supports.
 
 _NOTE: Transit is a work in progress and may evolve based on feedback.
 As a result, while Transit is a great option for transferring data
@@ -32,11 +34,18 @@ specification is complete._
 
 ### JavaScript
 
-You can include either the [release](http://cdn.cognitect.com/transit/transit-0.8.831-min.js) (10K gzipped) or [development](http://cdn.cognitect.com/transit/transit-0.8.831.js) build of transit-js on your webpage. We also provide [Require.js](http://requirejs.org) compatible [release](http://cdn.cognitect.com/transit/transit-0.8.831-amd-min.js) and [dev](http://cdn.cognitect.com/transit/transit-0.8.831-amd.js) builds.
+You can include either the
+[release](http://cdn.cognitect.com/transit/transit-0.8.831-min.js) (10K gzipped)
+or [development](http://cdn.cognitect.com/transit/transit-0.8.831.js) build of
+transit-js on your webpage. We also provide [Require.js](http://requirejs.org)
+compatible
+[release](http://cdn.cognitect.com/transit/transit-0.8.831-amd-min.js) and
+[dev](http://cdn.cognitect.com/transit/transit-0.8.831-amd.js) builds.
 
 ### Node.js
 
-transit-js is released to [npm](https://www.npmjs.org). Add transit-js to your `package.json` dependencies:
+transit-js is released to [npm](https://www.npmjs.org). Add transit-js to your
+`package.json` dependencies:
 
 ```javascript
 {...
@@ -82,31 +91,32 @@ JavaScript servers and clients.
 
 #### Beyond JSON
 
-The [Transit rationale](http://blog.cognitect.com/blog/2014/7/22/transit) covers many of the
-reasons to put aside the limitations of JSON. As with the other
-Transit implementations, transit-js supports conveying a larger range
-of scalar and non-scalar values than permitted by JSON. Of these
-types, the transit-js handling of the map representation is the most
-novel from the perspective of a JavaScript applications developer.
+The [Transit rationale](http://blog.cognitect.com/blog/2014/7/22/transit) covers
+many of the reasons to put aside the limitations of JSON. As with the other
+Transit implementations, transit-js supports conveying a larger range of scalar
+and non-scalar values than permitted by JSON. Of these types, the transit-js
+handling of the map representation is the most novel from the perspective of a
+JavaScript applications developer.
 
 #### Transit Maps
 
-Transit representations of maps are decoded by transit-js
-into a high performance data structure that largely mirrors the [ECMAScript Edition
+Transit representations of maps are decoded by transit-js into a high
+performance data structure that largely mirrors the [ECMAScript Edition
 6](http://wiki.ecmascript.org/doku.php?id=harmony:specification_drafts)
-[Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
-data type. Doing so allows natural indexing of data using common scalars
-like 64 bit integers and dates without requiring the out of band
-application logic often encountered in systems that marshal JSON.
+[Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) 
+data type. Doing so allows natural indexing of data using common scalars like 64
+bit integers and dates without requiring the out of band application logic often
+encountered in systems that marshal JSON.
 
-The adaptive implementation of transit-js maps delivers performance
-comparable to plain JavaScript objects and native ES6 Map
-implementations.
+The adaptive implementation of transit-js maps delivers performance comparable
+to plain JavaScript objects and native ES6 Map implementations.
 
 ## Usage
 
-Please see the [Getting Started](https://github.com/cognitect/transit-js/wiki/Getting-Started) page. For an interactive guide
-check out the [tour](http://cognitect.github.io/transit-tour).
+Please see the [Getting
+Started](https://github.com/cognitect/transit-js/wiki/Getting-Started) page. For
+an interactive guide check out the
+[tour](http://cognitect.github.io/transit-tour).
 
 From the browser transit-js is available at the top level:
 
@@ -181,7 +191,14 @@ Abbreviations:
 
 ## Contributing 
 
-This library is open source, developed internally by Cognitect. We welcome discussions of potential problems and enhancement suggestions on the [transit-format mailing list](https://groups.google.com/forum/#!forum/transit-format). Issues can be filed using GitHub [issues](https://github.com/cognitect/transit-js/issues) for this project. Because transit is incorporated into products and client projects, we prefer to do development internally and are not accepting pull requests or patches.
+This library is open source, developed internally by Cognitect. We welcome
+discussions of potential problems and enhancement suggestions on the
+[transit-format mailing
+list](https://groups.google.com/forum/#!forum/transit-format). Issues can be
+filed using GitHub [issues](https://github.com/cognitect/transit-js/issues) for
+this project. Because transit is incorporated into products and client projects,
+we prefer to do development internally and are not accepting pull requests or
+patches.
 
 ## Development
 
@@ -219,8 +236,8 @@ bin/build_release_node
 
 #### Version
 
-The build version is automatically incremented.  To determine the
-current build version:
+The build version is automatically incremented.  To determine the current build
+version:
 
 ```
 build/revision
@@ -248,9 +265,8 @@ bin/docs
 
 Assuming you have a
 [JDK](http://www.oracle.com/technetwork/java/javaee/downloads/java-ee-sdk-6u3-jdk-7u1-downloads-523391.html)
-and [Maven](http://maven.apache.org) installed, the following will
-install a JAR suitable for use from ClojureScript into your local
-Maven repository.
+and [Maven](http://maven.apache.org) installed, the following will install a JAR
+suitable for use from ClojureScript into your local Maven repository.
 
 ```
 build/package_local
@@ -258,7 +274,7 @@ build/package_local
 
 ## Copyright and License
 
-Copyright © 2014 Cognitect
+Copyright © 2014-2015 Cognitect
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
