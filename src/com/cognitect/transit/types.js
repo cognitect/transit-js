@@ -24,6 +24,12 @@ goog.scope(function() {
         eq    = com.cognitect.transit.eq,
         Long  = goog.math.Long;
 
+    if(typeof Symbol != "undefined") {
+        types.ITERATOR = Symbol.iterator;
+    } else {
+        types.ITERATOR = "@@iterator";
+    }
+
     /**
      * @constructor
      */
@@ -456,6 +462,10 @@ goog.scope(function() {
     };
     types.TransitArrayMapIterator.prototype["next"] = types.TransitArrayMapIterator.prototype.next;
 
+    types.TransitArrayMapIterator.prototype[types.ITERATOR] = function() {
+        return this;
+    };
+
     /**
      * @constructor
      */
@@ -499,6 +509,10 @@ goog.scope(function() {
         }
     };
     types.TransitMapIterator.prototype["next"] = types.TransitMapIterator.prototype.next;
+
+    types.TransitMapIterator.prototype[types.ITERATOR] = function() {
+        return this;
+    };
 
     types.mapEquals = function(me, you) {
         if ((me instanceof types.TransitMap) && types.isMap(you)) {
@@ -792,6 +806,9 @@ goog.scope(function() {
     };
     types.TransitArrayMap.prototype["clone"] = types.TransitArrayMap.prototype.clone;
 
+    types.TransitArrayMap.prototype[types.ITERATOR] = function() {
+        return this.entries();
+    };
 
     types.TransitArrayMap.prototype.com$cognitect$transit$hashCode = function() {
         if(this.backingMap) {
@@ -983,6 +1000,10 @@ goog.scope(function() {
     };
     types.TransitMap.prototype["clone"] = types.TransitMap.prototype.clone;
 
+    types.TransitMap.prototype[types.ITERATOR] = function() {
+        return this.entries();
+    };
+
     types.TransitMap.prototype.com$cognitect$transit$hashCode = function() {
         if(this.hashCode === -1) {
             this.hashCode = eq.hashMapLike(this);
@@ -1147,6 +1168,10 @@ goog.scope(function() {
         return clone;
     };
     types.TransitSet.prototype["clone"] = types.TransitSet.prototype.clone;
+
+    types.TransitSet.prototype[types.ITERATOR] = function() {
+        return this.values();
+    };
 
     types.TransitSet.prototype.com$cognitect$transit$equals = function(other) {
         if(other instanceof types.TransitSet) {

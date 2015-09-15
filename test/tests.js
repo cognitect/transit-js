@@ -1241,3 +1241,53 @@ exports.testUndefinedHandlerKey = function(test) {
         test.done();
     }
 };
+
+// TJS-34
+
+exports.testIterable = function(test) {
+    var m = transit.map(["foo", 1, "bar", 2]),
+        s = transit.set(["foo", "bar"]);
+
+    if(Array.from) {
+        var a0 = Array.from(m),
+            a1 = Array.from(m.entries()),
+            a2 = Array.from(m.keys()),
+            a3 = Array.from(m.values());
+
+        test.ok(a0.length == 2);
+        test.ok(transit.equals([["foo", 1],["bar", 2]], a0) ||
+                transit.equals([["bar", 2],["foo", 1]], a0));
+
+        test.ok(a1.length == 2);
+        test.ok(transit.equals([["foo", 1],["bar", 2]], a1) ||
+                transit.equals([["bar", 2],["foo", 1]], a1));
+
+        test.ok(a2.length == 2);
+        test.ok(transit.equals(["foo", "bar"], a2) ||
+                transit.equals(["bar", "foo"], a2));
+
+        test.ok(a3.length == 2);
+        test.ok(transit.equals([1, 2], a3) ||
+                transit.equals([2, 1], a3));
+
+        var a4 = Array.from(s),
+            a5 = Array.from(s.entries()),
+            a6 = Array.from(s.values());
+
+        test.ok(a4.length == 2);
+        test.ok(transit.equals(["foo", "bar"], a4) ||
+                transit.equals(["bar", "foo"], a4));
+
+        test.ok(a5.length == 2);
+        test.ok(transit.equals([["foo", "foo"],["bar", "bar"]], a5) ||
+                transit.equals([["bar", "bar"],["foo", "foo"]], a5));
+
+        test.ok(a6.length == 2);
+        test.ok(transit.equals(["foo", "bar"], a6) ||
+                transit.equals(["bar", "foo"], a));
+    } else {
+        test.ok(true);
+    }
+
+    test.done();
+};
