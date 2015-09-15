@@ -253,7 +253,7 @@ goog.scope(function () {
         return ":";
     };
     handlers.KeywordHandler.prototype.rep = function (v) {
-        return v.name;
+        return v._name;
     }; // NOTE: should be fqn
     handlers.KeywordHandler.prototype.stringRep = function (v, h) {
         return h.rep(v);
@@ -268,7 +268,7 @@ goog.scope(function () {
         return "$";
     };
     handlers.SymbolHandler.prototype.rep = function (v) {
-        return v.name;
+        return v._name;
     }; // NOTE: should be str
     handlers.SymbolHandler.prototype.stringRep = function (v, h) {
         return h.rep(v);

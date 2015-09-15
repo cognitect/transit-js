@@ -95,13 +95,17 @@ exports.testKeywordSymbolNamespaces = function(test) {
         k1 = transit.keyword("foo");
 
     test.equal(k0.namespace(), "foo");
+    test.equal(k0.name(), "bar");
     test.equal(k1.namespace(), null);
+    test.equal(k1.name(), "foo");
 
     var s0 = transit.symbol("foo/bar"),
         s1 = transit.symbol("foo");
 
     test.equal(s0.namespace(), "foo");
+    test.equal(s0.name(), "bar");
     test.equal(s1.namespace(), null);
+    test.equal(s1.name(), "foo");
 
     test.done();
 };

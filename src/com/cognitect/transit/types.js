@@ -141,20 +141,29 @@ goog.scope(function() {
      * @constructor
      */
     types.Keyword = function Transit$Keyword(name) {
-        this.name = name;
+        this._name = name;
         this.hashCode = -1;
     };
 
     types.Keyword.prototype.toString = function() {
-        return ":"+this.name;
+        return ":"+this._name;
     };
 
     types.Keyword.prototype["namespace"] = function() {
-        var idx = this.name.indexOf("/");
+        var idx = this._name.indexOf("/");
         if(idx != -1) {
-            return this.name.substring(0, idx);
+            return this._name.substring(0, idx);
         } else {
             return null;
+        }
+    };
+
+    types.Keyword.prototype["name"] = function() {
+        var idx = this._name.indexOf("/");
+        if(idx != -1) {
+            return this._name.substring(idx+1, this._name.length);
+        } else {
+            return this._name;
         }
     };
 
@@ -164,12 +173,12 @@ goog.scope(function() {
     types.Keyword.prototype["equiv"] = types.Keyword.prototype.equiv;
 
     types.Keyword.prototype.com$cognitect$transit$equals = function(other) {
-        return (other instanceof types.Keyword) && this.name == other.name;
+        return (other instanceof types.Keyword) && this._name == other._name;
     };
 
     types.Keyword.prototype.com$cognitect$transit$hashCode = function() {
         if(this.hashCode === -1) {
-            this.hashCode = eq.hashCode(this.name);
+            this.hashCode = eq.hashCode(this._name);
         }
         return this.hashCode;
     };
@@ -186,21 +195,30 @@ goog.scope(function() {
      * @constructor
      */
     types.Symbol = function Transit$Symbol(name) {
-        this.name = name;
+        this._name = name;
         this.hashCode = -1;
     };
 
     types.Symbol.prototype["namespace"] = function() {
-        var idx = this.name.indexOf("/");
+        var idx = this._name.indexOf("/");
         if(idx != -1) {
-            return this.name.substring(0, idx);
+            return this._name.substring(0, idx);
         } else {
             return null;
         }
     };
 
+    types.Symbol.prototype["name"] = function() {
+        var idx = this._name.indexOf("/");
+        if(idx != -1) {
+            return this._name.substring(idx+1, this._name.length);
+        } else {
+            return this._name;
+        }
+    };
+
     types.Symbol.prototype.toString = function() {
-        return this.name;
+        return this._name;
     };
 
     types.Symbol.prototype.equiv = function(other) {
@@ -209,12 +227,12 @@ goog.scope(function() {
     types.Symbol.prototype["equiv"] = types.Symbol.prototype.equiv;
 
     types.Symbol.prototype.com$cognitect$transit$equals = function(other) {
-        return (other instanceof types.Symbol) && this.name == other.name;
+        return (other instanceof types.Symbol) && this._name == other._name;
     };
 
     types.Symbol.prototype.com$cognitect$transit$hashCode = function() {
         if(this.hashCode === -1) {
-            this.hashCode = eq.hashCode(this.name);
+            this.hashCode = eq.hashCode(this._name);
         }
         return this.hashCode;
     };
