@@ -231,6 +231,12 @@ goog.scope(function () {
         }
     };
 
+    /**
+     * Returns true if x is an Object instance from a different JavaScript
+     * context.
+     * @param x
+     * @returns {boolean}
+     */
     writer.isForeignObject = function (x) {
         if (x.constructor["transit$isObject"]) {
             return true;
