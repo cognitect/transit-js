@@ -249,10 +249,11 @@ goog.scope(function () {
             return true;
         }
 
-        var ret = x.constructor.toString(),
-            ret = ret.substr('function '.length),
-            ret = ret.substr(0, ret.indexOf('(')),
-            isObject = ret == "Object";
+        var ret = x.constructor.toString();
+
+        ret = ret.substr('function '.length);
+        ret = ret.substr(0, ret.indexOf('('));
+        isObject = ret == "Object";
 
         if (typeof Object.defineProperty != "undefined") {
             Object.defineProperty(x.constructor, "transit$isObject", {
@@ -267,6 +268,8 @@ goog.scope(function () {
     };
 
     writer.emitMap = function (em, obj, skip, cache) {
+        var arr = null, rep = null, tag = null, ks = null, i = 0;
+
         if ((obj.constructor === Object) ||
             (obj.forEach != null) ||
             (em.handlerForForeign && writer.isForeignObject(obj))) {
@@ -279,11 +282,11 @@ goog.scope(function () {
                         });
                         return ret;
                     } else {
-                        var arr = em.unpack(obj),
-                            rep = [],
-                            tag = em.emitString(d.ESC_TAG, "cmap", "", true, cache);
+                        arr = em.unpack(obj);
+                        rep = [];
+                        tag = em.emitString(d.ESC_TAG, "cmap", "", true, cache);
                         if (arr) {
-                            for (var i = 0; i < arr.length; i += 2) {
+                            for (; i < arr.length; i += 2) {
                                 rep.push(writer.marshal(em, arr[i], true, false));
                                 rep.push(writer.marshal(em, arr[i + 1], false, cache));
                             }
@@ -293,14 +296,14 @@ goog.scope(function () {
                                 rep.push(writer.marshal(em, v, false, cache));
                             });
                         }
-                        var ret = {};
+                        ret = {};
                         ret[tag] = rep;
                         return ret;
                     }
                 } else {
-                    var ret = {},
-                        ks = util.objectKeys(obj);
-                    for (var i = 0; i < ks.length; i++) {
+                    ks = util.objectKeys(obj);
+                    ret = {};
+                    for (; i < ks.length; i++) {
                         ret[writer.marshal(em, ks[i], true, false)] = writer.marshal(em, obj[ks[i]], false, cache);
                     }
                     return ret;
@@ -308,10 +311,10 @@ goog.scope(function () {
             } else {
                 if (obj.forEach != null) {
                     if (writer.stringableKeys(em, obj)) {
-                        var arr = em.unpack(obj),
-                            ret = ["^ "];
+                        arr = em.unpack(obj);
+                        ret = ["^ "];
                         if (arr) {
-                            for (var i = 0; i < arr.length; i += 2) {
+                            for (; i < arr.length; i += 2) {
                                 ret.push(writer.marshal(em, arr[i], true, cache));
                                 ret.push(writer.marshal(em, arr[i + 1], false, cache));
                             }
@@ -323,11 +326,11 @@ goog.scope(function () {
                         }
                         return ret;
                     } else {
-                        var arr = em.unpack(obj),
-                            rep = [],
-                            tag = em.emitString(d.ESC_TAG, "cmap", "", true, cache);
+                        arr = em.unpack(obj);
+                        rep = [];
+                        tag = em.emitString(d.ESC_TAG, "cmap", "", true, cache);
                         if (arr) {
-                            for (var i = 0; i < arr.length; i += 2) {
+                            for (; i < arr.length; i += 2) {
                                 rep.push(writer.marshal(em, arr[i], true, cache));
                                 rep.push(writer.marshal(em, arr[i + 1], false, cache));
                             }
@@ -340,9 +343,9 @@ goog.scope(function () {
                         return [tag, rep];
                     }
                 } else {
-                    var ret = ["^ "],
-                        ks = util.objectKeys(obj);
-                    for (var i = 0; i < ks.length; i++) {
+                    ret = ["^ "];
+                    ks = util.objectKeys(obj);
+                    for (; i < ks.length; i++) {
                         ret.push(writer.marshal(em, ks[i], true, cache));
                         ret.push(writer.marshal(em, obj[ks[i]], false, cache));
                     }
@@ -399,7 +402,7 @@ goog.scope(function () {
         } else {
             return writer.emitTaggedMap(em, tag, rep, asMapKey, cache);
         }
-    }
+    };
 
     writer.marshal = function (em, obj, asMapKey, cache) {
         var h = em.handler(obj) || (em.handlerForForeign ? em.handlerForForeign(obj, em.handlers) : null),
