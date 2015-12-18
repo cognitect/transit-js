@@ -488,27 +488,6 @@ exports.testWriteEdgeCases = function(test) {
     test.done();
 };
 
-/*
-exports.testCustomDecoder = function(test) {
-    var MyInt = function(integer) {
-        this.integer = integer;
-    };
-
-    var opts   = {
-            handlers: {
-                "i": function(v) { return new MyInt(v); }
-            }
-        },
-        reader = transit.reader("json", opts);
-
-    var x = reader.read("\"~i1\"");
-    test.equal(x.integer, "1");
-    test.ok(x instanceof MyInt);
-
-    test.done();
-};
-*/
-
 exports.testCustomHandler = function(test) {
     var Point = function(x, y) {
         this.x = x;
@@ -1292,12 +1271,15 @@ exports.testIterable = function(test) {
     test.done();
 };
 
-/*
- [{:any-value {["this vector makes this a cmap"] "any value"
-  "any string" :victim}}
-  {:victim :any-other-value}]
+//
+exports.testBadCache = function(test) {
+    var t = transit,
+        pathological = [t.map([t.keyword("any-value"), t.map([["this array makes this a cmap"], "any value"]),
+                               "any string", t.keyword("victim")]),
+                        t.map([t.keyword("victim"), t.keyword("any-other-value")])],
+        w = t.writer("json");
 
- var pathological = [t.map([t.keyword("any-value"), t.map([["this array makes this a cmap"], "any value"]),
-  "any string", t.keyword("victim")]),
-  t.map([t.keyword("victim"), t.keyword("any-other-value")])];
- */
+    console.log(w.write(pathological));
+
+    test.done();
+};
