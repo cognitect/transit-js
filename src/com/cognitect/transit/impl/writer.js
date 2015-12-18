@@ -192,6 +192,13 @@ goog.scope(function () {
         }
     };
 
+    /**
+     * Returns true if map-like obj parameter has only stringable keys -
+     * strings, symbols or keywords. If false, obj is a cmap value.
+     * @param em
+     * @param obj
+     * @returns {boolean}
+     */
     writer.stringableKeys = function (em, obj) {
         var arr = em.unpack(obj),
             stringableKeys = true;
