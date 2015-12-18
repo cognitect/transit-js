@@ -1291,3 +1291,13 @@ exports.testIterable = function(test) {
 
     test.done();
 };
+
+/*
+ [{:any-value {["this vector makes this a cmap"] "any value"
+  "any string" :victim}}
+  {:victim :any-other-value}]
+
+ var pathological = [t.map([t.keyword("any-value"), t.map([["this array makes this a cmap"], "any value"]),
+  "any string", t.keyword("victim")]),
+  t.map([t.keyword("victim"), t.keyword("any-other-value")])];
+ */
