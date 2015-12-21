@@ -287,12 +287,12 @@ goog.scope(function () {
                         tag = em.emitString(d.ESC_TAG, "cmap", "", true, cache);
                         if (arr) {
                             for (; i < arr.length; i += 2) {
-                                rep.push(writer.marshal(em, arr[i], true, false));
+                                rep.push(writer.marshal(em, arr[i], false, false));
                                 rep.push(writer.marshal(em, arr[i + 1], false, cache));
                             }
                         } else {
                             obj.forEach(function (v, k) {
-                                rep.push(writer.marshal(em, k, true, false));
+                                rep.push(writer.marshal(em, k, false, false));
                                 rep.push(writer.marshal(em, v, false, cache));
                             });
                         }
@@ -331,12 +331,12 @@ goog.scope(function () {
                         tag = em.emitString(d.ESC_TAG, "cmap", "", true, cache);
                         if (arr) {
                             for (; i < arr.length; i += 2) {
-                                rep.push(writer.marshal(em, arr[i], true, cache));
+                                rep.push(writer.marshal(em, arr[i], false, cache));
                                 rep.push(writer.marshal(em, arr[i + 1], false, cache));
                             }
                         } else {
                             obj.forEach(function (v, k) {
-                                rep.push(writer.marshal(em, k, true, cache));
+                                rep.push(writer.marshal(em, k, false, cache));
                                 rep.push(writer.marshal(em, v, false, cache));
                             });
                         }

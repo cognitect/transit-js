@@ -1283,15 +1283,15 @@ exports.testIterable = function(test) {
     test.done();
 };
 
-//
 exports.testBadCache = function(test) {
     var t = transit,
-        pathological = [t.map([t.keyword("any-value"), t.map([["this array makes this a cmap"], "any value"]),
-                               "any string", t.keyword("victim")]),
+        pathological = [t.map([t.keyword("any-value"), t.map([["this array makes this a cmap"], "any value",
+                                                               "any string", t.keyword("victim")])]),
                         t.map([t.keyword("victim"), t.keyword("any-other-value")])],
-        w = t.writer("json");
+        w = t.writer("json"),
+        r = t.reader("json");
 
-    console.log(w.write(pathological));
+    transit.equals(pathological, r.read(w.write(pathological)));
 
     test.done();
 };
