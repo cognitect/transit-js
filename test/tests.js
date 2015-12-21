@@ -14,7 +14,19 @@
 
 "use strict";
 
-var transit = require("../target/transit.js"),
+/* install source map support first */
+
+try {
+    require("source-map-support").install();
+} catch(e) {
+}
+
+require("../deps/closure-library/closure/goog/bootstrap/nodejs.js");
+require("../deps/closure-library/closure/goog/transit_deps.js");
+
+goog.require("com.cognitect.transit");
+
+var transit = com.cognitect.transit,
     vm      = require("vm"),
     ctxt    = vm.createContext();
 
