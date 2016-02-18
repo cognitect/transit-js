@@ -255,7 +255,7 @@ bin/build_release_node
 bin/build_release_browser
 ```
 
-#### Building the documentaiton
+#### Building the documentation
 
 ```
 bin/docs
