@@ -47,24 +47,16 @@ compatible
 transit-js is released to [npm](https://www.npmjs.org). Add transit-js to your
 `package.json` dependencies:
 
-```javascript
-{...
-  "dependencies": {
-    "transit-js": "0.8.846"
-  }
- ...}
+```bash
+npm install transit-js
 ```
 
 ### Bower
 
 You can also include transit-js in your `bower.json` dependencies:
 
-```javascript
-{...
-  "dependencies": {
-    "transit-js": "0.8.846"
-  }
- ...}
+```bash
+bower install transit-js
 ```
 
 ### Maven
