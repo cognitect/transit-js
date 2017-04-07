@@ -11,9 +11,9 @@
 
 declare module "transit" {
     import {
-        TaggedValue, Keyword,
+        TaggedValue, Symbol, Keyword,
         TransitArrayMap, TransitMap, TransitSet,
-        UUID
+        UUID, BigDecimal, Binary, URI
     } from "transit.types";
     import { Decoder } from "transit.impl.decoder";
     import { ReadCache, WriteCache } from "transit.caching";
