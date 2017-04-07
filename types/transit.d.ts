@@ -9,7 +9,7 @@
  * http://cognitect.github.io/transit-js/classes/transit.html
  */
 
-declare module "transit" {
+declare module "transit-js" {
     import {
         TaggedValue, Symbol, Keyword,
         TransitArrayMap, TransitMap, TransitSet,
@@ -20,12 +20,6 @@ declare module "transit" {
     import { Reader } from "transit.impl.reader";
     import { Writer } from "transit.impl.writer";
 
-    export interface WriteHandler {
-        tag: any;
-        rep: any;
-        stringRep: any;
-        getVerboseHandler?: boolean;
-    }
 
     export function bigDec(s: string): TaggedValue;
     export function bigInt(s: string): TaggedValue;
@@ -61,17 +55,36 @@ declare module "transit" {
     export function mapToObject(m: TransitArrayMap | TransitMap): any;
     export function objectToMap(a: any): TransitArrayMap | TransitMap;
     export function quoted(x: any): TaggedValue;
+
+    export interface ReaderOptions {
+        handlers?: any;
+        arrayBuilder?: any;
+        mapBuilder?: any;
+    }
+
     export function readCache(): ReadCache;
-    export function reader(type: "json" | "json-verbose", opts: any): Reader;
+    export function reader(type: "json" | "json-verbose", opts?: ReaderOptions): Reader;
 
     export function set(xs: any[]): TransitSet;
     export function symbol(name: string): Symbol;
     export function tagged(tag: string, value: any): TaggedValue;
     export function uri(a: string): TaggedValue;
 
+    export interface WriteHandler {
+        tag: any;
+        rep: any;
+        stringRep: any;
+        getVerboseHandler?: boolean;
+    }
+
+    export interface WriterOptions {
+        handlers?: any;
+        handlerForForeign?: any;
+    }
+
     export function writeCache(): WriteCache;
-    export function writer(type: "json" | "json-verbose", opts: any ): Writer;
-    
+    export function writer(type: "json" | "json-verbose", opts?: WriterOptions): Writer;
+
 }
 
 
