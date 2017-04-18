@@ -14,7 +14,7 @@
      "polyfill"
   ],
   "author": "Cognitect",
-  "license": "APL",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/cognitect/transit-js.git"
