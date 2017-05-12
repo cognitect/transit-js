@@ -32,9 +32,14 @@
   "dependencies": {
   },
   "devDependencies": {
-    "nodeunit": "0.9.1",
-    "yuidocjs": "0.8.1",
-    "source-map-support": "0.3.2"
+    "nodeunit": "0.11.0",
+    "yuidocjs": "0.10.2",
+    "source-map-support": "0.3.2",
+    "grunt-contrib-concat": "1.0.1",
+    "grunt-contrib-nodeunit": "1.0.0",
+    "grunt-contrib-uglify": "3.0.0",
+    "grunt-contrib-jshint": "1.1.0",
+    "grunt-contrib-watch": "1.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
