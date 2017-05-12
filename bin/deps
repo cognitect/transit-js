@@ -4,10 +4,13 @@ set -e
 
 cd `dirname $0`/..
 
+rm -rf deps
+rm -rf node_modules
+
 echo "Installing Node dependencies"
 
 npm install
-npm install grunt-cli
+npm install grunt
 
 echo "Installing JVM dependencies"
 
@@ -15,6 +18,7 @@ mkdir -p deps/closure-compiler
 cd deps/closure-compiler
 curl -O -s http://dl.google.com/closure-compiler/compiler-latest.zip
 unzip -qu compiler-latest.zip
+mv closure-compiler-**.jar compiler.jar
 rm compiler-latest.zip
 cd ../..
 

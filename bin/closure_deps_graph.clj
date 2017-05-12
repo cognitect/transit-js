@@ -2,7 +2,9 @@
   (:require [clojure.java.io :as io])
   (:import [java.io File]
            [com.google.javascript.jscomp SourceFile BasicErrorManager]
-           [com.google.javascript.jscomp.deps DepsGenerator DepsGenerator$InclusionStrategy]))
+           [com.google.javascript.jscomp.deps DepsGenerator
+            DepsGenerator$InclusionStrategy ModuleLoader
+            ModuleLoader$PathResolver ModuleLoader$ResolutionMode]))
 
 (defn js-files-in
   "Return a sequence of all .js files in the given directory."
@@ -25,4 +27,7 @@
         (report [level error]
           (println error))
         (println [level error]
-          (println error))))))
+          (println error)))
+      (ModuleLoader. nil [] []
+        ModuleLoader$PathResolver/ABSOLUTE
+        ModuleLoader$ResolutionMode/LEGACY))))
