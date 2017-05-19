@@ -253,7 +253,7 @@ goog.scope(function () {
 
         ret = ret.substr('function '.length);
         ret = ret.substr(0, ret.indexOf('('));
-        isObject = ret == "Object";
+        var isObject = ret == "Object";
 
         if (typeof Object.defineProperty != "undefined") {
             Object.defineProperty(x.constructor, "transit$isObject", {
