@@ -385,8 +385,8 @@ goog.scope(function () {
         hs.set(types.TransitArrayMap, new handlers.TransitArrayMapHandler());
         hs.set(types.TransitMap, new handlers.TransitMapHandler());
 
-        if (typeof Buffer != "undefined") {
-            hs.set(Buffer, new handlers.BufferHandler());
+        if (typeof goog.global.Buffer != "undefined") {
+            hs.set(goog.global.Buffer, new handlers.BufferHandler());
         }
 
         if (typeof Uint8Array != "undefined") {
