@@ -252,8 +252,9 @@ goog.scope(function() {
     };
 
     types.hexFor = function(aLong, sidx, eidx) {
-        var ret   = "",
-            eidx  = eidx || (sidx+1);
+        var ret   = "";
+
+        eidx  = eidx || (sidx+1);
 
         for(var i=sidx, shift=(7-i)*8, mask=Long.fromInt(0xff).shiftLeft(shift); i < eidx; i++, shift-=8, mask=mask.shiftRightUnsigned(8)) {
             var s = aLong.and(mask).shiftRightUnsigned(shift).toString(16);
