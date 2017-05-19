@@ -315,8 +315,9 @@ goog.scope(function() {
     };
 
     types.UUIDfromString = function uuidFromString(s) {
-        var s    = s.replace(/-/g, ""),
-            hi64 = null,
+        s = s.replace(/-/g, "");
+
+        var hi64 = null,
             lo64 = null,
             hi32 = 0,
             lo32 = 0,
