@@ -14,6 +14,6 @@ preludenl=$prelude.$'\n'
 
 java -jar deps/closure-compiler/compiler.jar -O SIMPLE --formatting PRETTY_PRINT \
 --output_wrapper "$preludenl;(function(){%output%})();" --generate_exports -D TRANSIT_BROWSER_AMD_TARGET=true \
---manage_closure_dependencies --only_closure_dependencies --closure_entry_point=com.cognitect.transit.amd \
+--dependency_mode=STRICT --entry_point=com.cognitect.transit.amd \
 --js_output_file=target/transit-$version-amd.js \
 'deps/closure-library/closure/**.js' 'src/**.js'

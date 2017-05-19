@@ -5,6 +5,6 @@ set -e
 cd `dirname $0`/..
 
 java -jar deps/closure-compiler/compiler.jar -O WHITESPACE_ONLY \
---manage_closure_dependencies --only_closure_dependencies --closure_entry_point=com.cognitect.transit \
+--dependency_mode=STRICT --entry_point=com.cognitect.transit \
 --js_output_file=target/transit.js \
 'deps/closure-library/closure/**.js' 'src/**.js'
