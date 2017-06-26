@@ -1,4 +1,6 @@
 
 declare module "transit.impl.writer" {
-    export type Writer = any;
+    export interface Writer {
+        write(payload: any);
+    }
 }

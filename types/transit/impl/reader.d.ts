@@ -1,5 +1,7 @@
 
 
 declare module "transit.impl.reader" {
-    export type Reader = any;
+    export interface Reader {
+        read(payload: string): any;
+    }
 }

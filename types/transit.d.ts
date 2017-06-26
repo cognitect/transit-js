@@ -62,8 +62,10 @@ declare module "transit-js" {
         mapBuilder?: any;
     }
 
+    export type Encodings = "json" | "json-verbose";
+
     export function readCache(): ReadCache;
-    export function reader(type: "json" | "json-verbose", opts?: ReaderOptions): Reader;
+    export function reader(type: Encodings, opts?: ReaderOptions): Reader;
 
     export function set(xs: any[]): TransitSet;
     export function symbol(name: string): Symbol;
@@ -83,7 +85,7 @@ declare module "transit-js" {
     }
 
     export function writeCache(): WriteCache;
-    export function writer(type: "json" | "json-verbose", opts?: WriterOptions): Writer;
+    export function writer(type: Encodings, opts?: WriterOptions): Writer;
 
 }
 

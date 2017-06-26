@@ -21,6 +21,9 @@
   },
   "main": "target/transit.js",
   "types": "types/transit.d.ts",
+  "directories":{
+    "target": "target"
+  },
   "bugs": {
     "url": "https://github.com/cognitect/transit-js/issues"
   },
