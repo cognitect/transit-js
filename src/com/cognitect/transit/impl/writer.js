@@ -51,6 +51,7 @@ goog.scope(function () {
         this.preferStrings = this.opts["preferStrings"] != null ? this.opts["preferStrings"] : true;
 
         this.objectBuilder = this.opts["objectBuilder"] || null;
+        this.transform = this.opts["transform"] || null;
 
         this.handlers = new handlers.Handlers();
 
@@ -405,6 +406,10 @@ goog.scope(function () {
     };
 
     writer.marshal = function (em, obj, asMapKey, cache) {
+        if(em.transform !== null) {
+            obj = em.transform(obj);
+        }
+
         var h = em.handler(obj) || (em.handlerForForeign ? em.handlerForForeign(obj, em.handlers) : null),
             tag = h ? h.tag(obj) : null,
             rep = h ? h.rep(obj) : null;
