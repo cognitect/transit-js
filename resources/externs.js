@@ -30,3 +30,5 @@ Object.finalize;
  * @type {String}
  */
 Object.fromArray;
+var module = {};
+module.exports = {};

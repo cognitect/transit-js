@@ -30,6 +30,8 @@ Object.finalize;
  * @type {String}
  */
 Object.fromArray;
+var module = {};
+module.exports = {};
 var define = function() {};
 var transit = {};
 transit.reader = function(){};
