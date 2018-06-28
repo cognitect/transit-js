@@ -3,7 +3,7 @@
   (:import [java.io File]
            [com.google.javascript.jscomp SourceFile BasicErrorManager]
            [com.google.javascript.jscomp.deps DepsGenerator
-            DepsGenerator$InclusionStrategy ModuleLoader
+            DepsGenerator$InclusionStrategy ModuleLoader BrowserModuleResolver
             ModuleLoader$PathResolver ModuleLoader$ResolutionMode]))
 
 (defn js-files-in
@@ -29,5 +29,5 @@
         (println [level error]
           (println error)))
       (ModuleLoader. nil [] []
-        ModuleLoader$PathResolver/ABSOLUTE
-        ModuleLoader$ResolutionMode/LEGACY))))
+        BrowserModuleResolver/FACTORY
+        ModuleLoader$PathResolver/ABSOLUTE))))
