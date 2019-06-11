@@ -21,11 +21,7 @@ mechanism of the host JavaScript environment.
 This implementation's major.minor version number corresponds to the version of
 the Transit specification it supports.
 
-_NOTE: Transit is a work in progress and may evolve based on feedback.
-As a result, while Transit is a great option for transferring data
-between applications, it should not yet be used for storing data
-durably over time. This recommendation will change when the
-specification is complete._ 
+_NOTE: Transit is intended primarily as a wire protocol for transferring data between applications. If storing Transit data durably, readers and writers are expected to use the same version of Transit and you are responsible for migrating/transforming/re-storing that data when and if the transit format changes._
 
 ## Releases and Dependency Information
 
