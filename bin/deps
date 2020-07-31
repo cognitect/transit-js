@@ -25,7 +25,5 @@ cd ../..
 git clone https://github.com/google/closure-library.git deps/closure-library
 
 mkdir -p deps/clojure
-curl -O http://repo1.maven.org/maven2/org/clojure/clojure/1.6.0/clojure-1.6.0.zip
-unzip -qu clojure-1.6.0.zip
-mv clojure-1.6.0/clojure-1.6.0.jar deps/clojure
-rm -rf clojure-1.6.0 clojure-1.6.0.zip
+curl -O https://repo1.maven.org/maven2/org/clojure/clojure/1.6.0/clojure-1.6.0.jar
+mv clojure-1.6.0.jar deps/clojure
