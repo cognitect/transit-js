@@ -9,7 +9,7 @@ mkdir -p target
 java -jar deps/closure-compiler/compiler.jar -O ADVANCED \
 --output_wrapper ";(function(){%output%})();" --generate_exports \
 -D TRANSIT_BROWSER_TARGET=true --externs resources/externs.js \
---dependency_mode=STRICT --entry_point=com.cognitect.transit \
+--dependency_mode=PRUNE --entry_point=com.cognitect.transit \
 --js_output_file=target/transit.js \
 'deps/closure-library/closure/**.js' 'src/**.js'
 
