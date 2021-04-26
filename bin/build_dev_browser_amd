@@ -13,6 +13,7 @@ prelude=`bin/prelude`
 preludenl=$prelude.$'\n'
 
 java -jar deps/closure-compiler/compiler.jar -O SIMPLE --formatting PRETTY_PRINT \
+--language_out=ECMASCRIPT_2020 \
 --output_wrapper "$preludenl;(function(){%output%})();" --generate_exports -D TRANSIT_BROWSER_AMD_TARGET=true \
 --dependency_mode=PRUNE --entry_point=com.cognitect.transit.amd \
 --js_output_file=target/transit-$version-amd.js \
