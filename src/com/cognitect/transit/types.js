@@ -577,9 +577,9 @@ goog.scope(function() {
     types.print = function(x) {
         if(x == null) {
             return "null";
-        } if(goog.isArray(x)) {
+        } if(goog.typeOf(x) === "array") {
             return "[" + x.toString() + "]";
-        } else if(goog.isString(x)) {
+        } else if(goog.typeOf(x) === "string") {
             return "\"" + x + "\"";
         } else {
             return x.toString();
