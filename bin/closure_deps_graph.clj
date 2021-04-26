@@ -2,9 +2,9 @@
   (:require [clojure.java.io :as io])
   (:import [java.io File]
            [com.google.javascript.jscomp SourceFile BasicErrorManager]
-           [com.google.javascript.jscomp.deps DepsGenerator
-            DepsGenerator$InclusionStrategy ModuleLoader
-            ModuleLoader$PathResolver ModuleLoader$ResolutionMode]))
+           [com.google.javascript.jscomp.deps BrowserModuleResolver
+            DepsGenerator DepsGenerator$InclusionStrategy ModuleLoader
+            ModuleLoader$PathResolver]))
 
 (defn js-files-in
   "Return a sequence of all .js files in the given directory."
@@ -17,10 +17,11 @@
 
 (spit (io/file "deps/closure-library/closure/goog/transit_deps.js")
   (.computeDependencyCalls
-    (DepsGenerator. (map #(SourceFile/fromFile (io/file %)) '("deps/closure-library/closure/goog/deps.js"))
-      (map #(SourceFile/fromFile %)
+    (DepsGenerator.
+      []
+      (map #(SourceFile/fromFile (.getAbsolutePath %))
         (mapcat (comp js-files-in io/file)
-          ["src"]))
+          ["src" "deps/closure-library/closure/goog"]))
       DepsGenerator$InclusionStrategy/ALWAYS
       (.getAbsolutePath (io/file "deps/closure-library/closure/goog"))
       (proxy [BasicErrorManager] []
@@ -29,5 +30,5 @@
         (println [level error]
           (println error)))
       (ModuleLoader. nil [] []
-        ModuleLoader$PathResolver/ABSOLUTE
-        ModuleLoader$ResolutionMode/LEGACY))))
+        BrowserModuleResolver/FACTORY
+        ModuleLoader$PathResolver/ABSOLUTE))))
