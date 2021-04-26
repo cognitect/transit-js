@@ -21,6 +21,7 @@ try {
 } catch(e) {
 }
 
+global.CLOSURE_NO_DEPS = true;
 require("../deps/closure-library/closure/goog/bootstrap/nodejs.js");
 require("../deps/closure-library/closure/goog/transit_deps.js");
 
@@ -345,7 +346,7 @@ exports.testTransitSetKeys = function(test) {
     var s0   = transit.set(["foo", "bar", "baz"]),
         iter = s0.keys(),
         ks   = [];
-    
+
     ks.push(iter.next().value);
     ks.push(iter.next().value);
     ks.push(iter.next().value);
@@ -360,7 +361,7 @@ exports.testTransitSetValues = function(test) {
     var s0   = transit.set(["foo", "bar", "baz"]),
         iter = s0.values(),
         vs   = [];
-    
+
     vs.push(iter.next().value);
     vs.push(iter.next().value);
     vs.push(iter.next().value);
@@ -388,7 +389,7 @@ exports.testTransitSetEntries = function(test) {
 
 exports.testTransitSetDelete = function(test) {
     var s0 = transit.set(["foo", "bar", "baz"]);
-    
+
     var v = s0.delete("bar");
 
     test.equal(v, "bar");
@@ -438,7 +439,7 @@ exports.testRead = function(test) {
 exports.testWriteTransitTypes = function(test) {
     var writer  = transit.writer("json"),
         writerv = transit.writer("json-verbose");
-    
+
     test.equal(writer.write(["foo"]), "[\"foo\"]");
     test.equal(writer.write([1]), "[1]");
     test.equal(writer.write([transit.integer("9007199254740993")]), "[\"~i9007199254740993\"]");
@@ -458,7 +459,7 @@ exports.testWriteTransitTypes = function(test) {
     test.equal(writerv.write(transit.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")), "{\"~#\'\":\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"}");
     test.equal(writer.write([transit.uuid("531a379e-31bb-4ce1-8690-158dceb64be6")]), "[\"~u531a379e-31bb-4ce1-8690-158dceb64be6\"]");
     test.equal(writer.write([transit.binary("c3VyZS4=")]), "[\"~bc3VyZS4=\"]");
-    
+
     test.done();
 };
 
@@ -468,7 +469,7 @@ exports.testWriteTransitComplexTypes = function(test) {
         m0     = transit.map(["foo","bar","baz","woz"]);
     test.equal(writer.write(s0),"[\"~#set\",[\"foo\",\"bar\",\"baz\"]]");
     test.done();
-}; 
+};
 
 exports.testRoundtrip = function(test) {
     var writer = transit.writer("json"),
@@ -623,7 +624,7 @@ exports.testStringableKeys = function(test) {
     var m2 = transit.map([["foo"], 1, ["bar"], 2]);
 
     test.ok(!transit.stringableKeys(em, m2));
-    
+
     test.done();
 };
 
@@ -857,7 +858,7 @@ exports.testRoundtripVerboseDates = function(test) {
 
     test.equal(w.write(r.read("[\"~t1776-07-04T12:00:00.000Z\",\"~t1970-01-01T00:00:00.000Z\",\"~t2000-01-01T12:00:00.000Z\",\"~t2014-04-07T22:17:17.000Z\"]")),
                               "[\"~t1776-07-04T12:00:00.000Z\",\"~t1970-01-01T00:00:00.000Z\",\"~t2000-01-01T12:00:00.000Z\",\"~t2014-04-07T22:17:17.000Z\"]");
-    
+
     test.done();
 };
 
