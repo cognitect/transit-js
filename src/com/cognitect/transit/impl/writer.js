@@ -143,11 +143,11 @@ goog.scope(function () {
         }
     };
 
-    writer.JSONMarshaller.prototype.emitDouble = function (d, asMapKey, cache) {
+    writer.JSONMarshaller.prototype.emitDouble = function (n, asMapKey, cache) {
         if (asMapKey) {
-            return this.emitString(d.ESC, "d", d, asMapKey, cache);
+            return this.emitString(d.ESC, "d", n, asMapKey, cache);
         } else {
-            return d;
+            return n;
         }
     };
 
