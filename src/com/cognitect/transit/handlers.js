@@ -124,7 +124,11 @@ goog.scope(function () {
     handlers.NumberHandler = function Transit$NumberHandler() {
     };
     handlers.NumberHandler.prototype.tag = function (v) {
-        return "i";
+        if (isNaN(v) || v === Infinity || v === -Infinity || v % 1 === 0) {
+            return "i";
+        } else {
+            return "d";
+        }
     };
     handlers.NumberHandler.prototype.rep = function (v) {
         return v;

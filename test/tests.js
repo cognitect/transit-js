@@ -1058,6 +1058,26 @@ exports.testWriteSpecialDoubleValues = function(test) {
 };
 
 // =============================================================================
+// Double values as map keys
+// =============================================================================
+
+exports.testReadDoubleValuesAsMapKeys = function(test) {
+    var r = transit.reader();
+
+    test.ok(transit.equals(r.read("[\"^ \",\"~d1.1\",1.1]"), transit.map([1.1, 1.1])));
+
+    test.done();
+};
+
+exports.testWriteDoubleValuesAsMapKeys = function(test) {
+    var w = transit.writer();
+
+    test.equal(w.write(transit.map([1.1, 1.1])), "[\"^ \",\"~d1.1\",1.1]");
+
+    test.done();
+};
+
+// =============================================================================
 // Map Not Found
 // =============================================================================
 
@@ -1292,7 +1312,7 @@ exports.testBadCache = function(test) {
         w = t.writer("json"),
         r = t.reader("json");
 
-    transit.equals(pathological, r.read(w.write(pathological)));
+    test.ok(transit.equals(pathological, r.read(w.write(pathological))));
 
     test.done();
 };
